@@ -1,0 +1,648 @@
+#!/usr/bin/perl
+
+use lib '/var/www/html/chris/perl';
+
+use strict;
+use warnings;
+use Word;
+use Phrase;
+use Parallel;
+use Data::Dumper;
+use CGI qw/:standard/;
+use Files;
+use Storable;
+
+# print "Content-type: text/plain\n\n";
+
+my $query = new CGI || die "$!";
+
+my $session = $query->param('session');
+# my $sort = $query->param('sort');
+# my $text = $query->param('textOnly');
+my $source = $query->param('source');
+my $target = $query->param('target');
+my $ignore_common= $query->param('ignore_common');
+my $experimental = $query->param('experimental');
+my $ignore_low = "yes";
+# $ignore_low = $query->param('ignore_low');
+
+my $cachefile = "stem.cache.norder";
+$cachefile="stem.cache";
+$ignore_common = "yes";
+my $commonwords = "et qui quis quid at heu in es est sum tu bellum bellus per hic hoc fero neque non iam jam magnus magnum magni magno populus populum populi cum";
+my $showprogress = 1;
+my $verbose = 0; # 0 == only 5/10; 1 == 0 - 10; 2 == -1 - 10
+
+my $fs_base = '/var/www/html/chris';
+my $session_path;
+my $prefix;
+
+# bypass CGI reading to test locally
+#$source = 'vergil.aeneid';
+#$target = 'catullus.carmina';
+#$ignore_common = 'yes';
+#$experimental = 'no';
+#$session = 'test-session';
+
+my $usage = "usage: progname TEXT1 TEXT2 CACHEFILE\n";
+# $usage = "currently unavailable; experimental = ".$experimental." session = ".$session." sort = ".$sort." text = ".$text."\n";
+my @text;
+my %cache = ();
+
+my $comments;
+
+
+
+
+
+
+if ($ignore_low eq 'yes') {
+	$comments = $comments."exclude low-scoring results; ";
+} else {
+	$comments = $comments."include low-scoring results; ";
+}
+
+if ($ignore_common eq 'yes') {
+	$comments = $comments."exclude matches with <a href=\"#\" title=\"abc\">common words</a>; ";
+} else {
+	$comments = $comments."include matches with <a href=\"#\" title=\"abc\">common words</a>; ";
+}
+
+# if experimental is set to NO:
+#  * $session = 'testing'
+#  * $session_path = '/tmp'
+#  * $text[0]-$text[2] are read off from the argument list
+#  * $cachefile is the default. 
+# else (this is the setting for CGI-mode on the server)
+#  * $text[0] = vergil
+#  * $text[1] = lucan
+#  * $text[2] = based on $source and $target
+#  * $text[3] / $cachefile = $prefix.'stem.cache.norder'
+if ($experimental eq 'yes') {
+	# if experimental is set to yes, the 
+	$session_path = $fs_base . '/tmp';
+	$prefix = $fs_base . '/data/';
+	$text[0] = $prefix.'vergil.aeneid.tess';
+	$text[1] = $prefix.'lucan.pharsalia.book1.tess';
+	$text[2] = $prefix.'catullus.carmina.vs.horace.epodes.preprocessed'; # was: output.tess
+	
+	
+	print STDERR "source: $source\n";
+	print STDERR "target: $target\n";
+	if (Files::determine_input_filenames($source, $target) == 0) {
+		print STDERR "ERROR: either the source or the target label cannot be found in the\n";
+		print STDERR "       configuration file.\n\n";
+		print STDERR "I used configuration file ".Files::config_file().".\n";
+		print STDERR "This typically occurs if a text has been prepared but the comparison pair has \n";
+		print STDERR "not been added yet to the config file.\n";
+		print STDERR "See the documentation in Files.pm for more information on the format of the \n";
+		print STDERR "configuration file.";
+		print STDERR "exiting.\n";
+		die;
+
+	} else {
+		print STDERR "source label: ".$source."\n";
+		print STDERR "target label: ".$target."\n";
+		print STDERR "source txt file: ".Files::source_text_file($source, $target)."\n";
+		print STDERR "target txt file: ".Files::target_text_file($source, $target)."\n";
+		print STDERR "source prs file: ".Files::source_parsed_file($source, $target)."\n";
+		print STDERR "target prs file: ".Files::target_parsed_file($source, $target)."\n";
+	}
+	$text[0] = $prefix.Files::source_text_file($source, $target);
+	$text[1] = $prefix.Files::target_text_file($source, $target);
+	$text[2] = $prefix.Files::preprocessed_file($source, $target);
+	
+	#	$text[2] = $prefix.'lucan.pharsalia.book1.vs.vergil.aeneid.preprocessed.norder'; # was: output.tess
+	my $run_obsolete_code = 0;
+	if ($run_obsolete_code == 1) {
+		if (($source eq 'lucan.pharsalia.book1' && $target eq 'vergil.aeneid') || ($target eq 'lucan.pharsalia.book1' && $source eq 'vergil.aeneid')) 
+		{
+			$text[2] = $prefix.'lucan.pharsalia.book1.vs.vergil.aeneid.preprocessed.norder'; # was: output.tess
+				print STDERR "choosing lucan and vergil\n";
+		} 
+		else 
+		{
+			if (($source eq 'catullus.carmina' && $target eq 'horace.epodes') || ($target eq 'catullus.carmina' && $source eq 'horace.epodes')) {
+				$text[2] = $prefix.'catullus.carmina.vs.horace.epodes.preprocessed'; # was: output.tess
+			}
+		}
+		print STDERR "value of text[2] is now: $text[2]\n";
+	}
+	$text[3] = $prefix.'stem.cache.norder';
+	foreach (@text) {
+		if (-r $_) {} else {
+			print "Content-type: text/plain\n\n";
+			print "can't open file ".$_.": ".$!."\n";
+			exit;
+		}
+	}
+	$cachefile = $text[3];
+	open (XML, ">$session_path/tesresults-$session.xml")
+	        || die "can't open $session_path/tesresults-$session.xml: $!";
+} else {
+	$session="testing";
+	$session_path = $fs_base . '/tmp';
+	open (XML, ">$session_path/tesresults-$session.xml")
+	        || die "can't open $session_path/tesresults-$session.xml: $!";
+	read_arguments();	
+}
+# retrieve_cache();
+
+# on MAC
+# my $text1="/Users/rao3/oldtesserae/svn/tesserae/trunk/line_numbered_texts/horace.epodes.tess";
+# my $text2="/Users/rao3/oldtesserae/svn/tesserae/trunk/line_numbered_texts/catullus.carmina.tess";
+#my $text2 = "vergil.10lines.tess";
+#my $text1="lucan.10lines.tess";
+
+# most recently used values:
+# $text2="/Users/rao3/oldtesserae/svn/tesserae/trunk/line_numbered_texts/vergil.aeneid.tess";
+# $text1="lucan.pharsalia.book1.tess";
+
+# $text1/$text[0] and $text2/$text[1] have no further use in this script
+my $text1 = $text[0];
+my $text2 = $text[1];
+
+my @parallels;
+my $total_num_matches = 0;
+
+$Storable::interwork_56_64bit = 1;
+
+# check if we can open file $text[2] for reading
+open (TEST, "<", "$text[2]") || die "can't open file $text[2]: $!\n";
+close(TEST);
+# read $text[2] and store the result in @parallels. $text[2] can be created by 'preprocess.pl'.
+print STDERR "parallels are read from file ".$text[2]."\n";
+@parallels = @{retrieve($text[2])};
+#	die Dumper(@parallels);
+
+
+my $output = "csv";
+if ($output eq "csv") {
+	open (CSV, ">$session_path/tesresults-$session.csv")
+	        || die "can't open $session_path/tesresults-$session.csv: $!";
+} 
+# print XML "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+print XML "<?xml-stylesheet type=\"text/xsl\" href=\"http://tesserae.caset.buffalo.edu/testing/alpha-keyword.xsl\"?>\n";
+print XML "<results source=\"$source\" target=\"$target\" sessionID=\"".$session."\">\n";
+print XML "<comments>$comments</comments>\n";
+print XML "<commonwords>$commonwords</commonwords>\n";
+
+ 
+# at this point, array @parallels contains all parallel sentences between two texts that have at least x words in common. 
+# print scalar @parallels." parallels found\n";
+my $matches = 0;
+
+foreach (@parallels) {
+	my $score = 0;
+	my $parallel = $_;
+	bless ($parallel, "Parallel");
+	my @words = $parallel->stems_in_common();
+#	my @words;
+##	print "\n";
+#	foreach (@stems) {
+#		if (is_common_stem($_) == 0) {
+#			push(@words, $_);
+#			print "Adding stem $_\n";
+#		} else {
+#			print "Ignoring stem $_\n";
+#		}
+#	}
+	if ($#words < 2) {
+		#print "Skipping because # of stems is ".$#words."\n";
+	} else {
+	
+	my @words_in_phrase_a = @{$parallel->phrase_a()->wordarray()};
+	for (@words_in_phrase_a) {
+		my $word = $_;
+		bless($word, "Word");
+		$word->matched(0);
+	}
+	my @words_in_phrase_b = @{$parallel->phrase_b()->wordarray()};
+	for (@words_in_phrase_b) {
+		my $word = $_;
+		bless($word, "Word");
+		$word->matched(0);
+	}
+	my @locations_a;
+	my @locations_b;
+	my $distance_a = 0;
+	my $distance_b = 0;
+	my $debug = 0;
+	# score negative if the two words are the same. 
+	if ($words[0] eq $words[1]) {
+		$score -= 11;
+	}
+	foreach (@words) {
+		my $parallel_word = $_;
+		my $counter_this = 0;
+		if ($debug == 1) {print "matching word ".$parallel_word." in A\n";}
+		foreach (@words_in_phrase_a) {
+			my $word = $_;
+			bless($word, "Word");
+			$counter_this++;
+			if ($debug == 1) {print "matching word ".$parallel_word." in A with \n";}
+			my @stemarray = @{$word->stemarray()};
+			foreach (@stemarray) {
+#				print Dumper ($_);
+#				 $printword = $_;
+#				print "  $printword \n";
+				if ($_ eq $parallel_word) {
+					if ($word->is_common_word() == 1) {
+						$word->matched(1);
+					} else {
+						$word->matched(2);
+					}
+					if ($debug == 1) {print "marking matched word: ".$word->word()." (stem: ".$_.") in verse ".$parallel->phrase_a()->verseno()."\n";}					
+					last;
+				}
+			}
+			if ($parallel_word eq $word->word()) {
+				push @locations_a, $counter_this;
+				if ($word->is_common_word() == 1) {
+					$word->matched(1);
+				} else {
+					$word->matched(2);
+				}
+				
+				last;
+			} 
+		}
+		$counter_this = 0;
+		if ($debug == 1) { 		print "matching word ".$parallel_word." in B\n";}
+		foreach (@words_in_phrase_b) {
+			my $word = $_;
+			bless($word, "Word");
+			$counter_this++;
+			my @stemarray = @{$word->stemarray()};
+			foreach (@stemarray) {
+				if ($_ eq $parallel_word) {
+					if ($word->is_common_word() == 1) {
+						$word->matched(1);
+						} else {
+							$word->matched(2);
+						}
+						last;
+					}
+				}
+				if ($parallel_word eq $word->word()) {
+					if ($word->is_common_word() == 1) {
+						$word->matched(1);
+						} else {
+							$word->matched(2);
+						}
+						push @locations_b, $counter_this;
+						last;
+					} 
+				}
+			}
+			for (my $i=1; $i < scalar(@locations_a); $i++) {
+				$distance_a += $locations_a[$i] - $locations_a[$i-1];
+			}
+			for (my $i=1; $i < scalar(@locations_b); $i++) {
+				$distance_b += $locations_b[$i] - $locations_b[$i-1];
+			}
+
+
+			if ($distance_a == $distance_b) {
+				$score += 10;
+			} 
+			else {
+
+				if (abs($distance_a - $distance_b) <= (2 * scalar @words)) {
+					$score += 5;
+				}
+			}
+			if ($parallel->phrase_a()->num_matching_words() > 1 && $parallel->phrase_b()->num_matching_words() > 1) {
+				if (!($ignore_low eq 'yes' && $score < 4)) {
+					my $textoutput  = 0;
+					if ($textoutput == 1) {
+						if ($score >= 0 || $verbose >= 2) {
+							if ($score >= 5 || $verbose >= 1) {
+
+								print "Match $matches\n";
+								print "Score: $score\n";
+
+								print "Words in common: ";
+								foreach (@words) {
+									print $_.", ";
+								}
+								print "\n";
+								#	print "  B: ".$parallel->phrase_a()->phrase()."\n";
+								print "parallel->phrase_a()->short_print()\n";
+								$parallel->phrase_a()->short_print();
+								print "\n";
+								print "parallel->phrase_b()->short_print()\n";
+								$parallel->phrase_b()->short_print();
+								print "\n";
+								#	print "  A: ".$parallel->phrase_b()->phrase()."\n";
+								print "\n";
+							}
+							$matches = $matches+1;
+						}
+					} 
+					else 
+					{
+						my $verseno_a = $parallel->phrase_a()->verseno();
+						my $verseno_b = $parallel->phrase_b()->verseno();
+						print STDERR "verseno_a: $verseno_a\n";
+						print STDERR "verseno_b: $verseno_b\n";
+						my $author_a;
+						my $author_b;
+						my $source_a;
+						my $source_b;
+						if ($verseno_a =~ m/^verg. aen./) {
+							$author_a = "vergil. aen. ";
+							$verseno_a =~ s/verg. aen. //;
+							$source_a = "vergil.aeneid";
+
+						} 
+						else 
+						{
+							$author_a = "luc. ";
+							$verseno_a =~ s/luc. //;
+							$source_a = "lucan.pharsalia";
+						}
+						if ($verseno_b =~ m/^verg. aen./) {
+							$author_b = "vergil. aen. ";
+							$verseno_b =~ s/verg. aen. //;
+							$source_b = "vergil.aeneid";
+
+						} 
+						else 
+						{
+							$author_b = "luc. ";
+							$verseno_b =~ s/luc. //;
+							$source_b = "lucan.pharsalia";
+
+						}
+						print XML "<tessdata keypair=\"";
+						foreach (@words) {
+							print XML escaped_string($_).", ";
+						}
+						print XML "score: $score";
+						print XML "\">\n";
+						print XML "<phrase text=\"source\" work=\"$author_a\" ";
+						print XML "line=\"".$verseno_a."\" ";
+						print XML "link=\"/cgi-bin/context.pl?source=$source_a;line=$verseno_a\">".$parallel->phrase_a()->short_print2()."</phrase>\n";
+
+						print XML "<phrase text=\"target\" work=\"$author_b\" ";
+						print XML "line=\"".$verseno_b."\" ";
+						print XML "link=\"/cgi-bin/context.pl?source=$source_b;line=$verseno_b\">".$parallel->phrase_b()->short_print2()."</phrase>\n";
+						print XML "</tessdata>\n";
+						print CSV "\"$author_a\",";
+						print CSV "\"$verseno_a\",";
+						print CSV "\"$author_b\",";
+						print CSV "\"$verseno_b\",";
+						print CSV "\"".$parallel->phrase_a()->short_print3()."\",";
+						print CSV "\"".$parallel->phrase_b()->short_print3()."\",";
+						print CSV "\"".$score."\",";
+						print CSV "\"";
+						foreach (@words) {
+							# remove HTML formatting
+							my $cleanword = $_;
+							$cleanword =~ s/<(.*?)>//gi;
+							print CSV escaped_string($cleanword).", ";
+						}
+						print CSV "\"";
+						print CSV "\n";
+					}
+				}
+			}
+		}
+	}
+	print header;
+	print <<END;
+
+	<html>
+	<head>
+	<title>Tesserae results</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css" />
+
+END
+
+	print XML "</results>\n";
+	my $url="/cgi-bin/get-data.pl?session=$session;sort=target";
+	print <<END;
+	<meta http-equiv="Refresh" content="0; url='$url'">
+	</head>
+	<body>
+	<p>
+	Please wait for your results until the page loads completely.  
+	<br/>
+	If you are not redirected automatically, 
+	<a href="/cgi-bin/get-data.pl?session=$session;sort=target">click here</a>.
+	</p>
+	</body>
+</html>
+END
+
+#system("date");
+
+die;
+
+=head2 function: C<compare>
+
+=cut
+sub compare {
+	my @ws1 = @{$_[0]};
+	my @ws2 = @{$_[1]}; 
+	if (@ws1 != @ws2) {
+		my $num_matches = 0;
+#		print "comparing ";
+		foreach (@ws1) {
+			my $word1 = $_;
+			my $matched = 0;
+			foreach (@ws2) {
+				if ($word1->word() eq $_->word()) {
+					$matched ++;
+				}
+			} 
+			if ($matched > 0) {
+				$num_matches ++;
+			}
+#			print $_->word()." ";
+		}
+		if ($num_matches == scalar(@ws1) || $num_matches == scalar(@ws2)) {
+			$total_num_matches++;
+			print "wordsets ";
+			print_wordset(\@ws1);
+			print " and ";
+		 	print_wordset(\@ws2);
+			print " match; total: ".$total_num_matches."\n";
+		} else {
+		#	print "wordsets ";
+		#	print_wordset(\@ws1);
+		#	print " and ";
+		 #	print_wordset(\@ws2);
+		#	print " don't match\n";
+		}
+	}
+
+}
+
+=head2 function: C<print_wordset>
+
+=cut
+sub print_wordset {
+	my @ws = @{$_[0]};
+	foreach (@ws) {
+		print $_->word()." ";
+	}
+}
+
+
+=head2 function: C<compare_phrase>
+
+=cut
+sub compare_phrase {
+	# compares two 'phrases', ie. arrays of variables of type 'Word'. Returns the number of words that match as a score (0 = no matches)
+	my @phrase1 = @{$_[0]};
+	my @phrase2 = @{$_[1]};
+	my $score = 0;
+	
+	foreach (@phrase1) {
+		my $word1 = $_;
+		foreach (@phrase2) {
+			my $word2 = $_;
+		#	print "comparing ".$word1->word()." -- ".$word2->word()."\n";
+			if ($word1->word() eq $word2->word()) {
+				$score++;
+			}
+		}
+	}
+	return $score;;
+}
+
+=head2 function: C<compare_phrase_detail>
+
+=cut
+sub compare_phrase_detail {
+	my @phrase1 = @{$_[0]};
+	my @phrase2 = @{$_[1]};
+	my $score = 0;
+	
+	foreach (@phrase1) {
+		my $word1 = $_;
+		foreach (@phrase2) {
+			my $word2 = $_;
+		#	print "comparing ".$word1->word()." -- ".$word2->word()."\n";
+			if ($word1->word() eq $word2->word()) {
+				if (defined($word1->next) && defined($word2->next) && $word1->next->word() eq $word2->next->word()) {
+					$score++;
+						if (defined($word1->next->next) && defined($word2->next->next) && $word1->next->next->word() eq $word2->next->next->word()) {
+							$score++;
+						}
+				}
+			
+			}
+		}
+	}
+	return $score;
+}
+
+=head2 function: C<words_in_phrase>
+
+=cut 
+sub words_in_phrase {
+	my @ws = @{$_[0]};
+	my $phraseno = ${$_[1]};
+	my @new_ws;
+	my @stopwords = ("in", "et", "si", "quis");
+	my $include_stopwords = 0;
+	foreach (@ws) {
+		my $word = $_;
+		if ($_->phraseno() == $phraseno) {
+			if ($include_stopwords == 1) {
+				push @new_ws, $word;
+			} else {
+				my $is_stopword = 0;
+				foreach (@stopwords) {
+					if ($_ eq $word) {
+						$is_stopword = 1;
+						print "stopword found: ".$_."\n";
+					}
+				}
+				if ($is_stopword == 0) {
+					push @new_ws, $word;
+				}
+			}
+		}
+	}
+	return @new_ws;
+}
+
+=head2 function: C<escaped_string>
+
+=cut
+sub escaped_string {
+	my $string = $_[0];
+	$string =~ s/#/./;
+	return $string;
+}
+ 
+=head2 function: C<read_arguments>
+
+Reads cmd-line arguments into global variables. Any argument that is not preceded by '-' is copied into (global) array C<$text>. 
+
+=cut
+
+sub read_arguments {
+	my $numberoftexts = 0;
+	my $numberofflags = 0;
+	if ($#ARGV+1 < 2) {
+		print $usage;
+		exit;
+	}
+	for (my $i=0; $i<$#ARGV+1; $i++) {
+		if (!(substr($ARGV[$i], 0, 1) eq '-')) {
+			$text[$numberoftexts] = $ARGV[$i];
+			$numberoftexts++;
+		}
+	}
+	if ($numberoftexts != 3) {
+		print Dumper @text;
+		print "Invalid number of texts specified on the command line ($numberoftexts), should be 3\n";
+		print $usage;
+		exit;
+	}
+	# print STDERR "file 1: ".$text[0]."\nfile 2: ".$text[1]."\noutput: ".$text[2]."\n\n";
+}
+
+=head2 function: C<retrieve_cache>
+
+Opens the cache specified in C<$cachefile> for reading. The cache is a hash; this function reads the keys of the hash 
+into array C<@mykeys>.
+
+=cut
+
+sub retrieve_cache {
+	# open cache for reading
+#	$Storable::interwork_56_64bit = 0;
+	print "opening cache in file ".Files::cache_filename()."\n";
+	%cache = %{retrieve(Files::cache_filename())};
+	my @mykeys =keys %cache;
+	# print "cache contains ".$#mykeys." stems\n";
+}
+
+=head2 function: C<cache_lookup>
+
+argument: C<$word>
+
+if C<$word> exists in the cache, will return an array of stems. 
+
+2010-11-25: This function seems obsolete / moved to the other files. commented out. 
+
+=cut
+
+
+#sub cache_lookup {
+#	my $word = shift;
+#	if (exists $cache{$word}) {
+#		my $stems = $cache{$word};
+#		return @$stems;
+#	}
+#	return ();
+#}
+
+
+

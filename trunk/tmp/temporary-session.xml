@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="http://tesserae.caset.buffalo.edu/testing/alpha-keyword.xsl"?>
+
+<results source="catullus.carmina" target="horace.odes" sessionID="temporary-session">
+   <tessdata keypair="abstulit, mors">
+      <phrase text="source" work="catull. " line="68.19" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=68.19">mors abstulit</phrase>
+      <phrase text="target" work="hor. carm. " line="2.16.29" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=2.16.29">abstulit clarum cita mors</phrase>
+   </tessdata>
+   <tessdata keypair="aequora, horrida">
+      <phrase text="source" work="catull. " line="64.206" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=64.206">horrida contremuerunt aequora</phrase>
+      <phrase text="target" work="hor. carm. " line="3.24.40" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.24.40">horrida callidi uincunt aequora</phrase>
+   </tessdata>
+   <tessdata keypair="aequora, trans">
+      <phrase text="source" work="catull. " line="11.8" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=11.8">aequora nilus sive trans</phrase>
+      <phrase text="target" work="hor. carm. " line="4.5.10" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=4.5.10">trans maris aequora</phrase>
+   </tessdata>
+   <tessdata keypair="aera, pennis">
+      <phrase text="source" work="catull. " line="66.53" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=66.53">aera pennis</phrase>
+      <phrase text="target" work="hor. carm. " line="1.3.34" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.3.34">aera pennis</phrase>
+   </tessdata>
+   <tessdata keypair="age, domo">
+      <phrase text="source" work="catull. " line="63.92" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=63.92">domo alios age</phrase>
+      <phrase text="source" work="catull. " line="63.92" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=63.92">domo alios age incitatos alios age</phrase>
+      <phrase text="target" work="hor. carm. " line="2.11.21" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=2.11.21">domo lyden eburna dic age</phrase>
+   </tessdata>
+   <tessdata keypair="amicis, patria">
+      <phrase text="source" work="catull. " line="63.59" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=63.59">patria bonis amicis</phrase>
+      <phrase text="target" work="hor. carm. " line="4.9.51" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=4.9.51">amicis aut patria</phrase>
+   </tessdata>
+   <tessdata keypair="amores, seu">
+      <phrase text="source" work="catull. " line="13.9" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=13.9">amores seu</phrase>
+      <phrase text="target" work="hor. carm. " line="3.21.3" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.21.3">amores seu</phrase>
+      <phrase text="target" work="hor. carm. " line="3.21.3" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.21.3">seu rixam et insanos amores</phrase>
+   </tessdata>
+   <tessdata keypair="bella, pugnata">
+      <phrase text="source" work="catull. " line="37.13" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=37.13">bella pugnata</phrase>
+      <phrase text="target" work="hor. carm. " line="3.19.4" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.19.4">pugnata sacro bella</phrase>
+   </tessdata>
+   <tessdata keypair="bene, deus">
+      <phrase text="source" work="catull. " line="40.3" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=40.3">deus tibi non bene</phrase>
+      <phrase text="target" work="hor. carm. " line="3.16.43" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.16.43">bene est cui deus</phrase>
+   </tessdata>
+   <tessdata keypair="caesaris, magni">
+      <phrase text="source" work="catull. " line="11.10" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=11.10">caesaris visens monimenta magni</phrase>
+      <phrase text="target" work="hor. carm. " line="1.12.50" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.12.50">magni caesaris</phrase>
+   </tessdata>
+   <tessdata keypair="candido, pede">
+      <phrase text="source" work="catull. " line="61.108" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=61.108">candido pede</phrase>
+      <phrase text="target" work="hor. carm. " line="4.1.26" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=4.1.26">pede candido</phrase>
+   </tessdata>
+   <tessdata keypair="cape, laetus">
+      <phrase text="source" work="catull. " line="61.8" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=61.8">cape laetus</phrase>
+      <phrase text="target" work="hor. carm. " line="3.8.27" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.8.27">cape laetus</phrase>
+   </tessdata>
+   <tessdata keypair="certa, imperio">
+      <phrase text="source" work="catull. " line="68.113" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=68.113">certa stymphalia monstra sagitta perculit imperio</phrase>
+      <phrase text="target" work="hor. carm. " line="3.16.30" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.16.30">certa fides meae fulgentem imperio</phrase>
+   </tessdata>
+   <tessdata keypair="certa, sagitta">
+      <phrase text="source" work="catull. " line="68.113" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=68.113">certa stymphalia monstra sagitta</phrase>
+      <phrase text="target" work="hor. carm. " line="1.12.23" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.12.23">certa phoebe sagitta</phrase>
+   </tessdata>
+   <tessdata keypair="di, mala">
+      <phrase text="source" work="catull. " line="14.6" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=14.6">di mala</phrase>
+      <phrase text="source" work="catull. " line="28.14" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=28.14">mala multa di</phrase>
+      <phrase text="target" work="hor. carm. " line="3.6.7" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.6.7">di multa neglecti dederunt hesperiae mala</phrase>
+   </tessdata>
+   <tessdata keypair="dianam, pueri">
+      <phrase text="source" work="catull. " line="34.3" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=34.3">dianam pueri</phrase>
+      <phrase text="source" work="catull. " line="34.2" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=34.2">pueri integri dianam</phrase>
+      <phrase text="target" work="hor. carm. " line="1.21.1" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.21.1">dianam tenerae dicite uirgines intonsum pueri</phrase>
+   </tessdata>
+   <tessdata keypair="die, dies">
+      <phrase text="source" work="catull. " line="61.111" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=61.111">die gaudeat sed abit dies</phrase>
+      <phrase text="target" work="hor. carm. " line="2.18.15" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=2.18.15">dies die</phrase>
+   </tessdata>
+   <tessdata keypair="die, tuum">
+      <phrase text="source" work="catull. " line="14.13" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=14.13">tuum catullum misti continuo ut die</phrase>
+      <phrase text="target" work="hor. carm. " line="4.1.25" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=4.1.25">die numen cum teneris uirginibus tuum</phrase>
+   </tessdata>
+   <tessdata keypair="dies, venus">
+      <phrase text="source" work="catull. " line="61.191" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=61.191">venus neglegit sed abit dies</phrase>
+      <phrase text="target" work="hor. carm. " line="4.13.16" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=4.13.16">dies quo fugit venus</phrase>
+   </tessdata>
+   <tessdata keypair="domus, simul">
+      <phrase text="source" work="catull. " line="68.155" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=68.155">simul et tua vita et domus</phrase>
+      <phrase text="target" work="hor. carm. " line="1.4.17" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.4.17">domus exilis plutonia quo simul</phrase>
+   </tessdata>
+   <tessdata keypair="dulce, ridentem">
+      <phrase text="source" work="catull. " line="51.5" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=51.5">dulce ridentem</phrase>
+      <phrase text="target" work="hor. carm. " line="1.22.23" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.22.23">dulce ridentem</phrase>
+      <phrase text="target" work="hor. carm. " line="1.22.23" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.22.23">ridentem lalagen amabo dulce</phrase>
+   </tessdata>
+   <tessdata keypair="dulcis, mei">
+      <phrase text="source" work="catull. " line="32.1" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=32.1">dulcis ipsithilla meae deliciae mei</phrase>
+      <phrase text="target" work="hor. carm. " line="1.26.9" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.26.9">dulcis nil sine te mei</phrase>
+   </tessdata>
+   <tessdata keypair="dulcis, nil">
+      <phrase text="source" work="catull. " line="30.2" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=30.2">nil miseret dure tui dulcis</phrase>
+      <phrase text="target" work="hor. carm. " line="1.26.9" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.26.9">dulcis nil</phrase>
+   </tessdata>
+   <tessdata keypair="dum, io">
+      <phrase text="source" work="catull. " line="61.152" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=61.152">io o hymen hymenaee usque dum</phrase>
+      <phrase text="target" work="hor. carm. " line="4.2.49" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=4.2.49">dum procedis io</phrase>
+   </tessdata>
+   <tessdata keypair="dum, licet">
+      <phrase text="source" work="catull. " line="21.12" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=21.12">dum licet</phrase>
+      <phrase text="source" work="catull. " line="55.21" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=55.21">licet obseres palatum dum</phrase>
+      <phrase text="target" work="hor. carm. " line="2.11.16" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=2.11.16">dum licet</phrase>
+      <phrase text="target" work="hor. carm. " line="4.12.26" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=4.12.26">dum licet</phrase>
+   </tessdata>
+   <tessdata keypair="falerni, puer">
+      <phrase text="source" work="catull. " line="27.1" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=27.1">puer falerni</phrase>
+      <phrase text="target" work="hor. carm. " line="2.11.18" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=2.11.18">puer ocius restinguet ardentis falerni</phrase>
+   </tessdata>
+   <tessdata keypair="felix, sis">
+      <phrase text="source" work="catull. " line="100.8" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=100.8">sis felix</phrase>
+      <phrase text="source" work="catull. " line="100.8" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=100.8">felix caeli sis</phrase>
+      <phrase text="target" work="hor. carm. " line="3.27.13" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.27.13">sis licet felix</phrase>
+   </tessdata>
+   <tessdata keypair="ferre, iugum">
+      <phrase text="source" work="catull. " line="68.118" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=68.118">ferre iugum</phrase>
+      <phrase text="target" work="hor. carm. " line="1.35.28" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.35.28">ferre iugum</phrase>
+      <phrase text="target" work="hor. carm. " line="2.5.1" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=2.5.1">ferre iugum</phrase>
+   </tessdata>
+   <tessdata keypair="fertur, sub">
+      <phrase text="source" work="catull. " line="69.5" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=69.5">fertur valle sub</phrase>
+      <phrase text="target" work="hor. carm. " line="3.20.12" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.20.12">sub pede palmam fertur</phrase>
+   </tessdata>
+   <tessdata keypair="floribus, tempora">
+      <phrase text="source" work="catull. " line="61.6" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=61.6">tempora floribus</phrase>
+      <phrase text="target" work="hor. carm. " line="4.1.32" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=4.1.32">tempora floribus</phrase>
+   </tessdata>
+   <tessdata keypair="genus, omne">
+      <phrase text="source" work="catull. " line="66.48" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=66.48">omne genus</phrase>
+      <phrase text="source" work="catull. " line="114.3" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=114.3">omne genus</phrase>
+      <phrase text="target" work="hor. carm. " line="3.17.4" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.17.4">genus omne</phrase>
+   </tessdata>
+   <tessdata keypair="genus, sedes">
+      <phrase text="source" work="catull. " line="64.230" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=64.230">genus ac sedes</phrase>
+      <phrase text="target" work="hor. carm. " line="1.2.9" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.2.9">genus haesit ulmo nota quae sedes</phrase>
+   </tessdata>
+   <tessdata keypair="huc, illuc">
+      <phrase text="source" work="catull. " line="3.9" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.9">huc modo illuc</phrase>
+      <phrase text="source" work="catull. " line="15.7" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=15.7">huc modo illuc</phrase>
+      <phrase text="target" work="hor. carm. " line="4.11.9" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=4.11.9">huc et illuc</phrase>
+   </tessdata>
+   <tessdata keypair="ignis, pater">
+      <phrase text="source" work="catull. " line="23.2" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=23.2">ignis verum est et pater</phrase>
+      <phrase text="target" work="hor. carm. " line="1.12.47" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.12.47">ignis luna minores gentis humanae pater</phrase>
+   </tessdata>
+   <tessdata keypair="impia, nomen">
+      <phrase text="source" work="catull. " line="68.122" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=68.122">nomen testatas intulit in tabulas impia</phrase>
+      <phrase text="target" work="hor. carm. " line="3.1.15" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.1.15">nomen destrictus ensis cui super impia</phrase>
+   </tessdata>
+   <tessdata keypair="iniecta, terra">
+      <phrase text="source" work="catull. " line="64.154" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=64.154">iniecta tumulabor mortua terra</phrase>
+      <phrase text="target" work="hor. carm. " line="3.4.73" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.4.73">iniecta monstris terra</phrase>
+   </tessdata>
+   <tessdata keypair="licet, sis">
+      <phrase text="source" work="catull. " line="55.21" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=55.21">licet obseres palatum dum veri sis</phrase>
+      <phrase text="target" work="hor. carm. " line="3.27.13" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.27.13">sis licet</phrase>
+   </tessdata>
+   <tessdata keypair="mare, sub">
+      <phrase text="source" work="catull. " line="64.155" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=64.155">sub rupe leaena quod mare</phrase>
+      <phrase text="target" work="hor. carm. " line="1.26.2" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.26.2">mare creticum portare uentis quis sub</phrase>
+   </tessdata>
+   <tessdata keypair="mare, usque">
+      <phrase text="source" work="catull. " line="115.6" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=115.6">usque ad hyperboreos et mare</phrase>
+      <phrase text="target" work="hor. carm. " line="2.9.2" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=2.9.2">mare caspium uexant inaequales procellae usque</phrase>
+   </tessdata>
+   <tessdata keypair="mei, pars">
+      <phrase text="source" work="catull. " line="63.69" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=63.69">mei pars</phrase>
+      <phrase text="target" work="hor. carm. " line="3.30.6" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.30.6">pars mei</phrase>
+   </tessdata>
+   <tessdata keypair="mens, pectore">
+      <phrase text="source" work="catull. " line="66.24" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=66.24">pectore sollicitae sensibus ereptis mens</phrase>
+      <phrase text="target" work="hor. carm. " line="2.19.5" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=2.19.5">mens trepidat metu plenoque bacchi pectore</phrase>
+   </tessdata>
+   <tessdata keypair="nomine, quocumque">
+      <phrase text="source" work="catull. " line="34.21" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=34.21">quocumque tibi placet sancta nomine</phrase>
+      <phrase text="target" work="hor. carm. " line="3.21.5" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.21.5">quocumque lectum nomine</phrase>
+   </tessdata>
+   <tessdata keypair="nox, semel">
+      <phrase text="source" work="catull. " line="5.5" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=5.5">semel occidit brevis lux nox</phrase>
+      <phrase text="target" work="hor. carm. " line="1.28.15" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.28.15">nox et calcanda semel</phrase>
+   </tessdata>
+   <tessdata keypair="ore, purpureo">
+      <phrase text="source" work="catull. " line="45.12" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=45.12">purpureo ore</phrase>
+      <phrase text="target" work="hor. carm. " line="3.3.12" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.3.12">purpureo bibet ore</phrase>
+   </tessdata>
+   <tessdata keypair="parthos, seu">
+      <phrase text="source" work="catull. " line="11.6" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=11.6">seu sacas sagittiferosve parthos</phrase>
+      <phrase text="target" work="hor. carm. " line="1.12.53" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.12.53">seu parthos</phrase>
+   </tessdata>
+   <tessdata keypair="puellae, pueri">
+      <phrase text="source" work="catull. " line="34.2" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=34.2">puellae et pueri</phrase>
+      <phrase text="source" work="catull. " line="62.42" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=62.42">pueri multae optavere puellae</phrase>
+      <phrase text="source" work="catull. " line="62.44" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=62.44">pueri nullae optavere puellae</phrase>
+      <phrase text="source" work="catull. " line="34.2" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=34.2">puellae et pueri integri dianam pueri</phrase>
+      <phrase text="target" work="hor. carm. " line="3.14.10" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.14.10">pueri et puellae</phrase>
+   </tessdata>
+   <tessdata keypair="seu, seu">
+      <phrase text="source" work="catull. " line="44.1" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=44.1">seu sabine seu</phrase>
+      <phrase text="target" work="hor. carm. " line="2.17.17" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=2.17.17">seu libra seu</phrase>
+      <phrase text="target" work="hor. carm. " line="1.11.4" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.11.4">seu pluris hiemes seu</phrase>
+      <phrase text="target" work="hor. carm. " line="3.4.23" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.4.23">seu tibur supinum seu</phrase>
+      <phrase text="target" work="hor. carm. " line="3.6.30" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.6.30">seu uocat institor seu</phrase>
+      <phrase text="target" work="hor. carm. " line="3.4.22" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.4.22">seu mihi frigidum praeneste seu</phrase>
+      <phrase text="target" work="hor. carm. " line="3.24.57" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.24.57">seu graeco iubeas trocho seu</phrase>
+      <phrase text="target" work="hor. carm. " line="2.3.5" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=2.3.5">seu maestus omni tempore uixeris seu</phrase>
+      <phrase text="target" work="hor. carm. " line="3.4.3" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.4.3">seu uoce nunc mauis acuta seu</phrase>
+      <phrase text="target" work="hor. carm. " line="3.21.3" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=3.21.3">seu rixam et insanos amores seu</phrase>
+   </tessdata>
+   <tessdata keypair="solis, sub">
+      <phrase text="source" work="catull. " line="64.272" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=64.272">sub limina solis</phrase>
+      <phrase text="target" work="hor. carm. " line="1.22.21" link="http://tesserae.caset.buffalo.edu/context.pl?source=catullus.carmina;line=1.22.21">sub curru nimium propinqui solis</phrase>
+   </tessdata>
+</results>
