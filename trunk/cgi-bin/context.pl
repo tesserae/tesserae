@@ -1,6 +1,6 @@
 #! /usr/bin/perl
 
-use lib '/var/www/tesserae/perl/';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;
@@ -45,7 +45,7 @@ END
 
 my $pre_ref;
 
-my $file = $fs_text . $source . '.tess';
+my $file = "$fs_text/$source.tess";
 
 my $context = `grep -C4 \"<$abbr{$source}$line>\" $file`;
 

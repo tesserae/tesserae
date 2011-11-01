@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use lib '/var/www/tesserae/perl/';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 use TessSystemVars qw(uniq intersection);
 
@@ -22,7 +22,7 @@ for my $file_in (@ARGV) {		# files to parse are cmd line arguments
    $short_name =~ s/^.*\///;		# remove path
    $short_name =~ s/\.tess//;		# and extension
 
-   my $file_out = $fs_data . 'ana/' . $short_name;
+   my $file_out = "$fs_data/ana/$short_name";
 
    print STDERR 'getting ' . $file_in . '...';
 
@@ -219,7 +219,7 @@ END
 				
 				my $mark = ($range{$locus[$l]} >= 2 ? "class=\"marked\" " : "");
 				
-				print FH "<span><a href=\"/cgi-bin/ana.session.pl?text=$short_name&word=$word#$locus[$l]\"$mark>$locus[$l]</a></span>\n";
+				print FH "<span><a href=\"$url_cgi/ana.session.pl?text=$short_name&word=$word#$locus[$l]\"$mark>$locus[$l]</a></span>\n";
 			}
 			print FH "</div>\n";
 		}

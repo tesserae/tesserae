@@ -12,7 +12,7 @@
 				</p>
 				
 
-				<form action="<?php echo $url_cgi.'compare_texts.pl'; ?>" method="post" ID="Form1">
+				<form action="<?php echo $url_cgi.'/compare_texts.pl'; ?>" method="post" ID="Form1">
 					<table class="input">
 
 						<tr>
@@ -26,12 +26,12 @@
 						<tr>
 							<td align ="center">
 								<select name="source" ID="source">
-									<?php include "textlist.v2.php"; ?>
+									<?php include $url_html."/textlist.v2.php"; ?>
 								</select>
  							</td>
 							<td align ="center">
 								<select name="target" ID="target">
-									<?php include "textlist.v2.php"; ?>
+									<?php include $url_html."/textlist.v2.php"; ?>
 								</select>
  							</td>
 						</tr>

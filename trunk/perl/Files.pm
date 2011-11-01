@@ -1,7 +1,7 @@
 #uncomment this line to use this as a package
 package Files;
 
-use lib '/var/www/html/chris/perl';
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 #uncomment these lines to run this as a stand-alone perl program.
@@ -44,13 +44,13 @@ Any pair will match, regardless of the order of source vs. target in the config-
 
 =cut
 
-my $config_file = $fs_data . 'v2/tesserae.datafiles.config';
+my $config_file = "$fs_data/v2/tesserae.datafiles.config";
 
 sub config_file {
 	return $config_file;
 }
 sub cache_filename {
-	return $fs_data . 'v2/stem.cache';
+	return "$fs_data/v2/stem.cache";
 }
 
 sub source_label_in_line($) {

@@ -1,6 +1,15 @@
 #!/usr/bin/perl
 
-use lib '/var/www/tesserae/perl/';	# PERL_PATH
+#
+# a new version of prepare.pl
+#
+# I got rid of the statistical analysis--to be implemented as a separate script
+# 
+# I also added semantic tagging using lewis.cache
+#
+# -Chris Forstall, 2011/10/25
+
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;
@@ -9,439 +18,453 @@ use Word;
 use Phrase;
 use Parallel;
 use Data::Dumper;
-use Frontier::Client;
-use Storable;
+use Storable qw(retrieve nstore);
 use Files;
 
+# normal operation requires looking up headwords on the archimedes morphology server
+# to suppress this set the following to true
 
-my $readfromfile = 0;
-my $showprogress = 1;
-my $writecsv = 0;
-my $verbose = 0; # 0 == only 5/10; 1 == 0 - 10; 2 == -1 - 10
+my $no_archimedes = 0;
 
-my $usage = "usage: to prepare a corpus: ./prepare.pl [-r] [-c] <input file> [<output: parsed corpus file>]
-  -r: instead of writing to <output: parsed corpus file>, 
-      use that file for reading a previously generated file
-  -c: create two CSV-files with stems and words statistics (named: 
-      <input file>.words.statistics.csv and <input file>.stems.statistics.csv)\n";
-
-# determine command line arguments
-my @text;
-my $numberoftexts = 0;
-my $numberofflags = 0;
-if ($#ARGV < 0) {
-	print STDERR $usage;
-	exit;
+# to look up headwords you need this module, not standard on my Mac's perl install
+unless ($no_archimedes)
+{
+	use Frontier::Client;
 }
-for (my $i=0; $i<$#ARGV+1; $i++) {
-	if (!(substr($ARGV[$i], 0, 1) eq '-')) {
-		$text[$numberoftexts] = $ARGV[$i];
-		$numberoftexts++;
-	} else {
-		if ($ARGV[$i] eq '-r') {
-			$readfromfile = 1;
-		}
-		if ($ARGV[$i] eq '-c') {
-			$writecsv = 1;
+
+# some more variables
+
+my $usage = "usage: prepare.pl TEXT\n";
+
+my $file_in = shift @ARGV || die $usage;
+
+my $file_out = $file_in;
+
+$file_out =~ s/.+\//${fs_data}v2\/parsed\//;
+$file_out =~ s/(\.tess)?$/\.parsed/;
+
+my $file_stems = Files::cache_filename();
+my $file_lewis = "$fs_data/v2/lewis.cache";
+
+print STDERR "input text: $file_in\nparsed corpus output file: $file_out\n\n";
+
+
+#
+# parse the text into words and phrases
+#
+
+print STDERR "reading text: $file_in\n";
+
+# this will hold all the Phrases
+
+my @phrase_array;
+
+# this will count word forms
+
+my %count;
+
+# open the input text
+
+open (TEXT, $file_in) or die("Can't open file ".$file_in);
+
+# this will hold partial phrases across lines
+
+my $held_text = "";
+
+# this will hold the working phrase
+
+my $phrase;
+
+# examine each line of the input text
+
+while (<TEXT>) 
+{
+	# remove newline	
+
+	chomp;
+
+	# parse a line of text; reads in verse number and the verse. Assumption is that a line looks like:
+	# <001> this is a verse
+
+	my $verseno = $_;
+	my $verse = $_;
+
+	$verseno =~ s/\<(.+)\>(.*)/$1/s;
+	$verse =~ s/\<(.+)\>\s*(.*)/$2/s;
+
+	# if a line begins with spaces or phrase-punct chars, delete them
+
+	$verse =~ s/^[\.\?\!;:\s]+//;
+
+	# skip lines with no locus
+
+	next if ($verseno eq "");
+
+	# if $held_text is null, then the last line ended with a phrase end
+	# 
+	# create a new phrase for this line
+
+	if ($held_text eq "")
+	{
+		$phrase = Phrase->new();
+	}
+
+	# if the current line has a phrase-punct char in it, then add everything
+	# before it to the current phrase, create a new phrase for what remains,
+	# and repeat in case there are still more phrase-puncts in the same line
+
+	while ($verse =~ s/([^\.\?\!;:]+[\.\?\!;:]+)//)
+	{
+
+		# finish the current phrase
+
+		# first, add the complete phrase as a string
+			
+		$phrase->phrase($held_text.$1);
+
+		# then parse the words from this line before the punct.
+
+		add_line(\$phrase, $verseno, $1);	
+
+		# add the finished object to the cumulative array
+
+		push @phrase_array, $phrase;
+
+		# clear the hold-over buffer
+
+		$held_text = "";
+
+		# if the next phrase begins on this line, create it
+
+		if ($verse =~ /[A-Za-z]/)
+		{
+			$phrase = Phrase->new();
 		}
 	}
+
+	# if there's some text left in this line
+
+	if ($verse =~ /[A-Za-z]/)
+	{
+		# save whatever is left to carry over to the next line
+
+		$held_text .= $verse;
 	
+		# and add the remaining words to the current phrase
+	
+		add_line(\$phrase, $verseno, $verse);
+	}
 }
 
-if ($numberoftexts == 1)
-{
-	$text[1] = $text[0];
-	$text[1] =~ s/.+\//${fs_data}v2\/parsed\//;
-	$text[1] =~ s/(\.tess)?$/\.parsed/;
-}
-elsif ($numberoftexts != 2) 
-{
-	print STDERR $usage."\n";
-	exit;
-}
+close TEXT;
 
-if ($readfromfile == 1) {
-	print STDERR "Reading from file ".$text[1]."\n";
-}
+print STDERR scalar(@phrase_array) . " phrases\n";
 
-print STDERR "input file 1: ".$text[0]."\nparsed corpus output file: ".$text[1]."\n\n";
+print STDERR scalar(keys %count) . " unique forms\n";
 
-my $text = $text[0];
-my $output_parsed_file = $text[1];
-my $output_statistics_file = $text[2];
-my $num_arguments = $#ARGV + 1;
+#
+# build stem cache
+#
 
-# open cache for reading
+print STDERR "checking stem cache $file_stems\n";
+
 my %cache = ();
 
-if (-s Files::cache_filename()) 
+if (-s $file_stems) 
 {
-	%cache = %{retrieve(Files::cache_filename())};
+	%cache = %{retrieve($file_stems)};
 }
 
-my @mykeys =keys %cache;
-print STDERR "cache '".Files::cache_filename()."' contains ".$#mykeys." stems\n";
+print STDERR "cache contains " . scalar(keys %cache) . " forms\n\n";
 
-#use CGI qw/:standard/;
+# this array will hold forms to look up on archimedes
 
-# on MAC
-# my $text1="/Users/rao3/oldtesserae/svn/tesserae/trunk/line_numbered_texts/horace.epodes.tess";
-# my $text2="/Users/rao3/oldtesserae/svn/tesserae/trunk/line_numbered_texts/catullus.carmina.tess";
-# my $text2="/Users/rao3/oldtesserae/svn/tesserae/trunk/line_numbered_texts/vergil.aeneid.tess";
-# my $text2 = "vergil.aeneid.book1.tess";
-# my $text1="lucan.pharsalia.book1.tess";
-#my $text2 = "vergil.10lines.tess";
-#my $text1="lucan.10lines.tess";
-my @parallels;
-my $total_num_matches = 0;
-my %words=();
-my %stems=();
+my @archimedes;
 
-my @phrasesarray;
+# these arrays hold keys that return no results
 
-use Storable qw(nstore store_fd nstore_fd freeze thaw dclone);
+my @failed;
+my @failed_twice;
 
-if ($readfromfile == 0) {
-	print STDERR "parsing text: ".$text."\n";
-	@phrasesarray = parse_text($text);
-	my @wordset_array;
-	my $window=3;
-	nstore \@phrasesarray, $output_parsed_file;
-	print STDERR "parsed text, written to file: $output_parsed_file.\n";
-} else {
-	@phrasesarray = @{retrieve($output_parsed_file)};
+# now check the cache for each form in the text
+
+for (sort keys %count)
+{
+	# if it's not in the cache, add it to the list to look up.
+
+	unless (defined $cache{$_} and ${$cache{$_}}[0] ne "")
+	{
+		push @archimedes, $_;
+	}
+}
+
+unless ($no_archimedes)
+{
+
+	print STDERR scalar(@archimedes) . " forms to look up on archimedes.\n";
+
+	# this loop queries the archimedes server for 10 forms at a time
+	#
+	# doing them in batches makes things go faster and requires fewer
+	# calls to their server.
+
+	my $total = scalar(@archimedes);
+	my $progress = 0;
+
+	print STDERR "0% |" . (" "x20) . "| 100%" . "\r0% |";
+
+	while (my @batch = splice(@archimedes, 0, 10))
+	{
+
+		if (($total-scalar(@archimedes))/$total > $progress + .05)
+		{
+			print STDERR ".";
+			$progress += .05;
+		}
 	
-}
-print STDERR "generating statistics...\n";
-foreach (@phrasesarray) {
-	my $phrase = $_;
-	bless($phrase, "Phrase");
-	my @wordarray = @{$phrase->wordarray()};
-	foreach (@wordarray) {
-		my $word = $_;
-		bless($word, "Word");
-#		print "word: ".$word->word()."\n";
-		add_word($word->word);
-		my @stemarray = @{$word->stemarray()};
-		foreach my $stem (@stemarray) {
-			add_stem($stem);
+		# initialize the client
+	
+		my $client = Frontier::Client->new( url => "http://archimedes.mpiwg-berlin.mpg.de:8098/RPC2", debug => 0);
+		
+		# make the call
+	
+		my $res = $client->call('lemma', "-LA", [@batch]);
+		
+		# check the results
+		#
+		# what we get back should be a hash with one key per form we asked for
+		# check each of the forms to make sure it got a result
+
+		for my $w ( @batch )
+		{
+
+			# if there's a key, then enter the value into the cache
+
+			if ( defined $res->{$w} )
+	        	{
+				my $test = $res->{$w};
+
+				$cache{$w} = $test;
+	        	}
+			# otherwise leave the cache value for that key blank
+			else
+			{
+				$cache{$w} = [""];
+				push @failed, $w;
+			}
+		}
+
+		# write the cache with each batch, so that if the program fails
+		# somewhere in a big list, we at least save the earlier results
+
+		nstore \%cache, $file_stems;
+	}
+
+	print STDERR "\n\n";
+
+	print STDERR scalar(@failed) . " forms got no results from archimedes. Checking possible alternate orthography.\n";
+
+	$progress = 0;
+	$total = scalar(@failed);
+	my $old_progress = 0;
+
+	print STDERR "0% |" . (" "x20) . "| 100%" . "\r0% |";
+
+	#
+	# look up failed forms a second time using alternate spelling
+	#
+
+	for my $form (@failed)
+	{
+
+		$progress += 1;
+
+		if ($progress/$total > $old_progress+.05)
+		{
+			print STDERR ".";
+			$old_progress += .05;
+		}
+	
+		my @alt = alt($form);
+
+		for ( @alt )
+		{
+			if (defined($cache{$_}) and ${$cache{$_}}[0] ne "")
+			{
+
+				$cache{$form} = $cache{$_};
+				last;
+			}
+		}
+
+		unless (defined ($cache{$form}) and ${$cache{$form}}[0] ne "")
+		{
+
+			# check archimedes for alternate forms
+
+			# initialize the client
+
+			my $client = Frontier::Client->new( url => "http://archimedes.mpiwg-berlin.mpg.de:8098/RPC2", debug => 0);
+
+			# make the call
+
+			my $res = $client->call('lemma', "-LA", [alt($form)]);
+
+			# check the results
+
+			for ( @alt )
+			{
+                		if (defined($res->{$_}))
+                		{
+					my $test = $res->{$_};
+
+					$cache{$form} = $test;
+					last;
+				}
+			}
+
+			unless (defined ($cache{$form}) and ${$cache{$form}}[0] ne "")
+			{
+				push @failed_twice, $form;
+			}
 		}
 	}
-#	for ()
+
+	print STDERR "\n\n";
+
+	nstore \%cache, $file_stems;
+}
+# if no_archimedes is set, just pass on the forms that weren't in the cache
+else
+{
+	@failed_twice = @archimedes;
 }
 
-my $total_number_of_words = total_number_of_words();
-my $total_number_of_stems = total_number_of_stems();
-my @keys = keys %words;
-my $total_number_of_distinct_words = scalar @keys;
-@keys = keys %stems;
-my $total_number_of_distinct_stems = scalar @keys;
+print STDERR scalar(@failed_twice) . " forms couldn't be stemmed: \n";
 
-print STDERR "Total number of words: ".$total_number_of_words."\n";
-print STDERR "Total number of distinct words: ".$total_number_of_distinct_words."\n";
-print STDERR "Total number of stems: ".$total_number_of_stems."\n";
-print STDERR "Total number of distinct stems: ".scalar @keys."\n";
+print STDERR join(" ", sort @failed_twice) . "\n\n";
 
-if ($writecsv == 1) {
-	my $percent = 0;
-	my $cum_percent = 0;
-	my $rank = 0;
-	my $relative_rank = 0;
-	my $sep = ",";
-	my $filename = $text[0].".words.statistics.csv";
-	open (OUTPUT, ">".$filename);
-	print OUTPUT "rank".$sep."relative rank".$sep."token frequency".$sep."relative token frequency".$sep."cumulative relative token frequency".$sep."token\n";
-	foreach my $key (sort hashValueDescendingNum (keys(%words))) {
-		$rank ++;
-		$relative_rank = 100*($rank/$total_number_of_distinct_words);
-		$percent = 100*($words{$key}/$total_number_of_words);
-		$cum_percent += 100*($words{$key}/$total_number_of_words);
+#
+# go back and reprocess
+#
+#   - convert forms to lowercase
+#   - add stems
+#   - add semantic tags
+#   - add phrase ids
 
-		printf OUTPUT ("%i%s", $rank, $sep);
-		printf OUTPUT ("%.2f%s", $relative_rank, $sep);
-		print OUTPUT "$words{$key}".$sep;
-		printf OUTPUT ("%.2f%s%.2f%s", $percent, $sep, $cum_percent, $sep);
-		print OUTPUT "$key\n";
+my %lewis = %{ retrieve($file_lewis) };
+
+
+print STDERR "processing...\n";
+
+for my $phraseno (0..$#phrase_array)
+{
+	my $phrase = $phrase_array[$phraseno];
+
+	bless $phrase, 'Phrase';
+
+	for my $word (@{$phrase->wordarray()})
+	{
+
+		bless $word, 'Word';
+
+		my $form = $word->word();
+
+		# convert the form to lowercase for exact form matching
+
+		$word->word(lc($form));
+
+		# add stems
+
+		for ( @{$cache{$form}} )
+		{
+			next if ($_ eq "");
+
+			$word->add_stem($_);
+		}
+
+		# add semantic tags
+
+		for ( @{$lewis{lc($form)}} )
+		{
+			$word->add_semantic_tag($_);
+		}
+
+		# note what phrase id it belongs to
+
+		$word->phraseno($phraseno);
+
 	}
-	close(OUTPUT);
-	print STDERR "word statistics written to ".$filename."\n";
-
-
-	$percent = 0;
-	$cum_percent = 0;
-	$rank = 0;
-	$relative_rank = 0;
-	$filename = $text[0].".stems.statistics.csv";
-	
-	open (OUTPUT, ">".$filename);
-	print OUTPUT "rank".$sep."relative rank".$sep."token frequency".$sep."relative token frequency".$sep."cumulative relative token frequency".$sep."stem\n";
-	foreach my $key (sort hashValueDescendingNum_stems (keys(%stems))) {
-		$rank ++;
-		$relative_rank = 100*($rank/$total_number_of_distinct_stems);
-		$percent = 100*($stems{$key}/$total_number_of_stems);
-		$cum_percent += 100*($stems{$key}/$total_number_of_stems);
-
-		printf OUTPUT ("%i%s", $rank, $sep);
-		printf OUTPUT ("%.2f%s", $relative_rank, $sep);
-		print OUTPUT "$stems{$key}".$sep;
-		printf OUTPUT ("%.2f%s%.2f%s", $percent, $sep, $cum_percent, $sep);
-		print OUTPUT "$key\n";
-	}
-	close(OUTPUT);
-	print STDERR "stems statistics written to ".$filename."\n";
-	
 }
 
-
-
-
-# print "Words with their relative frequency: "
-
-
-sub total_number_of_words {
-	my $total_number = 0;
-	for my $key (keys %words) {
-		my $value = $words{$key};
-		$total_number += $value;
-	}
-	return $total_number;
-}
-
-sub total_number_of_stems {
-	my $total_number = 0;
-	for my $key (keys %stems) {
-		my $value = $stems{$key};
-		$total_number += $value;
-	}
-	return $total_number;
-}
-
-# swap arrays if one is larger than the other. Commented out now that parse_text returns phrases
-#if (scalar(@phrases1array) < scalar(@phrases2array)) { #}
-#	my @tempwordarray = @word1array;
-#	@word1array = @word2array;
-#	@word2array = @tempwordarray;
-# }
+print STDERR "writing $file_out\n";
+nstore \@phrase_array, $file_out;
 
 exit;
 
-sub add_word {
-	my $word = shift;
-	if (exists $words{$word}) {
-		# print "Word '".$word."' previously seen\n";
-		$words{$word} = $words{$word}+1;
-	} else {
-		# print "Word '".$word."' is new\n";
-		$words{$word} = 1;
-	}
+sub add_line
+{
+	my $phrase_ref	= shift || die "add_line called without phrase ref";
+	my $verseno	= shift || die "add_line called without verseno";
+	my $string	= shift || die "add_line called without string";
+
+	my $phrase = $$phrase_ref;
+
+	bless $phrase, 'Phrase';
+
+	my @words = split /[^A-Za-z]/, $string;
+
+	for my $form (@words)
+        {
+		next if ($form eq "");
+
+		# add to the count
+
+		$count{$form}++;
+
+                # create a new Word
+
+                my $word = Word->new();
+
+                # for exact-word matching, the superficial form
+
+                $word->word($form);
+
+                # its locus
+
+                $word->verseno($verseno);
+
+                # now add it to the current phrase
+
+                $phrase->add_word($word);
+        }
+
+	return;
 }
 
-sub add_stem {
-	my $stem = shift;
-	if (exists $stems{$stem}) {
-		# print "Word '".$word."' previously seen\n";
-		$stems{$stem} = $stems{$stem}+1;
-	} else {
-		# print "Word '".$word."' is new\n";
-		$stems{$stem} = 1;
-	}
-}
 
-# serialize and store with Storable
-# store \@parallels, $text[2];
+# this sub creates a list of possible alternate forms for words
+# not found in the dictionary.
+#
+# they're returned in order of likely usefulness
 
-=head4 subroutine: parse_text(filename)
+sub alt
+{
+	my $form = shift;
 
-Usage: 
+	# all lowercase
 
-  parse_text(filename).
+	my $lower = lc($form);
 
-This subroutine reads in F<filename> and parses it. It returns a structure of type ..
+	# titlecase
 
-=cut 
+	my $title = $lower;
+	$title =~ s/(.)/uc($1)/e;
 
-sub parse_text {
-	my @word_array;
-	my @phrase_array;
-	my $phraseno = 0;
-	my $next=undef;
-	my $prev=undef;
+	# replace j and v with i and u
 	
-	my $filename = shift;
-	open (TEXT, $filename) or die("Can't open file ".$filename);
-	my $phrase=Phrase->new();
-	while (<TEXT>) {
-		
-		chomp;
-		# parse a line of text; reads in verse number and the verse. Assumption is that a line looks like:
-		# <001> this is a verse
-		my $verseno = $_;
-		my $verse = $_;
-		$verseno =~ s/\<(.+)\>(.*)/$1/s;
-		$verse =~ s/\<(.+)\>\s*(.*)/$2/s;
-		$verse =~ tr/A-Z/a-z/; # convert all to lowercase
-		print STDERR $verseno." - ";
-		# parse the words of the verse into an array
-		my @words_array = split(' ', $verse);
-		# UNCOMMENT FOR DEBUG: 
-		# print "number of words: ".scalar @words_array."\n";
-		# for each word, build a data structure of type Word
-		foreach (@words_array) {
-			my $word = Word->new();
-			# remove punctuation 
-			my $input_word = $_;
-			$input_word =~ tr/,.\"\'?!:;//d;
-			$word->word($input_word);
-			$word->verseno($verseno);
-			$word->phraseno($phraseno);
-			if (defined($prev)) {
-				$word->{PREVIOUS} = $$prev;
-				$$prev->{NEXT} = $word;
-			}
-			$prev = \$word;
-#			print STDERR "finding stems for input word $input_word";
-			my @stems = find_stems($input_word);
-			foreach (@stems) {
-				$word->add_stem($_);
-			}
+	my $semivowel = $lower;
+	$semivowel =~ tr/jv/iu/;
 
-			$phrase->add_word($word);
-			
-			# if punctuation found, increase phraseno.
-			# string for ,.?!"';: is: [,\.\?\!\"\'\;:]
-			# if (m/.*[,\.\?\!\"\'\;:]$/) {
-			# currently only using end-of-line markers (.!?;:)
-			if (m/.*[\.\?\!;:]$/) {
-#			if (m/.*[\.]$/) {
-				push @phrase_array, $phrase;
-#				$phrase->print();
-#				$phrase->short_print();
-				$phraseno++;
-				
-				$phrase = Phrase->new();
-				$prev=undef;;
-			}
-			push @word_array, \$word;
-			# uncomment for debugging:
-#			$word->print();
-	#		print "prev is now: $prev";
-		}
-		print STDERR "\n";
-		#print "\n";
-	#	print "$_\n";
-	}
-
-#	foreach (@word_array) {
-	#	print "verseno: ".$_->verseno()."\n";
-#		if (defined($_->previous())) {
-	#		print " <".$_->previous()->word()."> ";
-#		} else {
-	#		print " <"."null"."> ";
-#		}
-	#	print " ".$_->word()." ";
-#		if (defined($_->next())) {
-	#		print " <".$_->next()->word()."> ";
-#		} else {
-	#		print " <"."null"."> ";
-#		}
-	#	print "\n";
-
-	#	print "word    : ".$_->word()."\n";
-#	}
-	close (TEXT);
-	return @phrase_array;
-	print STDERR "done\n";
-	print STDERR "number of phrases: ".scalar @phrase_array."\n";
-#	print Dumper(@phrase_array);
-	my $prphrase = $phrase_array[3];
-	print STDERR Dumper($prphrase);
-	bless ($prphrase, "Phrase");
-	$prphrase->print();
-	foreach (@phrase_array) {
-		my $phrase = $_;
-		bless ($phrase, "Phrase");
-		$phrase->short_print();
-	}
-	return @word_array;
-
-}
-
-sub find_stems {
-	my $word = shift;
-	my $debug = 0;
-	my @return_stems;
-	@return_stems = cache_lookup($word);
-	if (scalar @return_stems == 0) {
-		my $client = Frontier::Client->new( url => "http://archimedes.mpiwg-berlin.mpg.de:8098/RPC2", debug => $debug);
-#		print STDERR "call Frontier::Client:\n";
-#		print STDERR "word: $word\n";
-		
-		my $res = $client->call('lemma', "-LA",[$word]);
-		# print STDERR "call: lemma, \"-L\",[$word]\nreturn:\n";
-		# print STDERR Dumper $res;
-		if (exists $res->{$word}) {
-			$cache{$word} = $res->{$word};
-			# print "adding word ".$word."\n";
-			nstore \%cache, Files::cache_filename();
-			
-#			for my $key ( keys %cache ) {
-#			        my $value = $cache{$key};
-#			        print "$key => $value\n";
-#			    }
-			my $stems = $res->{$word};
-			my $number_of_stems = scalar @$stems;
-			foreach (@$stems) {
-				push @return_stems, $_;
-			}
-		} 
-		print STDERR "L";
-	} else {
-		print STDERR "C";
-	}
-	return @return_stems;
-}
-
-
-sub cache_lookup {
-	my $word = shift;
-	if (exists $cache{$word}) {
-#		print $word." doesn't exist\n";
-		my $stems = $cache{$word};
-		return @$stems;
-	}
-#	print $word." doesn't exist\n";
-	return ();
-}
-
-#----------------------------------------------------------------------#
-#  FUNCTION:  hashValueAscendingNum                                    #
-#                                                                      #
-#  PURPOSE:   Help sort a hash by the hash 'value', not the 'key'.     #
-#             Values are returned in ascending numeric order (lowest   #
-#             to highest).                                             #
-#----------------------------------------------------------------------#
-
-sub hashValueAscendingNum {
-   $words{$a} <=> $words{$b};
-}
-
-sub hashValueAscendingNum_stems {
-   $stems{$a} <=> $stems{$b};
-}
-
-
-#----------------------------------------------------------------------#
-#  FUNCTION:  hashValueDescendingNum                                   #
-#                                                                      #
-#  PURPOSE:   Help sort a hash by the hash 'value', not the 'key'.     #
-#             Values are returned in descending numeric order          #
-#             (highest to lowest).                                     #
-#----------------------------------------------------------------------#
-
-sub hashValueDescendingNum {
-   $words{$b} <=> $words{$a};
-}
-
-sub hashValueDescendingNum_stems {
-   $stems{$b} <=> $stems{$a};
+	return ($lower, $title, $semivowel);
 }

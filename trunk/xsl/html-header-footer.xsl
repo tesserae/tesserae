@@ -1,9 +1,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-<xsl:variable name="url_cgi" select="'http://tess.tamias/cgi-bin/'"/><!-- URL_CGI -->
-<xsl:variable name="url_css" select="'http://tess.tamias/css/'"/><!-- URL_CSS -->
-<xsl:variable name="url_html" select="'http://tess.tamias/'"/><!-- URL_HTML -->
-<xsl:variable name="url_images" select="'http://tess.tamias/images/'"/><!-- URL_IMAGES -->
-<xsl:variable name="url_text" select="'http://tess.tamias/texts/'"/><!-- URL_TEXT -->
+<xsl:variable name="url_cgi" select="'http://localhost/~chris/tesserae/cgi-bin'"/><!-- URL_CGI -->
+<xsl:variable name="url_css" select="'http://localhost/~chris/tesserae/css'"/><!-- URL_CSS -->
+<xsl:variable name="url_html" select="'http://localhost/~chris/tesserae/html'"/><!-- URL_HTML -->
+<xsl:variable name="url_images" select="'http://localhost/~chris/tesserae/images'"/><!-- URL_IMAGES -->
+<xsl:variable name="url_text" select="'http://localhost/~chris/tesserae/texts'"/><!-- URL_TEXT -->
 	
 	<xsl:template match="/">
 		<html>
@@ -13,10 +13,10 @@
 				<meta name="keywords" content="inter-text, text analysis, classics, university at buffalo, latin"/>
 				<meta name="description" content="Intertext analyzer for Latin texts"/>
 				<link rel="stylesheet" type="text/css">
-					<xsl:attribute name="href"><xsl:value-of select="concat($url_css, 'style.css')"/></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($url_css, '/style.css')"/></xsl:attribute>
                                 </link>
 				<link rel="shortcut icon">
-					<xsl:attribute name="href"><xsl:value-of select="concat($url_images, 'favicon.ico')"/></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($url_images, '/favicon.ico')"/></xsl:attribute>
 				</link>
 	         <title>Tesserae</title>
 	      </head>
@@ -35,42 +35,45 @@
 					<div id="links">
 							<a>
 								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, 'index.php')"/>
+									<xsl:value-of select="concat($url_html, '/index.php')"/>
 								</xsl:attribute>
 								Basic Search
 							</a>
 							| 
 							<a>
 								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, 'v2.php')"/>
+									<xsl:value-of select="concat($url_html, '/v2.php')"/>
 								</xsl:attribute>
 								Version 2
 							</a>
 							|
 							<a>
 								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, 'help.php')"/>
+									<xsl:value-of select="concat($url_html, '/help.php')"/>
 								</xsl:attribute>
 								Instructions
 							</a>
 							|
 							<a>
 								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, 'about.php')"/>
+									<xsl:value-of select="concat($url_html, '/about.php')"/>
 								</xsl:attribute>
 								About Tesserae
 							</a>
 							|
 							<a>
 								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, 'research.php')"/>
+									<xsl:value-of select="concat($url_html, '/research.php')"/>
 								</xsl:attribute>
 								Research
 							</a>
 					</div>
 				
 					<div id="main">
-						<form action="/cgi-bin/get-data.pl" method="post" id="Form1">
+						<form>
+							<xsl:attribute name="action"><xsl:value-of select="concat($url_cgi, '/cgi-bin/get-data.pl')"/></xsl:attribute>
+							<xsl:attribute name="method">post</xsl:attribute>
+						 	<xsl:attribute name="id">Form1</xsl:attribute>
 
 			            <p>
 			               Sort by

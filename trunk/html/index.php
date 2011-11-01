@@ -7,7 +7,7 @@
 					The Tesserae project aims to provide a flexible and robust web interface for exploring intertextual parallels. In a basic search, selected works of Latin authors can be compared. Phrases from the texts which match in at least two of six relatively unfrequent words are grouped together for comparison, with links to their original context.
 				</p>
 
-				<form action="<?php echo $url_cgi.'session.pl'; ?>" method="post" ID="Form1">
+				<form action="<?php echo $url_cgi.'/session.pl'; ?>" method="post" ID="Form1">
 					<table class="input">
 
 						<tr>
@@ -21,12 +21,12 @@
 						<tr>
 							<td align ="center">
 								<select name="source" ID="source">
-									<?php include $fs_html.'textlist.v1.php'; ?>
+									<?php include $fs_html.'/textlist.v1.php'; ?>
 								</select>
 		 					</td>
 							<td align ="center">
 								<select name="target" ID="target">
-									<?php include $fs_html.'textlist.v1.php'; ?>
+									<?php include $fs_html.'/textlist.v1.php'; ?>
 								</select>
 		 					</td>
 						</tr>
@@ -46,7 +46,7 @@
 				</form>
 
 				<p>
-					Click <a href="<?php echo $url_html.'advanced.php'; ?>">here</a> for more options.
+					Click <a href="<?php echo $url_html.'/advanced.php'; ?>">here</a> for more options.
 				</p>
 			</div>
 		

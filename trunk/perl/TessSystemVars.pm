@@ -1,8 +1,6 @@
 use warnings;
 use strict;
 
-use lib '/Users/chris/Desktop/chris/perl';
-
 package TessSystemVars;
 
 require Exporter;
@@ -13,25 +11,25 @@ our @EXPORT = qw(%abbr $fs_html $fs_cgi $fs_perl $fs_xsl $fs_text $fs_tmp $fs_da
 
 our @EXPORT_OK = qw(&uniq &intersection);
 
-my $fs_base	= '/var/www/tesserae/';
+my $fs_base	= '/Users/chris/Sites/tesserae';
 
-our $fs_cgi 	= $fs_base . 'cgi-bin/';
-our $fs_data	= $fs_base . 'data/';
-our $fs_html 	= $fs_base . 'html/';
-our $fs_perl 	= $fs_base . 'perl/';
-our $fs_text	= $fs_base . 'texts/';
-our $fs_tmp  	= $fs_base . 'tmp/';
-our $fs_xsl  	= $fs_base . 'xsl/';
+our $fs_cgi 	= $fs_base . '/cgi-bin';
+our $fs_data	= $fs_base . '/data';
+our $fs_html 	= $fs_base . '/html';
+our $fs_perl 	= $fs_base . '/perl';
+our $fs_text	= $fs_base . '/texts';
+our $fs_tmp  	= $fs_base . '/tmp';
+our $fs_xsl  	= $fs_base . '/xsl';
 
-my $url_base	= 'http://tess.tamias/';
+my $url_base	= 'http://localhost/~chris/tesserae';
 
-our $url_cgi	= $url_base . 'cgi-bin/';
-our $url_css	= $url_base . 'css/';
-our $url_html	= $url_base;
-our $url_images	= $url_base . 'images/';
-our $url_text	= $url_base . 'texts/';
-our $url_tmp	= $url_base . 'tmp/';
-our $url_xsl	= $url_base . 'xsl/';
+our $url_cgi	= $url_base . '/cgi-bin';
+our $url_css	= $url_base . '/css';
+our $url_html	= $url_base . '/html';
+our $url_images	= $url_base . '/images';
+our $url_text	= $url_base . '/texts';
+our $url_tmp	= $url_base . '/tmp';
+our $url_xsl	= $url_base . '/xsl';
 
 
 our %abbr = (

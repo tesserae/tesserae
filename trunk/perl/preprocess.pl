@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use lib '/home/forstall/chris/perl/';
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;
@@ -44,9 +44,9 @@ if ($numberoftexts != 2) {
 
 # print STDERR "file 1: ".$text[0]."\nfile 2: ".$text[1]."\noutput: ".$text[2]."\n\n";
 
-my $parsed_source = $fs_data . 'v2/parsed/' . Files::source_parsed_file($text[0], $text[1]);
-my $parsed_target = $fs_data . 'v2/parsed/' . Files::target_parsed_file($text[0], $text[1]);
-my $preprocessed_file = $fs_data . 'v2/preprocessed/' . Files::preprocessed_file($text[0], $text[1]);
+my $parsed_source = "$fs_data/v2/parsed/" . Files::source_parsed_file($text[0], $text[1]);
+my $parsed_target = "$fs_data/v2/parsed/" . Files::target_parsed_file($text[0], $text[1]);
+my $preprocessed_file = "$fs_data/v2/preprocessed/" . Files::preprocessed_file($text[0], $text[1]);
 my $num_arguments = $#ARGV + 1;
 
 # code for testing Files

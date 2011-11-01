@@ -9,7 +9,7 @@ my @perl_files;
 
 opendir (DH, $fs_cgi);
 
-push @perl_files, (grep {/\.pl/ && -f} map { $fs_cgi.$_ } readdir DH);
+push @perl_files, (grep {/\.pl$/ && -f} map { "$fs_cgi/$_" } readdir DH);
 
 closedir DH;
 
@@ -17,7 +17,7 @@ closedir DH;
 
 opendir (DH, $fs_perl);
 
-push @perl_files, (grep {/\.pl/ && -f} map { $fs_perl.$_ } readdir DH);
+push @perl_files, (grep {/\.pl|m$/ && -f} map { "$fs_perl/$_" } readdir DH);
 
 closedir (DH);
 
@@ -30,14 +30,14 @@ my @xsl_files;
 
 opendir (DH, $fs_xsl);
 
-push @xsl_files, (grep {/\.xsl/ && -f} map { $fs_xsl.$_ } readdir DH);
+push @xsl_files, (grep {/\.xsl/ && -f} map { "$fs_xsl/$_" } readdir DH);
 
 closedir (DH);
 
 #
 # Finally, a list of php files to change
 
-my @php_files = ( $fs_html.'first.php' );
+my @php_files = ( "$fs_html/first.php" );
 
 #
 # make installation specific changes.
@@ -177,5 +177,5 @@ for my $file (@php_files)
 
 }
 
-my $exec_string = 'chmod +x ' . $fs_cgi . '*.pl';
+my $exec_string = 'chmod +x ' . $fs_cgi . '/*.pl';
 system($exec_string);

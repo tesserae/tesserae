@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use lib '/var/www/tesserae/perl/';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 use Storable qw(nstore retrieve);
 use CGI qw/:standard/;
@@ -19,7 +19,7 @@ my $query = new CGI || die "$!";
 my $text 		= $query->param('text');
 my $selected 	= $query->param('word');
 
-my $file_in =  $fs_data . 'ana/' . $text;
+my $file_in =  "$fs_data/ana/$text";
 
 my @locus 	= @{retrieve("$file_in.locus")}	;
 my @word 	= @{retrieve("$file_in.word")}	;
@@ -59,7 +59,7 @@ for my $ana (@ana_keys)
 		{
 			my ($l,$w) = split(/\./, $loc);
 
-			${$word[$l]}[$w] = "<a href=\"/cgi-bin/ana.session.pl?word=$ana\">${$word[$l]}[$w]</a>";
+			${$word[$l]}[$w] = "<a href=\"$url_cgi/ana.session.pl?word=$ana\">${$word[$l]}[$w]</a>";
 		}
 	}
 }

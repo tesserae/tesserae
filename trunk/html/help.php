@@ -58,7 +58,7 @@
 					<a href="http://www.perseus.tufts.edu">Perseus Digital Library</a>. 
 
 					You can find specific information about the sources of the texts
-					<a href="<?php echo $url_html.'sources.php'; ?>">here</a>.  
+					<a href="<?php echo $url_html.'/sources.php'; ?>">here</a>.  
 
 					The texts' original HTML or XML markup was edited to remove extraneous tags and to clarify 
 					line numbering.  Their Latin content was not altered, although editorial additions originally 

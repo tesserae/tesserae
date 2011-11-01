@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use lib '/var/www/tesserae/perl/';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;
@@ -29,7 +29,7 @@ $session =~ s/\.xml//;
 
 $session = sprintf("%08x", hex($session)+1);
 
-my $session_file = $fs_tmp . 'tesresults-' . $session . '.xml';
+my $session_file = "$fs_tmp/tesresults-$session.xml";
 
 open (XML, '>' . $session_file)
 	|| die "can't open " . $session_file . ':' . $!;
@@ -106,9 +106,9 @@ if (Files::determine_input_filenames($source, $target) == 0) {
 
 } else {
 	
-	$text[0] = $fs_text . Files::source_text_file($source, $target);
-	$text[1] = $fs_text . Files::target_text_file($source, $target);
-	$text[2] = $fs_data . 'v2/preprocessed/' . Files::preprocessed_file($source, $target);
+	$text[0] = "$fs_text/" . Files::source_text_file($source, $target);
+	$text[1] = "$fs_text/" . Files::target_text_file($source, $target);
+	$text[2] = "$fs_data/v2/preprocessed/" . Files::preprocessed_file($source, $target);
 	
 	if ($debug >= 1) {		
 		print STDERR "source label: ".$source."\n";
@@ -161,8 +161,8 @@ print XML "<results source=\"$source\" target=\"$target\" sessionID=\"".$session
 print XML "<comments>$comments</comments>\n";
 print XML "<commonwords>$commonwords</commonwords>\n";
 
-my $stylesheet = $url_css . 'style.css';
-my $redirect = $url_cgi . "get-data.pl?session=$session;sort=target";
+my $stylesheet = "$url_css/style.css";
+my $redirect = "$url_cgi/get-data.pl?session=$session;sort=target";
 
 unless ($no_html == 1)
 {
@@ -391,26 +391,14 @@ foreach (@parallels) {
 					print XML "\" score=\"$score\">\n";
 					print XML "<phrase text=\"source\" work=\"$work_a\" ";
 					print XML "line=\"".$verse_a."\" ";
-					print XML "link=\"$url_cgi" . "context.pl?source=$source;line=$verse_a\">".$parallel->phrase_a()->short_print2()."</phrase>\n";
+					print XML "link=\"$url_cgi/context.pl?source=$source;line=$verse_a\">"
+								.$parallel->phrase_a()->short_print2()."</phrase>\n";
 
 					print XML "<phrase text=\"target\" work=\"$work_b\" ";
 					print XML "line=\"".$verse_b."\" ";
-					print XML "link=\"$url_cgi" . "context.pl?source=$target;line=$verse_b\">".$parallel->phrase_b()->short_print2()."</phrase>\n";
+					print XML "link=\"$url_cgi/context.pl?source=$target;line=$verse_b\">"
+								.$parallel->phrase_b()->short_print2()."</phrase>\n";
 					print XML "</tessdata>\n";
-#					print CSV "\"$locus_a\",";
-#					print CSV "\"$locus_b\",";
-#					print CSV "\"".$parallel->phrase_a()->short_print3()."\",";
-#					print CSV "\"".$parallel->phrase_b()->short_print3()."\",";
-#					print CSV "\"".$score."\",";
-#					print CSV "\"";
-#					foreach (@words) {
-#						# remove HTML formatting
-#						my $cleanword = $_;
-#						$cleanword =~ s/<(.*?)>//gi;
-#						print CSV escaped_string($cleanword).", ";
-#					}
-#					print CSV "\"";
-#					print CSV "\n";
 				}
 			}
 		}
@@ -544,7 +532,12 @@ sub words_in_phrase {
 			} else {
 				my $is_stopword = 0;
 				foreach (@stopwords) {
-					if ($_ eq $word) {
+					my $test = $_;
+					
+					$test =~ tr/A-Z/a-z/;
+					$test =~ tr/a-z//c;
+					
+					if ($test eq $word) {
 						$is_stopword = 1;
 						print "stopword found: ".$_."\n";
 					}

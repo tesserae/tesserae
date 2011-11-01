@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use lib '/var/www/tesserae/perl/';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;
@@ -9,13 +9,15 @@ use warnings;
 use Storable;
 use CGI qw/:standard/;
 
+		print STDERR (getpwuid($>))[$0] . "\n";
+
 ########################################
 # html header
 ########################################
 
 print header;
 
-my $stylesheet = $url_css . 'style.css';
+my $stylesheet = "$url_css/style.css";
 
 print <<END;
 
@@ -73,7 +75,7 @@ else
 
 $session = sprintf("%08x", hex($session)+1);
 
-my $session_file = $fs_tmp . 'tesresults-' . $session . '.xml';
+my $session_file = "$fs_tmp/tesresults-$session.xml";
 
 open (XML, '>' . $session_file)
 	|| die "can't open " . $session_file . ':' . $!;
@@ -91,9 +93,9 @@ my $match  = $query->param('unit')   || "";
 my $cutoff = $query->param('cutoff') || "";
 my $stopwords = $query->param('stopwords') || "";
 
-my $hash_path = $fs_data . 'v1/';
+my $hash_path = "$fs_data/v1/";
 
-if ($match eq "stems") 		{ $hash_path .= 'stem/' }
+if ($match eq "stems") 		{ $hash_path .= "/stem" }
 
 if ($source eq "")
 {
@@ -115,13 +117,13 @@ $stoplist = $top{$cutoff.$match} || "";
 
 if ($stopwords ne "") { $stoplist .= " $stopwords" }
 
-%ngrams_source = %{retrieve($hash_path . $source . '.ngrams')};
-@phrase_source = @{retrieve($hash_path . $source . '.phrase')};
-@loc_source    = @{retrieve($hash_path . $source . '.loc')};
+%ngrams_source = %{	retrieve("$hash_path/$source.ngrams") };
+@phrase_source = @{	retrieve("$hash_path/$source.phrase") };
+@loc_source    = @{	retrieve("$hash_path/$source.loc")    };
 
-%ngrams_target = %{retrieve($hash_path . $target . '.ngrams')};
-@phrase_target = @{retrieve($hash_path . $target . '.phrase')};
-@loc_target    = @{retrieve($hash_path . $target . '.loc')};
+%ngrams_target = %{	retrieve("$hash_path/$target.ngrams") };
+@phrase_target = @{	retrieve("$hash_path/$target.phrase") };
+@loc_target    = @{	retrieve("$hash_path/$target.loc")    };
 
 
 
@@ -129,7 +131,8 @@ if ($stopwords ne "") { $stoplist .= " $stopwords" }
 # finding common ngrams
 ###################################################
 
-for (keys %ngrams_source) {
+for (keys %ngrams_source) 
+{
    my ($a,$b) = split(/-/);
 
    if (($stoplist =~ /\b$a\b/) 
@@ -147,11 +150,12 @@ print STDERR scalar(@common_keypairs) . " common keypairs\n";
 # format output
 ##################################################
 
-print XML '<results source="' . $source . '.tess" target="' . $target . '.tess" sessionID="' . $session . '">' ."\n";
+print XML "<results source=\"$source.tess\" target=\"$target.tess\" sessionID=\"$session\">\n";
 print XML "   <comments>Version 1 results</comments>\n";
 print XML "   <commonwords>" . join(", ", split (/\s+/, $stoplist)) . "</commonwords>\n";
 
-for (@common_keypairs) {
+for (@common_keypairs) 
+{
 
    my $keypair = $_;
    $keypair =~ s/-/, /;
@@ -168,15 +172,15 @@ for (@common_keypairs) {
    	my $shortline 	= $loc_source;
            $shortline	=~ s/$abbr{$source}//;
 
-      	print XML "      <phrase "
-                   . "text=\"source\" "
-                   . 'work="' . $abbr{$source} . '" '
-                   . 'line="' . $shortline     . '" '
-                   . 'link="' . $url_cgi . 'context.pl?source=' . $source .';line=' . $shortline . '">' 
+      	print XML "      <phrase"
+							. " text=\"source\""
+ 							. " work=\"$abbr{$source}\""
+ 							. " line=\"$shortline\""
+							. " link=\"$url_cgi/context.pl?source=$source;line=$shortline\">"
 
-                   . $phrase_source[$_] 
+							. $phrase_source[$_]
 
-                   . "</phrase>\n";
+							. "</phrase>\n";
    }
 
    for (@temp_array_target) {
@@ -187,10 +191,10 @@ for (@common_keypairs) {
             $shortline	=~ s/$abbr{$target}//;
          
          print XML "      <phrase "
-                    . "text=\"target\" "
-                    . 'work="' . $abbr{$target} . '" '
-                    . 'line="' . $shortline     . '" '
-                    . 'link="' . $url_cgi . 'context.pl?source=' . $target .';line=' . $shortline . '">'
+                    . " text=\"target\""
+                    . " work=\"$abbr{$target}\""
+                    . " line=\"$shortline\""
+                    . " link=\"$url_cgi/context.pl?source=$target;line=$shortline\">"
                     
                     . $phrase_target[$_]
 
@@ -209,7 +213,7 @@ close XML;
 # redirect web browser to results
 ########################################
 
-my $redirect = $url_cgi . 'get-data.pl?session=' . $session . ';sort=target';
+my $redirect = "$url_cgi/get-data.pl?session=$session;sort=target";
 
 print <<END;
    <meta http-equiv="Refresh" content="0; url='$redirect'">

@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use lib '/var/www/tesserae/perl/';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use Storable;
@@ -20,7 +20,7 @@ for my $file_in (@ARGV) {		# files to parse are cmd line arguments
    $short_name =~ s/^.*\///;		# remove path
    $short_name =~ s/\.tess//;		# and extension
 
-   my $file_out = $fs_data . 'v1/' . $short_name;
+   my $file_out = "$fs_data/v1/$short_name";
 
    print STDERR 'getting ' . $file_in . '...';
 
@@ -130,7 +130,7 @@ for my $file_in (@ARGV) {		# files to parse are cmd line arguments
 	}
 	
 
-	my $exec_string = qq{echo '<option value="$short_name">$title</option>' >> } . $fs_html . "textlist.v1.php";
+	my $exec_string = qq{echo '<option value="$short_name">$title</option>' >> $fs_html/textlist.v1.php};
 
 	print STDERR "$exec_string\n";
 

@@ -2,12 +2,12 @@
 		
 		<div id="main">
 			
-			<form action="<?php echo $url_cgi.'session.pl'; ?>" method="post" ID="Form1">
+			<form action="<?php echo $url_cgi.'/session.pl'; ?>" method="post" ID="Form1">
 				
 				<h1>Advanced Options</h1>
 				
 				<p>
-					This page allows you to change the default settings for the <a href="<?php echo $url_html.'index.php'; ?>">Basic Search</a>.  To explore an entirely new way of searching, try out the new <a href="<?php echo $url_html.'v2.php'; ?>">Version 2</a>.
+					This page allows you to change the default settings for the <a href="<?php echo $url_html.'/index.php'; ?>">Basic Search</a>.  To explore an entirely new way of searching, try out the new <a href="<?php echo $url_html.'/v2.php'; ?>">Version 2</a>.
 				</p>
 				
 				<table class = "input">
@@ -18,12 +18,12 @@
 					<tr>
 						<td align ="center">
 							<select name="source" ID="source">
-								<?php include "textlist.v1.php"; ?>
+								<?php include $url_html.'/textlist.v1.php'; ?>
 							</select>
 			 			</td>
 						<td align ="center">
 							<select name="target" ID="target">
-								<?php include "textlist.v1.php"; ?>
+								<?php include $url_html.'/textlist.v1.php'; ?>
 							</select>
 			 			</td>
 					</tr>

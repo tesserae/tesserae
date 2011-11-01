@@ -1,6 +1,6 @@
 #! /usr/local/bin/perl
 
-use lib '/var/www/tesserae/perl/';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 use Files;
 
@@ -11,14 +11,16 @@ my $dry_run = 0;
 my $clean = 0;
 my $in_file = "";
 
-my $usage = 'usage: v2.batch-prepare-texts.pl [-hdcc] [-f FILE]
+my $usage = <<END;
+usage: v2.batch-prepare-texts.pl [-hdcc] [-f FILE]
     -h   help: this message
     -d   dry-run: don\'t make any changes
     -c   clean: delete any old processed files first
     -cc  clean cache: same as -c but also delete stem cache
-    -f   read from FILE: FILE should be a list of .tess file labels (not full pathnames; texts are assumed to be in '.$fs_base.'/texts/).  One label per line.  Use -f - to read from stdin.
+    -f   read from FILE: FILE should be a list of .tess file labels (not full pathnames; texts are assumed to be in $fs_text).  One label per line.  Use -f - to read from stdin.
     
-    The default behavior is to process all .tess files in ' . $fs_text . ' while attempting to preserve existing preprocessed data (e.g.' . $fs_data . 'v2/ and its subdirectories).'."\n";
+    The default behavior is to process all .tess files in $fs_text while attempting to preserve existing preprocessed data (e.g.  $fs_data/v2/ and its subdirectories).
+END
 
 while (my $test = shift @ARGV)
 {
@@ -55,8 +57,11 @@ my @temp;
 
 if ($in_file eq "")
 {
-	my $filelist = `ls $fs_text\*.tess`;
-	@temp = split(/\n/, $filelist);
+	opendir (DH, $fs_text);
+
+	@temp = (grep {/\.tess$/ && -f} map { "$fs_text/$_" } readdir DH);
+
+	closedir DH;
 }
 elsif ($in_file eq "-")
 {
@@ -79,13 +84,13 @@ for my $file (@temp)
 
 	$file =~ s/\.tess$//;
 	
-	if (-r $fs_text . $file . ".tess")
+	if (-r "$fs_text/$file.tess")
 	{
 		push @file, $file;
 	}
 	else
 	{
-		print STDERR $fs_text . $file.  " does not exist or is not readable by ";
+		print STDERR "$fs_text/$file.tess does not exist or is not readable by ";
 		print STDERR (getpwuid($>))[$0] . "\n";
 	}
 }
@@ -94,19 +99,19 @@ if ($clean == 1)
 {
 	print STDERR "Cleaning...\n";
 
-	do_cmd('rm ' . $fs_html . 'textlist.v2.php');	
-	do_cmd('rm ' . $fs_data . 'v2/parsed/*');
-	do_cmd('rm ' . $fs_data . 'v2/preprocessed/*');
+	do_cmd("rm $fs_html/textlist.v2.php");	
+	do_cmd("rm $fs_data/v2/parsed/*");
+	do_cmd("rm $fs_data/v2/preprocessed/*");
 
 }
 
-unless ((-r $fs_data . 'v2/stem.cache') and ($clean_cache != 1))
+unless ((-r "$fs_data/v2/stem.cache") and ($clean_cache != 1))
 { 
-	do_cmd ('touch ' . $fs_data . 'v2/stem.cache');
+	do_cmd ("touch $fs_data/v2/stem.cache");
 }
-unless ((-r $fs_data . 'v2/tesserae.datafiles.config') and ($clean != 1))
+unless ((-r "$fs_data/v2/tesserae.datafiles.config") and ($clean != 1))
 { 
-	do_cmd ('touch ' . $fs_data . 'v2/tesserae.datafiles.config');
+	do_cmd ("touch $fs_data/v2/tesserae.datafiles.config");
 }
 
 
@@ -114,17 +119,17 @@ print STDERR "Parsing " . ($#file+1) . " files...\n";
 
 for my $file (@file)
 {
-	if ((-r $fs_data . 'v2/parsed/' . $file . '.parsed') and ($clean != 1))
+	if ((-r "$fs_data/v2/parsed/$file.parsed") and ($clean != 1))
 	{
-		print STDERR $fs_data . 'v2/parsed/' . $file . ".parsed already exists; skipping.\n";
+		print STDERR "$fs_data/v2/parsed/$file.parsed already exists; skipping.\n";
 	}
 	else
 	{
-		do_cmd('perl ' . $fs_perl . 'prepare.pl ' . $fs_text . $file . '.tess');
+		do_cmd("perl $fs_perl/prepare.pl $fs_text/$file.tess");
 	}
 }
 
-print STDERR "\n\n" . "Preprocessing " . ($#file+1) * $#file / 2 . " parallels...\n";
+print STDERR "\n\n" . "Preprocessing " . ($#file+1) * $#file / 2 . " comparisons...\n";
 
 my $counter = 0;
 
@@ -141,20 +146,20 @@ for (my $a = 0; $a <= $#file; $a++)
 		
 			print STDERR "comparison $file[$a] / $file[$b] already has an index entry\n";
 
-			if ( -r $fs_data . 'v2/preprocessed/' . $preexisting )
+			if ( -r "$fs_data/v2/preprocessed/$preexisting" )
 			{
-				print STDERR "and parallel cache " . $fs_data . 'v2/preprocessed/' . $preexisting . " exists...skipping\n";
+				print STDERR "and parallel cache $fs_data/v2/preprocessed/$preexisting exists...skipping\n";
 				next;
 			}
 
-			print STDERR "but parallel cache " . $fs_data . 'v2/preprocessed/' . $preexisting . " does not exist...proceeding\n";
+			print STDERR "but parallel cache $fs_data/v2/preprocessed/$preexisting does not exist...proceeding\n";
 		}	
 		else
 		{
-			do_cmd("echo '$file[$a]\t$file[$b]\t$file[$a].tess\t$file[$b].tess\t$file[$a]\~$file[$b]' >> " . $fs_data . "v2/tesserae.datafiles.config");
+			do_cmd("echo '$file[$a]\t$file[$b]\t$file[$a].tess\t$file[$b].tess\t$file[$a]\~$file[$b]' >> $fs_data/v2/tesserae.datafiles.config");
 		}
 	
-		do_cmd('perl ' . $fs_perl . 'preprocess.pl ' . $file[$a] . ' ' . $file[$b]);
+		do_cmd("perl $fs_perl/preprocess.pl $file[$a] $file[$b]");
 	}
 }
 
@@ -173,7 +178,7 @@ for my $file (sort @file)
 		$title =~ s/\b$lc/$uc/;
 	}
 
-        my $execstring = qq{grep '$file' $fs_text} . 'textlist.vs.php'; 
+        my $execstring = "grep '$file' $fs_text/textlist.vs.php"; 
 
 	if ((`$execstring` eq "") and ($clean != 1))
 	{
@@ -181,7 +186,7 @@ for my $file (sort @file)
                 next;
 	}
 	
-	do_cmd(qq{echo '<option value="$file">$title</option>' >> } . $fs_html . 'textlist.v2.php');
+	do_cmd(qq{echo '<option value="$file">$title</option>' >> $fs_html/textlist.v2.php'});
 }
 
 

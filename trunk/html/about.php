@@ -48,7 +48,7 @@
 					but new, intuitive, and provocative encounters with literature.
 				</p>
 				<p>
-					Our software is <a href="<?php echo $url_html . 'license.txt' ?>">open-source</a> and 
+					Our software is <a href="<?php echo $url_html . '/license.txt' ?>">open-source</a> and 
 					available on request. 
 				</p>
 				<p>
