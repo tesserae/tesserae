@@ -15,7 +15,18 @@ use warnings;
 use TessSystemVars;
 use Storable qw(nstore retrieve);
 
+#
+# these lines set language-specific variables
+# such as what is a letter and what isn't
+#
+
+my $lang="grc";
+
+my %non_word = ('la' => qr([^a-zA-Z]+), 'grc' => qr([^a-z\*\(\)\\\/\=\|\+']+));
+
+#
 # get files to be processed from cmd line args
+#
 
 while (my $file_in = shift @ARGV)
 {
@@ -46,7 +57,7 @@ while (my $file_in = shift @ARGV)
 	my $line_id = 0;
 	my $phrase_id = 0;
 
-	my %index_word;
+	my %count;
 
 	my %index_line_int;
 	my %index_line_ext;
@@ -69,15 +80,13 @@ while (my $file_in = shift @ARGV)
 		# parse a line of text; reads in verse number and the verse. Assumption is that a line looks like:
 		# <001> this is a verse
 
-		my $verseno = $l;
-    	my $verse = $l;
+		$l =~ /^<(.+)>\s+(.+)/;
 
-	    $verseno =~ s/\<(.+)\>(.*)/$1/s;
-	    $verse =~ s/\<(.+)\>\s*(.*)/$2/s;
+		my ($verseno, $verse) = ($1, $2);
 
-	    # skip lines with no locus
+	    # skip lines with no locus or line
 
-	    next if ($verseno eq "");
+	    next unless (defined $verseno and defined $verse);
 
 		# record the locus of each line
 
@@ -121,7 +130,7 @@ while (my $file_in = shift @ARGV)
 
 			# split into words
 
-			my @words = split /[^a-zA-Z]/, $chunk[$_];
+			my @words = split ($non_word{$lang}, $chunk[$_]);
 
 			# add words to the current phrase, line
 
@@ -135,6 +144,8 @@ while (my $file_in = shift @ARGV)
 				# the wisdom of this could be disputed, but roelant does it too
 
 				my $key = lc($_);
+
+				$count{$key}++;
 
 				# add the word to a bunch of indices
 				#
@@ -174,13 +185,16 @@ while (my $file_in = shift @ARGV)
 	# save the data using Storable
 	# 
 
-	my $file_out = "data/word/$name";
+	my $file_out = "data/$lang/word/$name";
 
 	print "writing $file_out.line\n";
 	nstore \@line, "$file_out.line";
 
 	print "writing $file_out.phrase\n";
 	nstore \@phrase, "$file_out.phrase";
+
+	print "writing $file_out.count\n";
+	nstore \%count, "$file_out.count";
 
 	print "writing $file_out.index_phrase_int\n";
 	nstore \%index_phrase_int, "$file_out.index_phrase_int";

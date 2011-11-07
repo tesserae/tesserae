@@ -21,6 +21,8 @@ use TessSystemVars;
 #  - from command line arguments if any
 #  - otherwise use default vergil-lucan case
 
+my $lang = "grc";
+
 # source means the alluded-to, 	older text
 # target means the alluding, 	newer text
 
@@ -115,19 +117,19 @@ my @stoplist = @{ $TessSystemVars::new_stoplist{$feature} };
 
 print STDERR "reading source data\n";
 
-my @unit_source = @{ retrieve( "data/word/$source.${unit}" ) };
-my @loc_source =  @{ retrieve( "data/word/$source.loc_${unit}" ) };
+my @unit_source = @{ retrieve( "data/$lang/word/$source.${unit}" ) };
+my @loc_source =  @{ retrieve( "data/$lang/word/$source.loc_${unit}" ) };
 
-my %index_source_ext = %{ retrieve( "data/$feature/$source.index_${unit}_ext" ) };
-my %index_source_int = %{ retrieve( "data/$feature/$source.index_${unit}_int" ) };
+my %index_source_ext = %{ retrieve( "data/$lang/$feature/$source.index_${unit}_ext" ) };
+my %index_source_int = %{ retrieve( "data/$lang/$feature/$source.index_${unit}_int" ) };
 
 print STDERR "reading target data\n";
 
-my @unit_target = @{ retrieve( "data/word/$target.${unit}" ) };
-my @loc_target  = @{ retrieve( "data/word/$target.loc_${unit}" ) };
+my @unit_target = @{ retrieve( "data/$lang/word/$target.${unit}" ) };
+my @loc_target  = @{ retrieve( "data/$lang/word/$target.loc_${unit}" ) };
 
-my %index_target_ext = %{ retrieve( "data/$feature/$target.index_${unit}_ext" ) };
-my %index_target_int = %{ retrieve( "data/$feature/$target.index_${unit}_int" ) };
+my %index_target_ext = %{ retrieve( "data/$lang/$feature/$target.index_${unit}_ext" ) };
+my %index_target_int = %{ retrieve( "data/$lang/$feature/$target.index_${unit}_int" ) };
 
 #
 # some more crazy data structures

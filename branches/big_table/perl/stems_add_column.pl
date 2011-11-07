@@ -16,9 +16,11 @@ use warnings;
 use TessSystemVars;
 use Storable qw(nstore retrieve);
 
+my $lang = "grc";
+
 # load the cache of stems
 
-my $file_stem_cache = "../semantics/archimedes.cache";
+my $file_stem_cache = "data/$lang/$lang.stem.cache";
 
 unless (-r $file_stem_cache) { die "can't find $file_stem_cache" }
 
@@ -36,7 +38,7 @@ while (my $name = shift @ARGV)
 	$name =~ s/.*\///;
 	$name =~ s/\.tess$//;
 
-	my $file_in = "data/word/$name";
+	my $file_in = "data/$lang/word/$name";
 
 	# make sure the column in the word table is complete
 
@@ -134,7 +136,7 @@ while (my $name = shift @ARGV)
 
 	# write the new column
 
-	my $file_out = "data/stem/$name";
+	my $file_out = "data/$lang/stem/$name";
 
 	print STDERR "writing $file_out.index_line_int\n";
 	nstore \%stem_index_line_int, "$file_out.index_line_int";
