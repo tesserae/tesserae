@@ -20,7 +20,8 @@ use Storable qw(nstore retrieve);
 # such as what is a letter and what isn't
 #
 
-my $lang="grc";
+my $lang;
+my $lang_default = 'la';
 
 my %non_word = ('la' => qr([^a-zA-Z]+), 'grc' => qr([^a-z\*\(\)\\\/\=\|\+']+));
 
@@ -31,10 +32,32 @@ my %non_word = ('la' => qr([^a-zA-Z]+), 'grc' => qr([^a-z\*\(\)\\\/\=\|\+']+));
 while (my $file_in = shift @ARGV)
 {
 
-	# name for the file is everything before .tess
-	# not including the path
+	# allow language to be set from cmd line args
+
+	if ($file_in =~ /^--(la|grc)/)
+	{
+		$lang_default = $1;
+		next;
+	}
+
+	# normally, language is set by the path to the text
+	# if not, fall back on user-specified,
+	# then default to latin
+
+	if ($file_in =~ /\/(la|grc)\//)
+	{
+		$lang = $1;
+	}
+	else
+	{
+		$lang = $lang_default;
+	}
+
+	# the header for the column will be the filename 
+	# minus the path and .tess extension
 
 	my $name = $file_in;
+
 	$name =~ s/.*\///;
 	$name =~ s/\.tess$//;
 
