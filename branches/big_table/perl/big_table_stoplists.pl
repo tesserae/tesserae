@@ -38,7 +38,7 @@ for my $lang(@lang)
 
 	opendir (DH, "data/$lang/word");
 
-	push @count_files, (grep {/\.count$/ && -f} map { "data/$lang/word/$_" } readdir DH);
+	push @count_files, (grep {/\.count$/ && !/\.part\./ && -f} map { "data/$lang/word/$_" } readdir DH);
 
 	closedir (DH);
 

@@ -16,15 +16,11 @@ use warnings;
 use TessSystemVars;
 use Storable qw(nstore retrieve);
 
-my $lang = "grc";
+my $lang_default = 'la';
+my $lang_prev = "";
+my $lang;
 
-# load the cache of stems
-
-my $file_stem_cache = "data/$lang/$lang.stem.cache";
-
-unless (-r $file_stem_cache) { die "can't find $file_stem_cache" }
-
-my %stem_lookup = %{ retrieve($file_stem_cache) };
+my %stem_lookup;
 
 #
 # process the files specified as cmd line args
@@ -32,6 +28,57 @@ my %stem_lookup = %{ retrieve($file_stem_cache) };
 
 while (my $name = shift @ARGV)
 {
+
+	# lang may be set on cmd line
+
+	if ( $name =~ /^--(la|grc)/)
+	{
+		$lang_default = $1;
+		next;
+	}
+
+	# normally, look for lang in path
+
+	if ( $name =~ /\/(la|grc)\// )
+	{
+		$lang = $1;
+	}
+	else
+	{
+		$lang = $lang_default;
+	}
+
+    #
+    # large files split into parts are kept in their
+    # own subdirectories; if an arg has no .tess extension
+    # it may be such a directory
+
+    if ($name !~ /\.tess/)
+    {
+        if (-d $name)
+        {
+            opendir (DH, $name);
+
+            push @ARGV, (grep {/\.part\./ && -f} map { "$name/$_" } readdir DH);
+
+            closedir (DH);
+        }
+
+        next;
+    }
+
+	# if lang has changed, load the correct cache
+
+	if ($lang ne $lang_prev)
+	{
+		# load the cache of stems
+
+		my $file_stem_cache = "data/$lang/$lang.stem.cache";
+
+		unless (-r $file_stem_cache) { die "can't find $file_stem_cache" }
+
+		%stem_lookup = %{ retrieve($file_stem_cache) };
+	}
 
 	# get rid of any path or file extension
 

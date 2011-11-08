@@ -53,6 +53,25 @@ while (my $file_in = shift @ARGV)
 		$lang = $lang_default;
 	}
 
+	#
+	# large files split into parts are kept in their
+	# own subdirectories; if an arg has no .tess extension
+	# it may be such a directory
+
+	if ($file_in !~ /\.tess/)
+	{
+		if (-d $file_in)
+		{
+			opendir (DH, $file_in);
+
+			push @ARGV, (grep {/\.part\./ && -f} map { "$file_in/$_" } readdir DH);
+
+			closedir (DH);
+		}
+
+		next;
+	}
+
 	# the header for the column will be the filename 
 	# minus the path and .tess extension
 
