@@ -101,10 +101,6 @@ while (my $file_in = shift @ARGV)
 			$loc_phrase[$phrase_id] = $verseno;
 		}
 
-		# increment line_id
-
-		$line_id++;
-
 		# if a line begins with spaces or phrase-punct chars, delete them
 
 		$verse =~ s/^[\.\?\!;:\s]+//;
@@ -174,6 +170,10 @@ while (my $file_in = shift @ARGV)
 				push @{$index_line_ext{$key}}, $line_id;
 			}
 		}
+
+		# increment line_id
+
+		$line_id++;
 	}
 
 	close TEXT;

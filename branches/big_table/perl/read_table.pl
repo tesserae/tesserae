@@ -21,7 +21,19 @@ use TessSystemVars;
 #  - from command line arguments if any
 #  - otherwise use default vergil-lucan case
 
-my $lang = "grc";
+# $session is the session id, for simulating
+# tesserae functionality
+
+my $session = "NA";
+
+# $lang sets the language of input texts
+# - necessary for finding the files, since
+#   the tables are separate.
+# - one day, we'll be able to set the language
+#   for the source and target independently
+# - choices are "grc" and "la"
+
+my $lang = "la";
 
 # source means the alluded-to, 	older text
 # target means the alluding, 	newer text
@@ -45,11 +57,16 @@ my $feature = 'stem';
 
 	for (@ARGV)
 	{
-		if 		( /--word/ )	{ $feature='word' }
-		elsif 	( /--line/ )	{ $unit='line' }
+		if 		( /--word/ )			{ $feature='word' }
+		elsif 	( /--line/ )			{ $unit='line' }
+		elsif	( /--gr(?:c|eek)/  )	{ $lang = 'grc' }
+		elsif	( /--session=(\w+)/)	{ $session = $1 }
 		else
 		{
-			push @text, $_;
+			unless (/^--/)
+			{
+				push @text, $_;
+			}
 		}
 	}
 
@@ -243,7 +260,7 @@ my $commonwords = join(", ", @stoplist);
 
 print <<END;
 <?xml version="1.0" encoding="UTF-8" ?>
-<results source="$source" target="$target" sessionID="NA">
+<results source="$source" target="$target" sessionID="$session">
 	<comments>Test results from Big Table</comments>
 	<commonwords>$commonwords</commonwords>
 END

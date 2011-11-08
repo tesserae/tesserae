@@ -33,6 +33,7 @@ our $url_xsl	= $url_base . '/xsl';
 our %abbr = (
 
 	'apollonius.argonautica'	=>	'A. R. ',
+	'apollonius.argonautica.book1'	=> 'A. R. ',
 	'catullus.carmina'      	=> 'catull. '		,
 	'ennius.annales'		=> 'enn. ann. '		,
 	'homer.iliad'			=> 'hom. il. ',
