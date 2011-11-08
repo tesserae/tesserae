@@ -64,7 +64,7 @@ my $feature = 'stem';
 # - hard coded in TessSystemVars, work on this in future
 # - feature-set-specific
 
-my @stoplist = @{ $TessSystemVars::new_stoplist{$feature} };
+my @stoplist = @{ $TessSystemVars::stop{$lang}{$feature} };
 
 #
 # read data from table
