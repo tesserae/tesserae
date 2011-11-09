@@ -11,7 +11,7 @@ our @EXPORT = qw(%abbr $fs_html $fs_cgi $fs_perl $fs_xsl $fs_text $fs_tmp $fs_da
 
 our @EXPORT_OK = qw(&uniq &intersection);
 
-my $fs_base	= '/Users/chris/Sites/tesserae';
+my $fs_base	= '/Users/chris/Desktop/tesserae';
 
 our $fs_cgi 	= $fs_base . '/cgi-bin';
 our $fs_data	= $fs_base . '/data';
@@ -21,11 +21,11 @@ our $fs_text	= $fs_base . '/texts';
 our $fs_tmp  	= $fs_base . '/tmp';
 our $fs_xsl  	= $fs_base . '/xsl';
 
-my $url_base	= 'http://localhost/~chris/tesserae';
+my $url_base	= 'http://tesserae.caset.buffalo.edu';
 
 our $url_cgi	= $url_base . '/cgi-bin';
 our $url_css	= $url_base . '/css';
-our $url_html	= $url_base . '/html';
+our $url_html	= $url_base;
 our $url_images	= $url_base . '/images';
 our $url_text	= $url_base . '/texts';
 our $url_tmp	= $url_base . '/tmp';
@@ -65,6 +65,10 @@ our %abbr = (
 );
 
 our %top;
+
+$top{'la_word'} = qw{et in non nec est cum ut per si ad quae sed atque iam tibi quod te qui mihi nunc aut haec ille quid me quam sic hic ab tamen at hoc de illa tum tu quoque quo ipse sub ac se erat dum ubi ego a esse ante ne qua nam arma sit inter o ex quem quis neque fuit manus hinc omnia ora mea tua sunt sua saepe cui ipsa modo enim sine sanguine tunc etiam pater erit armis quos simul e omnis inde corpore haud caput pro hunc super semper corpora ore his nobis fata amor nulla ait sibi multa iamque bella manu tam una magis post an habet tantum prima pectora pectore nomen terra pars nos res omnes procul rerum signa cur dies tellus nil membra tela dedit illi dixit contra deus nisi seu licet moenia hanc primum nostra quibus magna ire tempora tempore unde litora tot proelia fortuna quas lumina verba genus ira rebus corpus postquam opus ergo caelo huc ferro omne belli vel inquit heu oculos toto satis venit regna fama terga forte dextra turba cura auras terras undis iter ecce causa puer unda posse magno aequora hac circum artus bene namque vix sacra sidera tandem mare domus medio ignis suo illis deum suis ulla urbem natura facta nocte quia idem deos vos undas nomine amore illum parte alta longa quantum ferre saxa iuppiter huic quaeque sola quondam summa mater talia inque numquam bello terris tecta pariter mox quin nox interea nihil dea ita};
+$top{'la_stem'} = qw{
+
 
 $top{'10words'} = q/et in non nec est cum si ut sed per ad tibi quae iam quod/;
 $top{'20words'} = q/et in non nec est cum si ut sed per ad tibi quae iam quod atque te mihi qui nunc aut haec quid me ille quam sic hic hoc tamen tu at ab de illa ipse esse tum quoque quo erat dum se sub ac a ego ubi ne sit ante qua nam arma o inter quem quis ex tua fuit sunt neque saepe manus mea hinc ora omnia sua modo cui/;

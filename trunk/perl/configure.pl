@@ -1,4 +1,16 @@
+use Cwd;
+use File::Copy;
+
 use TessSystemVars;
+
+# this should be the full path to this configure script
+
+my $perl_path = getcwd() . "/$0";
+
+# assume the library is in the same directory
+# (if it isn't the script will have failed already) 
+
+$perl_path =~ s/\/configure.pl$//;
 
 # this array will hold a list of perl files to check
 
@@ -68,8 +80,7 @@ for my $file (@perl_files)
 	close IPF;
 	close OPF;
 	
-	my $exec_string = 'mv ' . $file . '.configured ' . $file;
-	system($exec_string);
+	move( "$file.configured", $file) or die "move $file.configured $file failed: $!";
 }
 
 #
@@ -121,8 +132,7 @@ for my $file (@xsl_files)
 	close IPF;
 	close OPF;
 	
-	my $exec_string = 'mv ' . $file . '.configured ' . $file;
-	system($exec_string);
+	move( "$file.configured", $file) or die "move $file.configured $file failed: $!";
 }
 
 
@@ -134,47 +144,45 @@ for my $file (@php_files)
 {
 	print STDERR "configuring $file\n";
 
-        open IPF, "<$file";
-        open OPF, ">$file.configured";
+	open IPF, "<$file";
+	open OPF, ">$file.configured";
 
-        while (my $line = <IPF>)
-        {
+	while (my $line = <IPF>)
+	{
 
-                if ($line =~ /<!--\s+URL_CGI/)
-                {
-                        $line = "<?php \$url_cgi=\"$url_cgi\" ?>";
-                        $line .= '<!-- URL_CGI -->' . "\n";
-                }
-                if ($line =~ /<!--\s+URL_CSS/)
-                {
-                        $line = "<?php \$url_css=\"$url_css\" ?>";
-                        $line .= '<!-- URL_CSS -->' . "\n";
-                }
-                if ($line =~ /<!--\s+URL_HTML/)
-                {
-                        $line = "<?php \$url_html=\"$url_html\" ?>";
-                        $line .= '<!-- URL_HTML -->' . "\n";
-                }
-                if ($line =~ /<!--\s+URL_IMAGES/)
-                {
-                        $line = "<?php \$url_images=\"$url_images\" ?>";
-                        $line .= '<!-- URL_IMAGES -->' . "\n";
-                }
-                if ($line =~ /<!--\s+URL_TEXT/)
-                {
-                        $line = "<?php \$url_text=\"$url_text\" ?>";
-                        $line .= '<!-- URL_TEXT -->' . "\n";
-                }
+		if ($line =~ /<!--\s+URL_CGI/)
+		{
+			$line = "<?php \$url_cgi=\"$url_cgi\" ?>";
+			$line .= '<!-- URL_CGI -->' . "\n";
+		}
+		if ($line =~ /<!--\s+URL_CSS/)
+		{
+			$line = "<?php \$url_css=\"$url_css\" ?>";
+			$line .= '<!-- URL_CSS -->' . "\n";
+		}
+		if ($line =~ /<!--\s+URL_HTML/)
+		{
+			$line = "<?php \$url_html=\"$url_html\" ?>";
+			$line .= '<!-- URL_HTML -->' . "\n";
+		}
+		if ($line =~ /<!--\s+URL_IMAGES/)
+		{
+			$line = "<?php \$url_images=\"$url_images\" ?>";
+			$line .= '<!-- URL_IMAGES -->' . "\n";
+		}
+		if ($line =~ /<!--\s+URL_TEXT/)
+		{
+			$line = "<?php \$url_text=\"$url_text\" ?>";
+			$line .= '<!-- URL_TEXT -->' . "\n";
+		}
 
-                print OPF $line;
-        }
+			print OPF $line;
+	}
 
-        close IPF;
-        close OPF;
+	close IPF;
+	close OPF;
 
-        my $exec_string = 'mv ' . $file . '.configured ' . $file;
-        system($exec_string);
-
+	move( "$file.configured", $file) or die "move $file.configured $file failed: $!";
 }
 
 my $exec_string = 'chmod +x ' . $fs_cgi . '/*.pl';

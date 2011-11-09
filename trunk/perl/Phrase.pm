@@ -337,6 +337,7 @@ sub stems_in_common {
 	if (@_) { 
 		my $phrase = shift;
 		bless($phrase, "Phrase");
+
 		if (scalar @{$self->{WORDARRAY}} <= 1) {
 			#			print "skipping because this phrase is too short (<2)\n";
 			return 0;

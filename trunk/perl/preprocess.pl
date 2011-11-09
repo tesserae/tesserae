@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;
@@ -10,7 +10,7 @@ use Phrase;
 use Parallel;
 use Data::Dumper;
 use Frontier::Client;
-use Storable;
+use Storable qw(nstore retrieve);
 use Files;
 
 
@@ -18,7 +18,7 @@ my $readfromfile = 1;
 my $showprogress = 1;
 my $verbose = 0; # 0 == only 5/10; 1 == 0 - 10; 2 == -1 - 10
 
-my $usage = "usage: to prepare a corpus: ./preprocess.pl -p [label for source] [label for target]";
+my $usage = "usage: to prepare a corpus: ./preprocess.pl [label for source] [label for target]";
 
 # the following variable controls how many stems (or words) in common constitute an 'interesting' parallel
 my $interesting_parallel_threshold = 2;
@@ -28,7 +28,7 @@ my @text;
 my $numberoftexts = 0;
 my $numberofflags = 0;
 if ($#ARGV+1 < 1) {
-	print $usage;
+	print STDERR $usage;
 	exit;
 }
 for (my $i=0; $i<$#ARGV+1; $i++) {
@@ -38,7 +38,7 @@ for (my $i=0; $i<$#ARGV+1; $i++) {
 	}
 }
 if ($numberoftexts != 2) {
-	print $usage;
+	print STDERR $usage;
 	exit;
 }
 
@@ -51,22 +51,26 @@ my $num_arguments = $#ARGV + 1;
 
 # code for testing Files
 if (Files::determine_input_filenames($text[0], $text[1]) == 0) {
-	print "ERROR: either the source or the target label cannot be found in the\n";
-	print "       configuration file.\n\n";
-	print "I used configuration file ".Files::config_file().".\n";
-	print "This typically occurs if a text has been prepared but the comparison pair has \n";
-	print "not been added yet to the config file.\n";
-	print "See the documentation in Files.pm for more information on the format of the \n";
-	print "configuration file.";
-	print "exiting.\n";
+
+	print STDERR "ERROR: "
+		. "either the source or the target label cannot be found in the\n"
+		. "configuration file.\n\n"
+
+   		. "I used configuration file &Files::config_file().\n"
+   		. "This typically occurs if a text has been prepared but the comparison\n"
+		. "pair has not been added yet to the config file.\n\n"
+
+   		. "See the documentation in Files.pm for more information on the format\n"
+		. "of the configuration file. exiting.\n\n";
+
 	die;
 	
 } else {
-	print "source label: ".$text[0]."\n";
-	print "target label: ".$text[1]."\n";
-	print "source prs file: " . $parsed_source . "\n";
-	print "target prs file: " . $parsed_target . "\n";
-	print "output file: " . $preprocessed_file . "\n";
+	print STDERR "source label: ".$text[0]."\n";
+	print STDERR "target label: ".$text[1]."\n";
+	print STDERR "source prs file: " . $parsed_source . "\n";
+	print STDERR "target prs file: " . $parsed_target . "\n";
+	print STDERR "output file: " . $preprocessed_file . "\n";
 }
 
 my @parallels;
@@ -77,7 +81,7 @@ my @phrases1array = @{retrieve($parsed_source)};
 my @phrases2array = @{retrieve($parsed_target)};
 my @wordset_array;
 my $window=3;
-print "parsed texts\n";
+print STDERR "parsed texts\n";
 
 # swap arrays if one is larger than the other. Commented out now that parse_text returns phrases
 #if (scalar(@phrases1array) < scalar(@phrases2array)) { #}
@@ -96,21 +100,34 @@ my $num_phrases_text2 = scalar @phrases2array;
 #foreach (@word2array) { #}
 #	if ($_->phraseno() > $num_phrases_text2) {$num_phrases_text2 = $_->phraseno};
 #}
-system("date");
-print "begin; num phrases in texts 1 (".$parsed_source.") and 2 (".$parsed_target."): ".$num_phrases_text1." and ".$num_phrases_text2."\n";
-print "total number of comparisons to be made: ".$num_phrases_text1 * $num_phrases_text2."\n";
+print STDERR "begin " . localtime($^T) . "\n";
+print STDERR "num phrases in text 1 ($parsed_source): $num_phrases_text1\n";
+print STDERR "num phrases in text 2 ($parsed_target): $num_phrases_text2\n";
+print STDERR "total number of comparisons to be made: " . ($num_phrases_text1 * $num_phrases_text2) . "\n";
+
+# draw a progress bar
+
+my $progress_this = 0;
+my $progress_last  = 0;
+
+print STDERR (" "x24) . "| 100%" . "\r" . "0% |";
+
+# main loop
 
 foreach (@phrases1array) {
+
+	if ($showprogress == 1) {
+		if ($progress_this++ / $#phrases1array > $progress_last+.05)
+		{
+			print STDERR ".";
+			$progress_last = $progress_this / $#phrases1array;
+		}
+	}
+
 	my $phrase1 = $_;
 	bless ($phrase1, "Phrase");
-	if ($showprogress == 1) {
-		# print "finding parallels for phrase A:   ";
-		# $phrase1->short_print();
-		# print "\n";
-	}
-	# print "    to \n";
-#	if (scalar @{$phrase1->{WORDARRAY}} >= 2 && scalar @parallels < 90000) {
-		if (scalar @{$phrase1->{WORDARRAY}} >= 2) {
+
+	if (scalar @{$phrase1->{WORDARRAY}} >= 2) {
 		foreach (@phrases2array) {
 			my $phrase2 = $_;
 			bless ($phrase2, "Phrase");
@@ -137,12 +154,20 @@ foreach (@phrases1array) {
 		}
 	}
 }
-print "# of interesting parallels (threshold: $interesting_parallel_threshold): ".scalar(@parallels)." (".scalar(@parallels) / ($num_phrases_text1 * $num_phrases_text2).")\n";
-system("date");
+
+print STDERR "\n\n";
+
+print STDERR "# of interesting parallels (threshold: $interesting_parallel_threshold): " . scalar(@parallels);
+print STDERR sprintf("(%.2f %%)", scalar(@parallels) / ($num_phrases_text1 * $num_phrases_text2)) . "\n\n";
+
+print STDERR "writing $preprocessed_file\n";
 
 # serialize and store with Storable
-use Storable qw(nstore store_fd nstore_fd freeze thaw dclone);
 nstore \@parallels, $preprocessed_file;
+
+print STDERR "\n";
+print STDERR "finished " . localtime(time) . "\n";
+print STDERR "total processing time: " . sprintf("%.1f", (time-$^T)/60) . " minutes\n";
 
 =head4 subroutine: parse_text(filename)
 

@@ -1,6 +1,6 @@
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 
 #
 # This parses Perseus xml texts and creates .tess files
@@ -18,9 +18,9 @@ my $short_name;
 for (@ARGV)
 {
 
-	if 	(/--long="?(.+)"?/)	{	$long_name 	= $1 	}
+	if   	(/--long="?(.+)"?/)  	{	$long_name 	= $1 	}
 	elsif	(/--short="?(.+)"?/)	{	$short_name = $1	}
-	else								{	$filename 	= $_	}
+	else                         	{	$filename 	= $_	}
 }
 
 if ( !defined $filename )	{	die "no file specified" }
@@ -70,9 +70,8 @@ print STDERR "writing file $file_out\n";
 # start at the "book" level
 #
 # sometimes called "Book" 
-# note -- need to figure out how to check for either
 
-for my $b ( $doc->findnodes('//div1[@type="book"]') )
+for my $b ( $doc->findnodes('//div1[@type="book"] | //div1[@type="Book"]') )
 {	
 	
 	# get the book number from the "n" attribute
@@ -107,7 +106,7 @@ for my $b ( $doc->findnodes('//div1[@type="book"]') )
 		
 		if ( $#{($l->findnodes('milestone[@unit="para"]'))} >= 0)
 		{
-			print "\n";
+			print FH "\n";
 		}
 		
 		# get the text

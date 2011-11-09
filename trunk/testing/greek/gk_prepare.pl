@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 
 #
 # gk_prepare.pl
@@ -26,12 +26,17 @@ use Files;
 
 my $no_archimedes = 0;
 
+# forms not found on archimedes will be attempted a second time using alternate
+# orthography.  to suppress this stage, set the following to true
+
+my $no_alts = 0;
+
 # normal behaviour is to write new stems acquired from archimedes to the main cache
 #  -- if lookup isn't working correctly, this might cause a good cache to be over-
 #     written by a broken one.
-#  -- set the following to 0 to prevent writing to the cache file
+#  -- set the following to true to prevent writing to the cache file
 
-my $write_cache = 0;
+my $no_write_cache = 0;
 
 # some parameters to pass along to the archimedes server
 
@@ -53,11 +58,11 @@ my $file_in = shift @ARGV || die $usage;
 
 my $file_out = $file_in;
 
-$file_out =~ s/.+\//${fs_data}v2\/parsed\//;
+$file_out =~ s/.+\//$fs_data\/v2\/parsed\//;
 $file_out =~ s/(\.tess)?$/\.parsed/;
 
 my $file_stems = "$fs_data/v2/greek.cache";
-# my $file_lewis = "$fs_data/v2/lewis.cache";
+my $file_lewis = "$fs_data/v2/lewis.cache";
 
 print STDERR "input text: $file_in\nparsed corpus output file: $file_out\n\n";
 
@@ -98,19 +103,16 @@ while (<TEXT>)
 	# parse a line of text; reads in verse number and the verse. Assumption is that a line looks like:
 	# <001> this is a verse
 
-	my $verseno = $_;
-	my $verse = $_;
+	/^<(.+)>\s*(.*)/;
 
-	$verseno =~ s/$\<(.+)\>(.*)/$1/s;
-	$verse =~ s/$\<(.+)\>\s*(.*)/$2/s;
+	my $verseno = $1;
+	my $verse = $2;
+
+	next unless (defined $verseno and defined $verse);
 
 	# if a line begins with spaces or phrase-punct chars, delete them
 
 	$verse =~ s/^[\.\?\!;:\s]+//;
-
-	# skip lines with no locus
-
-	next if ($verseno eq "");
 
 	# if $held_text is null, then the last line ended with a phrase end
 	# 
@@ -175,7 +177,7 @@ print STDERR scalar(@phrase_array) . " phrases\n";
 print STDERR scalar(keys %count) . " unique forms\n";
 
 #
-# build stem cache
+# load stem cache
 #
 
 print STDERR "checking stem cache $file_stems\n";
@@ -207,6 +209,11 @@ for (@working)
 	}
 }
 
+
+#
+# look up forms that weren't in the cache
+#
+
 unless ($no_archimedes)
 {
 
@@ -224,7 +231,7 @@ unless ($no_archimedes)
 
 	print STDERR "0% |" . (" "x20) . "| 100%" . "\r0% |";
 
-	while (my @batch = splice(@working, 0, 10))
+	while (my @batch = splice(@working, 0, 50))
 	{
 
 		if (($total-scalar(@working))/$total > $progress + .05)
@@ -238,7 +245,7 @@ unless ($no_archimedes)
 		# write the cache with each batch, so that if the program fails
 		# somewhere in a big list, we at least save the earlier results
 
-		if ($modify_cache == 1)
+		unless ($no_write_cache)
 		{
 			nstore \%cache, $file_stems;
 		}
@@ -246,78 +253,69 @@ unless ($no_archimedes)
 
 	print STDERR "\n\n";
 
-	print STDERR scalar(@failed) . " forms got no results from archimedes. Checking possible alternate orthography.\n";
-
-	@working = splice (@failed);
-
-	$progress = 0;
-	$total = scalar(@working);
-	my $old_progress = 0;
-
-	print STDERR "0% |" . (" "x20) . "| 100%" . "\r0% |";
-
-	#
-	# look up failed forms a second time using alternate spelling
-	#
-
-	for my $form (@working)
+	unless ($no_alts)
 	{
 
-		$progress += 1;
+		print STDERR scalar(@failed) . " forms got no results from archimedes. Checking possible alternate orthography.\n";
 
-		if ($progress/$total > $old_progress+.05)
+		#
+		# a second pass; this time form by form, looking up possible
+		# variant spellings
+		#
+
+		@working = splice (@failed);
+
+		$progress = 0;
+		$total = scalar(@working);
+		my $old_progress = 0;
+
+		print STDERR "0% |" . (" "x20) . "| 100%" . "\r0% |";
+
+		#
+		# consider each form in turn
+		#
+
+		for my $form (@working)
 		{
-			print STDERR ".";
-			$old_progress += .05;
+
+			$progress += 1;
+
+			if ($progress/$total > $old_progress+.05)
+			{
+				print STDERR ".";
+				$old_progress += .05;
+			}
+
+			# determine alternate spellings
+
+			my @alt = alt($form);
+
+			# check all possible alternates with archimedes
+
+			my @failed_alt = archimedes(@alt);
+
+			# if they all fail, then add the original form back to the failed list
+
+			if ($#failed_alt == $#alt)
+			{
+				push @failed, $form;
+			}
 		}
+
+		print STDERR "\n\n";
+
+		# if permitted, write the modified cache to disk
 	
-
-		unless (defined ($cache{$form}) and ${$cache{$form}}[0] ne "")
+		unless ($no_write_cache)
 		{
-
-			# check archimedes for alternate forms
-
-			# initialize the client
-
-			my $client = Frontier::Client->new( url => "http://archimedes.mpiwg-berlin.mpg.de:8098/RPC2", debug => 0);
-
-			# make the call
-
-			my $res = $client->call('lemma', "-LA", [alt($form)]);
-
-			# check the results
-
-			for ( @alt )
-			{
-                		if (defined($res->{$_}))
-                		{
-					my $test = $res->{$_};
-
-					$cache{$form} = $test;
-					last;
-				}
-			}
-
-			unless (defined ($cache{$form}) and ${$cache{$form}}[0] ne "")
-			{
-				push @failed_twice, $form;
-			}
+			nstore \%cache, $file_stems;
 		}
 	}
-
-	print STDERR "\n\n";
-
-	nstore \%cache, $file_stems;
-}
-# if no_archimedes is set, just pass on the forms that weren't in the cache
-else
-{
-	@failed_twice = @archimedes;
 }
 
-print STDERR scalar(@failed_twice) . " forms couldn't be stemmed: \n";
+print STDERR scalar(@failed) . " forms couldn't be stemmed: \n";
 
-print STDERR join(" ", sort @failed_twice) . "\n\n";
+print STDERR join(" ", sort @failed) . "\n\n";
 
 #
 # go back and reprocess
@@ -327,10 +325,10 @@ print STDERR join(" ", sort @failed_twice) . "\n\n";
 #   - add semantic tags
 #   - add phrase ids
 
-my %lewis = %{ retrieve($file_lewis) };
+# my %lewis = %{ retrieve($file_lewis) };
 
 
-print STDERR "processing...\n";
+print STDERR "adding stems to Phrases...\n";
 
 for my $phraseno (0..$#phrase_array)
 {
@@ -347,7 +345,7 @@ for my $phraseno (0..$#phrase_array)
 
 		# convert the form to lowercase for exact form matching
 
-		$word->word(lc($form));
+		$word->word($form);
 
 		# add stems
 
@@ -360,10 +358,10 @@ for my $phraseno (0..$#phrase_array)
 
 		# add semantic tags
 
-		for ( @{$lewis{lc($form)}} )
-		{
-			$word->add_semantic_tag($_);
-		}
+		#for ( @{$lewis{lc($form)}} )
+		#{
+		#	$word->add_semantic_tag($_);
+		#}
 
 		# note what phrase id it belongs to
 
@@ -380,39 +378,47 @@ exit;
 sub add_line
 {
 	my $phrase_ref	= shift || die "add_line called without phrase ref";
-	my $verseno	= shift || die "add_line called without verseno";
-	my $string	= shift || die "add_line called without string";
+	my $verseno		= shift || die "add_line called without verseno";
+	my $string		= shift || die "add_line called without string";
 
 	my $phrase = $$phrase_ref;
 
 	bless $phrase, 'Phrase';
 
-	my @words = split /[^A-Za-z]/, $string;
+	# split string into words on non-word chars
+	#
+	# --what consititutes a non-word char depends on the
+	# language.  this needs to be made more elegant if we're
+	# going to use the same process.pl for latin & greek
+
+	$string =~ s/[^a-z\*\\\/\=\|\+\(\)']/ /g;
+	
+	my @words = split /\s+/, $string;
 
 	for my $form (@words)
-        {
+	{
 		next if ($form eq "");
 
 		# add to the count
 
 		$count{$form}++;
 
-                # create a new Word
+		# create a new Word
 
-                my $word = Word->new();
+		my $word = Word->new();
 
-                # for exact-word matching, the superficial form
+		# for exact-word matching, the superficial form
 
-                $word->word($form);
+		$word->word($form);
 
-                # its locus
+		# its locus
 
-                $word->verseno($verseno);
+		$word->verseno($verseno);
 
-                # now add it to the current phrase
-
-                $phrase->add_word($word);
-        }
+		# now add it to the current
+ 
+		$phrase->add_word($word);
+	}
 
 	return;
 }
@@ -470,19 +476,11 @@ sub alt
 {
 	my $form = shift;
 
-	# all lowercase
+	my $no_caps = $form;
+	$no_caps =~ s/\*//;
 
-	my $lower = lc($form);
+	my $no_apos = $form;
+	$no_apos =~ s/'//;
 
-	# titlecase
-
-	my $title = $lower;
-	$title =~ s/(.)/uc($1)/e;
-
-	# replace j and v with i and u
-	
-	my $semivowel = $lower;
-	$semivowel =~ tr/jv/iu/;
-
-	return ($lower, $title, $semivowel);
+	return ($no_caps, $no_apos);
 }
