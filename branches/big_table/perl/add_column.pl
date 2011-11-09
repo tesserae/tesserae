@@ -261,8 +261,3 @@ while (my $file_in = shift @ARGV)
 	print "writing $file_out.loc_phrase\n";
 	nstore \@loc_phrase, "$file_out.loc_phrase";
 }
-
-sub add_line
-{
-
-}
