@@ -305,18 +305,39 @@ for my $target_ref_ext (0..$#match_target)
 
 		my @target_terms;
 		
-		# this is the score for this pair of units
+		#
+		# here's the place where a scoring algorithm should be
+		#
+		# - right now we have a placeholder that's a function
+		#   of word frequency and distance between words
 		
 		my $score;
+		my $distance;
+		my $last_val = -1;
 
-		# examine each shared term in the target
-		#  - add it to the list
-		#  - mark the display copy as matched
-
-		for my $target_ref_int ( keys %{$match_target[$target_ref_ext]{$source_ref_ext}} )
+		# examine each shared term in the target in order by position
+		# within the line
+		
+		for my $target_ref_int ( sort {$a <=> $b} keys %{$match_target[$target_ref_ext]{$source_ref_ext}} )
 		{
+			
+			# add this term to the list of shared terms
+			
 			push @target_terms, $unit_target[$target_ref_ext][$target_ref_int];
+			
+			# mark the display copy as matched
+			
 			$display_target[$target_ref_int] = "<span class=\"matched\">$unit_target[$target_ref_ext][$target_ref_int]</span>";
+			
+			# add the distance between this and the previous term
+			
+			unless ($last_val == -1)
+			{
+				$distance += ($target_ref_int - $last_val);
+			}
+			$last_val = $target_ref_int;
+			
+			# add the frequency score for this term
 			
 			$score += $match_target[$target_ref_ext]{$source_ref_ext}{$target_ref_int};
 		}
@@ -325,13 +346,35 @@ for my $target_ref_ext (0..$#match_target)
 
 		my @source_terms;
 
-		# examine each shared term in the source
-		# - as above
+		#
+		# now examine each shared term in the source as above
+		#
 		
-		for my $source_ref_int ( keys %{$match_source[$target_ref_ext]{$source_ref_ext}} )
+		# reinitialize the last-term position
+		
+		$last_val = -1;
+		
+		# go through the terms in order by position
+		
+		for my $source_ref_int ( sort {$a <=> $b} keys %{$match_source[$target_ref_ext]{$source_ref_ext}} )
 		{
+			# add the term to shared terms
+			
 			push @source_terms, $unit_source[$source_ref_ext][$source_ref_int];
+			
+			# mark the display copy
+			
 			$display_source[$source_ref_int] = "<span class=\"matched\">$unit_source[$source_ref_ext][$source_ref_int]</span>";
+
+			# add the distance between this and the previous term
+
+			unless ($last_val == -1)
+			{
+				$distance += ($source_ref_int - $last_val);
+			}
+			$last_val = $source_ref_int;
+
+			# add the frequency score for this term
 
 			$score += $match_source[$target_ref_ext]{$source_ref_ext}{$source_ref_int};
 		}
@@ -346,7 +389,7 @@ for my $target_ref_ext (0..$#match_target)
 
 		# now write the xml record for this match
 
-		print "\t<tessdata keypair=\"$keypair\" score=\"$score\">\n";
+		print "\t<tessdata keypair=\"$keypair\" score=\"$distance\">\n";
 
 		print "\t\t<phrase text=\"source\" work=\"$abbr{$source}\" line=\"$loc_source[$source_ref_ext]\" link=\"NA\">"
 				. join(" ", @display_source)

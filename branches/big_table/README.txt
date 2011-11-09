@@ -1,17 +1,12 @@
 Big Table prototype
 
-Hi, Xia & Dr. Coffee,
-
-Here's my first attempt at an inverted index approach to Tesserae search.
-It's stil a bit messy and only half documented, but it seems to be working.
-
 ### contents of this directory ###
 
 I'm drawing on some pieces of the current Tesserae, including its directory
 structure.  You should find here the following sub-directories, as on billie:
 
 	./perl  	the scripts
-	./texts 	the plain texts
+	./texts 	the plain texts, subdivided into latin and greek
 	./data  	parsed texts stored as binaries
 	./xsl   	xsl stylesheets used to turn xml results into html
 
@@ -30,10 +25,12 @@ only slight modification:
 	xsl/target.xsl
 	  - a stylesheet that formats xml results as an html table, 
 	    sorted by location in the target text
+	
+	xsl/score.xsl
+	  - a stylesheet that sorts by score
 
-	texts/vergil.aeneid.tess
-	texts/lucan.bc.1.tess
-	  - the plain text versions of our two test texts.
+	texts/la/*
+	  - the plain text versions of tesserae texts
 
 The new scripts are these:
 
@@ -44,6 +41,11 @@ The new scripts are these:
 	perl/stems_add_column.pl
 	  - reads a text's column in the words table and creates 
 	    an analagous column in the stems table
+	
+	perl/big_table_frequencies.pl
+	  - adds the token counts created by add_column.pl for each
+	    separate file and creates word and stem counts for the
+	    whole corpus.
 
 	perl/read_table
 	  - reads two columns from a table and returns all the
@@ -61,14 +63,18 @@ Installation:
 
 	perl perl/configure.pl
 
-Adding the two texts in the texts directory to a new table:
+Adding the texts in the latin texts directory to a new table:
 
-	perl perl/add_column.pl	texts/*.tess
-	perl perl/stems_add_column.pl texts/*.tess
+	perl perl/add_column.pl	texts/la/*
+	perl perl/stems_add_column.pl texts/la/*
+
+Generating frequency statistics for latin:
+
+	perl perl/big_table_frequencies.pl la
 
 Getting results:
 
-	perl perl/read_table.pl
+	perl perl/read_table.pl 
 
 By default the last step will dump xml output to the termial.  
 On my Mac, I use the program xsltproc to convert the xml to html 
@@ -76,12 +82,6 @@ using the stylesheets in the xsl directory:
 
 	perl perl/read_table.pl > results.xml
 	xsltproc xsl/target.xsl results.xml > results.html
-
-Or,
-
-	perl perl/read_table.pl | xsltproc xsl/target.xsl - > results.html
-
-I'm pretty sure xsltproc is also installed on billie.
 
 ### options ###
 
@@ -92,10 +92,11 @@ for parallel phrases in vergil.aeneid and lucan.bc.1 based on stems.
 If you parse other plain text (.tess) files, or want to search on words
 or lines, use command line arguments to read_table.pl:
 
-	perl perl/read_table.pl [--line] [--word] [TARGET SOURCE]
+	perl perl/read_table.pl [--line] [--word] [--session=SESSION] [TARGET SOURCE]
 
 where TARGET and SOURCE are the names of previously parsed texts, minus
-the path and .tess extension.
+the path and .tess extension; and SESSION is an id for the header of the
+xml file, simulating the usage on billie.
 
 ### general theory ###
 
