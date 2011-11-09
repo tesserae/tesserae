@@ -7,21 +7,22 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our @EXPORT = qw(%abbr %top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_images $url_tmp);
+our @EXPORT = qw(%abbr %top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_images $url_tmp);
 
 our @EXPORT_OK = qw(&uniq &intersection);
 
-my $fs_base	= '/Users/chris/Sites/tesserae';
+my $fs_base	= '/var/www/tesserae';
 
 our $fs_cgi 	= $fs_base . '/cgi-bin';
 our $fs_data	= $fs_base . '/data';
 our $fs_html 	= $fs_base . '/html';
 our $fs_perl 	= $fs_base . '/perl';
+our $fs_test	= $fs_base . '/testing';
 our $fs_text	= $fs_base . '/texts';
 our $fs_tmp  	= $fs_base . '/tmp';
 our $fs_xsl  	= $fs_base . '/xsl';
 
-my $url_base	= 'http://localhost/~chris/tesserae';
+my $url_base	= 'http://tess.tamias';
 
 our $url_cgi	= $url_base . '/cgi-bin';
 our $url_css	= $url_base . '/css';

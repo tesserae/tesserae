@@ -16,22 +16,22 @@ $perl_path =~ s/\/configure.pl$//;
 
 my @perl_files;
 
-# first consult the cgi-bin directory
-# and add any file with a .pl extension to the list
+# directories to search
 
-opendir (DH, $fs_cgi);
+my @perl_search = ($fs_cgi, $fs_perl, $fs_test, "$fs_test/greek");
 
-push @perl_files, (grep {/\.pl$/ && -f} map { "$fs_cgi/$_" } readdir DH);
+while (my $dir = shift @perl_search)
+{
+	if (-d $dir)
+	{
+		opendir (DH, $dir);
 
-closedir DH;
+		push @perl_files, (grep {/\.pl|m$/ && -f} map { "$dir/$_" } readdir DH);
 
-# now do the same for the perl directory
+		closedir DH;
+	}
+}
 
-opendir (DH, $fs_perl);
-
-push @perl_files, (grep {/\.pl|m$/ && -f} map { "$fs_perl/$_" } readdir DH);
-
-closedir (DH);
 
 #
 # This array will hold a list of xsl files

@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/var/www/tesserae/perl';	# PERL_PATH
 
 #
 # gk_prepare.pl
@@ -225,7 +225,7 @@ unless ($no_archimedes)
 
 	print STDERR scalar(@working) . " forms to look up on archimedes.\n";
 
-	# this loop queries the archimedes server for 10 forms at a time
+	# this loop queries the archimedes server for forms in batches
 	#
 	# doing them in batches makes things go faster and requires fewer
 	# calls to their server.
@@ -257,64 +257,6 @@ unless ($no_archimedes)
 
 	print STDERR "\n\n";
 
-	unless ($no_alts)
-	{
-
-		print STDERR scalar(@failed) . " forms got no results from archimedes. Checking possible alternate orthography.\n";
-
-		#
-		# a second pass; this time form by form, looking up possible
-		# variant spellings
-		#
-
-		@working = splice (@failed);
-
-		$progress = 0;
-		$total = scalar(@working);
-		my $old_progress = 0;
-
-		print STDERR "0% |" . (" "x20) . "| 100%" . "\r0% |";
-
-		#
-		# consider each form in turn
-		#
-
-		for my $form (@working)
-		{
-
-			$progress += 1;
-
-			if ($progress/$total > $old_progress+.05)
-			{
-				print STDERR ".";
-				$old_progress += .05;
-			}
-
-			# determine alternate spellings
-
-			my @alt = alt($form);
-
-			# check all possible alternates with archimedes
-
-			my @failed_alt = archimedes(@alt);
-
-			# if they all fail, then add the original form back to the failed list
-
-			if ($#failed_alt == $#alt)
-			{
-				push @failed, $form;
-			}
-		}
-
-		print STDERR "\n\n";
-
-		# if permitted, write the modified cache to disk
-	
-		unless ($no_write_cache)
-		{
-			nstore \%stem, $file_stems;
-		}
-	}
 }
 
 print STDERR scalar(@failed) . " forms couldn't be stemmed: \n";
@@ -415,17 +357,17 @@ sub add_line
 	{
 		next if ($form eq "");
 
-		# add to the count
-
-		$count{$form}++;
-
 		# create a new Word
 
 		my $word = Word->new();
 
-		# for exact-word matching, the superficial form
+		# for display, the form as it appeared in the text
 
-		$word->word($form);
+		$word->display($form);
+
+		# for exact word matching, the lowercase version of same
+
+		$word->word(lcase($lang, $form));
 
 		# its locus
 
@@ -434,6 +376,10 @@ sub add_line
 		# now add it to the current
  
 		$phrase->add_word($word);
+
+		# add to the token count
+
+		$count{$word->word}++;
 	}
 
 	return;
@@ -445,17 +391,9 @@ sub add_line
 
 sub archimedes
 {
-	my @submitted = @_;
 	
-	my @batch;
+	my @batch = @_;
 	my @failed;
-	
-	# look up every form in lowercase and titlecase
-	
-	for (@_)
-	{
-		push @batch, lcase($lang, $_), tcase($lang, $_);
-	}
 	
 	# initialize the client
 
@@ -463,32 +401,25 @@ sub archimedes
 	
 	# make the call
 
-	my $res = $client->call('lemma', "-" . uc($archimedes_lang), [@batch]);
+	my $res = $client->call('lemma', "-" . uc($archimedes_lang), [@batch, tcase($lang, @batch)]);
 	
 	# add the results to the cache
 
-	for my $w ( @batch )
+	for my $w ( keys %{$res} )
 	{
 
-		# if there's a key, then enter the value into the cache
-
-		if ( defined $res->{$w} )
-		{
-		
-			# if there's already a value for a different capitalization
-			# then merge them
+		# if there's already a value for a different capitalization
+		# then merge them
 			
-			my %uniq;
+		my %uniq;
 
-			for (@{$stem{lc($w)}}, @{$res->{$w}})
-			{
-				tr/jJ/iI/;
+		for (@{$stem{lcase($lang, $w)}}, @{$res->{$w}})
+		{
 				
-				$uniq{$_} = 1;
-			}
-
-			$stem{lc($w)} = [keys %uniq];		
+			$uniq{lcase($lang, $_)} = 1;
 		}
+
+		$stem{lcase($lang, $w)} = [keys %uniq];		
 		
 		# otherwise leave the cache value for that key undefined
 	}
@@ -497,31 +428,12 @@ sub archimedes
 	# check the forms originally submitted to see how many succeeded
 	#
 	
-	for (@submitted)
+	for (@batch)
 	{
-		unless ( defined $stem{lc($_)} )	{ push @failed, $_ }
+		unless ( defined $stem{$_} )	{ push @failed, $_ }
 	}
 	
 	return @failed;
-}
-
-
-# this sub creates a list of possible alternate forms for words
-# not found in the dictionary.
-#
-# they're returned in order of likely usefulness
-
-sub alt
-{
-	my $form = shift;
-
-	my $no_caps = $form;
-	$no_caps =~ s/\*//;
-
-	my $no_apos = $form;
-	$no_apos =~ s/'//;
-
-	return ($no_caps, $no_apos);
 }
 
 #
@@ -530,37 +442,48 @@ sub alt
 sub lcase
 {
 	my $lang = shift;
-	my $string = shift;
-	
-	if ($lang eq 'la')
+
+	my @string = @_;
+
+	for (@string)
 	{
-		$string = lc($string);
-		$string =~ tr/jJ/iI/;
-	}
 	
-	if ($lang eq 'grc')
-	{
-		$string =~ s/^\*([\(\)\/\\\|\=\+]*)([a-z])/$2$1/;
-	}
+		if ($lang eq 'la')
+		{
+			tr/A-Z/a-z/;
+			tr/jJ/iI/;
+		}
 	
-	return $string;
+		if ($lang eq 'grc')
+		{
+			s/^\*([\(\)\/\\\|\=\+]*)([a-z])/$2$1/;
+		}
+	}
+
+	return wantarray ? @string : shift @string;
 }
 
 sub tcase
 {
 	my $lang = shift;
-	my $string = shift;
+
+	my @string = @_;
 	
-	if ($lang eq 'la')
+	for (@string)
 	{
-		$string = lcase('la', $string);
-		$string =~ s/^([a-z])/uc($1)/e;
-	}
+
+		$_ = lcase($lang, $_);
+
+		if ($lang eq 'la')
+		{
+			s/^([a-z])/uc($1)/e;
+		}
 	
-	if ($lang eq 'grc')
-	{
-		$string =~ s/^([a-z])([\(\)\/\\\|\=\+]*)/\*$2$1/;
+		if ($lang eq 'grc')
+		{
+			s/^([a-z])([\(\)\/\\\|\=\+]*)/\*$2$1/;
+		}
 	}
-	
-	return $string;
+
+	return wantarray ? @string : shift @string;
 }

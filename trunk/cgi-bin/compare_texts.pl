@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/var/www/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;
@@ -57,6 +57,8 @@ my $usage = "usage: progname TEXT1 TEXT2\n";
 # $usage = "currently unavailable; experimental = ".$experimental." session = ".$session." sort = ".$sort." text = ".$text."\n";
 
 my @text;
+
+my $lang = 'la';
 
 my $debug = 0;
 my $no_html = 0;

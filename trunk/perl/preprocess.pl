@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/var/www/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;
@@ -11,7 +11,6 @@ use Parallel;
 use Data::Dumper;
 use Frontier::Client;
 use Storable qw(nstore retrieve);
-use Files;
 
 
 my $readfromfile = 1;
@@ -44,34 +43,16 @@ if ($numberoftexts != 2) {
 
 # print STDERR "file 1: ".$text[0]."\nfile 2: ".$text[1]."\noutput: ".$text[2]."\n\n";
 
-my $parsed_source = "$fs_data/v2/parsed/" . Files::source_parsed_file($text[0], $text[1]);
-my $parsed_target = "$fs_data/v2/parsed/" . Files::target_parsed_file($text[0], $text[1]);
-my $preprocessed_file = "$fs_data/v2/preprocessed/" . Files::preprocessed_file($text[0], $text[1]);
+my $parsed_source = "$fs_data/v2/parsed/$text[1].parsed";
+my $parsed_target = "$fs_data/v2/parsed/$text[0].parsed";
+my $preprocessed_file = "$fs_data/v2/preprocessed/" . join("~", sort @text[0,1]) . ".preprocessed";
 my $num_arguments = $#ARGV + 1;
 
-# code for testing Files
-if (Files::determine_input_filenames($text[0], $text[1]) == 0) {
-
-	print STDERR "ERROR: "
-		. "either the source or the target label cannot be found in the\n"
-		. "configuration file.\n\n"
-
-   		. "I used configuration file &Files::config_file().\n"
-   		. "This typically occurs if a text has been prepared but the comparison\n"
-		. "pair has not been added yet to the config file.\n\n"
-
-   		. "See the documentation in Files.pm for more information on the format\n"
-		. "of the configuration file. exiting.\n\n";
-
-	die;
-	
-} else {
-	print STDERR "source label: ".$text[0]."\n";
-	print STDERR "target label: ".$text[1]."\n";
-	print STDERR "source prs file: " . $parsed_source . "\n";
-	print STDERR "target prs file: " . $parsed_target . "\n";
-	print STDERR "output file: " . $preprocessed_file . "\n";
-}
+print STDERR "source label: ".$text[0]."\n";
+print STDERR "target label: ".$text[1]."\n";
+print STDERR "source prs file: " . $parsed_source . "\n";
+print STDERR "target prs file: " . $parsed_target . "\n";
+print STDERR "output file: " . $preprocessed_file . "\n";
 
 my @parallels;
 my $total_num_matches = 0;
