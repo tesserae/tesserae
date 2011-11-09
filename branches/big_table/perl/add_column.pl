@@ -143,39 +143,44 @@ while (my $file_in = shift @ARGV)
 			$loc_phrase[$phrase_id] = $verseno;
 		}
 
-		# if a line begins with spaces or phrase-punct chars, delete them
-
-		$verse =~ s/^[\.\?\!;:\s]+//;
+		# remove initial non-word chars
+		
+		$verse =~ s/^$non_word{$lang}//;
 
 		# divide the line on phrase punct
 
-		my @chunk = split /[\.\?\!;:]/, $verse;
-
+		my @chunk;
+		 
+		while ($verse =~ s/([^\.\?\!;:]+[\.\?\!;:](?:$non_word{$lang})*)//)
+		{
+			push @chunk, $1;
+		}
+				
+		push @chunk, $verse;
+		
 		for (0..$#chunk)
 		{
-			# if there are multiple phrases on this line, add each one in turn
-
-			if ($_ > 0)
-			{
-				$phrase_id++;
-
+			
+			if ($_ > 0) 
+			{ 
 				$loc_phrase[$phrase_id] = $verseno;
+				$phrase_id++ 
 			}
+
+			my $string = $chunk[$_];
 
 			# remove html special chars
 
-			$verse =~ s/&[a-z];//ig;
+			$string =~ s/&[a-z];//ig;
 
 			# split into words
 
-			my @words = split ($non_word{$lang}, $chunk[$_]);
+			my @words = split ($non_word{$lang}, $string);
 
 			# add words to the current phrase, line
 
 			for (@words)
 			{
-				chomp;
-
 				next if ($_ eq "");
 
 				# convert to lower-case
@@ -212,7 +217,7 @@ while (my $file_in = shift @ARGV)
 				push @{$index_line_ext{$key}}, $line_id;
 			}
 		}
-
+		
 		# increment line_id
 
 		$line_id++;
@@ -255,4 +260,9 @@ while (my $file_in = shift @ARGV)
 
 	print "writing $file_out.loc_phrase\n";
 	nstore \@loc_phrase, "$file_out.loc_phrase";
+}
+
+sub add_line
+{
+
 }
