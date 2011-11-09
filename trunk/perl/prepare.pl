@@ -43,8 +43,8 @@ my $file_out = $file_in;
 $file_out =~ s/.+\//${fs_data}v2\/parsed\//;
 $file_out =~ s/(\.tess)?$/\.parsed/;
 
-my $file_stems = Files::cache_filename();
-my $file_lewis = "$fs_data/v2/lewis.cache";
+my $file_stems = "$fs_data/common/la.stem.cache";
+my $file_lewis = "$fs_data/common/la.semantic.cache";
 
 print STDERR "input text: $file_in\nparsed corpus output file: $file_out\n\n";
 

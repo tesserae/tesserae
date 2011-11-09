@@ -1,3 +1,5 @@
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+
 #
 # crate_lewis_cache.pl
 #
@@ -9,6 +11,8 @@
 
 use strict;
 use warnings;
+
+use TessSystemVars;
 
 # uses XML::LibXML, which didn't come standard on my Mac
 
@@ -23,6 +27,8 @@ use Storable qw(nstore);
 my $parser = new XML::LibXML;
 
 my $filename = shift @ARGV || 'lewis-short.xml';
+
+my $file_out = shift @ARGV || "$fs_data/common/la.semantic.cache";
 
 print STDERR "parsing $filename\n";
 
@@ -106,10 +112,38 @@ for my $entry (@entry)
 	}
 }
 
+print STDERR "lowercasing keys\n";
+
+for (grep { /[A-Z]/ } keys %lewis)
+{
+	
+	my $this = $_;
+	my $base = lc($_);
+	
+	if ( defined $lewis{$base} )
+	{
+		my %unique;
+		
+		for (@{$lewis{$this}}, @{$lewis{$base}})
+		{
+			next if ($_ eq "");
+			
+			$unique{$_} = 1;
+		}
+		
+		$lewis{$base} = [keys %unique];
+	}
+	else
+	{
+		$lewis{$base} = $lewis{$this};
+	}
+	delete $lewis{$this};
+}
+
 print STDERR "\n";
 
 print STDERR scalar(keys %lewis) . " keys, $def_counter definitions extracted\n\n";
 
-print STDERR "writing lewis.cache\n";
+print STDERR "writing $file_out\n";
 
-nstore \%lewis, "lewis.cache";
+nstore \%lewis, $file_out;

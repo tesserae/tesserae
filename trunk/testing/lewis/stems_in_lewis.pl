@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use lib '/var/www/tesserae/perl';
+use lib '/Users/chris/Sites/tesserae/perl';
 
 use Storable qw(nstore retrieve);
 
@@ -16,19 +16,19 @@ my $source = shift @ARGV || 'aeneid1';
 $source =~ s/.+\///;
 $source =~ s/\.tess//;
 
-my $file_stems = Files::cache_filename();
-my $file_lewis = $fs_data . 'v2/lewis.cache';
+my $file_stems 	= "$fs_data/common/la.stem.cache";
+my $file_semantic = "$fs_data/common/la.semantic.cache";
 
-my $file_parsed = $fs_data . 'v2/parsed/' . $source . '.parsed';
+my $file_parsed 	= "$fs_data/v2/parsed/$source.parsed";
 
 
-my %stems = %{ retrieve($file_stems) };
-my %lewis = %{ retrieve($file_lewis) };
+my %stem 	 = %{ retrieve($file_stems) };
+my %semantic = %{ retrieve($file_semantic) };
 
 my %uniq;
 my %count;
 
-for ( values %stems )
+for ( values %stem )
 {
 	for (@{$_})
 	{
@@ -40,7 +40,7 @@ for my $key (keys %uniq)
 {
 	$key =~ s/[^a-z ]//ig;
 
-	my $test = defined $lewis{lc($key)} ? 'defined' : 'undefined';
+	my $test = defined $semantic{lc($key)} ? 'defined' : 'undefined';
 
 	push @{$count{$test}}, $key;
 }

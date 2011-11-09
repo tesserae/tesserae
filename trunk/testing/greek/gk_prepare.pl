@@ -21,14 +21,14 @@ use Data::Dumper;
 use Storable qw(retrieve nstore);
 use Files;
 
-my $lang = "grc";
+my $lang = "la";
 
 my %non_word = ('la' => qr([^a-zA-Z]+), 'grc' => qr([^a-z\*\(\)\\\/\=\|\+']+));
 
 # normal operation requires looking up headwords on the archimedes morphology server
 # to suppress this set the following to true
 
-my $no_archimedes = 1;
+my $no_archimedes = 0;
 
 # forms not found on archimedes will be attempted a second time using alternate
 # orthography.  to suppress this stage, set the following to true
@@ -66,7 +66,7 @@ $file_out =~ s/.+\//$fs_data\/v2\/parsed\//;
 $file_out =~ s/(\.tess)?$/\.parsed/;
 
 my $file_stems = "$fs_data/common/$lang.stem.cache";
-my $file_semantics = "$fs_data/v2/lewis.cache";
+my $file_semantics = "$fs_data/common/$lang.semantic.cache";
 
 print STDERR "input text: $file_in\nparsed corpus output file: $file_out\n\n";
 
@@ -186,14 +186,14 @@ print STDERR scalar(keys %count) . " unique forms\n";
 
 print STDERR "checking stem cache $file_stems\n";
 
-my %cache = ();
+my %stem = ();
 
 if (-s $file_stems) 
 {
-	%cache = %{retrieve($file_stems)};
+	%stem = %{retrieve($file_stems)};
 }
 
-print STDERR "cache contains " . scalar(keys %cache) . " forms\n\n";
+print STDERR "cache contains " . scalar(keys %stem) . " forms\n\n";
 
 
 # these arrays hold keys to be looked up, and those that return no results
@@ -207,7 +207,7 @@ for (@working)
 {
 	# if it's not in the cache, add it to the list to look up.
 
-	unless (defined $cache{$_} and ${$cache{$_}}[0] ne "")
+	unless (defined $stem{$_} and ${$stem{$_}}[0] ne "")
 	{
 		push @failed, $_;
 	}
@@ -251,7 +251,7 @@ unless ($no_archimedes)
 
 		unless ($no_write_cache)
 		{
-			nstore \%cache, $file_stems;
+			nstore \%stem, $file_stems;
 		}
 	}
 
@@ -312,7 +312,7 @@ unless ($no_archimedes)
 	
 		unless ($no_write_cache)
 		{
-			nstore \%cache, $file_stems;
+			nstore \%stem, $file_stems;
 		}
 	}
 }
@@ -322,6 +322,21 @@ print STDERR scalar(@failed) . " forms couldn't be stemmed: \n";
 print STDERR join(" ", sort @failed) . "\n\n";
 
 #
+# load semantic tags
+#
+
+print STDERR "checking semantic cache $file_semantics\n";
+
+my %semantic = ();
+
+if (-s $file_semantics) 
+{
+	%semantic = %{retrieve($file_semantics)};
+}
+
+print STDERR "cache contains " . scalar(keys %semantic) . " forms\n\n";
+
+#
 # go back and reprocess
 #
 #   - convert forms to lowercase
@@ -329,10 +344,7 @@ print STDERR join(" ", sort @failed) . "\n\n";
 #   - add semantic tags
 #   - add phrase ids
 
-# my %lewis = %{ retrieve($file_lewis) };
-
-
-print STDERR "adding stems to Phrases...\n";
+print STDERR "adding stems, semantic tags to Phrases...\n";
 
 for my $phraseno (0..$#phrase_array)
 {
@@ -353,7 +365,7 @@ for my $phraseno (0..$#phrase_array)
 
 		# add stems
 
-		for ( @{$cache{$form}} )
+		for ( @{$stem{$form}} )
 		{
 			next if ($_ eq "");
 
@@ -362,10 +374,10 @@ for my $phraseno (0..$#phrase_array)
 
 		# add semantic tags
 
-		#for ( @{$lewis{lc($form)}} )
-		#{
-		#	$word->add_semantic_tag($_);
-		#}
+		for ( @{$semantic{lc($form)}} )
+		{
+			$word->add_semantic_tag($_);
+		}
 
 		# note what phrase id it belongs to
 
@@ -433,9 +445,17 @@ sub add_line
 
 sub archimedes
 {
+	my @submitted = @_;
 	
-	my @batch = @_;
+	my @batch;
 	my @failed;
+	
+	# look up every form in lowercase and titlecase
+	
+	for (@_)
+	{
+		push @batch, lcase($lang, $_), tcase($lang, $_);
+	}
 	
 	# initialize the client
 
@@ -445,10 +465,7 @@ sub archimedes
 
 	my $res = $client->call('lemma', "-" . uc($archimedes_lang), [@batch]);
 	
-	# check the results
-	#
-	# what we get back should be a hash with one key per form we asked for
-	# check each of the forms to make sure it got a result
+	# add the results to the cache
 
 	for my $w ( @batch )
 	{
@@ -456,15 +473,33 @@ sub archimedes
 		# if there's a key, then enter the value into the cache
 
 		if ( defined $res->{$w} )
-        	{
-				$cache{$w} = $res->{$w};
-        	}
-		# otherwise leave the cache value for that key blank
-		else
 		{
-			$cache{$w} = [""];
-			push @failed, $w;
+		
+			# if there's already a value for a different capitalization
+			# then merge them
+			
+			my %uniq;
+
+			for (@{$stem{lc($w)}}, @{$res->{$w}})
+			{
+				tr/jJ/iI/;
+				
+				$uniq{$_} = 1;
+			}
+
+			$stem{lc($w)} = [keys %uniq];		
 		}
+		
+		# otherwise leave the cache value for that key undefined
+	}
+	
+	#
+	# check the forms originally submitted to see how many succeeded
+	#
+	
+	for (@submitted)
+	{
+		unless ( defined $stem{lc($_)} )	{ push @failed, $_ }
 	}
 	
 	return @failed;
@@ -487,4 +522,45 @@ sub alt
 	$no_apos =~ s/'//;
 
 	return ($no_caps, $no_apos);
+}
+
+#
+# language-specific lower-case and title-case functions
+
+sub lcase
+{
+	my $lang = shift;
+	my $string = shift;
+	
+	if ($lang eq 'la')
+	{
+		$string = lc($string);
+		$string =~ tr/jJ/iI/;
+	}
+	
+	if ($lang eq 'grc')
+	{
+		$string =~ s/^\*([\(\)\/\\\|\=\+]*)([a-z])/$2$1/;
+	}
+	
+	return $string;
+}
+
+sub tcase
+{
+	my $lang = shift;
+	my $string = shift;
+	
+	if ($lang eq 'la')
+	{
+		$string = lcase('la', $string);
+		$string =~ s/^([a-z])/uc($1)/e;
+	}
+	
+	if ($lang eq 'grc')
+	{
+		$string =~ s/^([a-z])([\(\)\/\\\|\=\+]*)/\*$2$1/;
+	}
+	
+	return $string;
 }
