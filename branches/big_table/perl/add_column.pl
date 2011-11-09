@@ -107,6 +107,8 @@ while (my $file_in = shift @ARGV)
 	my %index_phrase_int;
 	my %index_phrase_ext;
 
+	my %ref;
+
 	print STDERR "reading text: $file_in\n";
 
 	# open the input text
@@ -130,9 +132,15 @@ while (my $file_in = shift @ARGV)
 
 	    next unless (defined $verseno and defined $verse);
 
-		# record the locus of each line
+		# examine the locus of each line
 
-		$verseno =~ s/^.*\s//;
+		$verseno =~ s/^(.*)\s//;
+		
+		# save the abbreviation of the author/work
+		
+		$ref{$1}++;
+
+		# save the book/poem/line number
 
 		$loc_line[$line_id] = $verseno;
 
@@ -260,4 +268,19 @@ while (my $file_in = shift @ARGV)
 
 	print "writing $file_out.loc_phrase\n";
 	nstore \@loc_phrase, "$file_out.loc_phrase";
+	
+	# add this ref to the database of abbreviations
+	
+	my $file_abbr = "data/common/abbreviations";
+	
+	my %abbr;
+	
+	if ( -s $file_abbr )
+	{
+		 %abbr = %{ retrieve($file_abbr) };
+	}
+	
+	$abbr{$name} = (sort { $ref{$b} <=> $ref{$a} } keys %ref)[0];
+	
+	nstore \%abbr, $file_abbr;
 }

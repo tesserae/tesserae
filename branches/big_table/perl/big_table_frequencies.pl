@@ -1,10 +1,11 @@
 #
-# big_table_stoplists.pls
+# big_table_frequencies.pl
 #
 # create lists of most frequent tokens by rank order
-# in order to calculate stop words.
+# in order to calculate stop words
+# and frequency-based scores
 
-use Storable;
+use Storable qw(nstore retrieve);
 
 #
 # specify language to parse at cmd line
@@ -61,16 +62,9 @@ for my $lang(@lang)
 		}
 	}
 
-	print STDERR "writing data/$lang/stop_word\n";
+	print STDERR "writing data/$lang/$lang.word_count\n";
 
-	open (FH, ">", "data/$lang/stop_word") || die "can't write to data/$lang/stop_word: $!";
-
-	for ( sort { $count{$b} <=> $count{$a} } keys %count )
-	{
-		print FH "$count{$_}\t$_\n";
-	}
-
-	close FH;
+	nstore \%count, "data/$lang/$lang.word_count";
 
 	#
 	# stem counts
@@ -95,16 +89,9 @@ for my $lang(@lang)
 		}
 	}
 
-	print STDERR "writing data/$lang/stop_stem\n";
+	print STDERR "writing data/$lang/$lang.stem_count\n";
 
-	open (FH, ">", "data/$lang/stop_stem") || die "can't write to data/$lang/stop_stem: $!";
-
-	for (sort { $stem_count{$b} <=> $stem_count{$a} } keys %stem_count )
-	{
-		print FH "$stem_count{$_}\t$_\n";
-	}
-
-	close FH;
+	nstore \%stem_count, "data/$lang/$lang.stem_count";
 
 	print STDERR "\n";
 }

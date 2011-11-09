@@ -13,7 +13,7 @@ use lib '/Users/chris/Desktop/big_table/perl';	# PERL_PATH
 use strict;
 use warnings;
 
-use Storable;
+use Storable qw(nstore retrieve);
 use TessSystemVars;
 
 #
@@ -25,6 +25,11 @@ use TessSystemVars;
 # tesserae functionality
 
 my $session = "NA";
+
+# abbreviations of canonical citation refs
+
+my $file_abbr = "data/common/abbreviations";
+my %abbr = %{ retrieve($file_abbr) };
 
 # $lang sets the language of input texts
 # - necessary for finding the files, since
@@ -82,6 +87,8 @@ my $feature = 'stem';
 # - feature-set-specific
 
 my @stoplist = @{ $TessSystemVars::stop{$lang}{$feature} };
+
+my %freq = %{ retrieve( "data/$lang/$lang.${feature}_count" )};
 
 #
 # read data from table
@@ -238,8 +245,10 @@ for my $key (sort keys %index_source_ext)
 			my $source_ref_int = ${$index_source_int{$key}}[$j];
 			my $source_ref_ext = ${$index_source_ext{$key}}[$j];
 
-			${$match_target[$target_ref_ext]}{$source_ref_ext}{$target_ref_int} += 1;
-			${$match_source[$target_ref_ext]}{$source_ref_ext}{$source_ref_int} += 1;
+			${$match_target[$target_ref_ext]}{$source_ref_ext}{$target_ref_int} += 
+				( defined $freq{$key} ? 1/$freq{$key} : 0 );
+			${$match_source[$target_ref_ext]}{$source_ref_ext}{$source_ref_int} +=
+				( defined $freq{$key} ? 1/$freq{$key} : 0 );
 		}
 	}
 }
@@ -295,6 +304,10 @@ for my $target_ref_ext (0..$#match_target)
 		# this array will hold shared words in the target
 
 		my @target_terms;
+		
+		# this is the score for this pair of units
+		
+		my $score;
 
 		# examine each shared term in the target
 		#  - add it to the list
@@ -304,6 +317,8 @@ for my $target_ref_ext (0..$#match_target)
 		{
 			push @target_terms, $unit_target[$target_ref_ext][$target_ref_int];
 			$display_target[$target_ref_int] = "<span class=\"matched\">$unit_target[$target_ref_ext][$target_ref_int]</span>";
+			
+			$score += $match_target[$target_ref_ext]{$source_ref_ext}{$target_ref_int};
 		}
 
 		# this array will hold shared words in the source
@@ -317,7 +332,13 @@ for my $target_ref_ext (0..$#match_target)
 		{
 			push @source_terms, $unit_source[$source_ref_ext][$source_ref_int];
 			$display_source[$source_ref_int] = "<span class=\"matched\">$unit_source[$source_ref_ext][$source_ref_int]</span>";
+
+			$score += $match_source[$target_ref_ext]{$source_ref_ext}{$source_ref_int};
 		}
+		
+		# this multiplier puts the score into an easier range to read
+		
+		$score = sprintf("%i", log($score*1000));
 
 		# this is just a list of all unique shared words
 
@@ -325,7 +346,7 @@ for my $target_ref_ext (0..$#match_target)
 
 		# now write the xml record for this match
 
-		print "\t<tessdata keypair=\"$keypair\" score=\"NA\">\n";
+		print "\t<tessdata keypair=\"$keypair\" score=\"$score\">\n";
 
 		print "\t\t<phrase text=\"source\" work=\"$abbr{$source}\" line=\"$loc_source[$source_ref_ext]\" link=\"NA\">"
 				. join(" ", @display_source)
