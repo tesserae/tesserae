@@ -34,8 +34,8 @@
 				<p>
 					Match on
 					<select name="unit" ID="unit">
-						<option value="words" selected="selected">words</option>
-						<option value="stems" disabled="disabled">stems (temporarily unavailable)</option>
+						<option value="word" selected="selected">words</option>
+						<option value="stem" disabled="disabled">stems (temporarily unavailable)</option>
 					</select>
 				</p>
 
@@ -45,9 +45,9 @@
 					Omit matches on
 					<select name="cutoff" ID="cutoff">
 						<option value="0">none</option>
-						<option value="10">top 10%</option>
-						<option value="20">top 20%</option>
-						<option value="30">top 30%</option>
+						<option value="10">top 10</option>
+						<option value="50">top 50</option>
+						<option value="100">top 100</option>
 					</select>
 					of the most frequent Latin words.
 				</p>

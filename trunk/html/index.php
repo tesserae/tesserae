@@ -33,8 +33,8 @@
 						<tr>
 							<td>
 						
-								<input type="hidden" name="unit" value="words"/>
-								<input type="hidden" name="cutoff" value="30"/>
+								<input type="hidden" name="unit" value="word"/>
+								<input type="hidden" name="cutoff" value="50"/>
 							</td>
 						</tr>
 						<tr>

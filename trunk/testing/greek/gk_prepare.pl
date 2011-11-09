@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # gk_prepare.pl
@@ -21,15 +21,19 @@ use Data::Dumper;
 use Storable qw(retrieve nstore);
 use Files;
 
+my $lang = "grc";
+
+my %non_word = ('la' => qr([^a-zA-Z]+), 'grc' => qr([^a-z\*\(\)\\\/\=\|\+']+));
+
 # normal operation requires looking up headwords on the archimedes morphology server
 # to suppress this set the following to true
 
-my $no_archimedes = 0;
+my $no_archimedes = 1;
 
 # forms not found on archimedes will be attempted a second time using alternate
 # orthography.  to suppress this stage, set the following to true
 
-my $no_alts = 0;
+my $no_alts = 1;
 
 # normal behaviour is to write new stems acquired from archimedes to the main cache
 #  -- if lookup isn't working correctly, this might cause a good cache to be over-
@@ -41,7 +45,7 @@ my $no_write_cache = 0;
 # some parameters to pass along to the archimedes server
 
 my $archimedes_debug = 0;
-my $archimedes_lang = "GRC";
+my $archimedes_lang = uc($lang);
 
 # to look up headwords you need this module, not standard on my Mac's perl install
 
@@ -61,8 +65,8 @@ my $file_out = $file_in;
 $file_out =~ s/.+\//$fs_data\/v2\/parsed\//;
 $file_out =~ s/(\.tess)?$/\.parsed/;
 
-my $file_stems = "$fs_data/v2/greek.cache";
-my $file_lewis = "$fs_data/v2/lewis.cache";
+my $file_stems = "$fs_data/common/$lang.stem.cache";
+my $file_semantics = "$fs_data/v2/lewis.cache";
 
 print STDERR "input text: $file_in\nparsed corpus output file: $file_out\n\n";
 
@@ -126,8 +130,8 @@ while (<TEXT>)
 	# if the current line has a phrase-punct char in it, then add everything
 	# before it to the current phrase, create a new phrase for what remains,
 	# and repeat in case there are still more phrase-puncts in the same line
-
-	while ($verse =~ s/([^\.\?\!;:]+[\.\?\!;:]+)//)
+	
+	while ($verse =~ s/([^\.\?\!;:]+[\.\?\!;:](?:$non_word{$lang})*)//)
 	{
 
 		# finish the current phrase
@@ -391,7 +395,7 @@ sub add_line
 	# language.  this needs to be made more elegant if we're
 	# going to use the same process.pl for latin & greek
 
-	$string =~ s/[^a-z\*\\\/\=\|\+\(\)']/ /g;
+	$string =~ s/$non_word{$lang}/ /g;
 	
 	my @words = split /\s+/, $string;
 

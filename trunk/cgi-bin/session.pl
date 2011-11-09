@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;
@@ -48,7 +48,6 @@ my @loc_source;         # loci of those phrases by first key
 my @loc_target;         #
 
 my $stoplist;
-my %top = %TessSystemVars::top;
 
 ##################################
 # begin a new session
@@ -56,7 +55,7 @@ my %top = %TessSystemVars::top;
 
 opendir(my $dh, $fs_tmp) || die "can't opendir $fs_tmp: $!";
 
-my @tes_sessions = grep { /^tesresults-[0123456789abcdef]{8}\.xml/ && -f $fs_tmp . $_ } readdir($dh);
+my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}\.xml/ && -f "$fs_tmp/$_" } readdir($dh);
 closedir $dh;
 
 @tes_sessions = sort(@tes_sessions);
@@ -113,7 +112,7 @@ for ($stopwords) {
    s/\s+/ /sg;
 }
 
-$stoplist = $top{$cutoff.$match} || "";
+$stoplist = join(" ", @{$top{"la_$match"}}[0..$cutoff]) || "";
 
 if ($stopwords ne "") { $stoplist .= " $stopwords" }
 
@@ -138,8 +137,6 @@ for (keys %ngrams_source)
    if (($stoplist =~ /\b$a\b/) 
 	or ($stoplist =~ /\b$b\b/))	{ delete $ngrams_source{$_} }
 }
-
-
 
 my @common_keypairs = @{&intersection( \@{[keys %ngrams_source]},
                                 \@{[keys %ngrams_target]}   )};
