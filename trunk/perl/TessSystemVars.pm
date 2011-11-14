@@ -26,7 +26,7 @@ my $url_base	= 'http://tess.tamias';
 
 our $url_cgi	= $url_base . '/cgi-bin';
 our $url_css	= $url_base . '/css';
-our $url_html	= $url_base . '/html';
+our $url_html	= $url_base;
 our $url_images	= $url_base . '/images';
 our $url_text	= $url_base . '/texts';
 our $url_tmp	= $url_base . '/tmp';

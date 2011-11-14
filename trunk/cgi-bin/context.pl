@@ -4,34 +4,50 @@ use lib '/var/www/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;
+use warnings;
 
+use Storable;
 use CGI qw/:standard/;
 
 print header;
 
 my ($source, $line);
 
+my %abbr = %{retrieve("$fs_data/common/abbr")};
+my %lang = %{retrieve("$fs_data/common/lang")};
+
 my $query = new CGI || die "$!";
 
-my $flag = shift @ARGV;
+my $flag = shift @ARGV || "";
 
-if ($flag eq "--no-cgi") {
+if ($flag eq "--no-cgi") 
+{
 
    my %temphash;
 
-   for (@ARGV) {
+   for (@ARGV) 
+	{
       /--(.+)=(.+)/;
       $temphash{lc($1)} = $2;
    }
 
    $source = $temphash{'source'} || die "no source";
-   $line   = $temphash{'line'} || die "no line";
+   $line   = $temphash{'line'} 	|| die "no line";
 
 }
-else {
+else 
+{
    $source = $query->param('source') || die "$!";
    $line   = $query->param('line')   || die "$!";
+}
 
+
+my $pre_ref;
+
+$source =~ s/\.part\..*//; 
+
+unless ($flag eq "--no-cgi")
+{
    print <<END;
    <html>
    <head><title>$source</title></head>
@@ -41,13 +57,9 @@ else {
 END
 }
 
-#my $fulladdr = "$abbr{$source}$line";
+my $file = "$fs_text/$lang{$source}/$source.tess";
 
-my $pre_ref;
-
-my $file = "$fs_text/$source.tess";
-
-my $context = `grep -C4 \"<$abbr{$source}$line>\" $file`;
+my $context = `grep -C4 \"<$abbr{$source} $line>\" $file`;
 
 my @context = split /\n/, $context;
 
@@ -55,11 +67,16 @@ for (@context) {
 
    next if /^$/;
 
-   my ($mark, $col_l, $col_r, $row_l, $row_r, $ln);
+   my $mark = "";
+	my $col_l = "";
+	my $col_r = "";
+   my $row_l = "";
+	my $row_r = "";
+	my $ln = "";
 
-   s/<$abbr{$source}//;		# the work and author
+   s/<$abbr{$source} //;		# the work and author
    s/      (   [0-9a-z]+\.  )*	# $1 = optional book, poem numbers;
-           (   [0-9]+       )	# $2 = just the line no.		
+           (   [0-9]+       )		# $2 = just the line no.		
      >//x;
 
    my $long  = $1.$2;

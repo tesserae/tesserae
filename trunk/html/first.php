@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
    "http://www.w3.org/TR/html4/strict.dtd">
-<?php $url_html="http://tess.tamias/html" ?><!-- URL_HTML -->
+<?php $url_html="http://tess.tamias" ?><!-- URL_HTML -->
 <?php $url_css="http://tess.tamias/css" ?><!-- URL_CSS -->
 <?php $url_cgi="http://tess.tamias/cgi-bin" ?><!-- URL_CGI -->
 <?php $url_images="http://tess.tamias/images" ?><!-- URL_IMAGES -->
 <?php $url_text="http://tess.tamias/texts" ?><!-- URL_TEXT -->
-<?php $fs_html="/Users/chris/Sites/tesserae/html" ?><!-- FS_HTML -->
+<?php $fs_html="/var/www/tesserae/html" ?><!-- FS_HTML -->
 
 
 <html lang="en">

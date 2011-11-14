@@ -9,8 +9,6 @@ use warnings;
 use Storable;
 use CGI qw/:standard/;
 
-		print STDERR (getpwuid($>))[$0] . "\n";
-
 ########################################
 # html header
 ########################################
@@ -48,6 +46,8 @@ my @loc_source;         # loci of those phrases by first key
 my @loc_target;         #
 
 my $stoplist;
+
+my %abbr = %{retrieve("$fs_data/common/abbr")};
 
 ##################################
 # begin a new session
@@ -167,7 +167,7 @@ for (@common_keypairs)
    	my $loc_source = $loc_source[$_];
 
    	my $shortline 	= $loc_source;
-           $shortline	=~ s/$abbr{$source}//;
+           $shortline	=~ s/$abbr{$source} //;
 
       	print XML "      <phrase"
 							. " text=\"source\""
@@ -185,7 +185,7 @@ for (@common_keypairs)
    	my $loc_target = $loc_target[$_];
 
          my $shortline 	= $loc_target;
-            $shortline	=~ s/$abbr{$target}//;
+            $shortline	=~ s/$abbr{$target} //;
          
          print XML "      <phrase "
                     . " text=\"target\""

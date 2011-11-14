@@ -18,7 +18,7 @@ my @perl_files;
 
 # directories to search
 
-my @perl_search = ($fs_cgi, $fs_perl, $fs_test, "$fs_test/greek");
+my @perl_search = ($fs_cgi, $fs_perl, "$fs_perl/lewis", "$fs_perl/big_table");
 
 while (my $dir = shift @perl_search)
 {
@@ -174,6 +174,11 @@ for my $file (@php_files)
 		{
 			$line = "<?php \$url_text=\"$url_text\" ?>";
 			$line .= '<!-- URL_TEXT -->' . "\n";
+		}
+		if ($line =~ /<!--\s+FS_HTML/)
+		{
+			$line = "<?php \$fs_html=\"$fs_html\" ?>";
+			$line .= '<!-- FS_HTML -->' . "\n";
 		}
 
 			print OPF $line;

@@ -1,7 +1,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:variable name="url_cgi" select="'http://tess.tamias/cgi-bin'"/><!-- URL_CGI -->
 <xsl:variable name="url_css" select="'http://tess.tamias/css'"/><!-- URL_CSS -->
-<xsl:variable name="url_html" select="'http://tess.tamias/html'"/><!-- URL_HTML -->
+<xsl:variable name="url_html" select="'http://tess.tamias'"/><!-- URL_HTML -->
 <xsl:variable name="url_images" select="'http://tess.tamias/images'"/><!-- URL_IMAGES -->
 <xsl:variable name="url_text" select="'http://tess.tamias/texts'"/><!-- URL_TEXT -->
 	
@@ -71,7 +71,7 @@
 				
 					<div id="main">
 						<form>
-							<xsl:attribute name="action"><xsl:value-of select="concat($url_cgi, '/cgi-bin/get-data.pl')"/></xsl:attribute>
+							<xsl:attribute name="action"><xsl:value-of select="concat($url_cgi, '/get-data.pl')"/></xsl:attribute>
 							<xsl:attribute name="method">post</xsl:attribute>
 						 	<xsl:attribute name="id">Form1</xsl:attribute>
 

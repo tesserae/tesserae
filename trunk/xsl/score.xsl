@@ -19,7 +19,7 @@
          </thead>
          <tbody>
             <xsl:apply-templates select="tessdata/phrase[@text='target']">
-               <xsl:sort select="../@score"/>
+               <xsl:sort select="../@score" data-type="number" order="descending" />
                <xsl:sort select="substring-before(@line,'.')" data-type="number"/>
                <xsl:sort select="substring-after(@line,concat(substring-before(@line,'.'),'.'))" data-type="number"/>
             </xsl:apply-templates>

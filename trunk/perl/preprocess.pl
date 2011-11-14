@@ -8,8 +8,6 @@ use warnings;
 use Word;
 use Phrase;
 use Parallel;
-use Data::Dumper;
-use Frontier::Client;
 use Storable qw(nstore retrieve);
 
 

@@ -49,16 +49,20 @@ my $ignore_low = "yes";
 # $ignore_low = $query->param('ignore_low');
 
 $ignore_common = "yes";
-my $commonwords = "et qui quis quid at heu in es est sum tu bellum bellus per hic hoc fero neque non iam jam magnus magnum magni magno populus populum populi cum";
+
+my $lang = "la";
+my $feature = "stem";
+
+my @stoplist = @{$top{$lang . "_" . $feature}};
+
+my $commonwords = join (" ", @stoplist);
+
+my $file_abbr = "$fs_data/common/abbr";
+my %abbr = %{retrieve($file_abbr)};
 
 my $verbose = 0; # 0 == only 5/10; 1 == 0 - 10; 2 == -1 - 10
 
 my $usage = "usage: progname TEXT1 TEXT2\n";
-# $usage = "currently unavailable; experimental = ".$experimental." session = ".$session." sort = ".$sort." text = ".$text."\n";
-
-my @text;
-
-my $lang = 'la';
 
 my $debug = 0;
 my $no_html = 0;
@@ -93,50 +97,42 @@ if ($debug >= 1) {
 	print STDERR "target: $target\n";
 }
 
-if (Files::determine_input_filenames($source, $target) == 0) {
-	if ($debug >= 1) {
-		print STDERR "ERROR: either the source or the target label cannot be found in the\n";
-		print STDERR "       configuration file.\n\n";
-		print STDERR "I used configuration file ".Files::config_file().".\n";
-		print STDERR "This typically occurs if a text has been prepared but the comparison pair has \n";
-		print STDERR "not been added yet to the config file.\n";
-		print STDERR "See the documentation in Files.pm for more information on the format of the \n";
-		print STDERR "configuration file.";
-		print STDERR "exiting.\n";
-	}
-	die;
+my @text;
 
-} else {
+for ($source, $target)
+{
+	my $path = "$fs_text/$lang/" .
+	 ( /(.*)\.part\./ ? "$1/" : "" );
+
+	print STDERR "path=$path\n";
+
+	push @text, $path.$_.".tess";
+
+}
+
+$text[2] = "$fs_data/v2/preprocessed/" . join('~', sort($source, $target)) . ".preprocessed";
 	
-	$text[0] = "$fs_text/" . Files::source_text_file($source, $target);
-	$text[1] = "$fs_text/" . Files::target_text_file($source, $target);
-	$text[2] = "$fs_data/v2/preprocessed/" . Files::preprocessed_file($source, $target);
-	
-	if ($debug >= 1) {		
-		print STDERR "source label: ".$source."\n";
-		print STDERR "target label: ".$target."\n";
-		print STDERR "source txt file: ".$text[0]."\n";
-		print STDERR "target txt file: ".$text[1]."\n";
-		print STDERR "session file: ".$session_file."\n";
-	}
+if ($debug >= 1) {		
+	print STDERR "source label: $source\n";
+	print STDERR "target label: $target\n";
+	print STDERR "source txt file: $text[0]\n";
+	print STDERR "target txt file: $text[1]\n";
+	print STDERR "preprocessed file: $text[2]\n";
+	print STDERR "session file: $session_file\n";
 }
 
 
 
 foreach (@text) {
-	if (-r $_) {} else {
-		if ($debug >= 1) {
-			print STDERR "can't open file ".$_.": ".$!."\n";
-		}
-		exit;
+	unless (-r $_)
+	{
+		die "can't open file ".$_.": ".$!."\n";
 	}
 }
 
 
 my @parallels;
 my $total_num_matches = 0;
-
-#$Storable::interwork_56_64bit = 1;
 
 # check if we can open file $text[2] for reading
 open (TEST, "<", "$text[2]") || die "can't open file $text[2]: $!\n";
@@ -373,19 +369,17 @@ foreach (@parallels) {
 					}
 				} 
 				else {
-					my $locus_a = $parallel->phrase_a()->verseno();
-					my $locus_b = $parallel->phrase_b()->verseno();
+					my $work_a = $abbr{$source};
+					my $work_b = $abbr{$target};
+
+					my $verse_a = $parallel->phrase_a()->verseno();
+					my $verse_b = $parallel->phrase_b()->verseno();
+
 					if ($debug==2) {
-						print STDERR "locus_a: $locus_a\n";
-						print STDERR "locus_b: $locus_b\n";
+						print STDERR "locus_a: $work_a $verse_a\n";
+						print STDERR "locus_b: $work_b $verse_b\n";
 					}
 
-					$locus_a =~ /^(.+)\s+?(.+)$/;
-					my ($work_a, $verse_a) = ($1, $2);
-				
-					$locus_b =~ /^(.+)\s+?(.+)$/;
-					my ($work_b, $verse_b) = ($1, $2);
-				
 					print XML "<tessdata keypair=\"";
 					foreach (@words) {
 						print XML escaped_string($_).", ";
@@ -569,6 +563,9 @@ Reads cmd-line arguments into global variables. Any argument that is not precede
 =cut
 
 sub read_arguments {
+	
+	my @text;
+
 	my $numberoftexts = 0;
 	my $numberofflags = 0;
 	if ($#ARGV+1 < 2) {
