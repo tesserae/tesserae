@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/var/www/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -21,7 +21,7 @@ use TessSystemVars;
 # is the program being run from the command line or
 # the web interface?
 
-my $apache_user = "www-data";
+my $apache_user = "_www";
 my $output = "html";
 my $quiet = 1;
 
@@ -130,6 +130,10 @@ my $unit;
 
 my $feature;
 
+# stopwords is the number of words on the stoplist
+
+my $stopwords;
+
 #
 # abbreviations of canonical citation refs
 #
@@ -154,10 +158,11 @@ if ( $output eq "html")
 {
 	my $query = new CGI || die "$!";
 
-	$source    = $query->param('source') || "";
-	$target    = $query->param('target') || "";
-	$unit      = $query->param('unit')   || "line";
-	$feature   = $query->param('feature')   || "stem";
+	$source		= $query->param('source') || "";
+	$target		= $query->param('target') || "";
+	$unit     	= $query->param('unit')   || "line";
+	$feature		= $query->param('feature')		|| "stem";
+	$stopwords	= $query->param('stoplist')	|| 10;
 
 	if ($source eq "" or $target eq "")
 	{
@@ -173,13 +178,14 @@ else
 
 	$feature = "word";
 	$unit		= "line";
+	$stopwords = 10;
 
 	for (@ARGV)
 	{
-		if 	( /--word/ )			{ $feature='word' }
-		elsif ( /--stem/ )			{ $feature='stem' }
-		elsif ( /--line/ )			{ $unit='line' }
-		elsif ( /--phrase/ )			{ $unit='phrase' }
+		if 	( /--word/ )			{ $feature = 'word' }
+		elsif ( /--stem/ )			{ $feature = 'stem' }
+		elsif ( /--line/ )			{ $unit = 'line' }
+		elsif ( /--phrase/ )			{ $unit = 'phrase' }
 		elsif	( /--session=(\w+)/)	{ $session = $1 }
 		else
 		{
@@ -202,6 +208,15 @@ else
 # - feature-set-specific
 
 my @stoplist = @{$top{$lang{$target} . '_' . $feature}};
+
+if ($stopwords > 0)
+{
+	@stoplist = @stoplist[0..$stopwords-1];
+}
+else
+{
+	@stoplist = ();
+}
 
 my %freq = %{ retrieve( "$fs_data/common/$lang{$target}.${feature}_count" )};
 

@@ -136,7 +136,7 @@
 				</table>
 
 				<div class="figure">
-					<img src="<?php echo $url_images . '/venn_dia.png' ?>" alt="overlap between tesserae and commentaries" width="300">
+					<img src="<?php echo $url_image . '/venn_dia.png' ?>" alt="overlap between tesserae and commentaries" width="300">
 					<div class="figure_caption">
 						Overlap between Tesserae and commentaries: <br /> Type 4-5 Parallels
 					</div>

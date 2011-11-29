@@ -4,16 +4,23 @@
 
 use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
-# add_column.pl
+# window.pl
 #
-# add a new text to the big table
-# --identical form matching
+# add a new text to the table
+#
+# unit = 6 word window
 
 use strict;
 use warnings; 
 
 use TessSystemVars;
 use Storable qw(nstore retrieve);
+
+#
+# how big a window in words
+#
+
+my $n = 6;
 
 #
 # these lines set language-specific variables
@@ -108,6 +115,10 @@ while (my $file_in = shift @ARGV)
 	# - every line is a list of words
 	# - every phrase is a list of words 
 
+	# a list of words
+
+	my @word;
+
 	# an array of units
 
 	my @line;
@@ -144,10 +155,6 @@ while (my $file_in = shift @ARGV)
 	# this holds the abbreviation for the author/work
 
 	my %ref;
-	
-	# the size of the window in words
-	
-	my $n = 6;
 
 	print STDERR "reading text: $file_in\n";
 
@@ -239,10 +246,6 @@ while (my $file_in = shift @ARGV)
 
 				$count{$key}++;
 
-				# increment window id if we already have n words
-
-				if (scalar($#{$window[$window_id]}) >= $n) { $window_id++ }
-				
 				# add the word to a bunch of indices
 				#
 				# there's some more detail about these in read_table.pl
@@ -268,11 +271,6 @@ while (my $file_in = shift @ARGV)
 				push @{$line[$line_id]}, $key;
 				push @{$index_line_int{$key}}, $#{$line[$line_id]};		
 				push @{$index_line_ext{$key}}, $line_id;
-				
-				push @{$window[$window_id]}, $key;
-				push @{$index_window_int{$key}}, $#{$window[$window_id]};		
-				push @{$index_window_ext{$key}}, $window_id;
-				
 			}
 		}
 		
@@ -298,9 +296,6 @@ while (my $file_in = shift @ARGV)
 	print "writing $file_out.phrase\n";
 	nstore \@phrase, "$file_out.phrase";
 
-	print "writing $file_out.window\n";
-	nstore \@window, "$file_out.window";
-
 	print "writing $file_out.count\n";
 	nstore \%count, "$file_out.count";
 
@@ -316,20 +311,11 @@ while (my $file_in = shift @ARGV)
 	print "writing $file_out.index_line_ext\n";
 	nstore \%index_line_ext, "$file_out.index_line_ext";
 
-	print "writing $file_out.index_window_int\n";
-	nstore \%index_window_int, "$file_out.index_window_int";
-
-	print "writing $file_out.index_window_ext\n";
-	nstore \%index_window_ext, "$file_out.index_window_ext";
-
 	print "writing $file_out.loc_line\n";
 	nstore \@loc_line, "$file_out.loc_line";
 
 	print "writing $file_out.loc_phrase\n";
 	nstore \@loc_phrase, "$file_out.loc_phrase";
-
-	print "writing $file_out.loc_window\n";
-	nstore \@loc_window, "$file_out.loc_window";
 	
 	# add this ref to the database of abbreviations
 

@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use lib '/var/www/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;
@@ -10,7 +10,6 @@ use Phrase;
 use Parallel;
 use Data::Dumper;
 use CGI qw/:standard/;
-use Files;
 use Storable;
 
 ##################################
@@ -38,13 +37,10 @@ open (XML, '>' . $session_file)
 
 my $query = new CGI || die "$!";
 
-# my $session = $query->param('session');
-# my $sort = $query->param('sort');
-# my $text = $query->param('textOnly');
 my $source = $query->param('source') || "";
 my $target = $query->param('target') || "";
 my $ignore_common= $query->param('ignore_common');
-#my $experimental = $query->param('experimental');
+
 my $ignore_low = "yes";
 # $ignore_low = $query->param('ignore_low');
 
@@ -53,7 +49,7 @@ $ignore_common = "yes";
 my $lang = "la";
 my $feature = "stem";
 
-my @stoplist = @{$top{$lang . "_" . $feature}};
+my @stoplist = @{$top{$lang . "_" . $feature}}[0..9];
 
 my $commonwords = join (" ", @stoplist);
 
@@ -192,8 +188,6 @@ my $progress_timer = time;
 
 foreach (@parallels) {
 	$progress_counter++;
-
-#	print " ";
 	
 	if ($debug==1) {
 		my $progress_round = sprintf("%02u",$progress_counter*100/$#parallels);

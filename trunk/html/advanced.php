@@ -2,12 +2,17 @@
 		
 		<div id="main">
 			
-			<form action="<?php echo $url_cgi.'/session.pl'; ?>" method="post" ID="Form1">
+			<form action="http://tesserae.caset.buffalo.edu/cgi-bin/session.pl" method="post" ID="Form1">
 				
 				<h1>Advanced Options</h1>
 				
 				<p>
-					This page allows you to change the default settings for the <a href="<?php echo $url_html.'/index.php'; ?>">Basic Search</a>.  To explore an entirely new way of searching, try out the new <a href="<?php echo $url_html.'/v2.php'; ?>">Version 2</a>.
+					This page allows you to change the default settings for the 
+					<a href="<?php echo $url_html.'/index.php' ?>">Basic Search</a>.
+					
+					To explore other search algorithms, please try 
+					<a href="<?php echo $url_html.'/v2.php' ?>">Version 2</a> or the experimental
+					<a href="<?php echo $url_html.'/la_table' ?>">Big Table</a>.
 				</p>
 				
 				<table class = "input">
@@ -18,17 +23,17 @@
 					<tr>
 						<td align ="center">
 							<select name="source" ID="source">
-								<?php include $url_html.'/textlist.v1.php'; ?>
+								<?php include $fs_html.'/textlist.v1.php'; ?>
 							</select>
-			 			</td>
-						<td align ="center">
+						</td>
+						<td align="center">
 							<select name="target" ID="target">
-								<?php include $url_html.'/textlist.v1.php'; ?>
+								<?php include $fs_html.'/textlist.v1.php'; ?>
 							</select>
 			 			</td>
 					</tr>
 				</table>
-				
+
 				<h2>Feature Set</h2>
 
 				<p>
@@ -55,17 +60,16 @@
 				<p>
 					Omit matches on the following additional words:
 				</p>
-				
+
 				<p>
 					<textarea name="stopwords" rows="10" cols="30"></textarea>
 				</p>
-				
+
 				<p>
 					<input type="submit" onclick="return ValidateForm()" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>
 				</p>
 			</form>
 		</div>
-
 		<script language="javascript">
 
                 	var ddlsrc = document.getElementById('source');

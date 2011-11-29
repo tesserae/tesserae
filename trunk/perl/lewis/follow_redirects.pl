@@ -5,7 +5,7 @@
 # - try to discover entries that just redirect to other
 #   headwords instead of giving a definition
 
-use lib '/var/www/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 use strict;
 use warnings;
@@ -22,7 +22,7 @@ my %text	=   %{ retrieve("$file_text") };
 print STDERR scalar(keys %text) . " forms\n";
 
 
-print "reading $file_def\n";
+print STDERR "reading $file_def\n";
 my %def 	= 	%{ retrieve("$file_def")  };
 
 print STDERR scalar (keys %def) . " defined\n\n";
@@ -125,3 +125,10 @@ print STDERR scalar(@undef) . " still undefined\n";
 # overwrite the cache with the new definitions hash
 
 nstore \%def, $file_def;
+
+# print a list of all the headwords with no definition
+
+for (@undef)
+{
+	print "$_\n";
+}

@@ -21,20 +21,20 @@
 						<tr>
 							<td align ="center">
 								<select name="source" ID="source">
-									<?php include $fs_html.'/textlist.v1.php'; ?>
+									<?php include $fs_html.'/textlist.la.l.php'; ?>
 								</select>
 		 					</td>
 							<td align ="center">
 								<select name="target" ID="target">
-									<?php include $fs_html.'/textlist.v1.php'; ?>
+									<?php include $fs_html.'/textlist.la.r.php'; ?>
 								</select>
 		 					</td>
 						</tr>
 						<tr>
 							<td>
 						
-								<input type="hidden" name="unit" value="word"/>
-								<input type="hidden" name="cutoff" value="50"/>
+								<input type="hidden" name="unit" value="line"/>
+								<input type="hidden" name="feature" value="stem"/>
 							</td>
 						</tr>
 						<tr>

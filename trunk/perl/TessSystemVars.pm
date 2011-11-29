@@ -7,11 +7,11 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our @EXPORT = qw(%abbr %top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_images $url_tmp);
+our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_images $url_tmp);
 
-our @EXPORT_OK = qw(&uniq &intersection);
+our @EXPORT_OK = qw(uniq intersection tcase lcase);
 
-my $fs_base	= '/var/www/tesserae';
+my $fs_base	= '/Users/chris/Sites/tesserae';
 
 our $fs_cgi 	= $fs_base . '/cgi-bin';
 our $fs_data	= $fs_base . '/data';
@@ -22,48 +22,15 @@ our $fs_text	= $fs_base . '/texts';
 our $fs_tmp  	= $fs_base . '/tmp';
 our $fs_xsl  	= $fs_base . '/xsl';
 
-my $url_base	= 'http://tess.tamias';
+my $url_base	= 'http://localhost/~chris/tesserae';
 
 our $url_cgi	= $url_base . '/cgi-bin';
 our $url_css	= $url_base . '/css';
-our $url_html	= $url_base;
+our $url_html	= $url_base . '/html';
 our $url_images	= $url_base . '/images';
 our $url_text	= $url_base . '/texts';
 our $url_tmp	= $url_base . '/tmp';
 our $url_xsl	= $url_base . '/xsl';
-
-
-our %abbr = (
-
-		'catullus.carmina'      	=> 'catull. '			,
-		'ennius.annales'				=> 'enn. ann. '		,
-		'horace.ars_poetica'    	=> 'hor. ars p. '		,
-		'horace.carmen_saeculare' 	=> 'hor. carm. saec. '	,
-		'horace.epistles'       	=> 'hor. epist. '		,
-		'horace.epodes'         	=> 'hor. epod. '		,
-		'horace.odes'           	=> 'hor. carm. '		,
-		'horace.satires'        	=> 'hor. sat. '		,
-		'juvenal'						=> 'juv. '				,
-		'lucan.pharsalia'       	=> 'luc. '				,  
-		'lucretius.de_rerum_natura'     => 'lucr. '		,    
-		'martial.epigrams'			=> 'mart. '				,
-		'ovid.amores'           	=> 'ov. am. '			,
-		'ovid.ars_amatoria'     	=> 'ov. ars am. '		,
-		'ovid.fasti'					=> 'ov. fast. '		,
-		'ovid.heroides'         	=> 'ov. her. '			,  
-		'ovid.medicamina_faciei_femineae'       
-                                	=> 'ov. medic. '		,
-		'ovid.metamorphoses'			=> 'ov. met.'			,
-		'paul.carmina'					=> 'paul c.'			,
-		'propertius.elegies'    	=> 'prop. '				,
-		'silius_italicus.punica'	=> 'sil. pun. '		,
-		'statius.thebaid'       	=> 'stat. theb. '		,
-		'tibullus'              	=> 'tib. '				,
-		'vergil.aeneid'         	=> 'verg. aen. '		,
-		'vergil.eclogues'       	=> 'verg. ecl. '		,
-		'vergil.georgics'       	=> 'verg. g. '			,         
-		'valerius_flaccus'      	=> 'valerius flaccus '
-);
 
 our %top;
 
@@ -85,22 +52,15 @@ sub uniq
 
    my @array = @{$_[0]};			# dereference array to be evaluated
 
-#	print STDERR "uniq: \$#array=$#array\n";
-
    my %hash;							# temporary
    my @uniq;							# create a new array to hold return value
 
 	for (@array)	
 	{ 
 		$hash{$_} = 1; 
-#		print STDERR "\tuniq: \$hash{$_}=$hash{$_}\n"; 
 	}
 											
-#	print STDERR "uniq: keys(\%hash)=" . join(",", keys %hash). "\n";
-
    @uniq = sort( keys %hash);   # retrieve keys, sort them
-
-#	print STDERR "uniq: \$#uniq=$#uniq\n";
 
    return \@uniq;
 }
@@ -123,11 +83,68 @@ sub intersection
       }
    }
 
-   @intersect = grep { $count{$_} == 2 } keys %count;  
-				# keep elements whose count is equal to the number of arrays
+	# keep elements whose count is equal to the number of arrays
 
-   @intersect = sort @intersect;        # sort results
+   @intersect = grep { $count{$_} == 2 } keys %count;
+
+	# sort results
+
+   @intersect = sort @intersect;
 
    return \@intersect;
 }
+
+#
+# language-specific lower-case and title-case functions
+#
+
+sub lcase
+{
+	my $lang = shift;
+
+	my @string = @_;
+
+	for (@string)
+	{
+	
+		if ($lang eq 'la')
+		{
+			tr/A-Z/a-z/;
+			tr/jJ/iI/;
+		}
+	
+		if ($lang eq 'grc')
+		{
+			s/^\*([\(\)\/\\\|\=\+]*)([a-z])/$2$1/;
+		}
+	}
+
+	return wantarray ? @string : shift @string;
+}
+
+sub tcase
+{
+	my $lang = shift;
+
+	my @string = @_;
+	
+	for (@string)
+	{
+
+		$_ = lcase($lang, $_);
+
+		if ($lang eq 'la')
+		{
+			s/^([a-z])/uc($1)/e;
+		}
+	
+		if ($lang eq 'grc')
+		{
+			s/^([a-z])([\(\)\/\\\|\=\+]*)/\*$2$1/;
+		}
+	}
+
+	return wantarray ? @string : shift @string;
+}
+
 1;

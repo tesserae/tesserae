@@ -332,7 +332,7 @@ sub stems_in_common {
 	my @words_in_common;
 	my $self = shift;
 	my $num_parallel_words = 0;
-	my $success_threshold = 3; 					# algorithm will give up after finding $success_threshold; low value = faster execution. 
+	my $success_threshold = 3; 				# algorithm will give up after finding $success_threshold; low value = faster execution. 
 	my $debug_output = 0; 						# set to 1 to enable debugging output in this function. 0: no output at all. 
 	if (@_) { 
 		my $phrase = shift;
@@ -349,32 +349,36 @@ sub stems_in_common {
 			$phrase->short_print();
 			print "\"\n";
 		}
+		
 		foreach (@{$self->{WORDARRAY}}) {
 			my $word_a = $_;
 			bless($word_a, "Word");
+			
 			foreach (@{$phrase->{WORDARRAY}}) {
 				my $word_b = $_;
 				bless($word_b, "Word");
+
 				foreach  (@{$word_a->{STEMARRAY}}) {
 					my $stem_a = $_;
+
 					foreach  (@{$word_b->{STEMARRAY}}) {
 						my $stem_b = $_;
 						#	print "comparing $stem_a to $stem_b\n";
+
 						if ($stem_a eq $stem_b) {
 							if ($word_a->is_common_word()) {
 								# print "removing A word ".$word_a->word()." because it is too common.\n";
-
 								last;
+								
+							} else {
+								if ($word_b->is_common_word()) {
+							# 		print "removing B word ".$word_b->word()." because it is too common.\n";
 								} else {
-									if ($word_b->is_common_word()) {
-								# 		print "removing B word ".$word_b->word()." because it is too common.\n";
-										} else {
-											$num_parallel_words++;
-											push @words_in_common, $stem_a;
-
-										}
-									}
-									last;
+									$num_parallel_words++;
+									push @words_in_common, $stem_a;
+								}
+							}
+							last;
 						}
 					}
 				}

@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/var/www/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # prepare.pl
@@ -15,7 +15,8 @@ use warnings;
 
 use Storable qw(retrieve nstore);
 
-use TessSystemVars;
+use TessSystemVars qw(:DEFAULT lcase tcase);
+
 use Word;
 use Phrase;
 use Parallel;
@@ -40,30 +41,10 @@ my %non_word = (
 	'la' => qr([^a-zA-Z]+), 
 	'grc' => qr([^a-z\*\(\)\\\/\=\|\+']+) );
 
-# normal operation requires looking up headwords on the archimedes morphology server
-# to suppress this set the following to true
-
-my $no_archimedes = 0;
-
-if ( grep {/--no-archimedes/} @ARGV) { $no_archimedes = 1}
-
-# normal behaviour is to write new stems acquired from archimedes to the main cache
-#  -- if lookup isn't working correctly, this might cause a good cache to be over-
-#     written by a broken one.
-#  -- set the following to true to prevent writing to the cache file
-
-my $no_write_cache = 0;
-
-# some parameters to pass along to the archimedes server
-
-my $archimedes_debug = 0;
-
-# to look up headwords you need this module, not standard on my Mac's perl install
-
-unless ($no_archimedes)
-{
-	use Frontier::Client;
-}
+#
+# I've taken out the bit that queried archimedes for stems.
+# Now assumes this has already been done using build-cache.pl
+#
 
 my $usage = "usage: prepare.pl [--la|grc] TEXT [TEXT2 TEXT3 ...]\n";
 
@@ -287,73 +268,6 @@ while (my $file_in = shift @ARGV)
 	print STDERR "cache contains " . scalar(keys %stem) . " forms\n\n";
 
 
-	# these arrays hold keys to be looked up, and those that return no results
-
-	my @working = sort keys %count;
-	my @failed = ();
-
-	# now check the cache for each form in the text
-
-	for (@working)
-	{
-		# if it's not in the cache, add it to the list to look up.
-
-		unless (defined $stem{$_} and ${$stem{$_}}[0] ne "")
-		{
-			push @failed, $_;
-		}
-	}
-
-
-	#
-	# look up forms that weren't in the cache
-	#
-
-	unless ($no_archimedes)
-	{
-
-		@working = splice @failed;
-
-		print STDERR scalar(@working) . " forms to look up on archimedes.\n";
-
-		# this loop queries the archimedes server for forms in batches
-		#
-		# doing them in batches makes things go faster and requires fewer
-		# calls to their server.
-	
-		my $total = scalar(@working);
-		my $progress = 0;
-
-		print STDERR "0% |" . (" "x20) . "| 100%" . "\r0% |";
-
-		while (my @batch = splice(@working, 0, 50))
-		{
-
-			if (($total-scalar(@working))/$total > $progress + .05)
-			{
-				print STDERR ".";
-				$progress += .05;
-			}
-	
-			push @failed, archimedes(@batch);
-		
-			# write the cache with each batch, so that if the program fails
-			# somewhere in a big list, we at least save the earlier results
-
-			unless ($no_write_cache)
-			{
-				nstore \%stem, $file_stems;
-			}
-		}
-
-		print STDERR "\n\n";
-
-	}
-
-	print STDERR scalar(@failed) . " forms couldn't be stemmed: \n";
-
-	print STDERR join(" ", sort @failed) . "\n\n";
-
 	#
 	# load semantic tags
 	#
@@ -368,6 +282,55 @@ while (my $file_in = shift @ARGV)
 	}
 
 	print STDERR "cache contains " . scalar(keys %semantic) . " forms\n\n";
+
+	#
+	# see how many forms lack stems or semantic tags
+	# 
+
+	my @failed_stem;
+	my @failed_semantic;
+	
+	# check each word form occurring in the file
+	
+	for my $form (keys %count)
+	{
+		
+		# initialize a tag check
+		
+		my $tags = 0;
+		
+		if ( defined $semantic{$form} )	{ $tags = 1 }
+		
+		# if it has no stems, fail that test
+		
+		if ( ! defined $stem{$form} )
+		{
+			push @failed_stem, $form 
+		}
+		
+		# if it has stems, check each one for semantic tags
+		# but don't bother if the form itself already has one
+		
+		elsif ($tags == 0)
+		{
+			for (@{$stem{$form}})
+			{
+				
+				# if even one stem has a tag, the form passes
+				
+				if ( defined $semantic{$_} ) 
+				{
+					$tags = 1;
+					last;
+				}
+			}
+		}
+		
+		if ( $tags == 0 ) { push @failed_semantic, $form }
+	}
+
+	print STDERR scalar(@failed_stem) . " forms have no stems\n";
+	print STDERR scalar(@failed_semantic) . " forms have no semantic tags\n\n";
 
 	#
 	# go back and reprocess
@@ -495,108 +458,4 @@ sub add_line
 	}
 
 	return;
-}
-
-#
-# this subroutine looks up a batch of forms on archimedes
-#
-
-sub archimedes
-{
-	
-	my @batch = @_;
-	my @failed;
-	
-	# initialize the client
-
-	my $client = Frontier::Client->new( url => "http://archimedes.mpiwg-berlin.mpg.de:8098/RPC2", debug => $archimedes_debug);
-	
-	# make the call
-
-	my $res = $client->call('lemma', "-" . uc($lang), [@batch, tcase($lang, @batch)]);
-	
-	# add the results to the cache
-
-	for my $w ( keys %{$res} )
-	{
-
-		# if there's already a value for a different capitalization
-		# then merge them
-			
-		my %uniq;
-
-		for (@{$stem{lcase($lang, $w)}}, @{$res->{$w}})
-		{
-				
-			$uniq{lcase($lang, $_)} = 1;
-		}
-
-		$stem{lcase($lang, $w)} = [keys %uniq];		
-		
-		# otherwise leave the cache value for that key undefined
-	}
-	
-	#
-	# check the forms originally submitted to see how many succeeded
-	#
-	
-	for (@batch)
-	{
-		unless ( defined $stem{$_} )	{ push @failed, $_ }
-	}
-	
-	return @failed;
-}
-
-#
-# language-specific lower-case and title-case functions
-
-sub lcase
-{
-	my $lang = shift;
-
-	my @string = @_;
-
-	for (@string)
-	{
-	
-		if ($lang eq 'la')
-		{
-			tr/A-Z/a-z/;
-			s/j/i/g;
-			s/[^a-z]//g;
-		}
-	
-		if ($lang eq 'grc')
-		{
-			s/^\*([\(\)\/\\\|\=\+]*)([a-z])/$2$1/;
-		}
-	}
-
-	return wantarray ? @string : shift @string;
-}
-
-sub tcase
-{
-	my $lang = shift;
-
-	my @string = @_;
-	
-	for (@string)
-	{
-
-		$_ = lcase($lang, $_);
-
-		if ($lang eq 'la')
-		{
-			s/^([a-z])/uc($1)/e;
-		}
-	
-		if ($lang eq 'grc')
-		{
-			s/^([a-z])([\(\)\/\\\|\=\+]*)/\*$2$1/;
-		}
-	}
-
-	return wantarray ? @string : shift @string;
 }

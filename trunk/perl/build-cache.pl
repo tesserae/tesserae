@@ -2,10 +2,10 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/var/www/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
-# install-corpus.pl
+# build-cache.pl
 #
 # this is the archimedes part of prepare.pl
 # the idea is that we can parse texts and look up all their
@@ -17,7 +17,7 @@ use warnings;
 
 use Storable qw(retrieve nstore);
 
-use TessSystemVars;
+use TessSystemVars qw(:DEFAULT tcase lcase);
 
 # load the list of canonical reference abbreviations
 
@@ -143,7 +143,7 @@ while (my $file_in = shift @ARGV)
 	my $file_semantics = "$fs_data/common/$lang.semantic.cache";
 
 	#
-	# parse the text into words and phrases
+	# parse the text into words
 	#
 
 	print STDERR "reading text: $file_in\n";
@@ -202,7 +202,7 @@ while (my $file_in = shift @ARGV)
 		{
 			next if ($form eq "");
 
-			$count{$form}++;
+			$count{lcase($lang, $form)}++;
 		}
 	}
 
@@ -369,54 +369,4 @@ sub archimedes
 	return @failed;
 }
 
-#
-# language-specific lower-case and title-case functions
 
-sub lcase
-{
-	my $lang = shift;
-
-	my @string = @_;
-
-	for (@string)
-	{
-	
-		if ($lang eq 'la')
-		{
-			tr/A-Z/a-z/;
-			tr/jJ/iI/;
-		}
-	
-		if ($lang eq 'grc')
-		{
-			s/^\*([\(\)\/\\\|\=\+]*)([a-z])/$2$1/;
-		}
-	}
-
-	return wantarray ? @string : shift @string;
-}
-
-sub tcase
-{
-	my $lang = shift;
-
-	my @string = @_;
-	
-	for (@string)
-	{
-
-		$_ = lcase($lang, $_);
-
-		if ($lang eq 'la')
-		{
-			s/^([a-z])/uc($1)/e;
-		}
-	
-		if ($lang eq 'grc')
-		{
-			s/^([a-z])([\(\)\/\\\|\=\+]*)/\*$2$1/;
-		}
-	}
-
-	return wantarray ? @string : shift @string;
-}

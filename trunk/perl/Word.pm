@@ -127,18 +127,45 @@ sub phraseno {
 
 sub is_common_word {
 	my $self = shift;
+
+	my @common_words;
 	
-	# Roelant's stoplist
-	# my @common_words = qw/et qui quis in sum tu bellum bellus per hic fero neque non jam magnus populus cum/;
+	# you can pass a reference to your own array of stopwords
+	
+	if (@_)
+	{
+		my $array_ref = shift;
+		
+		@common_words = @$array_ref;
+	
+		# you can also pass the number of stopwords to use
+	
+		if (@_)
+		{
+			my $limit = shift;
+		
+			if ($limit > 0 && $limit < scalar(@common_words))
+			{
+				@common_words = @common_words[0..$limit-1];
+			}
+		}
+	}
+	else
+	{
+		# otherwise use the default stop list
+		
+		@common_words = qw/et qui2 quis1 quis2 qui1 sum1 in hic tu edo1 neque non ego ille atque cum ut fero do1 jam si per sion1 video ad omnis ipse sed ab quo amo magnus aurum suus dico2 multus venio tuus do2 possum omne sui meus nunc facio deus aut magnus1 nus primus nequeo suum terra arma manus1 huc corpus eo1 alo os1 bellum bellus vir superus quam meum noster for illic sic at res ex tamen tantus habeo sua omnes nullus teneo longus unus nam nos de2 de1 illa tum solus1 dum medius pectus virus armo volo1 amor pars ago neo1/;
 
-	# Latin stems
-	my @common_words = qw/et qui2 quis1 quis2 qui1 sum1 in hic tu edo1 neque non ego ille atque cum ut fero do1 jam si per sion1 video ad omnis ipse sed ab quo amo magnus aurum suus dico2 multus venio tuus do2 possum omne sui meus nunc facio deus aut magnus1 nus primus nequeo suum terra arma manus1 huc corpus eo1 alo os1 bellum bellus vir superus quam meum noster for illic sic at res ex tamen tantus habeo sua omnes nullus teneo longus unus nam nos de2 de1 illa tum solus1 dum medius pectus virus armo volo1 amor pars ago neo1/;
+		for (@common_words) { s/(\d)/\#$1/ }
+		
+		# Roelant's stoplist
+		# my @common_words = qw/et qui quis in sum tu bellum bellus per hic fero neque non jam magnus populus cum/;
 
-	for (@common_words) { s/(\d)/\#$1/ }
-
-	# Greek stems
-	# my @common_words = qw{de/ o( kai/ o(/s te su/ ei)mi/ e)gw/ ei)s w(s e)n me/n tis a)/ra e)pi/ a)/n1 ti/s ga/r a)lla/ ou)  au)to/s ou)do/s1 ou)do/s2 ou)de/ a)/ron nau=s pa=s e)k a)nh/r toi/ dh/ ei) ge *trw/s *)axaio/s kata/ *zeu/s polu/s a)/llos me/gas a)ta/r e)/rxomai nu=n ai)/rw fhmi/ ui(o/s xei/r toi qumo/s e)/xw h)/1 min qeo/s e)pei/ u(po/ *(/ektwr e(/ktwr tw=| ei)=mi a)po/ a)ro/w i(/ppos o(/te h)mi/ a)na/ o(/ste pe/r a)/ros ba/llw fi/los mh/ e)/nqa h)= *)axilleu/s e)mo/s para/ i(/sthmi meta/ i(/hmi so/s ma/lh ai(re/w ma/la a)/gw a)mfi/ peri/ o(/de e)/peita h)de/ a)xaia/ *)axai/a h)/2 ei)=pon ei)=don pro/teros di/dwmi pro/s bai/nw sfei=s e)/pos};
-
+		# Greek stems
+		# my @common_words = qw{de/ o( kai/ o(/s te su/ ei)mi/ e)gw/ ei)s w(s e)n me/n tis a)/ra e)pi/ a)/n1 ti/s ga/r a)lla/ ou)  au)to/s ou)do/s1 ou)do/s2 ou)de/ a)/ron nau=s pa=s e)k a)nh/r toi/ dh/ ei) ge *trw/s *)axaio/s kata/ *zeu/s polu/s a)/llos me/gas a)ta/r e)/rxomai nu=n ai)/rw fhmi/ ui(o/s xei/r toi qumo/s e)/xw h)/1 min qeo/s e)pei/ u(po/ *(/ektwr e(/ktwr tw=| ei)=mi a)po/ a)ro/w i(/ppos o(/te h)mi/ a)na/ o(/ste pe/r a)/ros ba/llw fi/los mh/ e)/nqa h)= *)axilleu/s e)mo/s para/ i(/sthmi meta/ i(/hmi so/s ma/lh ai(re/w ma/la a)/gw a)mfi/ peri/ o(/de e)/peita h)de/ a)xaia/ *)axai/a h)/2 ei)=pon ei)=don pro/teros di/dwmi pro/s bai/nw sfei=s e)/pos};
+		
+	}
+	
 	foreach (@common_words) {
 		if ($self->{WORD} eq $_) {
 			return 1;

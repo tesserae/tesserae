@@ -1,9 +1,16 @@
 			<div id="footer">
+				<div class="links">
+					<a href="<?php echo $url_html.'/help.php' ?>">Instructions</a>
+					| <a href="<?php echo $url_html.'/about.php' ?>">About</a>
+					| <a href="<?php echo $url_html.'/people.php' ?>">People</a>
+					| <a href="<?php echo $url_html.'/research.php' ?>">Research</a>
+				</div>
 				<div id="footer_content">
-					<p> Tesserae is a collaborative project of the <a href="http://www.buffalo.edu">University at Buffalo</a>'s <br />
+					<p> 
+						Tesserae is a collaborative project of the 
+						<a href="http://www.buffalo.edu">University at Buffalo</a>'s <br />
 						<a href="http://www.classics.buffalo.edu"><b>Department of Classics</b></a> and
 						<a href="http://linguistics.buffalo.edu"><b>Department of Linguistics</b></a>
-						
 					</p>
    					<p>
 						This project is funded by the
