@@ -38,20 +38,20 @@ if ((getpwuid($>))[0] ne $apache_user)
 if ($output eq "html")
 {
 	use CGI qw/:standard/;
-
+	
 	print header;
-
+	
 	my $stylesheet = "$url_css/style.css";
-
+	
 	print <<END;
-
+	
 <html>
 <head>
 	<title>Tesserae results</title>
-   <link rel="stylesheet" type="text/css" href="$stylesheet" />
-
+	<link rel="stylesheet" type="text/css" href="$stylesheet" />
+		
 END
-
+		
 }
 
 #
@@ -84,12 +84,12 @@ my $session = $tes_sessions[-1];
 
 if (defined($session))
 {
-   $session =~ s/^.+results-//;
-   $session =~ s/\.xml//;
+	$session =~ s/^.+results-//;
+	$session =~ s/\.xml//;
 }
 else
 {
-   $session = "0"
+	$session = "0"
 }
 
 # put the id into hex notation to save space and make it look confusing
@@ -157,13 +157,13 @@ my %lang = %{retrieve($file_lang)};
 if ( $output eq "html")
 {
 	my $query = new CGI || die "$!";
-
+	
 	$source		= $query->param('source') || "";
 	$target		= $query->param('target') || "";
 	$unit     	= $query->param('unit')   || "line";
 	$feature		= $query->param('feature')		|| "stem";
 	$stopwords	= $query->param('stoplist')	|| 10;
-
+	
 	if ($source eq "" or $target eq "")
 	{
 		die "read_table.pl called from web interface with no source/target";
@@ -171,15 +171,15 @@ if ( $output eq "html")
 }
 else
 {
-
+	
 	$quiet = 0;
-
+	
 	my @text;
-
+	
 	$feature = "word";
 	$unit		= "line";
 	$stopwords = 10;
-
+	
 	for (@ARGV)
 	{
 		if 	( /--word/ )			{ $feature = 'word' }
@@ -190,12 +190,12 @@ else
 		else
 		{
 			unless (/^--/)
-			{
+		{
 				push @text, $_;
-			}
+		}
 		}
 	}
-
+	
 	if (@text)
 	{
 		$target = shift @text || die "no target specified";
@@ -274,7 +274,6 @@ if ($output ne "html")
 	print STDERR "reading source data\n";
 }
 
-my @word_source = @{ retrieve( "$fs_data/big_table/$lang{$source}/word/$source.word" ) };
 my @unit_source = @{ retrieve( "$fs_data/big_table/$lang{$source}/word/$source.${unit}" ) };
 my @loc_source =  @{ retrieve( "$fs_data/big_table/$lang{$source}/word/$source.loc_${unit}" ) };
 
@@ -286,12 +285,15 @@ if ($output ne "html")
 	print STDERR "reading target data\n";
 }
 
-my @word_target = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.word" ) };
+my @word = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.word" )};
+
 my @unit_target = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.${unit}" ) };
 my @loc_target  = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.loc_${unit}" ) };
 
 my %index_target_ext = %{ retrieve( "$fs_data/big_table/$lang{$target}/$feature/$target.index_${unit}_ext" ) };
 my %index_target_int = %{ retrieve( "$fs_data/big_table/$lang{$target}/$feature/$target.index_${unit}_int" ) };
+
+my @phrase_lines	= @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.phrase_lines" )};
 
 #
 # some more crazy data structures
@@ -337,6 +339,9 @@ my %index_target_int = %{ retrieve( "$fs_data/big_table/$lang{$target}/$feature/
 my @match_target;
 my @match_source;
 
+my @links;
+my @score;
+
 #
 # consider each key in the source doc
 #
@@ -355,16 +360,16 @@ if ($quiet == 0)
 
 my $progress = 0;
 my $last_progress = 0;
-my $end_point = scalar(keys %index_source_ext);
+my $end_point = scalar(keys %index_target_ext);
 
-# start with each key in the source
+# start with each key in the target
 
-for my $key (sort keys %index_source_ext)
+for my $key (sort keys %index_target_ext)
 {
 	# advance the progress bar
-
+	
 	$progress++;
-
+	
 	if ($quiet == 0)
 	{
 		if ($progress/$end_point > $last_progress+.025)
@@ -381,27 +386,27 @@ for my $key (sort keys %index_source_ext)
 			$last_progress = $progress/$end_point;
 		}
 	}
-
-	# skip key if it doesn't exist in the target doc
-
-	next unless ( defined $index_target_ext{$key} );
-
+	
+	# skip key if it doesn't exist in the source doc
+	
+	next unless ( defined $index_source_ext{$key} );
+	
 	# skip key if it's in the stoplist
-
+	
 	next if ( grep { $_ eq $key } @stoplist);
-
+	
 	# for each unit id in the target having that feature,
-
+	
 	for my $i ( 0..$#{$index_target_ext{$key}} )
 	{
 		my $target_ref_int = ${$index_target_int{$key}}[$i];
 		my $target_ref_ext = ${$index_target_ext{$key}}[$i];
-
+		
 		for my $j ( 0..$#{$index_source_ext{$key}} )
 		{
 			my $source_ref_int = ${$index_source_int{$key}}[$j];
 			my $source_ref_ext = ${$index_source_ext{$key}}[$j];
-
+			
 			${$match_target[$target_ref_ext]}{$source_ref_ext}{$target_ref_int} += 
 				( defined $freq{$key} ? 1/$freq{$key} : 0 );
 			${$match_source[$target_ref_ext]}{$source_ref_ext}{$source_ref_int} +=
@@ -417,7 +422,7 @@ for my $key (sort keys %index_source_ext)
 if ($output ne "html")
 {
 	print STDERR "\n";
-
+	
 	print STDERR "writing xml output\n";
 }
 
@@ -432,32 +437,15 @@ $progress = 0;
 $last_progress = 0;
 $end_point = $#match_target;
 
-# this line should ensure that the xml output is encoded utf-8
-
-binmode XML, ":utf8";
-
-# format the stoplist
-
-my $commonwords = join(", ", @stoplist);
-
-# print the xml doc header
-
-print XML <<END;
-<?xml version="1.0" encoding="UTF-8" ?>
-<results source="$source" target="$target" sessionID="$session">
-	<comments>Test results from Big Table</comments>
-	<commonwords>$commonwords</commonwords>
-END
-
 # now look at the matches one by one, according to unit id in the target
 
 for my $target_ref_ext (0..$#match_target)
 {
-
-	# advance the progress bar
-
+	
+# advance the progress bar
+	
 	$progress++;
-
+	
 	if ($quiet == 0)
 	{
 		if ($progress/$end_point > $last_progress+.025)
@@ -474,52 +462,22 @@ for my $target_ref_ext (0..$#match_target)
 			$last_progress = $progress/$end_point;
 		}
 	}
-
+	
 	# skip anything that doesn't have a match in the source
-
+	
 	next unless defined ($match_target[$target_ref_ext]);
-
+	
 	# look at all the source units where the feature occurs
 	# sort in numerical order
-
+	
 	for my $source_ref_ext ( sort {$a <=> $b} keys %{$match_target[$target_ref_ext]})
 	{
-
+		
 		# skip any match that doesn't involve two shared features in each text
 		
 		next if ( scalar( keys %{$match_target[$target_ref_ext]{$source_ref_ext}} ) < 2);
 		next if ( scalar( keys %{$match_source[$target_ref_ext]{$source_ref_ext}} ) < 2);
-
-		# these arrays will be used to reconstitute the original line/phrase from the
-		# array of words.  having a copy specifically for display is useful because we
-		# want to be able to mark certain words as matched with html tags.
-
-		my @display_source;
-		my @display_target;
-
-		for ( @{$unit_source[$source_ref_ext]{WORD}} )
-		{
-			push @display_source, $word_source[$_];
-		}
-		
-		for ( @{$unit_target[$target_ref_ext]{WORD}} )
-		{
-			push @display_target, $word_target[$_];
-		}		
-		
-		if ($lang{$source} eq "grc")
-		{
-			@display_source = beta_to_uni(@display_source);
-		}
-		if ($lang{$target} eq "grc")
-		{
-			@display_target = beta_to_uni(@display_target);
-		}
-
-		# this array will hold shared words in the target
-
-		my @target_terms;
-		
+				
 		#
 		# here's the place where a scoring algorithm should be
 		#
@@ -529,24 +487,13 @@ for my $target_ref_ext (0..$#match_target)
 		my $score;
 		my $distance;
 		my $last_val = -1;
-
+		
 		# examine each shared term in the target in order by position
 		# within the line
 		
 		for my $target_ref_int ( sort {$a <=> $b} keys %{$match_target[$target_ref_ext]{$source_ref_ext}} )
 		{
-			
-			# add this term to the list of shared terms
-			
-			push @target_terms, lc($display_target[$target_ref_int]);
-			
-			# mark the display copy as matched
-
-			my $marked = $word_target[${$unit_target[$target_ref_ext]{WORD}}[$target_ref_int]];
-			if ($lang{$target} eq "grc") { $marked = beta_to_uni($marked) }
-			
-			$display_target[$target_ref_int] = "<span class=\"matched\">$marked</span>";
-			
+						
 			# add the distance between this and the previous term
 			
 			unless ($last_val == -1)
@@ -558,12 +505,10 @@ for my $target_ref_ext (0..$#match_target)
 			# add the frequency score for this term
 			
 			$score += $match_target[$target_ref_ext]{$source_ref_ext}{$target_ref_int};
+			
+			push @{ $links[${$unit_target[$target_ref_ext]{WORD}}[$target_ref_int]] }, $source_ref_ext;
 		}
-
-		# this array will hold shared words in the source
-
-		my @source_terms;
-
+				
 		#
 		# now examine each shared term in the source as above
 		#
@@ -576,74 +521,96 @@ for my $target_ref_ext (0..$#match_target)
 		
 		for my $source_ref_int ( sort {$a <=> $b} keys %{$match_source[$target_ref_ext]{$source_ref_ext}} )
 		{
-			# add the term to shared terms
 			
-			push @source_terms, lc($display_source[$source_ref_int]);
-			
-			# mark the display copy
-
-			my $marked = $word_source[${$unit_source[$source_ref_ext]{WORD}}[$source_ref_int]];
-			if ($lang{$source} eq "grc") { $marked = beta_to_uni($marked) }
-			
-			$display_source[$source_ref_int] = "<span class=\"matched\">$marked</span>";
-
 			# add the distance between this and the previous term
-
+			
 			unless ($last_val == -1)
 			{
 				$distance += ($source_ref_int - $last_val);
 			}
 			$last_val = $source_ref_int;
-
+			
 			# add the frequency score for this term
-
+			
 			$score += $match_source[$target_ref_ext]{$source_ref_ext}{$source_ref_int};
 		}
 		
 		# this multiplier puts the score into an easier range to read
-		
+
 		$score = sprintf("%i", log($score*1000));
 
-		# format the list of all unique shared words
-
-		my @combined_terms = (@source_terms, @target_terms);
-
-		if ($lang{$target} eq "grc")
-		{
-			@combined_terms = beta_to_uni(@combined_terms);
-		}
-
-		my $keypair = join(", ", @{TessSystemVars::uniq(\@combined_terms)});
-
-		# now write the xml record for this match
-
-		print XML "\t<tessdata keypair=\"$keypair\" score=\"$distance\">\n";
-
-		print XML "\t\t<phrase text=\"source\" work=\"$abbr{$source}\" "
-				. "line=\"$loc_source[$source_ref_ext]\" "
-				. "link=\"$url_cgi/context.pl?source=$source;line=$loc_source[$source_ref_ext]\">";
-		for (0..$#{$unit_source[$source_ref_ext]{WORD}})
-		{
-			print XML ${$unit_source[$source_ref_ext]{SPACE}}[$_] . $display_source[$_];
-		}
-		print XML ${$unit_source[$source_ref_ext]{SPACE}}[$#{$unit_source[$source_ref_ext]{SPACE}}];
-		print XML "</phrase>\n";
+		my @lines_affected;
 		
-		print XML "\t\t<phrase text=\"target\" work=\"$abbr{$target}\" "
-				. "line=\"$loc_target[$target_ref_ext]\" "
-				. "link=\"$url_cgi/context.pl?source=$target;line=$loc_target[$target_ref_ext]\">";
-
-		for (0..$#{$unit_target[$target_ref_ext]{WORD}})
-		{
-			print XML ${$unit_target[$target_ref_ext]{SPACE}}[$_] . $display_target[$_];
-		}
-		print XML ${$unit_target[$target_ref_ext]{SPACE}}[$#{$unit_target[$target_ref_ext]{SPACE}}];		
-		print XML "</phrase>\n";
-
-		print XML "\t</tessdata>\n";
-
+		if ($unit eq "line")	{ $lines_affected[0] = $target_ref_ext }
+		else					{ @lines_affected	 = @{$phrase_lines[$target_ref_ext]} }
+		
+		for (@lines_affected)	{ $score[$_]++ }
 	}
 }
+
+# write output
+
+print STDERR "writing XML output";
+
+# this line should ensure that the xml output is encoded utf-8
+
+binmode XML, ":utf8";
+
+# get the line database if we haven't already
+
+if ($unit eq "phrase")
+{
+	@unit_target = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.line" ) };
+	@loc_target  = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.loc_line" ) };
+}
+
+# format the stoplist
+
+my $commonwords = join(", ", @stoplist);
+
+# print the xml doc header
+
+print XML <<END;
+<?xml version="1.0" encoding="UTF-8" ?>
+<results source="$source" target="$target" sessionID="$session">
+<comments>Test results from Big Table</comments>
+<commonwords>$commonwords</commonwords>
+
+END
+
+for my $ref_ext (0..$#unit_target)
+{
+	my $display;
+	
+	for my $i (0..$#{$unit_target[$ref_ext]{WORD}})
+	{
+		my $w = ${$unit_target[$ref_ext]{WORD}}[$i];
+			
+		my @links_;
+		for (@{$links[$w]})
+		{ 
+			push @links_, $loc_source[$_]
+		}
+		
+		my $links = join("; ", @links_);
+		
+		my $word_ = $word[$w];
+		
+		if ($links ne "") 
+		{ 
+			$word_ = "<link ref=\"$links\">$word_</link>";
+		}
+		
+		$display .= ${$unit_target[$ref_ext]{SPACE}}[$i] . $word_;
+	}
+	
+	$display .= ${$unit_target[$ref_ext]{SPACE}}[$#{$unit_target[$ref_ext]{SPACE}}];
+	
+	my $score = $score[$ref_ext] || 0;
+	
+	print XML "<l n=\"$loc_target[$ref_ext]\" score=\"$score\">$display</l>\n";
+}
+
 
 # finish off the xml doc
 
@@ -659,23 +626,23 @@ if ($quiet == 1)
 {
 	if ($output eq "html")
 	{
-
+		
 		print <<END;
-
-   <meta http-equiv="Refresh" content="0; url='$redirect'">
+		
+	<meta http-equiv="Refresh" content="0; url='$redirect'">
 </head>
 <body>
-   <p>
-      Please wait for your results until the page loads completely.  
-      <br/>
-      If you are not redirected automatically, 
-      <a href="$redirect">click here</a>.
-   </p>
+	<p>
+		Please wait for your results until the page loads completely.  
+		<br/>
+		If you are not redirected automatically, 
+		<a href="$redirect">click here</a>.
+	</p>
 </body>
 </html>
-
+			
 END
-
+					
 	}
 }
 else
@@ -687,26 +654,26 @@ else
 	elsif ( $output eq "html")
 	{
 		print <<END;
-
+		
 	<p>Your results are done.  <a href="$redirect">Click here</a>.</p>
 </body>
 </html>
-
+			
 END
-
+			
 	}
 }
 
 sub beta_to_uni
 {
-
+	
 	my @text = @_;
-
+	
 	for (@text)
 	{
-
+		
 		s/(\*)([^a-z ]+)/$2$1/g;
-
+		
 		s/\)/\x{0313}/ig;
 		s/\(/\x{0314}/ig;
 		s/\//\x{0301}/ig;
@@ -714,7 +681,7 @@ sub beta_to_uni
 		s/\\/\x{0300}/ig;
 		s/\+/\x{0308}/ig;
 		s/\|/\x{0345}/ig;
-
+	
 		s/\*a/\x{0391}/ig;	s/a/\x{03B1}/ig;  
 		s/\*b/\x{0392}/ig;	s/b/\x{03B2}/ig;
 		s/\*g/\x{0393}/ig; 	s/g/\x{03B3}/ig;
@@ -732,7 +699,7 @@ sub beta_to_uni
 		s/\*o/\x{039F}/ig; 	s/o/\x{03BF}/ig;
 		s/\*p/\x{03A0}/ig; 	s/p/\x{03C0}/ig;
 		s/\*r/\x{03A1}/ig; 	s/r/\x{03C1}/ig;
-									s/s\b/\x{03C2}/ig;
+		s/s\b/\x{03C2}/ig;
 		s/\*s/\x{03A3}/ig; 	s/s/\x{03C3}/ig;
 		s/\*t/\x{03A4}/ig; 	s/t/\x{03C4}/ig;
 		s/\*u/\x{03A5}/ig; 	s/u/\x{03C5}/ig;
@@ -740,7 +707,7 @@ sub beta_to_uni
 		s/\*x/\x{03A7}/ig; 	s/x/\x{03C7}/ig;
 		s/\*y/\x{03A8}/ig; 	s/y/\x{03C8}/ig;
 		s/\*w/\x{03A9}/ig; 	s/w/\x{03C9}/ig;
-
+	
 	}
 
 	return wantarray ? @text : $text[0];

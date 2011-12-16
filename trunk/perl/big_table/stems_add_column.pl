@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 
 #
 # stems_add_column.pl

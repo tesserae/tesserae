@@ -4,7 +4,7 @@
 # read the cache of definitions produced by read-full-lewis.pl
 # and create frequency counts for english words in definitions
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 
 use strict;
 use warnings;

@@ -4,7 +4,7 @@
 # read the cache of definitions produced by read-full-lewis.pl
 # and create frequency counts for the definitions
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 
 use strict;
 use warnings;
@@ -21,7 +21,7 @@ my $file_def = shift @ARGV || "$fs_data/common/la.semantic.cache";
 print STDERR "reading $file_def\n";
 my %def 	= 	%{ retrieve($file_def)  };
 
-print STDERR scalar(keys %def) . " entries\n";
+print STDERR scalar(keys %def) . " keys have at least one definition\n";
 
 #
 # count definitions, words in each entry
@@ -36,6 +36,8 @@ for (keys %def)
 		$count_def{$_}++;	
 	}
 }
+
+print STDERR scalar(keys %count_def) . " unique definitions\n";
 
 #
 # write definition counts

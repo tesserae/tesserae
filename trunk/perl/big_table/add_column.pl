@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 
 # add_column.pl
 #
@@ -33,9 +33,16 @@ if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
 my $lang;
 my $lang_override;
 
+my $wchar_greek = 'a-z\*\(\)\\\/\=\|\+\'';
+my $wchar_latin = 'a-zA-Z';
+
 my %non_word = (
-	'la' => qr([^a-zA-Z]+), 
-	'grc' => qr([^a-z\*\(\)\\\/\=\|\+']+) );
+	'la' => qr([^$wchar_latin]+), 
+	'grc' => qr([^$wchar_greek]+) );
+my %is_word = (
+	'la' => qr([$wchar_latin]+), 
+	'grc' => qr([$wchar_greek]+) );
+		   
 
 #
 # get files to be processed from cmd line args
@@ -106,25 +113,26 @@ while (my $file_in = shift @ARGV)
 	#
 	# - every word will get a serial id
 	# - every line is a list of words
-	# - every phrase is a list of words 
+	# - every phrase is a list of words
+	
+	# an array of features
+	
+	my @word;
 
 	# an array of units
 
 	my @line;
 	my @phrase;
-	my @window;
 
 	# locus of the first line of each unit
 
 	my @loc_line;
 	my @loc_phrase;
-	my @loc_window;
 	
 	# unit id
 
 	my $line_id = 0;
 	my $phrase_id = 0;
-	my $window_id = 0;
 
 	# counts unique word forms
 
@@ -137,17 +145,18 @@ while (my $file_in = shift @ARGV)
 
 	my %index_phrase_int;
 	my %index_phrase_ext;
-
-	my %index_window_int;
-	my %index_window_ext;
 	
 	# this holds the abbreviation for the author/work
 
 	my %ref;
 	
-	# the size of the window in words
+	# a display copy of each line
 	
-	my $n = 6;
+	my @space;
+	
+	# a list of every line a phrase includes
+	
+	my @phrase_lines;
 
 	print STDERR "reading text: $file_in\n";
 
@@ -185,95 +194,107 @@ while (my $file_in = shift @ARGV)
 
 		$loc_line[$line_id] = $verseno;
 
-		# assign to each phrase the locus of the line where it begins
+		# add the current line to the list for the current phrase
 
-		if ( !defined $loc_phrase[$phrase_id] )
-		{
-			$loc_phrase[$phrase_id] = $verseno;
-		}
+		push @{$phrase_lines[$phrase_id]}, $line_id;
 
-		# remove initial non-word chars
-		
-		$verse =~ s/^$non_word{$lang}//;
+		# remove html special chars
 
-		# divide the line on phrase punct
-
-		my @chunk;
-		 
-		while ($verse =~ s/([^\.\?\!;:]+[\.\?\!;:](?:$non_word{$lang})*)//)
-		{
-			push @chunk, $1;
-		}
+		$verse =~ s/&[a-z];//ig;
 				
-		push @chunk, $verse;
-		
-		for (0..$#chunk)
-		{
+		# save the inter-word material
+				
+		my @spaces = split ($is_word{$lang}, $verse);
+
+		# split into words
+
+		my @words = split ($non_word{$lang}, $verse);
 			
-			if ($_ > 0) 
-			{ 
-				$loc_phrase[$phrase_id] = $verseno;
-				$phrase_id++ 
-			}
+		# make sure the arrays align correctly
+		# spaces should have one extra element
+			
+		if ($words[0] eq "")		{ shift @words }
+		
+		# add words to the current phrase, line
 
-			my $string = $chunk[$_];
+		for my $i (0..$#words)
+		{
+				
+			# convert to lower-case
+			# the wisdom of this could be disputed, but roelant does it too
 
-			# remove html special chars
+			my $key = lc($words[$i]);
 
-			$string =~ s/&[a-z];//ig;
+			$count{$key}++;
+				
+			# add the word to a bunch of indices
+			#
+			# there's some more detail about these in read_table.pl
+			# and I'll write proper documentation later.
+			#
+			# @phrase is an array of phrases
+			#   - the index is serial phrase id
+			#	- each value is an anonymous array of the words in that phrase
+			#
+			# %index_phrase_ext is a hash of phrase ids in which the word occurs
+			#   - the keys are words 
+			#	- the values are anonymous arrays of phrase ids
+			#
+			# %index_phrase_int is a hash of phrase-internal word positions
+			#    corresponding to the phrases in %index_phrase_ext
+			#   - the keys are words
+			#   - the values are word position in a phrase
+				
+			push @word, $words[$i];
 
-			# split into words
+			push @{$line[$line_id]{SPACE}}, $spaces[$i];
+			push @{$line[$line_id]{WORD}}, $#word;
+			push @{$index_line_int{$key}}, $#{$line[$line_id]{WORD}};		
+			push @{$index_line_ext{$key}}, $line_id;
 
-			my @words = split ($non_word{$lang}, $string);
-
-			# add words to the current phrase, line
-
-			for (@words)
+			if ($i == 0 and $#{$phrase[$phrase_id]{SPACE}} > -1)
 			{
-				next if ($_ eq "");
-
-				# convert to lower-case
-				# the wisdom of this could be disputed, but roelant does it too
-
-				my $key = lc($_);
-
-				$count{$key}++;
-
-				# increment window id if we already have n words
-
-				if (scalar($#{$window[$window_id]}) >= $n) { $window_id++ }
-				
-				# add the word to a bunch of indices
-				#
-				# there's some more detail about these in read_table.pl
-				# and I'll write proper documentation later.
-				#
-				# @phrase is an array of phrases
-				#   - the index is serial phrase id
-				#	- each value is an anonymous array of the words in that phrase
-				#
-				# %index_phrase_ext is a hash of phrase ids in which the word occurs
-				#   - the keys are words 
-				#	- the values are anonymous arrays of phrase ids
-				#
-				# %index_phrase_int is a hash of phrase-internal word positions
-				#    corresponding to the phrases in %index_phrase_ext
-				#   - the keys are words
-				#   - the values are word position in a phrase
-
-				push @{$phrase[$phrase_id]}, $key;
-				push @{$index_phrase_int{$key}}, $#{$phrase[$phrase_id]};
-				push @{$index_phrase_ext{$key}}, $phrase_id;
-
-				push @{$line[$line_id]}, $key;
-				push @{$index_line_int{$key}}, $#{$line[$line_id]};		
-				push @{$index_line_ext{$key}}, $line_id;
-				
-				push @{$window[$window_id]}, $key;
-				push @{$index_window_int{$key}}, $#{$window[$window_id]};		
-				push @{$index_window_ext{$key}}, $window_id;
-				
+				$spaces[$i] = " / " . $spaces[$i];
 			}
+			
+			
+			if ($i == 0 and $#{$phrase[$phrase_id]{SPACE}} > $#{$phrase[$phrase_id]{WORD}})
+			{
+				${$phrase[$phrase_id]{SPACE}}[$#{$phrase[$phrase_id]{SPACE}}] .= $spaces[$i];
+			}
+			else
+			{
+				push @{$phrase[$phrase_id]{SPACE}}, $spaces[$i];
+			}
+			
+			if ($spaces[$i] =~ /[\.\?\!\;\:]/) 
+			{
+				$phrase_id++;
+				
+				push @{$phrase[$phrase_id]{SPACE}}, "";
+				
+				push @{$phrase_lines[$phrase_id]}, $line_id;
+			}
+			
+			push @{$phrase[$phrase_id]{WORD}}, $#word;
+			push @{$index_phrase_int{$key}}, $#{$phrase[$phrase_id]{WORD}};
+			push @{$index_phrase_ext{$key}}, $phrase_id;
+		}
+
+		if ($#spaces > $#words)
+		{
+			push @{$phrase[$phrase_id]{SPACE}}, $spaces[$#spaces];
+			
+			if ($spaces[$#spaces] =~ /[\.\?\!\;\:]/) 
+			{ 
+				$phrase_id++;
+			}
+			
+			push @{$line[$line_id]{SPACE}}, $spaces[$#spaces];
+		}
+		else
+		{
+			push @{$line[$line_id]{SPACE}}, "";
 		}
 		
 		# increment line_id
@@ -286,20 +307,34 @@ while (my $file_in = shift @ARGV)
 	print scalar(@line) . " lines\n";
 	print scalar(@phrase) . " phrases\n";
 
+	
+	for my $i (0..$#phrase)
+	{
+		$loc_phrase[$i] = $loc_line[$phrase_lines[$i][0]];
+	
+		if ($#{$phrase[$i]{SPACE}} == $#{$phrase[$i]{WORD}})
+		{
+			push @{$phrase[$i]{SPACE}}, "";
+		}
+	}
+	
 	#
 	# save the data using Storable
 	# 
 
 	my $file_out = "$fs_data/big_table/$lang/word/$name";
 
+	print "writing $file_out.word\n";
+	nstore \@word, "$file_out.word";
+
+	print "writing $file_out.space\n";
+	nstore \@space, "$file_out.space";
+	
 	print "writing $file_out.line\n";
 	nstore \@line, "$file_out.line";
 
 	print "writing $file_out.phrase\n";
 	nstore \@phrase, "$file_out.phrase";
-
-	print "writing $file_out.window\n";
-	nstore \@window, "$file_out.window";
 
 	print "writing $file_out.count\n";
 	nstore \%count, "$file_out.count";
@@ -316,21 +351,15 @@ while (my $file_in = shift @ARGV)
 	print "writing $file_out.index_line_ext\n";
 	nstore \%index_line_ext, "$file_out.index_line_ext";
 
-	print "writing $file_out.index_window_int\n";
-	nstore \%index_window_int, "$file_out.index_window_int";
-
-	print "writing $file_out.index_window_ext\n";
-	nstore \%index_window_ext, "$file_out.index_window_ext";
-
 	print "writing $file_out.loc_line\n";
 	nstore \@loc_line, "$file_out.loc_line";
 
 	print "writing $file_out.loc_phrase\n";
 	nstore \@loc_phrase, "$file_out.loc_phrase";
 
-	print "writing $file_out.loc_window\n";
-	nstore \@loc_window, "$file_out.loc_window";
-	
+	print "writing $file_out.phrase_lines\n";
+	nstore \@phrase_lines, "$file_out.phrase_lines";
+
 	# add this ref to the database of abbreviations
 
 	unless (defined $abbr{$name})
