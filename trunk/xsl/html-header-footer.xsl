@@ -2,7 +2,7 @@
 <xsl:variable name="url_cgi" select="'http://tesserae.caset.buffalo.edu/cgi-bin'"/><!-- URL_CGI -->
 <xsl:variable name="url_css" select="'http://tesserae.caset.buffalo.edu/css'"/><!-- URL_CSS -->
 <xsl:variable name="url_html" select="'http://tesserae.caset.buffalo.edu'"/><!-- URL_HTML -->
-<xsl:variable name="url_image" select="'http://tesserae.caset.buffalo.edu/images'"/><!-- URL_IMAGES -->
+<xsl:variable name="url_images" select="'http://tesserae.caset.buffalo.edu/images'"/><!-- URL_IMAGES -->
 <xsl:variable name="url_text" select="'http://tesserae.caset.buffalo.edu/texts'"/><!-- URL_TEXT -->
 	
 	<xsl:template match="/">

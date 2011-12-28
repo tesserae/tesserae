@@ -1,10 +1,10 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
-	<xsl:variable name="url_cgi" select="'http://tesserae.caset.buffalo.edu/cgi-bin'"/><!-- URL_CGI -->
-	<xsl:variable name="url_css" select="'http://tesserae.caset.buffalo.edu/css'"/><!-- URL_CSS -->
-	<xsl:variable name="url_html" select="'http://tesserae.caset.buffalo.edu'"/><!-- URL_HTML -->
-	<xsl:variable name="url_image" select="'http://tesserae.caset.buffalo.edu/images'"/><!-- URL_IMAGES -->
-	<xsl:variable name="url_text" select="'http://tesserae.caset.buffalo.edu/texts'"/><!-- URL_TEXT -->
+<xsl:variable name="url_cgi" select="'http://tesserae.caset.buffalo.edu/cgi-bin'"/><!-- URL_CGI -->
+<xsl:variable name="url_css" select="'http://tesserae.caset.buffalo.edu/css'"/><!-- URL_CSS -->
+<xsl:variable name="url_html" select="'http://tesserae.caset.buffalo.edu'"/><!-- URL_HTML -->
+<xsl:variable name="url_images" select="'http://tesserae.caset.buffalo.edu/images'"/><!-- URL_IMAGES -->
+<xsl:variable name="url_text" select="'http://tesserae.caset.buffalo.edu/texts'"/><!-- URL_TEXT -->
 	
 	<xsl:template match="/">
 		<html>
@@ -17,14 +17,14 @@
 					<xsl:attribute name="href"><xsl:value-of select="concat($url_css, '/style.css')"/></xsl:attribute>
 				</link>
 				<link rel="shortcut icon">
-					<xsl:attribute name="href"><xsl:value-of select="concat($url_image, '/favicon.ico')"/></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($url_images, '/favicon.ico')"/></xsl:attribute>
 				</link>
 				<title>Tesserae</title>
 			</head>
 
 			<body>
 				<a name="top"/>
-					<div id="container">
+				<div id="container">
             
 					<div id="header"> 
 						<center>
@@ -34,40 +34,40 @@
 					</div>
 
 					<div class="links">
-							<a>
-								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, '/index.php')"/>
-								</xsl:attribute>
-								Basic Search
-							</a>
-							| 
-							<a>
-								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, '/advanced.php')"/>
-								</xsl:attribute>
-								Advanced
-							</a>
-							| 
-							<a>
-								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, '/v2.php')"/>
-								</xsl:attribute>
-								Version 2
-							</a>
-							| 
-							<a>
-								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, '/la_table.php')"/>
-								</xsl:attribute>
-								Big Table&#x2014;Latin
-							</a>
-							|
-							<a>
-								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, '/grc_table.php')"/>
-								</xsl:attribute>
-								Big Table&#x2014;Greek
-							</a>
+						<a>
+							<xsl:attribute name="href">
+								<xsl:value-of select="concat($url_html, '/index.php')"/>
+							</xsl:attribute>
+							Basic Search
+						</a>
+						| 
+						<a>
+							<xsl:attribute name="href">
+								<xsl:value-of select="concat($url_html, '/advanced.php')"/>
+							</xsl:attribute>
+							Advanced
+						</a>
+						| 
+						<a>
+							<xsl:attribute name="href">
+								<xsl:value-of select="concat($url_html, '/v2.php')"/>
+							</xsl:attribute>
+							Version 2
+						</a>
+						| 
+						<a>
+							<xsl:attribute name="href">
+								<xsl:value-of select="concat($url_html, '/la_table.php')"/>
+							</xsl:attribute>
+							Big Table&#x2014;Latin
+						</a>
+						|
+						<a>
+							<xsl:attribute name="href">
+								<xsl:value-of select="concat($url_html, '/grc_table.php')"/>
+							</xsl:attribute>
+							Big Table&#x2014;Greek
+						</a>
 					</div>
 				
 					<div id="main">
@@ -75,45 +75,47 @@
 						<xsl:apply-templates select="results"/>
 
 						<div style="margin:1em;text-align:left;">
-						<a href="#top">Back to top</a>
-					</div>
+							<a href="#top">Back to top</a>
 
-					<div>
-						<h2>Session Details</h2>
-						<a name="fullinfo"/>
-						<p>
-							<b>Session ID: </b>
-							<xsl:value-of select="results/@sessionID"/>
-						</p>
-						<p>
-							<b>Source Text: </b>
-							<a>
-								<xsl:attribute name="href">
+						</div>
+
+						<div>
+							<h2>Session Details</h2>
+							<a name="fullinfo"/>
+							<p>
+								<b>Session ID: </b>
+								<xsl:value-of select="results/@sessionID"/>
+							</p>
+							<p>
+								<b>Source Text: </b>
+								<a>
+									<xsl:attribute name="href">
+										<xsl:value-of select="concat($url_text, '/', results/@source, '.tess')"/>
+									</xsl:attribute>
 									<xsl:value-of select="concat($url_text, '/', results/@source, '.tess')"/>
-								</xsl:attribute>
-								<xsl:value-of select="concat($url_text, '/', results/@source, '.tess')"/>
-							</a>
+								</a>
 
-							<br/>
+								<br/>
 
-							<b>Target Text: </b>
-							<a>
-								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_text, '/', results/@target, '.tess')"/>
-								</xsl:attribute>
-								<xsl:value-of select="concat($url_text, '/', results/@target, '.tess')"/>             
-							</a>
-						</p>
+								<b>Target Text: </b>
+								<a>
+									<xsl:attribute name="href">
+										<xsl:value-of select="concat($url_text, '/', results/@target, '.tess')"/>
+									</xsl:attribute>
+									<xsl:value-of select="concat($url_text, '/', results/@target, '.tess')"/>             
+								</a>
+							</p>
 
-						<p>
-							<b>Comments: </b>
-							<xsl:value-of select="results/comments"/>
-						</p>
-						<p>
-							<b>Stop words: </b>
-							<xsl:value-of select="results/commonwords"/>
-						</p>
-					</div>
+							<p>
+								<b>Comments: </b>
+								<xsl:value-of select="results/comments"/>
+							</p>
+							<p>
+								<b>Stop words: </b>
+								<xsl:value-of select="results/commonwords"/>
+							</p>
+						</div>
+					</div>		<!-- closes main -->
 					<div id="footer">
 						<div class="links">
 							<a>
@@ -167,92 +169,41 @@
 		   						tel: (716) 645-2154 | fax: (716) 645-2225
 							</p>
 						</div>
-					</div>
-				</div>
-	      </body>
-	   </html>
+					</div> <!-- closes footer -->
+				</div> <!-- closes container -->
+			</body>
+		</html>
 	</xsl:template>
 
  
 	<xsl:template match="results">
- 
-	<table class="fulltext">
-		<thead>
-            <tr> 
-               <th></th>
-               <th class="phrase">target phrase</th>
-               <th class="phrase">source matches</th>
-               <th>matched on</th>
-               <th>score</th>
-            </tr>
-         </thead>
-         <tbody>
-            <xsl:apply-templates select="tessdata/phrase[@text='target']">
-               <xsl:sort select="substring-before(@line,'.')" data-type="number"/>
-               <xsl:sort select="substring-after(@line,concat(substring-before(@line,'.'),'.'))" data-type="number"/>
-            </xsl:apply-templates>
-         </tbody>    
-      </table>
-   </xsl:template>
+		<table class="fulltext">
+			<xsl:apply-templates select="l" />
+		</table>
+	</xsl:template>
     
     
-    <xsl:template match="phrase[@text='target']">
-       <tr>
-          <td>
-            <xsl:value-of select="position()"/>
-            <xsl:text>.</xsl:text>
-          </td>
-          <td>
-             <table>
-                <tr>
-                  <td>
-                     <a>
-                        <xsl:attribute name="href">javascript:;</xsl:attribute>
-		        <xsl:attribute name="onclick">
-                           <xsl:text>window.open(link='</xsl:text>
-                           <xsl:value-of select="@link"/>
-		           <xsl:text>', 'context', 'width=520,height=240')</xsl:text>
-                        </xsl:attribute>
-                        <xsl:value-of select="@work"/>
-                        <xsl:text> </xsl:text>
-                        <xsl:value-of select="@line"/>
-                     </a>
-                  </td>
-                  <td>
-                     <xsl:copy-of select="."/>
-                  </td>
-               </tr>
-            </table>
-          </td>
-          <td>
-             <table>
-                <xsl:for-each select="../phrase[@text='source']">
-                   <tr>
-                      <td>
-                         <a>
-                            <xsl:attribute name="href">javascript:;</xsl:attribute>
-                            <xsl:attribute name="onclick">
-                               <xsl:text>window.open(link='</xsl:text>
-                               <xsl:value-of select="@link"/>
-                               <xsl:text>', 'context', 'width=520,height=240')</xsl:text>   
-                            </xsl:attribute>
-                            <xsl:value-of select="@work"/>
-                            <xsl:text> </xsl:text>
-                            <xsl:value-of select="@line"/>
-                         </a>
-                      </td>
-                      <td><xsl:copy-of select="."/></td>
-                   </tr>
-                </xsl:for-each>
-             </table>
-          </td>
-          <td>
-             <xsl:value-of select="../@keypair"/>
-          </td>
-          <td>
-             <xsl:value-of select="../@score"/>
-          </td>
-       </tr>
+	<xsl:template match="l">
+		<tr>
+			<xsl:attribute name="class">
+				<xsl:value-of select="concat('s', @score)" />
+			</xsl:attribute>
+			<td>
+				<xsl:value-of select="@n"/>
+			</td>
+			<td>
+				<xsl:apply-templates />
+			</td>
+		</tr>
     </xsl:template>
+	
+	<xsl:template match="link">
+		<span class="matched">
+			<xsl:attribute name="title">
+				<xsl:value-of select="@ref" />
+			</xsl:attribute>
+			<xsl:value-of select="." />
+		</span>
+	</xsl:template>
 
 </xsl:stylesheet>

@@ -548,9 +548,17 @@ for my $target_ref_ext (0..$#match_target)
 	}
 }
 
+if ($quiet == 0 and $output ne "html")
+{
+	print STDERR "\n";
+}
+
 # write output
 
-print STDERR "writing XML output";
+if ($output ne "html")
+{
+	print STDERR "writing XML output";
+}
 
 # this line should ensure that the xml output is encoded utf-8
 
