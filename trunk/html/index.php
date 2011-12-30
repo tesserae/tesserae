@@ -1,5 +1,10 @@
 			<?php include "first.php"; ?>
 
+			<?php include "search_menu.php"; ?>
+
+			</div>
+
+
 			<div id="main">
 				<h1>Basic Search</h1>
 
@@ -26,13 +31,12 @@
 		 					</td>
 							<td align ="center">
 								<select name="target" ID="target">
-									<?php include $fs_html.'/textlist.la.r.php'; ?>
+									<?php include $fs_html.'/textlist.la.l.php'; ?>
 								</select>
 		 					</td>
 						</tr>
 						<tr>
 							<td>
-						
 								<input type="hidden" name="unit" value="line"/>
 								<input type="hidden" name="feature" value="stem"/>
 							</td>

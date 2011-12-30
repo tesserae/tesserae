@@ -117,7 +117,7 @@ for my $file (@xsl_files)
 		}
 		if ($line =~ /<!--\s+URL_IMAGES/)
 		{
-			$line = "<xsl:variable name=\"url_images\" select=\"'$url_images'\"/>";
+			$line = "<xsl:variable name=\"url_image\" select=\"'$url_images'\"/>";
 			$line .= '<!-- URL_IMAGES -->' . "\n";
 		}
 		if ($line =~ /<!--\s+URL_TEXT/)

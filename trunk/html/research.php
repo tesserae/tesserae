@@ -1,5 +1,12 @@
 	<?php include "first.php"; ?>
 
+				<div id="nav_sub">
+					<ul>
+						<li><a href="<?php echo $url_html.'/index.php' ?>">Home</a></li>
+					</ul>
+				</div>
+			</div>
+
 			<div id="main">
 				<a name="top"></a>
 

@@ -6,7 +6,7 @@
 # check for whatever interests you; right now i want
 # to look for empty strings and capital letters
 
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/sites/tesserae/perl';	# PERL_PATH
 
 use strict;
 use warnings;

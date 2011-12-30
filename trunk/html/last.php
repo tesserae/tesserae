@@ -1,9 +1,6 @@
 			<div id="footer">
-				<div class="links">
-					<a href="<?php echo $url_html.'/help.php' ?>">Instructions</a>
-					| <a href="<?php echo $url_html.'/about.php' ?>">About</a>
-					| <a href="<?php echo $url_html.'/people.php' ?>">People</a>
-					| <a href="<?php echo $url_html.'/research.php' ?>">Research</a>
+				<div id="footer_icon">
+					<img src="<?php echo $url_images . "/DHIBlogo.png" ?>" alt="DHIB logo">
 				</div>
 				<div id="footer_content">
 					<p> 

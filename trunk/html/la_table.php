@@ -1,22 +1,22 @@
 		<?php include "first.php"; ?>
-
-		<?php include "search_menu.php"; ?>		
+		
+		<?php include "search_menu.php"; ?>
 
 		</div>
 		
 		<div id="main">
 			
-			<form action="http://tesserae.caset.buffalo.edu/cgi-bin/session.pl" method="post" ID="Form1">
+			<form action="<?php echo $url_cgi.'/read_table.pl'; ?>" method="post" ID="Form1">
 				
-				<h1>Version 1 Advanced Options</h1>
+				<h1>Version 3a</h1>
+				
+				<h2>Advanced Features</h2>
 				
 				<p>
-					This page allows you to change the default settings for the 
-					<a href="<?php echo $url_html.'/index.php' ?>">Basic Search</a>.
-					
-					To explore other search algorithms, please try 
-					<a href="<?php echo $url_html.'/v2.php' ?>">Version 2</a> or the experimental
-					<a href="<?php echo $url_html.'/la_table' ?>">Big Table</a>.
+					This page allows you to change the default settings of our experimental Version 3a search.
+				</p>
+				<p>
+					<strong>NB</strong>: any scores assigned to results are for testing purposes only and may change without notice!
 				</p>
 				
 				<table class = "input">
@@ -29,8 +29,8 @@
 							<select name="source" ID="source">
 								<?php include $fs_html.'/textlist.la.l.php'; ?>
 							</select>
-						</td>
-						<td align="center">
+			 			</td>
+						<td align ="center">
 							<select name="target" ID="target">
 								<?php include $fs_html.'/textlist.la.r.php'; ?>
 							</select>
@@ -38,13 +38,23 @@
 					</tr>
 				</table>
 
+				<h2>Units</h2>
+
+				<p>
+					Match
+					<select name="unit" ID="unit">
+						<option value="line" selected="selected">lines</option>
+						<option value="phrase">phrases</option>
+					</select>
+				</p>
+				
 				<h2>Feature Set</h2>
 
 				<p>
 					Match on
 					<select name="unit" ID="unit">
-						<option value="word" selected="selected">words</option>
-						<option value="stem" disabled="disabled">stems (temporarily unavailable)</option>
+						<option value="stem" selected="selected">lemma</option>
+						<option value="word">exact form only</option>
 					</select>
 				</p>
 
@@ -52,7 +62,7 @@
 
 				<p>
 					Omit matches on
-					<select name="cutoff" ID="cutoff">
+					<select name="stoplist" ID="stoplist">
 						<option value="0">none</option>
 						<option value="10">top 10</option>
 						<option value="50">top 50</option>
@@ -62,18 +72,23 @@
 				</p>
 
 				<p>
-					Omit matches on the following additional words:
+					Filter results below score
+					<select name="cutoff" ID="cutoff">
+						<option value="0">none</option>
+						<option value="10">top 10</option>
+						<option value="50">top 50</option>
+						<option value="100">top 100</option>
+					</select>
 				</p>
-
+				
 				<p>
-					<textarea name="stopwords" rows="10" cols="30"></textarea>
-				</p>
-
-				<p>
-					<input type="submit" onclick="return ValidateForm()" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>
+					<center>
+						<input type="submit" onclick="return ValidateForm()" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>
+					</center>
 				</p>
 			</form>
 		</div>
+
 		<script language="javascript">
 
                 	var ddlsrc = document.getElementById('source');

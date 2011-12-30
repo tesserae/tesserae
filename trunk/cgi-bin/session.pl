@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;

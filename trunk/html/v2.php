@@ -1,14 +1,18 @@
 			<?php include "first.php"; ?>
+		
+			<?php include "search_menu.php"; ?>
+
+			</div>
 
 			<div id="main">
 				<h1>Version 2 Search</h1>
 
 				<p>
-					Welcome to Version 2! In this search, a parallel is returned if two grammatical sentences share two or more common words.  Words are "common" if the inflected forms in the text can be traced to the same dictionary headword.  An inflected form which is ambiguous will match to any of the possible lemmata.
+					In this search, a parallel is returned if two grammatical sentences share two or more common words.  Words are "common" if the inflected forms in the text can be traced to the same dictionary headword.  An inflected form which is ambiguous will match to any of the possible lemmata.
 				</p>
 				
 				<p>
-					This algorithm is still being refined. For now, searches on large texts may be quite slow (up to 10 minutes).
+					Version 2 searches on large texts may be quite slow (up to 10 minutes).  This algorithm has largely been superceded by <a href="<?php echo $url_html . "/la_table.php" ?>">Version 3a</a>, which produces slightly different&mdash;but faster&mdash;results.
 				</p>
 				
 
@@ -40,6 +44,7 @@
 								
 								<input type="hidden" name="unit" value="words"/>
 								<input type="hidden" name="cutoff" value="30"/>
+								<input type="hidden" ID="ignore_low" name="ignore_low" value="yes"/>
 							</td>
 						</tr>
 						<tr>
@@ -50,10 +55,6 @@
 					</table>
 				</form>
 
-				<p>	
-					Only show likely candidates? 
-					<input type="checkbox" ID="ignore_low" name="ignore_low" value="yes"/>
-				</p>
 			</div>
 
 			<script language="javascript">

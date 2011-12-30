@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -628,7 +628,7 @@ print XML "</results>\n";
 # redirect browser to the xml results
 #
 
-my $redirect = "$url_cgi/get-data.pl?session=$session;sort=target";
+my $redirect = "$url_cgi/get-data.pl?session=$session;sort=fulltext";
 
 if ($quiet == 1)
 {

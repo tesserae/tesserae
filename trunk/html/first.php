@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
    "http://www.w3.org/TR/html4/strict.dtd">
-<?php $url_html="http://tesserae.caset.buffalo.edu" ?><!-- URL_HTML -->
-<?php $url_css="http://tesserae.caset.buffalo.edu/css" ?><!-- URL_CSS -->
-<?php $url_cgi="http://tesserae.caset.buffalo.edu/cgi-bin" ?><!-- URL_CGI -->
-<?php $url_images="http://tesserae.caset.buffalo.edu/images" ?><!-- URL_IMAGES -->
-<?php $url_text="http://tesserae.caset.buffalo.edu/texts" ?><!-- URL_TEXT -->
-<?php $fs_html="/Users/chris/Desktop/tesserae/html" ?><!-- FS_HTML -->
+<?php $url_html="http://localhost/~chris/tesserae/html" ?><!-- URL_HTML -->
+<?php $url_css="http://localhost/~chris/tesserae/css" ?><!-- URL_CSS -->
+<?php $url_cgi="http://localhost/~chris/tesserae/cgi-bin" ?><!-- URL_CGI -->
+<?php $url_images="http://localhost/~chris/tesserae/images" ?><!-- URL_IMAGES -->
+<?php $url_text="http://localhost/~chris/tesserae/texts" ?><!-- URL_TEXT -->
+<?php $fs_html="/Users/chris/sites/tesserae/html" ?><!-- FS_HTML -->
 
 
 <html lang="en">
@@ -25,16 +25,16 @@
 		<div id="container">
 
 		<div id="header"> 
-			<center>
+			<div id="title">
 				<h1><b>Tesserae</b></h1>
 				<h2>Intertextual Phrase Matching</h2>
-			</center>
-		</div>
+			</div>
 
-		<div class="links">
-			<a href="<?php echo $url_html.'/index.php' ?>">Basic Search</a>
-			| <a href="<?php echo $url_html.'/advanced.php' ?>">Advanced</a>
-			| <a href="<?php echo $url_html.'/v2.php' ?>">Version 2</a>
-			| <a href="<?php echo $url_html.'/la_table.php' ?>">Big Table&mdash;Latin</a>
-			| <a href="<?php echo $url_html.'/grc_table.php' ?>">Big Table&mdash;Greek</a>
-		</div>
+			<div id="nav_main">
+				<ul>
+					<li><a href="<?php echo $url_html.'/help.php' ?>">Instructions</a></li>
+					<li><a href="<?php echo $url_html.'/about.php' ?>">About</a></li>
+					<li><a href="<?php echo $url_html.'/people.php' ?>">People</a></li>
+					<li><a href="<?php echo $url_html.'/research.php' ?>">Research</a></li>
+				</ul>
+			</div>

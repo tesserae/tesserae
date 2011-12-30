@@ -1,150 +1,181 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-
-<xsl:variable name="url_cgi" select="'http://tesserae.caset.buffalo.edu/cgi-bin'"/><!-- URL_CGI -->
-<xsl:variable name="url_css" select="'http://tesserae.caset.buffalo.edu/css'"/><!-- URL_CSS -->
-<xsl:variable name="url_html" select="'http://tesserae.caset.buffalo.edu'"/><!-- URL_HTML -->
-<xsl:variable name="url_images" select="'http://tesserae.caset.buffalo.edu/images'"/><!-- URL_IMAGES -->
-<xsl:variable name="url_text" select="'http://tesserae.caset.buffalo.edu/texts'"/><!-- URL_TEXT -->
+<xsl:variable name="url_cgi" select="'http://localhost/~chris/tesserae/cgi-bin'"/><!-- URL_CGI -->
+<xsl:variable name="url_css" select="'http://localhost/~chris/tesserae/css'"/><!-- URL_CSS -->
+<xsl:variable name="url_html" select="'http://localhost/~chris/tesserae/html'"/><!-- URL_HTML -->
+<xsl:variable name="url_image" select="'http://localhost/~chris/tesserae/images'"/><!-- URL_IMAGES -->
+<xsl:variable name="url_text" select="'http://localhost/~chris/tesserae/texts'"/><!-- URL_TEXT -->
 	
 	<xsl:template match="/">
 		<html>
-			<head>
+	      <head>
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 				<meta name="author" content="Neil Coffee, Jean-Pierre Koenig, Shakthi Poornima, Chris Forstall, Roelant Ossewaarde"/>
 				<meta name="keywords" content="inter-text, text analysis, classics, university at buffalo, latin"/>
 				<meta name="description" content="Intertext analyzer for Latin texts"/>
 				<link rel="stylesheet" type="text/css">
 					<xsl:attribute name="href"><xsl:value-of select="concat($url_css, '/style.css')"/></xsl:attribute>
-				</link>
+                                </link>
 				<link rel="shortcut icon">
-					<xsl:attribute name="href"><xsl:value-of select="concat($url_images, '/favicon.ico')"/></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($url_image, '/favicon.ico')"/></xsl:attribute>
 				</link>
-				<title>Tesserae</title>
-			</head>
+				
+	         <title>Tesserae</title>
+	      </head>
 
-			<body>
-				<a name="top"/>
+	      <body>
+            <a name="top"/>
+
 				<div id="container">
-            
+
 					<div id="header"> 
-						<center>
+						<div id="title">
 							<h1><b>Tesserae</b></h1>
 							<h2>Intertextual Phrase Matching</h2>
-						</center>
+						</div>
+
+						<div id="nav_main">
+							<ul>
+								<li>
+									<a>
+										<xsl:attribute name="href">
+											<xsl:value-of select="concat($url_html, '/help.php')"/>
+										</xsl:attribute>
+										Instructions
+									</a>
+								</li>
+								<li>
+									<a>
+										<xsl:attribute name="href">
+											<xsl:value-of select="concat($url_html, '/about.php')"/>
+										</xsl:attribute>
+										About
+									</a>
+								</li>
+								<li>
+									<a>
+										<xsl:attribute name="href">
+											<xsl:value-of select="concat($url_html, '/people.php')"/>
+										</xsl:attribute>
+										People
+									</a>
+								</li>
+								<li>
+									<a>
+										<xsl:attribute name="href">
+											<xsl:value-of select="concat($url_html, '/research.php')"/>
+										</xsl:attribute>
+										Research
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					
+					<div id="nav_sub">
+						<ul>
+							<li>
+								<a>
+									<xsl:attribute name="href">
+										<xsl:value-of select="concat($url_html, '/index.php')"/>
+									</xsl:attribute>
+									Basic Search
+								</a>
+							</li>
+							<li>
+								<a>
+									<xsl:attribute name="href">
+										<xsl:value-of select="concat($url_html, '/v2.php')"/>
+									</xsl:attribute>
+									Version 2
+								</a>
+							</li>
+							<li>
+								<a>
+									<xsl:attribute name="href">
+										<xsl:value-of select="concat($url_html, '/v3.php')"/>
+									</xsl:attribute>
+									V3&#x2014;Latin
+								</a>
+							</li>
+							<li>
+								<a>
+									<xsl:attribute name="href">
+										<xsl:value-of select="concat($url_html, '/grc_table.php')"/>
+									</xsl:attribute>
+									V3&#x2014;Greek
+								</a>
+							</li>
+							<li>
+								<a>
+									<xsl:attribute name="href">
+										<xsl:value-of select="concat($url_html, '/full-text.php')"/>
+									</xsl:attribute>
+									Full-text
+								</a>
+							</li>
+						</ul>
+					</div>
+									
+					<div id="main">
+						<h2>Text: <xsl:value-of select="results/@target" /></h2>
+						<p>
+							Allusion references are to <xsl:value-of select="results/@source" />
+						</p>
 					</div>
 
-					<div class="links">
-						<a>
-							<xsl:attribute name="href">
-								<xsl:value-of select="concat($url_html, '/index.php')"/>
-							</xsl:attribute>
-							Basic Search
-						</a>
-						| 
-						<a>
-							<xsl:attribute name="href">
-								<xsl:value-of select="concat($url_html, '/advanced.php')"/>
-							</xsl:attribute>
-							Advanced
-						</a>
-						| 
-						<a>
-							<xsl:attribute name="href">
-								<xsl:value-of select="concat($url_html, '/v2.php')"/>
-							</xsl:attribute>
-							Version 2
-						</a>
-						| 
-						<a>
-							<xsl:attribute name="href">
-								<xsl:value-of select="concat($url_html, '/la_table.php')"/>
-							</xsl:attribute>
-							Big Table&#x2014;Latin
-						</a>
-						|
-						<a>
-							<xsl:attribute name="href">
-								<xsl:value-of select="concat($url_html, '/grc_table.php')"/>
-							</xsl:attribute>
-							Big Table&#x2014;Greek
-						</a>
+	            <xsl:apply-templates select="results"/>
+    
+					<div style="margin:1em;text-align:left;">
+						<a href="#top">Back to top</a>
+					</div>
+
+					<div style="margin-left:100px;text-align:left;">
+						<h2>Session Details</h2>
+						<a name="fullinfo"/>
+						<p>
+							<b>Session ID: </b>
+							<xsl:value-of select="results/@sessionID"/>
+						</p>
+						<p>
+							<b>Source Text: </b>
+							<a>
+								<xsl:attribute name="href">
+									<xsl:value-of select="concat($url_text, '/', results/@source, '.tess')"/>
+								</xsl:attribute>
+								<xsl:value-of select="concat($url_text, '/', results/@source, '.tess')"/>
+							</a>
+
+							<br/>
+
+	                    <b>Target Text: </b>
+							<a>
+								<xsl:attribute name="href">
+									<xsl:value-of select="concat($url_text, '/', results/@target, '.tess')"/>
+								</xsl:attribute>
+								<xsl:value-of select="concat($url_text, '/', results/@target, '.tess')"/>             
+							</a>
+						</p>
+
+						<p>
+							<b>Comments: </b>
+							<xsl:value-of select="results/comments"/>
+						</p>
+						<p>
+							<b>Stop words: </b>
+							<xsl:value-of select="results/commonwords"/>
+						</p>
 					</div>
 				
-					<div id="main">
-
-						<xsl:apply-templates select="results"/>
-
-						<div style="margin:1em;text-align:left;">
-							<a href="#top">Back to top</a>
-
-						</div>
-
-						<div>
-							<h2>Session Details</h2>
-							<a name="fullinfo"/>
-							<p>
-								<b>Session ID: </b>
-								<xsl:value-of select="results/@sessionID"/>
-							</p>
-							<p>
-								<b>Source Text: </b>
-								<a>
-									<xsl:attribute name="href">
-										<xsl:value-of select="concat($url_text, '/', results/@source, '.tess')"/>
-									</xsl:attribute>
-									<xsl:value-of select="concat($url_text, '/', results/@source, '.tess')"/>
-								</a>
-
-								<br/>
-
-								<b>Target Text: </b>
-								<a>
-									<xsl:attribute name="href">
-										<xsl:value-of select="concat($url_text, '/', results/@target, '.tess')"/>
-									</xsl:attribute>
-									<xsl:value-of select="concat($url_text, '/', results/@target, '.tess')"/>             
-								</a>
-							</p>
-
-							<p>
-								<b>Comments: </b>
-								<xsl:value-of select="results/comments"/>
-							</p>
-							<p>
-								<b>Stop words: </b>
-								<xsl:value-of select="results/commonwords"/>
-							</p>
-						</div>
-					</div>		<!-- closes main -->
 					<div id="footer">
-						<div class="links">
-							<a>
-								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, '/help.php')"/>
+						<div id="footer_icon">
+							<img>
+								<xsl:attribute name="src">
+									<xsl:value-of select="concat($url_image, '/DHIBlogo.png')"/>
 								</xsl:attribute>
-								Instructions
-							</a>
-							|
-							<a>
-								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, '/about.php')"/>
+								<xsl:attribute name="alt">
+									DHIB logo
 								</xsl:attribute>
-								About
-							</a>
-							|
-							<a>
-								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, '/people.php')"/>
-								</xsl:attribute>
-								People
-							</a>
-							|
-							<a>
-								<xsl:attribute name="href">
-									<xsl:value-of select="concat($url_html, '/research.php')"/>
-								</xsl:attribute>
-								Research
-							</a>
+							</img>
 						</div>
 						<div id="footer_content">
 							<p> 
@@ -166,16 +197,15 @@
 
 								Department of Classics | 338 MFAC | Buffalo, NY 14261<br />
 
-		   						tel: (716) 645-2154 | fax: (716) 645-2225
+		   					tel: (716) 645-2154 | fax: (716) 645-2225
 							</p>
 						</div>
-					</div> <!-- closes footer -->
-				</div> <!-- closes container -->
-			</body>
-		</html>
+					</div>
+				</div>					
+	      </body>
+	   </html>
 	</xsl:template>
-
- 
+	 
 	<xsl:template match="results">
 		<table class="fulltext">
 			<xsl:apply-templates select="l" />
