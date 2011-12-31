@@ -1,6 +1,6 @@
 			<div id="footer">
 				<div id="footer_icon">
-					<img src="<?php echo $url_images . "/DHIBlogo.png" ?>" alt="DHIB logo">
+					<img src="<?php echo $url_image . "/DHIBlogo.png" ?>" alt="DHIB logo">
 				</div>
 				<div id="footer_content">
 					<p> 

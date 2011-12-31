@@ -2,7 +2,7 @@
 
 				<div id="nav_sub">
 					<ul>
-						<li><a href="<?php echo $url_html.'/index.php' ?>">Home</a></li>
+						<li><a href="<?php echo $url_html.'/index.php' ?>">Search Home</a></li>
 					</ul>
 				</div>
 			</div>

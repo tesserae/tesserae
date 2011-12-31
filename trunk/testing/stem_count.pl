@@ -1,9 +1,9 @@
 use strict;
 use warnings;
 
-use Storable qw(nstore retrieve);
+use Storable;
 
-my $cache_file = 'data/v2/stem.cache';
+my $cache_file = 'data/common/la.stem.cache';
 
 my %cache = %{retrieve($cache_file)};
 

@@ -348,6 +348,7 @@ sub archimedes
 
 		for (@{$stem{lcase($lang, $w)}}, @{$res->{$w}})
 		{
+			s/$non_word{$lang}//g;
 				
 			$uniq{lcase($lang, $_)} = 1;
 		}

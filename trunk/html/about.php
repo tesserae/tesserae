@@ -2,7 +2,10 @@
 
 				<div id="nav_sub">
 					<ul>
-						<li><a href="<?php echo $url_html.'/index.php' ?>">Home</a></li>
+						<li><a href="<?php echo $url_html.'/index.php' ?>">Search Home</a></li>
+						<li><a href="<?php echo $url_html.'/about.php' ?>">About Tesserae</a></li>
+						<li><a href="<?php echo $url_html.'/sources.php' ?>">Source Texts</a></li>						
+						<li><a href="<?php echo $url_html.'/events.php' ?>">Events</a></li>				
 					</ul>
 				</div>
 			</div>
@@ -55,8 +58,7 @@
 					but new, intuitive, and provocative encounters with literature.
 				</p>
 				<p>
-					Our software is <a href="<?php echo $url_html . '/license.txt' ?>">open-source</a> and 
-					available on request. 
+					Our software is open-source and available on request. 
 				</p>
 				<p>
 					This ongoing work, begun in 2008, has been made possible by grants from the 

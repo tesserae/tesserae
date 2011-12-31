@@ -2,8 +2,8 @@
 
 				<div id="nav_sub">
 					<ul>
-						<li><a href="<?php echo $url_html.'/index.php' ?>">Home</a></li>
-					</ul>
+						<li><a href="<?php echo $url_html.'/index.php' ?>">Search Home</a></li>
+						</ul>
 				</div>
 			</div>
 	
@@ -13,9 +13,14 @@
 				
 				<h2>Principal Investigators</h2>
 				<p>
-					<strong>Neil Coffee</strong><br />
-					<strong>J.-P. Koenig</strong>
+					<strong>Neil Coffee</strong>
+					is the chair of the Department of Classics, University at Buffalo.
 				</p>
+				<p>
+					<strong>J.-P. Koenig</strong>
+					is the chair of the Department of Linguistics, University at Buffalo.
+				</p>
+				</table>
 
 				<h2>Version 1</h2>
 				<p>
@@ -25,6 +30,12 @@
 
 				<h2>Version 2</h2>
 				<p>Roelant Ossewaarde</p>
+				
+				<h2>Version 3</h2>
+				<p>
+					Chris Forstall <br />
+					Xia Lu
+				</p>
 
 				<h2>Development Teams</h2>
 
@@ -52,12 +63,6 @@
 					Sam McCabe<br />
 					Derry Moore<br />
 					Sarah Skelley
-				</p>
-
-				<h3>Version 3</h3>
-				<p>
-					Chris Forstall<br />
-					Xia Lu
 				</p>
 
 				<h2>Collaborators</h2>
