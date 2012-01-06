@@ -21,7 +21,6 @@ use TessSystemVars;
 # is the program being run from the command line or
 # the web interface?
 
-my $apache_user = "_www";
 my $output = "html";
 my $quiet = 1;
 
@@ -206,8 +205,6 @@ else
 # a stop list
 # - hard coded in TessSystemVars, work on this in future
 # - feature-set-specific
-
-print STDERR "debug: target=$target lang=$lang{$target}\n";
 
 my @stoplist = @{$top{$lang{$target} . '_' . $feature}};
 

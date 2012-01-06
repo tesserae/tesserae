@@ -7,9 +7,11 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_images $url_tmp);
+our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_images $url_tmp $apache_user);
 
 our @EXPORT_OK = qw(uniq intersection tcase lcase);
+
+our $apache_user = "apache";
 
 my $fs_base	= '/Users/chris/sites/tesserae';
 
