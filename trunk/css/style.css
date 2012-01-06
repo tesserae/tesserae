@@ -4,7 +4,6 @@ body
 	background : #fff;
 	margin : 0px;
 	padding : 0px;
-	font-family : arial, helvetica, sans-serif;
 	font-size : 12px;
 	text-align : center;
 }
@@ -20,6 +19,7 @@ div#header
 {
 	position: relative;
 	background: #e1e6c6;
+	font-family : arial, helvetica, sans-serif;
 }
 
 div#title
@@ -91,6 +91,7 @@ div#nav_sub li a
 
 div#footer
 {
+	font-family : arial, helvetica, sans-serif;
 	position: relative;
 	padding-left: 200px;
 	padding-right: 100px;
@@ -131,6 +132,7 @@ div#footer_icon img
 
 div#main
 {
+	font-family : arial, helvetica, sans-serif;
 	padding: 25px 100px;
 	text-align: justify;
 }

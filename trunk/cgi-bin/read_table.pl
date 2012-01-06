@@ -445,7 +445,7 @@ my $commonwords = join(", ", @stoplist);
 print XML <<END;
 <?xml version="1.0" encoding="UTF-8" ?>
 <results source="$source" target="$target" sessionID="$session">
-	<comments>Test results from Big Table</comments>
+	<comments>V3 results.  Caution: these are still unstable.</comments>
 	<commonwords>$commonwords</commonwords>
 END
 
