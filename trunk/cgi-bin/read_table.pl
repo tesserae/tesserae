@@ -207,6 +207,8 @@ else
 # - hard coded in TessSystemVars, work on this in future
 # - feature-set-specific
 
+print STDERR "debug: $lang{$target} . '_' . $feature\n";
+
 my @stoplist = @{$top{$lang{$target} . '_' . $feature}};
 
 if ($stopwords > 0)
