@@ -115,10 +115,10 @@ for my $file (@xsl_files)
 			$line = "<xsl:variable name=\"url_html\" select=\"'$url_html'\"/>";
 			$line .= '<!-- URL_HTML -->' . "\n";
 		}
-		if ($line =~ /<!--\s+URL_IMAGES/)
+		if ($line =~ /<!--\s+URL_IMAGE/)
 		{
 			$line = "<xsl:variable name=\"url_image\" select=\"'$url_images'\"/>";
-			$line .= '<!-- URL_IMAGES -->' . "\n";
+			$line .= '<!-- URL_IMAGE -->' . "\n";
 		}
 		if ($line =~ /<!--\s+URL_TEXT/)
 		{
