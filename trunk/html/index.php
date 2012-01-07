@@ -39,7 +39,7 @@
 							<td>
 								<input type="hidden" name="unit" value="line"/>
 								<input type="hidden" name="feature" value="stem"/>
-								<input type="hidden" name="stoplist" value="10"/>
+								<input type="hidden" name="stoplist" value="20"/>
 							</td>
 						</tr>
 						<tr>

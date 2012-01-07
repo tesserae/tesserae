@@ -66,6 +66,7 @@
 					<select name="stoplist" ID="stoplist">
 						<option value="0">none</option>
 						<option value="10">top 10</option>
+						<option value="20" selected="selected">top 10</option>
 						<option value="50">top 50</option>
 						<option value="100">top 100</option>
 					</select>
