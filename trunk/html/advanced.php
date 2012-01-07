@@ -6,7 +6,7 @@
 		
 		<div id="main">
 			
-			<form action="http://tesserae.caset.buffalo.edu/cgi-bin/session.pl" method="post" ID="Form1">
+			<form action="<?php echo $url_cgi . '/session.pl' ?>" method="post" ID="Form1">
 				
 				<h1>Version 1</h1>
 				

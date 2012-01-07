@@ -148,28 +148,5 @@ for my $file_in (@ARGV) {		# files to parse are cmd line arguments
 
    print STDERR "\ndone\n";
 
-   print STDERR "adding $short_name to HTML drop-down...\n";
-
-	my $title = $short_name;
-	
-	$title =~ s/_/ /g;
-	$title =~ s/\./ - /;
-
-	while ($title =~ /\b([a-z])/g)
-	{
-		my $lc = $1;
-		my $uc = uc($lc);
-		$title =~ s/\b$lc/$uc/;
-	}
-	
-
-	my $exec_string = qq{echo '<option value="$short_name">$title</option>' >> $fs_html/textlist.v1.php};
-
-	print STDERR "$exec_string\n";
-
-	`$exec_string`;
-
-   print STDERR "done\n";
-
 }
 

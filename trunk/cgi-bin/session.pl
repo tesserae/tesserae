@@ -94,7 +94,7 @@ my $stopwords = $query->param('stopwords') || "";
 
 my $hash_path = "$fs_data/v1";
 
-if ($match eq "stems") 		{ $hash_path .= "/stem" }
+if ($match eq "stem") 		{ $hash_path .= "/stem" }
 
 if ($source eq "")
 {
