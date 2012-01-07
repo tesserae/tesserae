@@ -106,6 +106,7 @@ for my $file_in (@ARGV) {		# files to parse are cmd line arguments
 				
 				@stem_i = ($key);
 			}
+			else { @stem_i = @{ $stem{$index_verb[$i]} } }
 			
 			if ( ! defined $stem{$index_verb[$j]})
 			{
@@ -114,6 +115,7 @@ for my $file_in (@ARGV) {		# files to parse are cmd line arguments
 				
 				@stem_j = ($key);
 			}
+			else { @stem_j = @{ $stem{$index_verb[$j]} } }
 			
 			for my $stem_i (@stem_i)
 			{
