@@ -351,9 +351,11 @@ sub archimedes
 			s/$non_word{$lang}//g;
 				
 			$uniq{lcase($lang, $_)} = 1;
+			
+			if ( /\d/ ) { print STDERR "debug: $w has stem $_\n" }
 		}
 
-		$stem{lcase($lang, $w)} = [keys %uniq];		
+		$stem{lcase($lang, $w)} = [keys %uniq];
 		
 		# otherwise leave the cache value for that key undefined
 	}
