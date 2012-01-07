@@ -13,7 +13,7 @@
 				<h2>Full-Target Display</h2>
 				
 				<p>
-					This is an interface for a new experimental display.  Results are based on <a href="<?php echo $url_html . "/v3.php" ?>">V3a</a> and carry the same caveats.
+					This is an interface for a new experimental display.  Results are experimental.
 				</p>
 				
 				<table class="input">
@@ -37,7 +37,7 @@
 						<td>
 							<input type="hidden" name="unit" value="line"/>
 							<input type="hidden" name="feature" value="stem"/>
-							<input type="hidden" name="stoplist" value="10"/>
+							<input type="hidden" name="stoplist" value="20"/>
 						</td>
 					</tr>
 					<tr>

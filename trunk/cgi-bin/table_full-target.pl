@@ -21,7 +21,6 @@ use TessSystemVars;
 # is the program being run from the command line or
 # the web interface?
 
-my $apache_user = "_www";
 my $output = "html";
 my $quiet = 1;
 
