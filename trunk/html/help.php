@@ -64,15 +64,6 @@
 					Selecting text-only output will display a plain-text version of the same table.  
 					Selecting CSV or XML will automatically download the formatted file.
 				</p>
-				<p>
-					Version 1 results group together multiple matching lines.  When sorting 
-					results by Target, each line in the target text is listed once, with all 
-					lines from the source that match it.  When sorting by Source, each line 
-					from the source text is listed separately with all matching lines from the 
-					target text.  This is meant to facilitate reading through one text or the 
-					other line by line.  When sorting by matching words, all matching lines 
-					from either text are listed together.
-				</p>
 				
 				<h2>Methods</h2>
 				
