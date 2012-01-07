@@ -46,7 +46,7 @@
 					Match on
 					<select name="unit" ID="unit">
 						<option value="word" selected="selected">words</option>
-						<option value="stem" disabled="disabled">stems (temporarily unavailable)</option>
+						<option value="stem">stems (temporarily unavailable)</option>
 					</select>
 				</p>
 
