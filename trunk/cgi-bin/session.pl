@@ -92,7 +92,7 @@ my $match  = $query->param('unit')   || "";
 my $cutoff = $query->param('cutoff') || "";
 my $stopwords = $query->param('stopwords') || "";
 
-my $hash_path = "$fs_data/v1/";
+my $hash_path = "$fs_data/v1";
 
 if ($match eq "stems") 		{ $hash_path .= "/stem" }
 
@@ -112,7 +112,7 @@ for ($stopwords) {
    s/\s+/ /sg;
 }
 
-$stoplist = join(" ", @{$top{"la_$match"}}[0..$cutoff]) || "";
+$stoplist = join(" ", @{$top{"la_$match"}}[0..$cutoff-1]) || "";
 
 if ($stopwords ne "") { $stoplist .= " $stopwords" }
 

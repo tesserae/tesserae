@@ -39,6 +39,7 @@
 							<td>
 								<input type="hidden" name="unit" value="line"/>
 								<input type="hidden" name="feature" value="stem"/>
+								<input type="hidden" name="cutoff" value="25"/>
 							</td>
 						</tr>
 						<tr>
