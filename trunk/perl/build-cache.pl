@@ -4,6 +4,9 @@
 
 use lib '/Users/chris/sites/tesserae/perl';	# PERL_PATH
 
+# this line is necessary to use Frontier::Client on bille
+# use lib '/home/forstall/localperl/lib/perl5/site_perl/5.8.8';
+
 #
 # build-cache.pl
 #
@@ -351,8 +354,6 @@ sub archimedes
 			s/$non_word{$lang}//g;
 				
 			$uniq{lcase($lang, $_)} = 1;
-			
-			if ( /\d/ ) { print STDERR "debug: $w has stem $_\n" }
 		}
 
 		$stem{lcase($lang, $w)} = [keys %uniq];
