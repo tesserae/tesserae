@@ -12,7 +12,8 @@
 
 				<a name="version1"></a>			
 					
-				<h2>Basic Search</h2>
+				<h2>Version 1</h2>
+				<h3>Basic Search</h3>
 				<p>
 					This is our earliest product, the Version 1 search.
 					The results are two- to six-word strings which share at least two words.  
