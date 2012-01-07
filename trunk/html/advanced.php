@@ -8,7 +8,9 @@
 			
 			<form action="http://tesserae.caset.buffalo.edu/cgi-bin/session.pl" method="post" ID="Form1">
 				
-				<h1>Version 1 Advanced Options</h1>
+				<h1>Version 1</h1>
+				
+				<h2>Advanced Features</h2>
 				
 				<p>
 					This page allows you to change the default settings for the 
