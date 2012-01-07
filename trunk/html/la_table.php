@@ -45,6 +45,7 @@
 					<select name="unit" ID="unit">
 						<option value="line" selected="selected">lines</option>
 						<option value="phrase">phrases</option>
+						<option value="window">six-word window</option>
 					</select>
 				</p>
 				

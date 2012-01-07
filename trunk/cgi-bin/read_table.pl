@@ -167,6 +167,27 @@ if ( $output eq "html")
 	{
 		die "read_table.pl called from web interface with no source/target";
 	}
+	
+	if ($unit eq "window")
+	{
+		my $redirect = "$url_cgi/session.pl?target=$target;source=$source;match=$feature;cutoff=$stopwords";
+
+		print <<END;
+		   <meta http-equiv="Refresh" content="0; url='$redirect'">
+		</head>
+		<body>
+			<p>
+				One moment...
+			</p>
+		   <p>
+		      If you are not redirected automatically, 
+		      <a href="$redirect">click here</a>.
+		   </p>
+		</body>
+		</html>
+END
+		
+	}
 }
 else
 {
