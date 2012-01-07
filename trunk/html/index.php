@@ -49,10 +49,6 @@
 						</tr>
 					</table>
 				</form>
-
-				<p>
-					Click <a href="<?php echo $url_html.'/advanced.php'; ?>">here</a> for more options.
-				</p>
 			</div>
 		
 			<script language="javascript">
