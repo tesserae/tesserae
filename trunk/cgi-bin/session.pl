@@ -276,7 +276,7 @@ sub popup {
    my ($source, $line, $text) = @_[0..2];
 
    my $link = '<a href="javascript:;" onclick="window.open('
-	. "'" . $url_cgi. "context.pl?source=" . $source . ";line=" . $line . "'"
+	. "'" . $url_cgi. "/context.pl?source=" . $source . ";line=" . $line . "'"
 	. ",'headings','width=520,height=240');\">" . $text . "</a>";
    return $link;
 }
