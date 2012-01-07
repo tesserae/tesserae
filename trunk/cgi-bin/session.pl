@@ -89,7 +89,7 @@ my $query = new CGI || die "$!";
 my $source = $query->param('source') || "";
 my $target = $query->param('target') || "";
 my $match  = $query->param('unit')   || "";
-my $cutoff = $query->param('cutoff') || "";
+my $cutoff = $query->param('cutoff') || 10;
 my $stopwords = $query->param('stopwords') || "";
 
 my $hash_path = "$fs_data/v1";
