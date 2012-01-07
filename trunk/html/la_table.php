@@ -7,16 +7,11 @@
 		<div id="main">
 			
 			<form action="<?php echo $url_cgi.'/read_table.pl'; ?>" method="post" ID="Form1">
-				
-				<h1>Version 3a</h1>
-				
+					
 				<h2>Advanced Features</h2>
 				
 				<p>
-					This page allows you to change the default settings of our experimental Version 3a search.
-				</p>
-				<p>
-					<strong>NB</strong>: any scores assigned to results are for testing purposes only and may change without notice!
+					This page allows you to change the default settings for the search.  For explanations of the features, see the <a href="<?php echo $url_html . '/help.php' ?>"> Instructions</a> page.
 				</p>
 				
 				<table class = "input">
