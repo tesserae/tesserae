@@ -7,7 +7,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_images $url_tmp $apache_user);
+our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_image $url_tmp $apache_user);
 
 our @EXPORT_OK = qw(uniq intersection tcase lcase);
 
@@ -29,7 +29,7 @@ my $url_base	= 'http://localhost/~chris/tesserae';
 our $url_cgi	= $url_base . '/cgi-bin';
 our $url_css	= $url_base . '/css';
 our $url_html	= $url_base . '/html';
-our $url_images	= $url_base . '/images';
+our $url_image	= $url_base . '/images';
 our $url_text	= $url_base . '/texts';
 our $url_tmp	= $url_base . '/tmp';
 our $url_xsl	= $url_base . '/xsl';
