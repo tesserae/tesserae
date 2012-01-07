@@ -165,10 +165,10 @@ for my $file (@php_files)
 			$line = "<?php \$url_html=\"$url_html\" ?>";
 			$line .= '<!-- URL_HTML -->' . "\n";
 		}
-		if ($line =~ /<!--\s+URL_IMAGES/)
+		if ($line =~ /<!--\s+URL_IMAGE/)
 		{
-			$line = "<?php \$url_images=\"$url_images\" ?>";
-			$line .= '<!-- URL_IMAGES -->' . "\n";
+			$line = "<?php \$url_images=\"$url_image\" ?>";
+			$line .= '<!-- URL_IMAGE -->' . "\n";
 		}
 		if ($line =~ /<!--\s+URL_TEXT/)
 		{
