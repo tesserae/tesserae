@@ -12,7 +12,7 @@
 					The Tesserae project aims to provide a flexible and robust web interface for exploring intertextual parallels. In a basic search, selected works of Latin authors can be compared. Phrases from the texts which match in at least two of six relatively unfrequent words are grouped together for comparison, with links to their original context.
 				</p>
 
-				<form action="<?php echo $url_cgi.'/session.pl'; ?>" method="post" ID="Form1">
+				<form action="<?php echo $url_cgi.'/read_table.pl'; ?>" method="post" ID="Form1">
 					<table class="input">
 
 						<tr>
@@ -39,7 +39,7 @@
 							<td>
 								<input type="hidden" name="unit" value="line"/>
 								<input type="hidden" name="feature" value="stem"/>
-								<input type="hidden" name="cutoff" value="25"/>
+								<input type="hidden" name="stoplist" value="10"/>
 							</td>
 						</tr>
 						<tr>
