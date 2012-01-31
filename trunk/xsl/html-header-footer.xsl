@@ -123,7 +123,7 @@
 			                  <option value="score">score<xsl:if test="sortkey='score'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if></option>
 			               </select>
 
-								and fomat as 
+								and format as 
 								<select name="format">
 									<option value="html">html</option>
 									<option value="text">text</option>
