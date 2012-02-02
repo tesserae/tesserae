@@ -74,8 +74,11 @@
 					<tr>
 						<td>Lucan</td>
 						<td>Pharsalia</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td><a href="http://thelatinlibrary.com/cred.html">uncredited</a></td>
+						<td><a href="http://www.perseus.tufts.edu">Perseus</a></td>
+						<td>
+							Carolus Hermannus Weise, <em>M. Annaei Lucani Pharsaliae Libri X</em>,
+							(Leipzig: G. Bassus 1835)
+						</td>
 					</tr>
 					<tr>
 						<td>Lucretius</td>
