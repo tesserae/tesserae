@@ -8,28 +8,29 @@ use warnings;
 
 use XML::LibXML;
 use File::Path qw(make_path remove_tree);
+use File::Temp;
 
 binmode STDERR, ":utf8";
 
 # create a working directory for output
 
-my $tess_path = "/Users/chris/Desktop/la";
+my $tess_path = "/Users/chris/Desktop/tess";
 make_path($tess_path);
 
 # process each file specified on the command line
 
 for my $filename (@ARGV) {
-
+	
 	# step one: read the TEI file
 
 	my $parser = new XML::LibXML;
-
+	
 	open (my $fh, "<", $filename)	|| die "can't open $filename: $!";
 
 	print STDERR "\nreading $filename\n";
-
+	
 	my $doc = $parser->parse_fh( $fh );
-
+	
 	close ($fh);
 
 	#
@@ -181,7 +182,7 @@ for my $filename (@ARGV) {
 
 				# get a list of all enclosing divs that are numbered
 					
-				my @ancestor = $_->findnodes('ancestor::div1[@n] | ancestor::div2[@n]');
+				my @ancestor = $_->findnodes('ancestor::div[@n] | ancestor::div1[@n] | ancestor::div2[@n]');
 					
 				# this variable is everything before the line number in the locus.
 				# we assume that if it changes then the next line number should be 1.
@@ -312,7 +313,7 @@ for my $filename (@ARGV) {
 				
 			my $file_out = $filename;
 			$file_out =~ s/.*\///;
-			$file_out =~ s/\.xml$//;
+			$file_out =~ s/(?:\.modified)?\.xml$//;
 					
 			print STDERR "writing $tess_path/$file_out.tess\n";
 				
