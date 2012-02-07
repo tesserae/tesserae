@@ -5,7 +5,8 @@
 						<li><a href="<?php echo $url_html.'/index.php' ?>">Search Home</a></li>
 						<li><a href="<?php echo $url_html.'/about.php' ?>">About Tesserae</a></li>
 						<li><a href="<?php echo $url_html.'/sources.php' ?>">Source Texts</a></li>						
-						<li><a href="<?php echo $url_html.'/events.php' ?>">Events</a></li>				
+						<li><a href="<?php echo $url_html.'/events.php' ?>">Events</a></li>
+						<li><a href="<?php echo $url_html.'/links.php' ?>">Links</a></li>				
 					</ul>
 				</div>
 			</div>
@@ -14,25 +15,18 @@
 				<a name="top"></a>
 
 				<h1>Events</h1>
-				
-				<h2>Upcoming</h2>
-
-				<h3>APA Software Demo, January 7</h3>
-
-				<p>
-					Neil Coffee, Chris Forstall, James Gawley, and Katie Lamberto will demonstrate Tesserae, present recent research findings, and answer questions at a round table discussion at the 2012 Annual Meeting of the American Philological Association, January 7, in Philadelphia, PA.
-				</p>
-				
-				<h3>Helma Dik, February 9</h3>
-
-				<p>
-					<strong>Helma Dik</strong>, Associate Professor of Classics, University of Chicago, will present a guest lecture on February 9, 2012.  Title to be announced.
-				</p>
-
-				<h2>Recent</h2>
-				
+												
 				<h3>Lecture Series 2011–2012</h3>
 
+				<p>
+					<strong>Helma Dik</strong>, Associate Professor of Classics, University of Chicago.<br />
+				</p>
+				<p>
+					"What Can Your Corpus Do for You?" (Workshop)<br />
+					Thursday, February 9.<br /><br />
+					"Searching, Mining, Aligning: Old and New Paradigms for Research in the Classics"<br/>
+					Friday, February 10
+				</p>
 				<p>
 					<strong>Adam Breindel</strong><br />
 					“Encapsulating Entropy: Principles of Project Design for the Digital Humanities.”<br />
@@ -42,6 +36,12 @@
 					<strong>Marco Büchler</strong>, Universität Leipzig<br />
 					“Commercial and Humanities Text Mining: Revealing Technique in Ancient Greek Literature.”<br />
 					November 22, 2011.
+				</p>
+				
+				<h3>APA Software Demo, January 7, 2012</h3>
+
+				<p>
+					Neil Coffee, Chris Forstall, James Gawley, and Katie Lamberto demonstrated Tesserae and answered questions at a round table discussion at the 2012 Annual Meeting of the American Philological Association in Philadelphia.
 				</p>
 				
 				<h3>Lecture Series 2010–2011</h3>				

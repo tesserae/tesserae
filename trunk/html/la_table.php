@@ -48,7 +48,7 @@
 
 				<p>
 					Match on
-					<select name="unit" ID="unit">
+					<select name="feature" ID="feature">
 						<option value="stem" selected="selected">lemma</option>
 						<option value="word">exact form only</option>
 					</select>
