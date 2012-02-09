@@ -56,13 +56,12 @@
 					Jia Song
 				</p>
 
-				<h3>Context and Semantics</h3>
+				<h3>Semantics</h3>
 				<p>
-					I Sung Chen<br />
-					Ji Won Li<br />
 					Sam McCabe<br />
 					Derry Moore<br />
-					Sarah Skelley
+					Sarah Skelley<br />
+					Hao Sun
 				</p>
 
 				<h2>Collaborators</h2>
