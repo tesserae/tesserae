@@ -84,17 +84,9 @@
 							<li>
 								<a>
 									<xsl:attribute name="href">
-										<xsl:value-of select="concat($url_html, '/v2.php')"/>
+										<xsl:value-of select="concat($url_html, '/la_table.php')"/>
 									</xsl:attribute>
-									Version 2
-								</a>
-							</li>
-							<li>
-								<a>
-									<xsl:attribute name="href">
-										<xsl:value-of select="concat($url_html, '/v3.php')"/>
-									</xsl:attribute>
-									V3&#x2014;Latin
+									Advanced Features
 								</a>
 							</li>
 							<li>
@@ -102,7 +94,7 @@
 									<xsl:attribute name="href">
 										<xsl:value-of select="concat($url_html, '/grc_table.php')"/>
 									</xsl:attribute>
-									V3&#x2014;Greek
+									Greek Search
 								</a>
 							</li>
 							<li>
@@ -110,7 +102,7 @@
 									<xsl:attribute name="href">
 										<xsl:value-of select="concat($url_html, '/full-text.php')"/>
 									</xsl:attribute>
-									Full-text
+									Full-text display
 								</a>
 							</li>
 						</ul>
