@@ -5,7 +5,7 @@
 <?php $url_cgi="http://localhost/~chris/tesserae/cgi-bin" ?><!-- URL_CGI -->
 <?php $url_image="http://localhost/~chris/tesserae/images" ?><!-- URL_IMAGE -->
 <?php $url_text="http://localhost/~chris/tesserae/texts" ?><!-- URL_TEXT -->
-<?php $fs_html="/Users/chris/sites/tesserae/html" ?><!-- FS_HTML -->
+<?php $fs_html="/Users/chris/tesserae/html" ?><!-- FS_HTML -->
 
 
 <html lang="en">

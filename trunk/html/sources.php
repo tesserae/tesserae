@@ -147,6 +147,126 @@
 						<td>L. Mueller,	 <em>Sex. Propertii Elegiae</em>	 (Leipzig: Teubner, 1898)</td>
 					</tr>
 					<tr>
+						<td>Plautus</td>
+						<td>Amphitruo</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0030">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Asinaria</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0031">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Aulularia</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0032">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Bacchides</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0033">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Captivi</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0034">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Casina</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0035">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Cistellaria</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0036">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Curculio</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0037">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Epidicus</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0038">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Menaechmi</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0039">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Mercator</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0040">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Miles Gloriosus</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0041">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Mostellaria</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0042">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Persa</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0043">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Poenulus</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0044">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Poenulus</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0045">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Rudens</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0046">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Stichus</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0047">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Trinummus</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0048">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
+						<td>Plautus</td>
+						<td>Truculentus</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0049">Perseus</a></td>
+						<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+					</tr>
+					<tr>
 						<td>Silius Italicus</td>
 						<td>Punica</td>
 						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
