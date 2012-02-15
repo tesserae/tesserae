@@ -2,7 +2,7 @@
 <xsl:variable name="url_cgi" select="'http://localhost/~chris/tesserae/cgi-bin'"/><!-- URL_CGI -->
 <xsl:variable name="url_css" select="'http://localhost/~chris/tesserae/css'"/><!-- URL_CSS -->
 <xsl:variable name="url_html" select="'http://localhost/~chris/tesserae/html'"/><!-- URL_HTML -->
-<xsl:variable name="url_image" select="'http://localhost/~chris/tesserae/images'"/><!-- URL_IMAGES -->
+<xsl:variable name="url_image" select="'http://localhost/~chris/tesserae/images'"/><!-- URL_IMAGE -->
 <xsl:variable name="url_text" select="'http://localhost/~chris/tesserae/texts'"/><!-- URL_TEXT -->
 	
 	<xsl:template match="/">

@@ -13,7 +13,7 @@ our @EXPORT_OK = qw(uniq intersection tcase lcase);
 
 our $apache_user = "apache";
 
-my $fs_base	= '/Users/chris/sites/tesserae';
+my $fs_base	= '/Users/chris/tesserae';
 
 our $fs_cgi 	= $fs_base . '/cgi-bin';
 our $fs_data	= $fs_base . '/data';

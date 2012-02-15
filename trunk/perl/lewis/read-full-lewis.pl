@@ -6,7 +6,7 @@
 # latin headwords in the tesserae corpus, following the
 # example of roelant's stem.cache
 
-use lib '/Users/chris/sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/tesserae/perl';	# PERL_PATH
 
 use strict;
 use warnings;
