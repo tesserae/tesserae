@@ -11,7 +11,7 @@ our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tm
 
 our @EXPORT_OK = qw(uniq intersection tcase lcase);
 
-our $apache_user = "apache";
+our $apache_user = "_www";
 
 my $fs_base	= '/Users/chris/tesserae';
 

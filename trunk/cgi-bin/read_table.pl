@@ -186,7 +186,7 @@ if ( $output eq "html")
 		</body>
 		</html>
 END
-		
+
 	}
 }
 else
@@ -226,6 +226,8 @@ else
 # a stop list
 # - hard coded in TessSystemVars, work on this in future
 # - feature-set-specific
+
+print STDERR "debug: target=$target; source=$source; lang=$lang{$target}; feature=$feature";
 
 my @stoplist = @{$top{$lang{$target} . '_' . $feature}};
 
