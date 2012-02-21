@@ -1,21 +1,13 @@
 #!/usr/bin/perl
 
-# modified from v1.prepare.texts.pl
-# to use the v2/v3 stem cache
-#
-# Chris Forstall
-# 06-01-2012
-
 use strict;
 use warnings;
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use Storable;
-use Storable qw(nstore retrieve);
-
-my %stem = %{ retrieve("$fs_data/common/la.stem.cache") };
+use Storable qw(nstore store_fd nstore_fd freeze thaw dclone);
 
 
 for my $file_in (@ARGV) {		# files to parse are cmd line arguments
@@ -28,7 +20,7 @@ for my $file_in (@ARGV) {		# files to parse are cmd line arguments
    $short_name =~ s/^.*\///;		# remove path
    $short_name =~ s/\.tess//;		# and extension
 
-   my $file_out = "$fs_data/v1/stem/$short_name";
+   my $file_out = "$fs_data/v1/$short_name";
 
    print STDERR 'getting ' . $file_in . '...';
 
@@ -60,6 +52,7 @@ for my $file_in (@ARGV) {		# files to parse are cmd line arguments
       $_ = lc;                  		# convert to lowercase
       tr/a-z/ /c;               		# remove all non-letters (c means complement)
       s/^\s+//;                 		# remove leading spaces
+      tr/jv/iu/;				# get rid of orthographic variation
 
       @words = split /\s+/;     		# split on whitespace
 
@@ -90,44 +83,16 @@ for my $file_in (@ARGV) {		# files to parse are cmd line arguments
 
          my $j = $i + $n;                       	# j = address of second word
 
+         my $keypair = join("-",                	# join the two words to create a key;
+                     sort @index_verb[$i,$j]);
+
          $id++;                                 	# increment id
 
          $loc[$id]    = $index_loc[$i];  		# locus is that of first word
          $phrase[$id] = join(" ",                  # phrase is everything between them;
                        @index_verb[$i..$j]);
 
-			my @stem_i;
-			my @stem_j;
-
-			if ( ! defined $stem{$index_verb[$i]})
-			{
-				my $key = $index_verb[$i];
-				$key =~ tr/jv/iu/;
-				
-				@stem_i = ($key);
-			}
-			else { @stem_i = @{ $stem{$index_verb[$i]} } }
-			
-			if ( ! defined $stem{$index_verb[$j]})
-			{
-				my $key = $index_verb[$j];
-				$key =~ tr/jv/iu/;
-				
-				@stem_j = ($key);
-			}
-			else { @stem_j = @{ $stem{$index_verb[$j]} } }
-			
-			for my $stem_i (@stem_i)
-			{
-				for my $stem_j (@stem_j)
-				{
-
-		         my $keypair = join("-",                	# join the two words to create a key;
-		                     sort ($stem_i, $stem_j));
-
-					push @{$ngrams{$keypair}}, $id;		# add phrase to array filed under keypair
-				}
-			}
+         push @{$ngrams{$keypair}}, $id;		# add phrase to array filed under keypair
       }
    }
 
@@ -149,6 +114,29 @@ for my $file_in (@ARGV) {		# files to parse are cmd line arguments
    nstore \@loc,    "$file_out.loc";
 
    print STDERR "\ndone\n";
+
+   print STDERR "adding $short_name to HTML drop-down...\n";
+
+	my $title = $short_name;
+	
+	$title =~ s/_/ /g;
+	$title =~ s/\./ - /;
+
+	while ($title =~ /\b([a-z])/g)
+	{
+		my $lc = $1;
+		my $uc = uc($lc);
+		$title =~ s/\b$lc/$uc/;
+	}
+	
+
+	my $exec_string = qq{echo '<option value="$short_name">$title</option>' >> $fs_html/textlist.v1.php};
+
+	print STDERR "$exec_string\n";
+
+	`$exec_string`;
+
+   print STDERR "done\n";
 
 }
 

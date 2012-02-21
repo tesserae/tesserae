@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # stems_add_column.pl
@@ -14,6 +14,8 @@ use strict;
 use warnings;
 
 use TessSystemVars;
+
+use File::Path qw(make_path remove_tree);
 use Storable qw(nstore retrieve);
 
 my $lang_default = 'la';
@@ -85,7 +87,7 @@ while (my $name = shift @ARGV)
 	$name =~ s/.*\///;
 	$name =~ s/\.tess$//;
 
-	my $file_in = "$fs_data/big_table/$lang/word/$name";
+	my $file_in = "$fs_data/v3/$lang/word/$name";
 
 	# make sure the column in the word table is complete
 
@@ -181,9 +183,13 @@ while (my $name = shift @ARGV)
 	}
 
 
+	# make sure the directory exists
+	
+	unless (-d "$fs_data/v3/$lang/stem") { make_path("$fs_data/v3/$lang/stem/") }
+
 	# write the new column
 
-	my $file_out = "$fs_data/big_table/$lang/stem/$name";
+	my $file_out = "$fs_data/v3/$lang/stem/$name";
 
 	print STDERR "writing $file_out.index_line_int\n";
 	nstore \%stem_index_line_int, "$file_out.index_line_int";

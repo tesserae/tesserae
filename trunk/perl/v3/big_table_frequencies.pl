@@ -5,7 +5,7 @@
 # in order to calculate stop words
 # and frequency-based scores
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 use TessSystemVars;
 
@@ -43,7 +43,7 @@ for my $lang(@lang)
 
 	opendir (DH, "$fs_data/big_table/$lang/word");
 
-	push @count_files, (grep {/\.count$/ && !/\.part\./ && -f} map { "$fs_data/big_table/$lang/word/$_" } readdir DH);
+	push @count_files, (grep {/\.count$/ && !/\.part\./ && -f} map { "$fs_data/v3/$lang/word/$_" } readdir DH);
 
 	closedir (DH);
 

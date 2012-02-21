@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # semantics_add_column.pl
@@ -94,7 +94,7 @@ while (my $name = shift @ARGV)
 	$name =~ s/.*\///;
 	$name =~ s/\.tess$//;
 
-	my $file_in = "$fs_data/big_table/$lang/word/$name";
+	my $file_in = "$fs_data/v3/$lang/word/$name";
 
 	# make sure the column in the word table is complete
 
@@ -263,7 +263,7 @@ while (my $name = shift @ARGV)
 	# write the new column
 	#
 	
-	my $file_out = "$fs_data/big_table/$lang/semantic/$name";
+	my $file_out = "$fs_data/v3/$lang/semantic/$name";
 
 	print STDERR "writing $file_out.index_line_int\n";
 	nstore \%stem_index_line_int, "$file_out.index_line_int";

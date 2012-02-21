@@ -7,8 +7,8 @@ use strict;
 use warnings;
 
 use XML::LibXML;
+use LWP::Simple;
 use File::Path qw(make_path remove_tree);
-use File::Temp;
 
 binmode STDERR, ":utf8";
 
@@ -19,19 +19,61 @@ make_path($tess_path);
 
 # process each file specified on the command line
 
-for my $filename (@ARGV) {
+while ( my $rec = <DATA> ) {
 	
-	# step one: read the TEI file
-
+	#
+	# input is three items separated by whitespace
+	#
+	# path_to_TEI_file	local_file		"canonical ref. abbr."
+	#
+	
+	my ($path_tei, $text_key, $abbr) = split(/\s+/, $rec);
+	
+	next unless (defined $path_tei and $text_key and $abbr);
+	
+	#
+	# parse the TEI document
+	#
+	
+	my $doc;
 	my $parser = new XML::LibXML;
 	
-	open (my $fh, "<", $filename)	|| die "can't open $filename: $!";
+	# if the tei path is a url beginning with http://
+	# then download the file
+	
+	if ($path_tei =~ /^http:\/\//) {
+	
+		print STDERR "attempting to download $tei_path\n";
+		
+		my $tei = get $path_tei || {
+				
+			print STDERR "download failed: $!";
+			next;
+		}
+		
+		# parse
+		
+		print STDERR "parsing TEI\n";
+		
+		$doc = $parser->parse_string($tei);
+		
+	}
+	else {
+		
+		print STDERR "reading $filename\n";
+		
+		open (my $fh, "<", $filename)	|| {
 
-	print STDERR "\nreading $filename\n";
+			print STDERR "can't open $filename: $!";
+			next;
+		}
+		
+		print STDERR "parsing TEI\n":
+		
+		$doc = $parser->parse_fh( $fh );
 	
-	my $doc = $parser->parse_fh( $fh );
-	
-	close ($fh);
+		close ($fh);
+	}
 
 	#
 	# check the header for author/title
@@ -297,7 +339,7 @@ for my $filename (@ARGV) {
 					$text =~ s/^ //;
 					$text =~ s/ $//g;
 					
-					push @output, { TAG => "<%ABBR " . $context . $ln . ">",
+					push @output, { TAG => "<$abbr " . $context . $ln . ">",
 									CONTENT => $text };
 				}
 				
@@ -307,19 +349,16 @@ for my $filename (@ARGV) {
 			#
 			# write the output file
 			#
-			
-			# name for the output file is derived from the input file
-			# one output file per <text> node
-				
-			my $file_out = $filename;
-			$file_out =~ s/.*\///;
-			$file_out =~ s/(?:\.modified)?\.xml$//;
-			
+						
 			# if there are multiple texts, append a counter
 			
+			my $file_out = $tess_path . $text_key;
+			
 			if ($#text > 0) { $file_out .= $text_i }
+			
+			$file_out .= ".tess";
 					
-			print STDERR "writing $tess_path/$file_out.tess";
+			print STDERR "writing $file_out";
 			
 			# if we can figure out the internal title of this text,
 			# it might help the user rename the file
@@ -330,7 +369,12 @@ for my $filename (@ARGV) {
 				
 			# write the file
 				
-			open (FH, ">", "$tess_path/$file_out.tess") || die "can't write to $tess_path/$file_out.tess: $!";
+			open (FH, ">", "$file_out") || {
+				
+				print STDERR "can't write to $file_out: $!";
+				next;
+			}
+			
 			binmode FH, ":utf8";
 			
 			for (@output) {

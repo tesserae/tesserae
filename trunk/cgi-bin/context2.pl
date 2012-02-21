@@ -1,6 +1,6 @@
 #! /usr/bin/perl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;
@@ -58,9 +58,9 @@ END
 # load the database for target text
 #
 
-my @word = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.word" )};
-my @unit_target = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.line" ) };
-my @loc_target  = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.loc_line" ) };
+my @word = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.word" )};
+my @unit_target = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.line" ) };
+my @loc_target  = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.loc_line" ) };
 
 # context begins 5 lines before the target line, ends five lines after
 
