@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+	#! /usr/bin/perl
 
 # the line below is designed to be modified by configure.pl
 
@@ -303,6 +303,8 @@ my @loc_source =  @{ retrieve( "$fs_data/big_table/$lang{$source}/word/$source.l
 my %index_source_ext = %{ retrieve( "$fs_data/big_table/$lang{$source}/$feature/$source.index_${unit}_ext" ) };
 my %index_source_int = %{ retrieve( "$fs_data/big_table/$lang{$source}/$feature/$source.index_${unit}_int" ) };
 
+my @phrase_lines_source = @{ retrieve( "$fs_data/big_table/$lang{$source}/word/$source.phrase_lines" )};
+
 if ($output ne "html")
 {
 	print STDERR "reading target data\n";
@@ -314,6 +316,8 @@ my @loc_target  = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.l
 
 my %index_target_ext = %{ retrieve( "$fs_data/big_table/$lang{$target}/$feature/$target.index_${unit}_ext" ) };
 my %index_target_int = %{ retrieve( "$fs_data/big_table/$lang{$target}/$feature/$target.index_${unit}_int" ) };
+
+my @phrase_lines_target = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.phrase_lines" )};
 
 #
 # some more crazy data structures
