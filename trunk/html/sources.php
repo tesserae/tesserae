@@ -30,10 +30,9 @@
 					<tr>
 						<td>Catullus</td>
 						<td>Carmina</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0003">Perseus</a></td>
 						<td>
-							"from a revised version of Mynors' Oxford text of 1958" 
-							(<a href="http://thelatinlibrary.com/cred.html">see notes</a>)
+							Edition of E. T. Merrill
 						</td>
 					</tr>
 					<tr>
@@ -51,26 +50,32 @@
 					<tr>
 						<td>&mdash;</td>
 						<td>Epistles</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td><a href="http://thelatinlibrary.com/cred.html">see notes</a></td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0539">Perseus</a></td>
+						<td>H. Rushton Fairclough, <em>Horace: Satires, Epistles and Ars Poetica</em>. Harvard University Press, 1929.</td>
 					</tr>
 					<tr>
 						<td>&mdash;</td>
 						<td>Epodes</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td>F. Vollmer, <em>Q. Horati Flacci Carmina</em> (Leipzig: Teubner, 1912)</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0538">Perseus</a></td>
+						<td>F. Vollmer, <em>Q. Horati Flacci Carmina</em>. Leipzig: Teubner, 1912.</td>
+					</tr>
+					<tr>
+						<td>&mdash;</td>
+						<td>Odes</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0024">Perseus</a></td>
+						<td>Paul Shorey and Gordon J. Laing, <em>Horace: Odes and Epodes</em>. Chicago: Benj. H. Sanborn &amp; Co., 1919.</td>
 					</tr>
 					<tr>
 						<td>&mdash;</td>
 						<td>Satires</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td>F. Vollmer, <em>Q. Horati Flacci Carmina</em> (Leipzig: Teubner, 1912)</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0062">Perseus</a></td>
+						<td>C. Smart, <em>The Works of Horace</em>. Philadelphia: Joseph Whetham, 1836.</td>
 					</tr>
 					<tr>
 						<td>Juvenal</td>
 						<td>Satires</td>
 						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td>Bucheler's text of 1893</td>
+						<td>Bucheler&rsquo;s text of 1893</td>
 					</tr>
 					<tr>
 						<td>Lucan</td>
@@ -84,14 +89,14 @@
 					<tr>
 						<td>Lucretius</td>
 						<td>De Rerum Natura</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td><a href="http://thelatinlibrary.com/cred.html">uncredited</a></td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0130">Perseus</a></td>
+						<td>uncredited</td>
 					</tr>
 					<tr>
 						<td>Martial</td>
 						<td>Epigrams</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td><a href="http://thelatinlibrary.com/cred.html">uncredited</a></td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0506">Perseus</a></td>
+						<td>Wilhelm Heraeus, <em>M. Valerii Martialis Epigrammaton libri</em>. Leipzig: Borovskij, 1925.</td>
 					</tr>
 					<tr>
 						<td>Ovid</td>
@@ -109,36 +114,49 @@
 						<td>
 							R. Ehwald, <em>Amores, Epistulae, Medicamina faciei femineae, 
 								Ars amatoria, Remedia amoris</em> (Teubner 1907)
-						</td>					</tr>
+						</td>					
+					</tr>
 					<tr>
 						<td>&mdash;</td>
 						<td>Fasti</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td><a href="http://thelatinlibrary.com/cred.html">see notes</a></td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0547">Perseus</a></td>
+						<td>Sir James George Frazer, <em>Ovid&rsquo;s Fasti</em>. Harvard University Press, 1933.</td>
 					</tr>
 					<tr>
 						<td>&mdash;</td>
 						<td>Heroides</td>
-						<td><a href="http://www.perseus.tufts.edu">Perseus</a></td>
-						<td>R. Ehwald, <em>Amores, Epistulae, Medicamina faciei femineae, Ars amatoria, Remedia amoris</em> (Teubner 1907)</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0068%3atext%3dEp.">Perseus</a></td>
+						<td>R. Ehwald, <em>Amores, Epistulae, Medicamina faciei femineae, Ars amatoria, Remedia amoris</em>. Teubner, 1907.</td>
 					</tr>
 					<tr>
 						<td>&mdash;</td>
 						<td>Medicamina Faciei Femineae</td>
 						<td><a href="http://www.perseus.tufts.edu">Perseus</a></td>
-						<td>R. Ehwald, <em>Amores, Epistulae, Medicamina faciei femineae, Ars amatoria, Remedia amoris</em> (Teubner 1907)</td>
+						<td>R. Ehwald, <em>Amores, Epistulae, Medicamina faciei femineae, Ars amatoria, Remedia amoris</em>. Teubner, 1907.</td>
 					</tr>
 					<tr>
 						<td>&mdash;</td>
 						<td>Metamorphoses</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td><a href="http://thelatinlibrary.com/cred.html">uncredited</a></td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0029">Perseus</a></td>
+						<td>Hugo Magnus, <em>Ovid: Metamorphoses</em>. Gotha (Germany): Friedr. Andr. Perthes, 1892.</td>
+					</tr>
+					<tr>
+						<td>&mdash;</td>
+						<td>Ex Ponto</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0493">Perseus</a></td>
+						<td>Arthur Leslie Wheeler, <em>P. Ovidius Naso: Ex Ponto.</em> Cambridge, MA: Harvard University Press, 1939.</td>
 					</tr>
 					<tr>
 						<td>&mdash;</td>
 						<td>Remedia Amoris</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td><a href="http://thelatinlibrary.com/cred.html">uncredited</a></td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0068%3atext%3dRem.">Perseus</a></td>
+						<td>R. Ehwald, <em>Amores, Epistulae, Medicamina faciei femineae, Ars amatoria, Remedia amoris</em>. Teubner, 1907.</td>
+					</tr>
+					<tr>
+						<td>&mdash;</td>
+						<td>Tristia</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0492">Perseus</a></td>
+						<td>Arthur Leslie Wheeler, <em>P. Ovidius Naso: Tristia</em>.  Cambridge, MA: Harvard University Press, 1939.</td>
 					</tr>
 					<tr>
 						<td>Propertius</td>
@@ -274,9 +292,21 @@
 					</tr>
 					<tr>
 						<td>Statius</td>
+						<td>Achilleid</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0500">Perseus</a></td>
+						<td>John Henry Mozley, <em>Statius: Vol II</em>. New York: G.P. Putnam&rsquo;s Sons. 1928. </td>
+					</tr>
+					<tr>
+						<td>Statius</td>
+						<td>Silvae</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0499">Perseus</a></td>
+						<td>John Henry Mozley, <em>Statius: Vol I</em>. New York: G.P. Putnam&rsquo;s Sons. 1928.</td>
+					</tr>
+					<tr>
+						<td>Statius</td>
 						<td>Thebaid</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td><a href="http://thelatinlibrary.com/cred.html">uncredited</a></td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0498">Latin Library</a></td>
+						<td>John Henry Mozley, <em>Statius: Vol I&ndash;II</em>. New York: G.P. Putnam&rsquo;s Sons. 1928. </td>
 					</tr>
 					<tr>
 						<td>Tibullus</td>
