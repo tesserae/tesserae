@@ -41,7 +41,7 @@ for my $lang(@lang)
 
 	my @count_files;
 
-	opendir (DH, "$fs_data/big_table/$lang/word");
+	opendir (DH, "$fs_data/v3/$lang/word");
 
 	push @count_files, (grep {/\.count$/ && !/\.part\./ && -f} map { "$fs_data/v3/$lang/word/$_" } readdir DH);
 
@@ -52,23 +52,31 @@ for my $lang(@lang)
 	#
 
 	my %count;
+	my %total;
 
 	for (@count_files)
 	{
 	
 		print STDERR "reading $_\n";
+		
+		# get just the short name from the file
+		
+		/.*\/(.+)\.count/;
+		my $text_key = $1;
 
-		my %count_this_file = %{ retrieve($_) };
+		# retrieve the count
 
-		for (keys %count_this_file)
+		$count{$text_key} = retrieve($_);
+
+		for (keys %{$count{$text_key}})
 		{
-			$count{$_} += $count_this_file{$_};
+			$total{$_} += $count{$text_key}{$_};
 		}
 	}
 
 	print STDERR "writing $fs_data/common/$lang.word_count\n";
 
-	nstore \%count, "$fs_data/common/$lang.word_count";
+	nstore \%total, "$fs_data/common/$lang.word_count";
 
 	#
 	# stem counts
@@ -82,13 +90,13 @@ for my $lang(@lang)
 
 	my %stem_count;
 
-	for my $word (keys %count)
+	for my $word (keys %total)
 	{
 		if ( defined $cache{$word} )
 		{
 			for my $stem ( @{$cache{$word}} )
 			{
-				$stem_count{$stem} += $count{$word};
+				$stem_count{$stem} += $total{$word};
 			}
 		}
 	}

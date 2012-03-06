@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 # add_column.pl
 #
@@ -16,6 +16,7 @@ use TessSystemVars;
 use TessDB::Word;
 
 use DBI;
+use File::Path qw(make_path remove_tree);
 use Storable qw(nstore retrieve);
 
 #
@@ -311,14 +312,16 @@ while (my $file_in = shift @ARGV)
 		}
 	}
 	
-	
-	next;
-	
+
 	#
 	# save the data using Storable
 	# 
+	
+	# make sure the directory exists
+	
+	unless (-d "$fs_data/db/$lang/word") { make_path("$fs_data/db/$lang/word") }
 
-	my $file_out = "$fs_data/big_table/$lang/word/$name";
+	my $file_out = "$fs_data/db/$lang/word/$name";
 
 	print "writing $file_out.word\n";
 	nstore \@word, "$file_out.word";
