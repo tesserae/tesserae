@@ -38,9 +38,17 @@
 								<li>
 									<a>
 										<xsl:attribute name="href">
+											<xsl:value-of select="concat($url_html, '/index.php')"/>
+										</xsl:attribute>
+										Search
+									</a>
+								</li>
+								<li>
+									<a>
+										<xsl:attribute name="href">
 											<xsl:value-of select="concat($url_html, '/help.php')"/>
 										</xsl:attribute>
-										Instructions
+										Help
 									</a>
 								</li>
 								<li>
@@ -49,14 +57,6 @@
 											<xsl:value-of select="concat($url_html, '/about.php')"/>
 										</xsl:attribute>
 										About
-									</a>
-								</li>
-								<li>
-									<a>
-										<xsl:attribute name="href">
-											<xsl:value-of select="concat($url_html, '/people.php')"/>
-										</xsl:attribute>
-										People
 									</a>
 								</li>
 								<li>
@@ -92,17 +92,17 @@
 							<li>
 								<a>
 									<xsl:attribute name="href">
-										<xsl:value-of select="concat($url_html, '/grc_table.php')"/>
+										<xsl:value-of select="concat($url_html, '/legacy.php')"/>
 									</xsl:attribute>
-									Greek Search
+									Older Versions
 								</a>
 							</li>
 							<li>
 								<a>
 									<xsl:attribute name="href">
-										<xsl:value-of select="concat($url_html, '/full-text.php')"/>
+										<xsl:value-of select="concat($url_html, '/experimental.php')"/>
 									</xsl:attribute>
-									Full-text display
+									Experimental Searches
 								</a>
 							</li>
 						</ul>

@@ -273,26 +273,26 @@ if ($output ne "html")
 	print STDERR "reading source data\n";
 }
 
-my @unit_source = @{ retrieve( "$fs_data/big_table/$lang{$source}/word/$source.${unit}" ) };
-my @loc_source =  @{ retrieve( "$fs_data/big_table/$lang{$source}/word/$source.loc_${unit}" ) };
+my @unit_source = @{ retrieve( "$fs_data/v3/$lang{$source}/word/$source.${unit}" ) };
+my @loc_source =  @{ retrieve( "$fs_data/v3/$lang{$source}/word/$source.loc_${unit}" ) };
 
-my %index_source_ext = %{ retrieve( "$fs_data/big_table/$lang{$source}/$feature/$source.index_${unit}_ext" ) };
-my %index_source_int = %{ retrieve( "$fs_data/big_table/$lang{$source}/$feature/$source.index_${unit}_int" ) };
+my %index_source_ext = %{ retrieve( "$fs_data/v3/$lang{$source}/$feature/$source.index_${unit}_ext" ) };
+my %index_source_int = %{ retrieve( "$fs_data/v3/$lang{$source}/$feature/$source.index_${unit}_int" ) };
 
 if ($output ne "html")
 {
 	print STDERR "reading target data\n";
 }
 
-my @word = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.word" )};
+my @word = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.word" )};
 
-my @unit_target = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.${unit}" ) };
-my @loc_target  = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.loc_${unit}" ) };
+my @unit_target = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.${unit}" ) };
+my @loc_target  = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.loc_${unit}" ) };
 
-my %index_target_ext = %{ retrieve( "$fs_data/big_table/$lang{$target}/$feature/$target.index_${unit}_ext" ) };
-my %index_target_int = %{ retrieve( "$fs_data/big_table/$lang{$target}/$feature/$target.index_${unit}_int" ) };
+my %index_target_ext = %{ retrieve( "$fs_data/v3/$lang{$target}/$feature/$target.index_${unit}_ext" ) };
+my %index_target_int = %{ retrieve( "$fs_data/v3/$lang{$target}/$feature/$target.index_${unit}_int" ) };
 
-my @phrase_lines	= @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.phrase_lines" )};
+my @phrase_lines	= @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.phrase_lines" )};
 
 #
 # some more crazy data structures
@@ -567,8 +567,8 @@ binmode XML, ":utf8";
 
 if ($unit eq "phrase")
 {
-	@unit_target = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.line" ) };
-	@loc_target  = @{ retrieve( "$fs_data/big_table/$lang{$target}/word/$target.loc_line" ) };
+	@unit_target = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.line" ) };
+	@loc_target  = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.loc_line" ) };
 }
 
 # format the stoplist
