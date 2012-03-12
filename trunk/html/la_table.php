@@ -1,6 +1,6 @@
 		<?php include "first.php"; ?>
 		
-		<?php include "search_menu.php"; ?>
+		<?php include "nav_search.php"; ?>
 
 		</div>
 		
@@ -8,7 +8,7 @@
 			
 			<form action="<?php echo $url_cgi.'/read_table.pl'; ?>" method="post" ID="Form1">
 					
-				<h2>Advanced Features</h2>
+				<h1>Advanced Search</h1>
 				
 				<p>
 					This page allows you to change the default settings for the search.  For explanations of the features, see the <a href="<?php echo $url_html . '/help.php' ?>"> Instructions</a> page.
@@ -40,7 +40,6 @@
 					<select name="unit" ID="unit">
 						<option value="line" selected="selected">lines</option>
 						<option value="phrase">phrases</option>
-						<option value="window">six-word window</option>
 					</select>
 				</p>
 				

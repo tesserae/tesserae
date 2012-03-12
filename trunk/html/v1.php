@@ -1,22 +1,19 @@
 		<?php include "first.php"; ?>
 		
-		<?php include "search_menu.php"; ?>
+		<?php include "nav_search.php"; ?>
 
 		</div>
 		
 		<div id="main">
 			
-			<form action="<?php echo $url_cgi.'/read_table.pl'; ?>" method="post" ID="Form1">
+			<form action="<?php echo $url_cgi.'/session.pl'; ?>" method="post" ID="Form1">
 				
-				<h1>Version 3a</h1>
+				<h1>Version 1</h1>
 				
-				<h2>Experimental Algorithm</h2>
+				<h2>Basic V1 Search</h2>
 				
 				<p>
-					This page allows you to test out our newest search, currently in development.
-				</p>
-				<p>
-					<strong>NB</strong>: any scores assigned to results are for testing purposes only and may change without notice!
+					This page provides access to our first algorithm, for those who need continuity with earlier work.  Please note that while the algorithm itself has not been changed, several other aspects of our database have been upgraded, and so these results may differ slightly from earlier implementations.  For further information, please see the Help page or contact us.
 				</p>
 				
 				<table class="input">
@@ -38,9 +35,8 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="hidden" name="unit" value="line"/>
-							<input type="hidden" name="feature" value="stem"/>
-							<input type="hidden" name="stoplist" value="10"/>
+							<input type="hidden" name="unit" value="word"/>
+							<input type="hidden" name="cutoff" value="10"/>
 						</td>
 					</tr>
 					<tr>
@@ -49,11 +45,6 @@
 						</td>
 					</tr>
 				</table>
-
-				<p>
-					Click <a href="<?php echo $url_html.'/la_table.php'; ?>">here</a> for even more features.
-				</p>
-
 			</form>
 		</div>
 

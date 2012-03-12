@@ -32,9 +32,9 @@
 
 			<div id="nav_main">
 				<ul>
-					<li><a href="<?php echo $url_html.'/help.php' ?>">Instructions</a></li>
+					<li><a href="<?php echo $url_html.'/index.php' ?>">Search</a></li>
+					<li><a href="<?php echo $url_html.'/help.php' ?>">Help</a></li>
 					<li><a href="<?php echo $url_html.'/about.php' ?>">About</a></li>
-					<li><a href="<?php echo $url_html.'/people.php' ?>">People</a></li>
 					<li><a href="<?php echo $url_html.'/research.php' ?>">Research</a></li>
 				</ul>
 			</div>

@@ -1,13 +1,7 @@
 	<?php include "first.php"; ?>
 
-				<div id="nav_sub">
-					<ul>
-						<li><a href="<?php echo $url_html.'/index.php' ?>">Search Home</a></li>
-						<li><a href="<?php echo $url_html.'/research.php' ?>">Research</a></li>
-						<li><a href="<?php echo $url_html.'/lucan-vergil.php' ?>">Case Study</a></li>
-						<li><a href="<?php echo $url_html.'/publications.php' ?>">Bibliography</a></li>	
-					</ul>
-				</div>
+	<?php include "nav_research.php"; ?>
+	
 			</div>
 
 			<div id="main">

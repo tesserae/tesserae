@@ -1,6 +1,6 @@
 			<?php include "first.php"; ?>
 
-			<?php include "search_menu.php"; ?>
+			<?php include "nav_search.php"; ?>
 
 			</div>
 

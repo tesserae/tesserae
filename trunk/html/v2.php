@@ -1,6 +1,6 @@
 			<?php include "first.php"; ?>
 		
-			<?php include "search_menu.php"; ?>
+			<?php include "nav_search.php"; ?>
 
 			</div>
 
@@ -12,7 +12,7 @@
 				</p>
 				
 				<p>
-					Version 2 searches on large texts may be quite slow (up to 10 minutes).  This algorithm has largely been superceded by <a href="<?php echo $url_html . "/la_table.php" ?>">Version 3a</a>, which produces slightly different&mdash;but faster&mdash;results.
+					Version 2 searches on large texts may be quite slow (up to 10 minutes).  This algorithm has largely been superceded by <a href="<?php echo $url_html . "/la_table.php" ?>">Version 3</a>, which produces slightly different&mdash;but faster&mdash;results.
 				</p>
 				
 
