@@ -18,7 +18,7 @@ my @perl_files;
 
 # directories to search
 
-my @perl_search = ($fs_cgi, $fs_perl, "$fs_perl/lewis", "$fs_perl/big_table");
+my @perl_search = ($fs_cgi, $fs_perl, "$fs_perl/lewis", "$fs_perl/v1", "$fs_perl/v2", "$fs_perl/v3");
 
 while (my $dir = shift @perl_search)
 {
