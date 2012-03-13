@@ -11,18 +11,6 @@
 				<p>
 					Here you can try out some new searches we're still testing.  We would appreciate any feedback you have.  Caution: results may not be very stable.
 				</p>
-
-				<h2><a href="<?php echo $url_html.'/grc_table.php'; ?>">Greek Search</a></h2>
-
-				<p>
-					This uses the same Version 3 algorithm as the <a href="<?php echo
-					$url_html."/index.php"; ?>">Basic</a> and <a href="<?php echo
-					$url_html."/index.php"; ?>">Advanced</a> Latin searches.
-				</p>
-				<p>
-					So far, the only texts available are Homer <em>Iliad</em> and Apollonius
-					<em>Argonautica</em>.  These results have not been tested.
-				</p>
 				
 				<h2><a href="<?php echo $url_html.'/full-text.php'; ?>">Full-Text Display</a></h2>
 					

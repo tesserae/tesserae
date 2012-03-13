@@ -100,9 +100,17 @@
 							<li>
 								<a>
 									<xsl:attribute name="href">
+										<xsl:value-of select="concat($url_html, '/grc_table.php')"/>
+									</xsl:attribute>
+									Greek
+								</a>
+							</li>
+							<li>
+								<a>
+									<xsl:attribute name="href">
 										<xsl:value-of select="concat($url_html, '/experimental.php')"/>
 									</xsl:attribute>
-									Experimental Searches
+									Experimental
 								</a>
 							</li>
 						</ul>
