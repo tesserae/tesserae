@@ -11,8 +11,7 @@
 
 				<p>
 					Although the Tesserae software is still in the development phase,
-					several components of our research have been presented at 
-					<a href="<?php echo $url_html.'/publications.php' ?>">recent conferences and publications</a>.
+					several components of our research have been presented at recent conferences and publications.
 				</p>
 				<p>
 					We also have begun applying the prototype tool to our own philological
