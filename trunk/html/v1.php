@@ -24,12 +24,12 @@
 					<tr>
 						<td align ="center">
 							<select name="source" ID="source">
-								<?php include $fs_html.'/textlist.la.l.php'; ?>
+								<?php include $fs_html.'/textlist.v1.php'; ?>
 							</select>
 			 			</td>
 						<td align ="center">
 							<select name="target" ID="target">
-								<?php include $fs_html.'/textlist.la.l.php'; ?>
+								<?php include $fs_html.'/textlist.v1.php'; ?>
 							</select>
 			 			</td>
 					</tr>

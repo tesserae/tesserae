@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
    "http://www.w3.org/TR/html4/strict.dtd">
-<?php $url_html="http://localhost/~chris/tesserae/html" ?><!-- URL_HTML -->
-<?php $url_css="http://localhost/~chris/tesserae/css" ?><!-- URL_CSS -->
-<?php $url_cgi="http://localhost/~chris/tesserae/cgi-bin" ?><!-- URL_CGI -->
-<?php $url_image="http://localhost/~chris/tesserae/images" ?><!-- URL_IMAGE -->
-<?php $url_text="http://localhost/~chris/tesserae/texts" ?><!-- URL_TEXT -->
-<?php $fs_html="/Users/chris/Sites/tesserae/html" ?><!-- FS_HTML -->
+<?php $url_html="http://tess.tamias/html" ?><!-- URL_HTML -->
+<?php $url_css="http://tess.tamias/css" ?><!-- URL_CSS -->
+<?php $url_cgi="http://tess.tamias/cgi-bin" ?><!-- URL_CGI -->
+<?php $url_image="http://tess.tamias/images" ?><!-- URL_IMAGE -->
+<?php $url_text="http://tess.tamias/texts" ?><!-- URL_TEXT -->
+<?php $fs_html="/Users/chris/tesserae/html" ?><!-- FS_HTML -->
 
 
 <html lang="en">

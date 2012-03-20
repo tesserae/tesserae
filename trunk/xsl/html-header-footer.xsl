@@ -1,9 +1,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-<xsl:variable name="url_cgi" select="'http://localhost/~chris/tesserae/cgi-bin'"/><!-- URL_CGI -->
-<xsl:variable name="url_css" select="'http://localhost/~chris/tesserae/css'"/><!-- URL_CSS -->
-<xsl:variable name="url_html" select="'http://localhost/~chris/tesserae/html'"/><!-- URL_HTML -->
-<xsl:variable name="url_image" select="'http://localhost/~chris/tesserae/images'"/><!-- URL_IMAGE -->
-<xsl:variable name="url_text" select="'http://localhost/~chris/tesserae/texts'"/><!-- URL_TEXT -->
+<xsl:variable name="url_cgi" select="'http://tess.tamias/cgi-bin'"/><!-- URL_CGI -->
+<xsl:variable name="url_css" select="'http://tess.tamias/css'"/><!-- URL_CSS -->
+<xsl:variable name="url_html" select="'http://tess.tamias/html'"/><!-- URL_HTML -->
+<xsl:variable name="url_image" select="'http://tess.tamias/images'"/><!-- URL_IMAGE -->
+<xsl:variable name="url_text" select="'http://tess.tamias/texts'"/><!-- URL_TEXT -->
 	
 	<xsl:template match="/">
 		<html>
