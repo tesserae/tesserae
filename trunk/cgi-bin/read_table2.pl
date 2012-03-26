@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/var/www/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl

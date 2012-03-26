@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/var/www/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 use Storable qw(nstore retrieve);
 use CGI qw/:standard/;
