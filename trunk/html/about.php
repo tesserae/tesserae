@@ -29,20 +29,15 @@
 				</p>
 				<p>
 					Drawing on the fields of literary studies, linguistics, and computing, we aim to make 
-					such a tool freely available online. This site currently offers 
-					an early-stage version, the product of a pilot project undertaken by 
-					<a href="http://www.classics.buffalo.edu/people/faculty/neil_coffee">Neil Coffee</a>, 
-					<a href="http://linguistics.buffalo.edu/people/faculty/koenig">Jean-Pierre Koenig</a>, 
-					<a href="http://www-student.cse.buffalo.edu/~poornima">Shakthi Poornima</a>, 
-					<a href="http://dhibwiki.buffalo.edu/index.php/User:Cwf2">Chris Forstall</a>,
-					and Roelant Ossewaarde at the <a href="http://www.buffalo.edu">University at Buffalo, SUNY</a>.
+					such a tool freely available online. This site currently offers an early-stage version, 
+					along with the most recent results of our ongoing study of the nature of intertextuality.
 				</p>
 				<p>
 					We are currently researching new techniques to measure texts' similarity according to
 					semantics, context, sound, and meter.  We are also in the process of expanding our corpus
 					to include Greek as well as Latin texts.  This work includes graduate students from Buffalo's
 					Department of Classics and Department of Linguistics, as well as collaborative work
-					at the Department of Computer Science of the University of Colorado at Colorado Springs.
+					at the VAST Lab of the University of Colorado at Colorado Springs.
 				</p>
 				<p>
 					The Tesserae project has the potential to open up new ways of experiencing the relationships 
@@ -57,6 +52,9 @@
 				<p>
 					This ongoing work, begun in 2008, has been made possible by grants from the 
 					<a href="http://digitalhumanities.buffalo.edu/">Digital Humanities Initiative at Buffalo</a>. 
+					Beginning in 2012, Tesserae is also funded by a Digital Humanities <a 
+					href="http://www.neh.gov/ODH/ODHUpdate/tabid/108/EntryId/177/Announcing-22-New-Start-Up-Grant-Awards-March-2012.aspx"
+					>Start-Up Grant</a> from the National Endowment for the Humanities, Office of Digital Humanities.
 				</p>
 			</div>
 
