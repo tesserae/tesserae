@@ -205,7 +205,7 @@ else {
 # - hard coded in TessSystemVars, work on this in future
 # - feature-set-specific
 
-print STDERR "debug: target=$target; source=$source; lang=$lang{$target}; feature=$feature";
+print STDERR "debug: target=$target; source=$source; lang=$lang{$target}; feature=$feature\n";
 
 my @stoplist = @{$top{$lang{$target} . '_' . $feature}};
 
@@ -380,6 +380,21 @@ for my $key (sort keys %index_feature_source)
 		}
 	}
 }
+
+#
+# remove dups
+#
+
+for my $target_unit_id ( keys %match ) {
+
+	for my $source_unit_id ( keys %{$match{$target_unit_id}} ) {
+				
+		$match{$target_unit_id}{$source_unit_id}{TARGET} = TessSystemVars::uniq($match{$target_unit_id}{$source_unit_id}{TARGET});
+		$match{$target_unit_id}{$source_unit_id}{SOURCE} = TessSystemVars::uniq($match{$target_unit_id}{$source_unit_id}{SOURCE});
+	}
+}
+
+
 
 #
 # assign scores, write output
