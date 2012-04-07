@@ -19,6 +19,17 @@
 					of his <em>Pharsalia</em>.
 				</p>
 				<p>
+					Plans for the 2012-2013 year include: the expansion in the number 
+					of Greek and Latin texts on the site; improvement of the search algorithm 
+					to return better results; the implementation of a ranking system to help 
+					distinguish between different types of results; and expansion into one modern language. 
+				</p>
+				<p>
+					This work will be supported by a 
+					<a href="http://www.neh.gov/ODH/ODHUpdate/tabid/108/EntryId/177/Announcing-22-New-Start-Up-Grant-Awards-March-2012.aspx"
+					>Start-Up Grant</a> from the Office of Digital Humanities of the National Endowment for the Humanities.
+				</p>
+				<p>
 					The Tesserae project is by nature collaborative and interdisciplinary,
 					and we welcome feedback from users and interested scholars.	
 				</p>

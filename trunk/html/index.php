@@ -9,7 +9,9 @@
 				<h1>Basic Search</h1>
 
 				<p>
-					The Tesserae project aims to provide a flexible and robust web interface for exploring intertextual parallels. In a basic search, selected works of Latin authors can be compared. Phrases from the texts which match in at least two of six relatively unfrequent words are grouped together for comparison, with links to their original context.
+					The Tesserae project aims to provide a flexible and robust web interface 
+					for exploring intertextual parallels. Select two poems below to see 
+					a list of lines sharing two or more words (regardless of inflectional changes).
 				</p>
 
 				<form action="<?php echo $url_cgi.'/read_table.pl'; ?>" method="post" ID="Form1">
