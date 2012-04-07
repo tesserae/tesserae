@@ -11,9 +11,9 @@ our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tm
 
 our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni);
 
-our $apache_user = "www-data";
+our $apache_user = "www_";
 
-my $fs_base	= '/var/www/tesserae';
+my $fs_base	= '/Users/chris/tesserae';
 
 our $fs_cgi 	= $fs_base . '/cgi-bin';
 our $fs_data	= $fs_base . '/data';
@@ -98,6 +98,28 @@ sub intersection
 # language-specific lower-case and title-case functions
 #
 
+sub standardize {
+
+	my $lang = shift;
+	
+	my @string = @_;
+	
+	for (@string) {
+		
+		if ($lang eq 'la')
+		{
+			tr/jvJV/iuIU/;	# replace j and v with i and u throughout
+		}
+		
+		if ($lang eq 'grc')
+		{
+			s/\\/\//;	# change grave accent (context-specific) to acute (dictionary form)
+		}
+	}
+	
+	return wantarray ? @string : shift @string;	
+}
+
 sub lcase
 {
 	my $lang = shift;
@@ -110,7 +132,6 @@ sub lcase
 		if ($lang eq 'la')
 		{
 			tr/A-Z/a-z/;
-			tr/jJ/iI/;
 		}
 	
 		if ($lang eq 'grc')

@@ -5,7 +5,7 @@
 <?php $url_cgi="http://tess.tamias/cgi-bin" ?><!-- URL_CGI -->
 <?php $url_image="http://tess.tamias/images" ?><!-- URL_IMAGE -->
 <?php $url_text="http://tess.tamias/texts" ?><!-- URL_TEXT -->
-<?php $fs_html="/var/www/tesserae/html" ?><!-- FS_HTML -->
+<?php $fs_html="/Users/chris/tesserae/html" ?><!-- FS_HTML -->
 
 
 <html lang="en">

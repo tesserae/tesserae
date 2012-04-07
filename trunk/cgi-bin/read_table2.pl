@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/var/www/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -280,8 +280,8 @@ my @word_source    = @{ retrieve( "$path_base/$lang{$source}/word/$source.word" 
 my @display_source = @{ retrieve( "$path_base/$lang{$source}/word/$source.display" ) };
 my @unit_source    = @{ retrieve( "$path_base/$lang{$source}/word/$source.${unit}" ) };
 
-my %index_word_source = %{ retrieve( "$path_base/$lang{$source}/$feature/$source.index_word" ) };
-my @index_unit_source = @{ retrieve( "$path_base/$lang{$source}/$feature/$source.index_${unit}" ) };
+my %index_feature_source = %{ retrieve( "$path_base/$lang{$source}/$feature/$source.index_$feature" ) };
+my @index_unit_source = @{ retrieve( "$path_base/$lang{$source}/word/$source.index_$unit" ) };
 
 my @phrase_lines_source = @{ retrieve( "$path_base/$lang{$source}/word/$source.phrase_lines" )};
 
@@ -294,8 +294,8 @@ my @word_target    = @{ retrieve( "$path_base/$lang{$target}/word/$target.word" 
 my @display_target = @{ retrieve( "$path_base/$lang{$target}/word/$target.display" ) };
 my @unit_target    = @{ retrieve( "$path_base/$lang{$target}/word/$target.${unit}" ) };
 
-my %index_word_target = %{ retrieve( "$path_base/$lang{$target}/$feature/$target.index_word" ) };
-my @index_unit_target = @{ retrieve( "$path_base/$lang{$target}/$feature/$target.index_${unit}" ) };
+my %index_feature_target = %{ retrieve( "$path_base/$lang{$target}/$feature/$target.index_$feature" ) };
+my @index_unit_target = @{ retrieve( "$path_base/$lang{$target}/word/$target.index_$unit" ) };
 
 my @phrase_lines_target = @{ retrieve( "$path_base/$lang{$target}/word/$target.phrase_lines" )};
 
@@ -333,11 +333,11 @@ if ($quiet == 0)
 
 my $progress = 0;
 my $last_progress = 0;
-my $end_point = scalar(keys %index_word_source);
+my $end_point = scalar(keys %index_feature_source);
 
 # start with each key in the source
 
-for my $key (sort keys %index_word_source)
+for my $key (sort keys %index_feature_source)
 {
 	# advance the progress bar
 
@@ -357,7 +357,7 @@ for my $key (sort keys %index_word_source)
 
 	# skip key if it doesn't exist in the target doc
 
-	next unless ( defined $index_word_target{$key} );
+	next unless ( defined $index_feature_target{$key} );
 
 	# skip key if it's in the stoplist
 
@@ -365,14 +365,14 @@ for my $key (sort keys %index_word_source)
 
 	# for each unit id in the target having that feature,
 
-	for my $i ( 0..$#{$index_word_target{$key}} )
+	for my $i ( 0..$#{$index_feature_target{$key}} )
 	{
-		my $target_word_id = ${$index_word_target{$key}}[$i];
+		my $target_word_id = ${$index_feature_target{$key}}[$i];
 		my $target_unit_id = $index_unit_target[$target_word_id];
 
-		for my $j ( 0..$#{$index_word_source{$key}} )
+		for my $j ( 0..$#{$index_feature_source{$key}} )
 		{
-			my $source_word_id = ${$index_word_source{$key}}[$j];
+			my $source_word_id = ${$index_feature_source{$key}}[$j];
 			my $source_unit_id = $index_unit_source[$source_word_id];
 			
 			push @{ $match{$target_unit_id}{$source_unit_id}{TARGET} }, $target_word_id;

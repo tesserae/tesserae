@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/var/www/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/tesserae/perl';	# PERL_PATH
 
 # add_column.pl
 #
@@ -229,10 +229,11 @@ while (my $file_in = shift @ARGV)
 				$display[-1] = TessSystemVars::beta_to_uni($display[-1]);
 			}
 			
-			# convert to lower-case
+			# flatten orthographic variation
 			# the wisdom of this could be disputed, but roelant does it too
 
 			my $key = TessSystemVars::lcase($lang, $words[$i]);
+			$key = TessSystemVars::standardize($lang, $key);
 
 			$count{$key}++;
 				
