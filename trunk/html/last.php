@@ -8,7 +8,7 @@
 						<a href="http://www.buffalo.edu">University at Buffalo</a>'s <br />
 						<a href="http://www.classics.buffalo.edu"><b>Department of Classics</b></a> and
 						<a href="http://linguistics.buffalo.edu"><b>Department of Linguistics</b></a>,<br />
-						and the <a href="http://www.eas.uccs.edu/cs/default.shtml">Department of Computer Science</a> of the 
+						and the <a href="http://vast.uccs.edu">VAST Lab</a> of the 
 						<a href="http://www.uccs.edu/">University of Colorado at Colorado Springs</a>.
 					</p>
    					<p>
