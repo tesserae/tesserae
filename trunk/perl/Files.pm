@@ -1,7 +1,7 @@
 #uncomment this line to use this as a package
 package Files;
 
-use lib '/var/www/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 #uncomment these lines to run this as a stand-alone perl program.
