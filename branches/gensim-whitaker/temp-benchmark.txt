@@ -1,0 +1,60 @@
+1
+   Page 111. 
+	How many entries? 9
+   Entry 7
+	Headword:frugifer
+	Synonyms:foecundus fertilis ferax uber fructuosus         
+2
+   Page 153. 
+	How many entries? 7
+   Entry 5
+	Headword:macer
+	Synonyms:exilis gracilis tenuis
+3
+   Page 137. 
+	How many entries? 8
+   Entry 1
+	Headword:jocus
+	Synonyms:ludus lusus ludicrum
+4
+   Page 65. 
+	How many entries? 17
+   Entry 11
+	Headword:compes
+	Synonyms:vincula catenae pedicae manicae
+5
+   Page 155. 
+	How many entries? 4
+   Entry 3
+	Headword:malignitas
+	Synonyms:invidia livor invidentia obtrectatio detrectatio
+6
+   Page 178. 
+	How many entries? 15
+   Entry 11
+	Headword:ostium
+	Synonyms:janua fores valvae
+7
+   Page 92. 
+	How many entries? 12
+   Entry 11
+	Headword:eloquens
+	Synonyms:disertus facundus eloquens
+8
+   Page 95. 
+	How many entries? 17
+   Entry 11
+	Headword:excellens
+	Synonyms:eminens praeclarus praestans insignis singularis unicus egregius eximius
+9
+   Page 100. 
+	How many entries? 14
+   Entry 14
+	Headword:faux
+	Synonyms:glutus ingluvies guttur gurgulio gula
+10
+   Page 184. 
+	How many entries? 8
+   Entry 5
+	Headword:perfero
+	Synonyms:ferre tolerare perpeti sustinere sinere sustentare pati
