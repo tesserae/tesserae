@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
    "http://www.w3.org/TR/html4/strict.dtd">
-<?php $url_html="http://tess.tamias/html" ?><!-- URL_HTML -->
-<?php $url_css="http://tess.tamias/css" ?><!-- URL_CSS -->
-<?php $url_cgi="http://tess.tamias/cgi-bin" ?><!-- URL_CGI -->
-<?php $url_image="http://tess.tamias/images" ?><!-- URL_IMAGE -->
-<?php $url_text="http://tess.tamias/texts" ?><!-- URL_TEXT -->
+<?php $url_html="http://tesserae.caset.buffalo.edu" ?><!-- URL_HTML -->
+<?php $url_css="http://tesserae.caset.buffalo.edu/css" ?><!-- URL_CSS -->
+<?php $url_cgi="http://tesserae.caset.buffalo.edu/cgi-bin" ?><!-- URL_CGI -->
+<?php $url_image="http://tesserae.caset.buffalo.edu/images" ?><!-- URL_IMAGE -->
+<?php $url_text="http://tesserae.caset.buffalo.edu/texts" ?><!-- URL_TEXT -->
 <?php $fs_html="/Users/chris/tesserae/html" ?><!-- FS_HTML -->
 
 

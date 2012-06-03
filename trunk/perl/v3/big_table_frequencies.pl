@@ -36,7 +36,7 @@ for my $lang(@lang)
 {
 
 	my $file_stem_cache = "$fs_data/common/$lang.stem.cache";
-
+	
 	# get a list of all the word counts
 
 	my @count_files;
@@ -84,7 +84,7 @@ for my $lang(@lang)
 
 	print STDERR "reading $file_stem_cache\n";
 
-	my %cache = %{retrieve($file_stem_cache)};
+	my %stem_cache = %{retrieve($file_stem_cache)};
 
 	print STDERR "calculating stem counts\n";
 
@@ -92,9 +92,9 @@ for my $lang(@lang)
 
 	for my $word (keys %total)
 	{
-		if ( defined $cache{$word} )
+		if ( defined $stem_cache{$word} )
 		{
-			for my $stem ( @{$cache{$word}} )
+			for my $stem ( @{$stem_cache{$word}} )
 			{
 				$stem_count{$stem} += $total{$word};
 			}
@@ -106,4 +106,58 @@ for my $lang(@lang)
 	nstore \%stem_count, "$fs_data/common/$lang.stem_count";
 
 	print STDERR "\n";
+	
+	#
+	# semantic counts
+	#
+
+	my $file_syn_cache = "$fs_data/common/$lang.syn.cache";
+	
+	print STDERR "reading $file_syn_cache\n";
+	
+	my %syn_cache = %{retrieve($file_syn_cache)};
+	
+	print STDERR "calculating syn counts\n";
+	
+	my %syn_count;
+	
+	for my $word (keys %total)
+	{
+		
+		my %uniq_syn;
+		
+		if ( defined $stem_cache{$word} )
+		{
+			for my $stem ( @{$stem_cache{$word}} )
+			{
+				if ( defined $syn_cache{$stem} ) {
+					
+					for my $syn ( @{$syn_cache{$stem}} ) {
+						
+						$uniq_syn{$syn} = 1;
+					}
+				}
+			}
+		}
+		
+		if ( defined $syn_cache{$word} ) {
+			
+			for my $syn ( @{$syn_cache{$word}} ) {
+				
+				$uniq_syn{$syn} = 1;
+			}
+		}
+		
+		for (keys %uniq_syn) {
+		
+			$syn_count{$_} += $total{$word};
+		}
+	}
+	
+	print STDERR "writing $fs_data/common/$lang.semantic_count\n";
+	
+	nstore \%stem_count, "$fs_data/common/$lang.semantic_count";
+	
+	print STDERR "\n";
+	
 }

@@ -204,9 +204,11 @@ else
 	{
 		if 	( /--word/ )			{ $feature = 'word' }
 		elsif ( /--stem/ )			{ $feature = 'stem' }
+		elsif ( /--semantic/  )		{ $feature = 'semantic'  }
 		elsif ( /--line/ )			{ $unit = 'line' }
 		elsif ( /--phrase/ )			{ $unit = 'phrase' }
 		elsif	( /--session=(\w+)/)	{ $session = $1 }
+		elsif ( /--stopwords=(\d+)/)	{ $stopwords = $1 }
 		else
 		{
 			unless (/^--/)
@@ -227,7 +229,7 @@ else
 # - hard coded in TessSystemVars, work on this in future
 # - feature-set-specific
 
-print STDERR "debug: target=$target; source=$source; lang=$lang{$target}; feature=$feature";
+print STDERR "debug: target=$target; source=$source; lang=$lang{$target}; feature=$feature\n";
 
 my @stoplist = @{$top{$lang{$target} . '_' . $feature}};
 
@@ -628,7 +630,7 @@ for my $target_ref_ext (0..$#match_target)
 		
 		# this multiplier puts the score into an easier range to read
 		
-		$score = sprintf("%i", log($score*1000));
+		$score = sprintf("%i", $score == 0 ? 0 : log($score*1000));
 
 		# format the list of all unique shared words
 
