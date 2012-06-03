@@ -6,20 +6,13 @@
 use strict;
 use warnings;
 
+use Getopt::Long;
+use Graph;
 use Storable qw(nstore retrieve);
 
 use lib '/Users/chris/Sites/tesserae/perl';
 use TessSystemVars;
 
-# read the dictionary
-
-# my $file = "tiny.whitaker";
-my $file = "$fs_data/common/DICTPAGE.RAW";
-
-my ($dict_ref, $full_def_ref) = whitaker($file);
-
-my %dict  = %$dict_ref;
-my %full_def = %$full_def_ref;
 
 # define the max number of headwords for a key
 # to be included
@@ -30,53 +23,153 @@ my $max_heads = 50;
 
 my $min_similarity = .7;
 
+# draw progress bars?
 
+my $quiet = 0;
+
+# the dictionary to parse
+
+my $file_dict  = "$fs_data/common/DICTPAGE.RAW";
+
+# the cache file to write
+
+my $file_cache = "none";
+
+# text file to write groups to
+
+my $file_group = "none";
+
+# html file to write thesaurus to
+
+my $file_html = "none";
+
+# text file to write thesaurus to
+
+my $file_text = "none";
+
+# file to write histogram data to
+
+my $file_hist = "none";
+
+
+# set parameters from cmd line options if given 
+
+GetOptions ('max_heads=i' => \$max_heads, 
+				'min_similarity=f' => \$min_similarity, 
+				'dictionary=s' => \$file_dict, 
+				'cache:s' => \$file_cache,
+				'html:s' => \$file_html,
+				'text:s' => \$file_text,
+				'groups:s' => \$file_group,
+				'hist:s' => \$file_hist,
+				'quiet' => $quiet);
+				
+if ($file_cache eq "") { $file_cache = "$fs_data/common/la.syn.cache" }
+
+#
+# global variables
+# 
+
+my %dict;
+my %full_def;
+my %index;
+my %score;
+my %syn;
+my $graph = Graph::Undirected->new();
+my @syn_group;
+
+#
+# read the dictionary
+#
+
+read_dictionary($file_dict);
+
+#
 # index each head by english words
+#
 
-my %index = %{make_index(\%dict)};
+make_index();
 
+#
 # remove stopwords
+#
 
-my $index_ref;
+remove_stop_words($max_heads);
 
-($dict_ref, $index_ref) = remove_stop_words(\%dict, \%index, $max_heads);
-
-%dict = %$dict_ref;
-%index = %$index_ref;
-
-
+#
 # calculate term intersections
+#
 
-my %score = %{intersections(\%index, $max_heads)};
+intersections();
 
-
+#
 # normalize by number of words in each def
+#
 
-%score = %{normalize(\%score, \%dict)};
+normalize();
 
+#
 # run the benchmark set
-
+#
 # my @benchmark = qw/compes eloquens excellens faux frugifer jocus macer malignitas ostium perfero/;
-# export_benchmark(\%score, \%full_def, \@benchmark, 25);
+# export_benchmark(@benchmark);
 
+#
 # organize synonyms for each head
+#
 
-my %syn = %{synonyms(\%score, $min_similarity)};
-
-
-# print list of synonyms
-
-export_list(\%syn, \%full_def, 1);
+synonyms($min_similarity);
 
 
+#
+# print list of synonyms as text
+#
+
+if ($file_text ne "none") {
+	
+	export_list($file_text);
+}
+
+#
+# export list as html
+#
+
+if ($file_html ne "none") {
+
+	export_list_html($file_html);
+}
+
+#
+# export syn group ids as plain text
+#
+
+if ($file_group ne "none") {
+	
+	export_syn_groups($file_group);
+}
+
+#
 # save the cache
+#
+if ($file_cache ne "none") {
 
-export_cache(\%syn, "$fs_data/common/la.syn.cache");
+	 export_cache($file_cache);
+}
 
-
+#
 # summarize the synonym list
+#
+# statistics(\%syn, \%dict, $max_heads, $min_similarity, 1);
 
-statistics(\%syn, \%dict, $max_heads, $min_similarity, 1);
+#
+# write histogram data
+#
+if ($file_hist ne "none") {
+
+	export_hist($file_hist);
+}
+
+
 
 #
 # subroutines
@@ -87,14 +180,10 @@ statistics(\%syn, \%dict, $max_heads, $min_similarity, 1);
 # hopefuly this will be superceded by a sub that
 # can read the Lewis and Short dictionary.
 
-sub whitaker {
+sub read_dictionary {
 
 	my $file = shift;
-	
-	my %dict;
-	my %count;
-	my %full_def;
-	
+		
 	open (FH, "<", $file) or die "can't read $file: $!";
 	
 	print STDERR "reading $file\n";
@@ -110,41 +199,41 @@ sub whitaker {
 		if (defined $1 and $2 ) {
 					
 			my ($head, $def) = ($1, $2);
+			
+			# add headword to the graph
+			$graph->add_vertex($head);
 		
+			# save the full definition; for homonyms combine them
 			if (exists $full_def{$head}) { $full_def{$head} .= "; " }
 			
 			$full_def{$head} .= $def;
 		
+			# lowercase the english, divide into words
 			$def = lc($def);
 			
 			my @words = split(/[^a-z]+/, $def);
 			
+			# add each english word to the dictionary for this headword
 			for (@words) {
 			
 				if ($_ ne "") {
 					
 					$dict{$head}{$_}++;
-					$count{$_}++;
 				}
 			}
 		}
 	}
 	
 	close FH;
-
-	return (\%dict, \%full_def);
 }
 
+#
 # index each head by english words
+#
 
 sub make_index {
 
-	my $dict_ref = shift;
-	my %dict = %$dict_ref;
-	
 	print STDERR "indexing\n";
-	
-	my %index;
 	
 	my $pr = new ProgressBar(scalar(keys %dict));
 	
@@ -157,8 +246,6 @@ sub make_index {
 			$index{$key}{$head} = $dict{$head}{$key};
 		}
 	}
-	
-	return \%index;
 }
 
 # remove from the dictionary defs any english
@@ -166,10 +253,7 @@ sub make_index {
 
 sub remove_stop_words {
 
-	my ($dict_ref, $index_ref, $max_heads) = @_;
-	
-	my %dict  = %$dict_ref;
-	my %index = %$index_ref;
+	my ($max_heads) = @_;
 	
 	# remove entries from the index which have only one headword
 	# remove entries from the index which have too many headwords
@@ -205,21 +289,16 @@ sub remove_stop_words {
 			delete $dict{$head}{$key} unless exists $index{$key};
 		}
 	}
-		
-	return (\%dict, \%index);
 }
 
+#
 # calculate term intersections
+#
 
 sub intersections {
-
-	my $index_ref = shift;
-	my %index = %$index_ref;
 	
 	print STDERR "calculating intersections\n";
 
-	my %score;
-	
 	my $pr = new ProgressBar(scalar(keys %index));
 
 	for my $key (keys %index) {
@@ -236,19 +315,13 @@ sub intersections {
 	}
 	
 	for (values %score) { $_ *= .5 }
-		
-	return \%score;
 }
 
-
+#
 # normalize by number of words in each def
+#
 
 sub normalize {
-
-	my ($score_ref, $dict_ref) = @_;
-
-	my %score = %$score_ref;
-	my %dict = %$dict_ref;
 	
 	print STDERR "normalizing\n";
 	
@@ -269,23 +342,19 @@ sub normalize {
 	
 		$score{$bigram} = $score{$bigram} / $total;
 	}
-	
-	return \%score;
 }
 
-
+#
 # organize synonyms for each head
+#
 
 sub synonyms {
 
-	my ($score_ref, $min_score) = @_;
-	my %score = %$score_ref;
+	my ($min_score) = shift;
 
 	print STDERR "filtering by similarity; min score=$min_score\n";
 
-	my %syn;
-	
-	my $pr = new ProgressBar(scalar(keys %score));
+	my $pr = ProgressBar->new(scalar(keys %score));
 
 	for my $bigram (keys %score) {
 		
@@ -295,35 +364,46 @@ sub synonyms {
 		
 		my ($head1, $head2) = split(/~/, $bigram);
 		
-		push @{$syn{$head1}}, $head2;
-		
 		next if $head1 eq $head2;
-			
+				
+		# add an edge to the graph
+		
+		$graph->add_edge($head1, $head2);
+		
+		# add to the syn dictionary
+		
+		push @{$syn{$head1}}, $head2;
 		push @{$syn{$head2}}, $head1;
 	}
 	
-	return \%syn;
+	# assign synonym group ids
+	
+	print STDERR "calculating syn_groups\n";
+
+	@syn_group = $graph->connected_components();
 }
 
-
+#
 # print list of synonyms
+#
 
 sub export_list {
 	
-	my ($syn_ref, $full_def_ref, $show_progress) = @_;
+	my $file = shift;
+		
+	if ($file ne "") {
 	
-	my %syn = %$syn_ref;
-	my %full_def = %$full_def_ref;
-	
-	$show_progress = $show_progress || 0;
+		open (FH, ">", $file) || die "can't write to $file: $!";
+		select FH;
+	}
 
 	print STDERR "exporting synonym list\n";
 	
-	my $pr = $show_progress ? new ProgressBar(scalar(keys %syn)) : 0;
+	my $pr = ProgressBar->new(scalar(keys %syn));
 	
 	for my $head (sort keys %syn) {
 		
-		$pr->advance() if $show_progress;
+		$pr->advance();
 		
 		print "head: $head\n";
 		
@@ -340,32 +420,119 @@ sub export_list {
 		
 		print "\n";
 	}
+	
+	if ($file ne "") { close FH }
+}
+
+# print list of synonyms
+
+sub export_list_html {
+	
+	my $file = shift;
+	
+	if ($file ne "") {
+	
+		open (FH, ">", $file) || die "can't write html to $file: $!";
+		select FH;
+	}
+
+	print STDERR "exporting synonym list as html\n";
+	
+	my $pr = ProgressBar->new(scalar(keys %syn));
+	
+	my $all_words  = scalar(keys %dict);
+	my $have_syns  = scalar(keys %syn);
+	my $syn_groups = scalar(@syn_group); 
+	my $no_syns    = $all_words - $have_syns;
+	
+	my @syns;
+	my $total = 0;
+	
+	for (keys %syn) {
+		push @syns, scalar(@{$syn{$_}});
+		$total += $syns[-1];
+	}
+	
+	@syns = sort @syns;
+	
+	my $mean_syns   = sprintf("%.1f", $total/$have_syns);
+	my $median_syns = $syns[int(scalar(@syns)/2)];
+	
+	print "<html>\n";
+	print "<head>\n";
+	print "  <title>Synonym Test</title>\n";
+	print "  <style type=\"text/css\">\n";
+	print "    tr.header { margin-top:1em; background-color:#CCCCCC }\n";
+	print "  </style>\n";
+	print "</head>\n";
+	print "<body>\n";
+	print "  <h2>Synonym Test</h2>\n";
+	print "  <table>\n";
+	print "    <tr><td>dictionary</td><td>$file_dict</td></tr>\n";
+	print "    <tr><td>max heads</td><td>$max_heads</td></tr>\n";
+	print "    <tr><td>min similarity</td><td>$min_similarity</td></tr>\n";
+	print "    <tr><td>total words</td><td>$all_words</td></tr>\n";
+	print "    <tr><td>words w/o syns</td><td>$no_syns</td></tr>\n";
+	print "    <tr><td>synonym groups</td><td>$syn_groups</td></tr>\n";
+	print "    <tr><td>for words having synonyms:<td><td></td></tr>\n";
+	print "    <tr><td>mean syns</td><td>$mean_syns</td></tr>\n";
+	print "    <tr><td>median syns</td><td>$median_syns</td></tr>\n";
+	print "  </table>\n";
+	print "\n";
+	print "  <div class=\"main\">\n";
+	print "  <table>\n";
+	
+	for my $head (sort keys %syn) {
+		
+		$pr->advance();
+		
+		print "    <tr class=\"header\"><th>$head</th><td></td><td></td><td>$full_def{$head}</td></tr>\n";
+	
+		for my $syn (sort {score($head, $b) <=> score($head, $a)} sort @{$syn{$head}}) {
+			
+			my $spacer = "   ";
+			
+			if ($full_def{$syn} eq $full_def{$head} && score($head, $syn) < 1) { $spacer =" * " }
+			
+			print "    <tr>";
+			print "<td>$spacer</td>";
+			print "<td>" . sprintf("%.2f", score($head, $syn)) . "</td>";
+			print "<td>$syn</td>";
+			print "<td>$full_def{$syn}</td>";
+			print "</tr>\n";
+		}
+		
+		print "\n";
+	}
+	
+	print "  </table>\n";
+	print "  </div>\n";
+	print "</body>\n";
+	print "</html>\n";
+	
+	if ($file ne "") { close FH };
 }
 
 # export the synonym dictionary for tesserae
 
 sub export_cache {
 	
-	my ($syn_ref, $file) = @_;
+	my $file = shift;
 	
 	print STDERR "writing $file\n";
 	
-	nstore $syn_ref, $file;
+	nstore \%syn, $file;
 }
 
 # run the benchmark set
 
 sub export_benchmark {
 
-	my ($score_ref, $full_def_ref, $benchmark_ref, $cutoff) = @_;
-	
-	my %score = %$score_ref;
-	my %full_def = %$full_def_ref;
-	my @benchmark = @$benchmark_ref;
-	
+	my @benchmark = @_;
+		
 	my %results;
 	
-	my $pr = new ProgressBar(scalar(keys %score));
+	my $pr = ProgressBar->new(scalar(keys %score));
 	
 	for (keys %score) {
 		
@@ -414,36 +581,21 @@ sub score {
 # summary output for analysis
 
 sub statistics {
-
-	my ($syn_ref, $dict_ref, $max_heads, $min_similarity, $show_progress) = @_;
-	
-	my %syn = %$syn_ref;
-	my %dict = %$dict_ref;
-	
-	$show_progress = $show_progress || 0;
 	
 	print STDERR "calculating statistics\n";
 	
 	my $all_syns = 0;
 	my $max_syns = 0;
 	my $max_head = "";
-	my $self_match = 0;
 	
-	my $pr = $show_progress ? new ProgressBar(scalar(keys %syn)) : 0;
+	my $pr = ProgressBar->new(scalar(keys %syn));
 	
 	for my $head (sort keys %syn) {
 		
-		my $syns = 0;
-		
-		$pr->advance() if $show_progress;
+		$pr->advance();
 			
-		for my $syn (sort @{$syn{$head}}) {
-			
-			$syns++;
-			
-			if ($syn eq $head) { $self_match = $self_match + 1 }
-		}
-		
+		my $syns = scalar(@{$syn{$head}});
+				
 		$all_syns += $syns;
 		
 		if ($syns > $max_syns) {
@@ -453,16 +605,88 @@ sub statistics {
 		}
 	}
 	
-	print STDERR "file: $file\n";
+	print STDERR "file: $file_dict\n";
 	print STDERR "total number of headwords: " . scalar(keys %dict) . "\n";
 	print STDERR "max headwords per key: $max_heads\n";
 	print STDERR "minimum similarity score: $min_similarity\n";
 	print STDERR "words that have synonyms: " . scalar(keys %syn) . "\n";
 	print STDERR "average number of syns: " . sprintf("%.1f", $all_syns/scalar(keys %syn)) . "\n"; 
 	print STDERR "max synonyms: $max_syns ($max_head)\n";
-	print STDERR "number of heads that self-match: $self_match\n";
-	
 }
+
+#
+# export all the dictionary words with syn_group ids
+#
+
+sub export_syn_groups {
+	
+	my $file = shift;
+
+	print STDERR "exporting syn_group data\n";
+	
+	if ($file ne "") {
+		
+		open (FH, ">", $file) || die "can't write to $file: $!";
+		select FH;
+	}
+	
+	my $pr = ProgressBar->new(scalar(@syn_group));
+	
+	for my $i (0..$#syn_group) {
+	
+		$pr->advance();
+	
+		for (@{$syn_group[$i]}) {
+		
+			print "$i\t$_\n";
+		}
+	}
+
+	if ($file ne "") { close FH }
+}
+
+#
+# export data to draw a histogram of
+# synonym "density"
+#
+
+sub export_hist {
+
+	my $file = shift;
+
+	print STDERR "exporting histogram data\n";
+	
+	if ($file ne "") {
+		
+		open (FH, ">", $file) || die "can't write to $file: $!";
+		select FH;
+	}
+
+	my %hist;
+	
+	for (keys %dict) {
+	
+		my $syns = defined $syn{$_} ? scalar(@{$syn{$_}}) : 0;
+		
+		# increment the number of syns to include the word itself
+		# - makes display on a log-log scale easier
+		
+		$syns ++;
+		
+		$hist{$syns}++;
+	}
+	
+	print "words\tsyns\n";
+	
+	for (sort {$hist{$b} <=> $hist{$a}} keys %hist) {
+	
+		print "$hist{$_}\t$_\n";
+	}
+	
+	if ($file ne "") { close FH }
+}
+
+
 
 #
 # The following is a new package
