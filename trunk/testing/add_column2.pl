@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 # add_column.pl
 #
@@ -149,11 +149,7 @@ while (my $file_in = shift @ARGV)
 	# this holds the abbreviation for the author/work
 
 	my %ref;
-	
-	# a display copy of each line
-	
-	my @space;
-	
+		
 	# a list of every line a phrase includes
 	
 	my @phrase_lines;
@@ -204,7 +200,7 @@ while (my $file_in = shift @ARGV)
 				
 		# save the inter-word material
 				
-		my @spaces = split ($is_word{$lang}, $verse);
+		my @punct = split ($is_word{$lang}, $verse);
 
 		# split into words
 
@@ -243,7 +239,7 @@ while (my $file_in = shift @ARGV)
 			
 			# add the current word, space to the current line
 
-			push @{$line[$line_id]{SPACE}}, $spaces[$i];
+			push @{$line[$line_id]{PUNCT}}, $punct[$i];
 			push @{$line[$line_id]{WORD}}, $#word;
 			
 			# add to the index of all words
@@ -257,32 +253,32 @@ while (my $file_in = shift @ARGV)
 			# this adds a line-break char to the phrase if
 			# we're at the start of a line but the middle of a phrase
 			
-			if ($i == 0 and $#{$phrase[$phrase_id]{SPACE}} > -1)
+			if ($i == 0 and $#{$phrase[$phrase_id]{PUNCT}} > -1)
 			{
-				$spaces[$i] = " / " . $spaces[$i];
+				$punct[$i] = " / " . $punct[$i];
 			}
 			
-			# this merges trailing spaces from a previous line with
-			# leading spaces in the current one if we're at line
+			# this merges trailing punct from a previous line with
+			# leading punct in the current one if we're at line
 			# beginning and mid-phrase
 			
-			if ($i == 0 and $#{$phrase[$phrase_id]{SPACE}} > $#{$phrase[$phrase_id]{WORD}})
+			if ($i == 0 and $#{$phrase[$phrase_id]{PUNCT}} > $#{$phrase[$phrase_id]{WORD}})
 			{
-				${$phrase[$phrase_id]{SPACE}}[$#{$phrase[$phrase_id]{SPACE}}] .= $spaces[$i];
+				${$phrase[$phrase_id]{PUNCT}}[-1] .= $punct[$i];
 			}
 			else
 			{
-				push @{$phrase[$phrase_id]{SPACE}}, $spaces[$i];
+				push @{$phrase[$phrase_id]{PUNCT}}, $punct[$i];
 			}
 			
 			# this increments the phrase counter if the current inter-
 			# word material includes a phrase boundary marker.
 			
-			if ($spaces[$i] =~ /[\.\?\!\;\:]/) 
+			if ($punct[$i] =~ /[\.\?\!\;\:]/) 
 			{
 				$phrase_id++;
 				
-				push @{$phrase[$phrase_id]{SPACE}}, "";
+				push @{$phrase[$phrase_id]{PUNCT}}, "";
 				
 				push @{$phrase_lines[$phrase_id]}, $line_id;
 			}
@@ -300,20 +296,20 @@ while (my $file_in = shift @ARGV)
 		# If they include a phrase boundary marker,
 		# then the next line is a new phrase.
 
-		if ($#spaces > $#words)
+		if ($#punct > $#words)
 		{
-			push @{$phrase[$phrase_id]{SPACE}}, $spaces[$#spaces];
+			push @{$phrase[$phrase_id]{PUNCT}}, $punct[-1];
 			
-			if ($spaces[$#spaces] =~ /[\.\?\!\;\:]/) 
+			if ($punct[-1] =~ /[\.\?\!\;\:]/) 
 			{ 
 				$phrase_id++;
 			}
 			
-			push @{$line[$line_id]{SPACE}}, $spaces[$#spaces];
+			push @{$line[$line_id]{PUNCT}}, $punct[-1];
 		}
 		else
 		{
-			push @{$line[$line_id]{SPACE}}, "";
+			push @{$line[$line_id]{PUNCT}}, "";
 		}
 		
 		# increment line_id
@@ -334,9 +330,9 @@ while (my $file_in = shift @ARGV)
 	{
 		$phrase[$i]{LOCUS} = $line[$phrase_lines[$i][0]]{LOCUS};
 	
-		if ($#{$phrase[$i]{SPACE}} == $#{$phrase[$i]{WORD}})
+		if ($#{$phrase[$i]{PUNCT}} == $#{$phrase[$i]{WORD}})
 		{
-			push @{$phrase[$i]{SPACE}}, "";
+			push @{$phrase[$i]{PUNCT}}, "";
 		}
 	}
 	
@@ -346,7 +342,7 @@ while (my $file_in = shift @ARGV)
 
 	# make sure the directory exists
 	
-	my $path_data = "$fs_data/test/$lang/word";
+	my $path_data = "$fs_data/test/$lang/$name";
 	
 	unless (-d $path_data ) { mkpath($path_data) }
 

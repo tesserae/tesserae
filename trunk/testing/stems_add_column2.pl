@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # stems_add_column2.pl
@@ -87,20 +87,20 @@ while (my $name = shift @ARGV)
 	$name =~ s/.*\///;
 	$name =~ s/\.tess$//;
 
-	my $file_in = "$fs_data/test/$lang/word/$name";
+	my $file_base = "$fs_data/test/$lang/$name/$name";
 
 	# make sure the column in the word table is complete
 
 	for ( qw/word display line phrase count index_word index_line index_phrase phrase_lines/ )
 	{
-		unless (-r "$file_in.$_") { die "$file_in.$_ does not exist or is unreadable" }
+		unless (-r "$file_base.$_") { die "$file_base.$_ does not exist or is unreadable" }
 	}
 
 	# retrieve the column from the word table
 
 	print STDERR "reading table data\n";
 
-	my %index_word = %{ retrieve("$file_in.index_word") };
+	my %index_word = %{ retrieve("$file_base.index_word") };
 
 	#
 	# create the new column
@@ -139,15 +139,8 @@ while (my $name = shift @ARGV)
 		}
 	}
 	
-
-	# make sure the directory exists
-	
-	unless (-d "$fs_data/test/$lang/stem") { mkpath("$fs_data/test/$lang/stem/") }
-
 	# write the new column
 
-	my $file_out = "$fs_data/test/$lang/stem/$name";
-
-	print STDERR "writing $file_out.index_stem\n";
-	nstore \%index_stem, "$file_out.index_stem";
+	print STDERR "writing $file_base.index_stem\n";
+	nstore \%index_stem, "$file_base.index_stem";
 }

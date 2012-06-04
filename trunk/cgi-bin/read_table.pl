@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -161,7 +161,7 @@ if ( $output eq "html")
 	$target		= $query->param('target') || "";
 	$unit     	= $query->param('unit')   || "line";
 	$feature		= $query->param('feature')		|| "stem";
-	$stopwords	= $query->param('stoplist')	|| 10;
+	$stopwords	= defined($query->param('stoplist')) ? $query->param('stoplist') : 10;
 
 	if ($source eq "" or $target eq "")
 	{

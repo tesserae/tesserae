@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -161,9 +161,11 @@ if ( $output eq "html") {
 	$target		= $query->param('target') || "";
 	$unit     	= $query->param('unit')   || "line";
 	$feature		= $query->param('feature')		|| "stem";
-	$stopwords	= $query->param('stoplist')	|| 10;
+	$stopwords	= $query->param('stoplist');
+	
+	if (not defined($stopwords) ) { $stopwords = 10 }
 
-	if ($source eq "" or $target eq "") {
+	if ($source eq "" || $target eq "") {
 	
 		die "read_table.pl called from web interface with no source/target";
 	}
@@ -180,8 +182,7 @@ else {
 
 	for (@ARGV) {
 
-		if 	( /--word/ )			{ $feature = 'word' }
-		elsif ( /--stem/ )			{ $feature = 'stem' }
+		if 	( /--feature=(\w+)/ )			{ $feature = $1 }
 		elsif ( /--line/ )			{ $unit = 'line' }
 		elsif ( /--phrase/ )			{ $unit = 'phrase' }
 		elsif	( /--session=(\w+)/)	{ $session = $1 }
@@ -218,7 +219,7 @@ else {
 	@stoplist = ();
 }
 
-my %freq = %{ retrieve( "$fs_data/common/$lang{$target}.${feature}_count" )};
+# my %freq = %{ retrieve( "$fs_data/common/$lang{$target}.${feature}_count" )};
 
 #
 # read data from table
@@ -274,44 +275,39 @@ if ($output ne "html")
 	print STDERR "reading source data\n";
 }
 
-my $path_base = $fs_data . "/test";
+my $path_source = $fs_data . "/test/$lang{$source}/$source";
 
-my @word_source    = @{ retrieve( "$path_base/$lang{$source}/word/$source.word"    ) };
-my @display_source = @{ retrieve( "$path_base/$lang{$source}/word/$source.display" ) };
-my @unit_source    = @{ retrieve( "$path_base/$lang{$source}/word/$source.${unit}" ) };
+my @word_source    = @{ retrieve( "$path_source/$source.word"    ) };
+my @display_source = @{ retrieve( "$path_source/$source.display" ) };
+my @unit_source    = @{ retrieve( "$path_source/$source.${unit}" ) };
 
-my %index_feature_source = %{ retrieve( "$path_base/$lang{$source}/$feature/$source.index_$feature" ) };
-my @index_unit_source = @{ retrieve( "$path_base/$lang{$source}/word/$source.index_$unit" ) };
+my %index_feature_source = %{ retrieve( "$path_source/$source.index_$feature" ) };
+my @index_unit_source = @{ retrieve( "$path_source/$source.index_$unit" ) };
 
-my @phrase_lines_source = @{ retrieve( "$path_base/$lang{$source}/word/$source.phrase_lines" )};
+my @phrase_lines_source = @{ retrieve( "$path_source/$source.phrase_lines" )};
 
 if ($output ne "html")
 {
 	print STDERR "reading target data\n";
 }
 
-my @word_target    = @{ retrieve( "$path_base/$lang{$target}/word/$target.word"    ) };
-my @display_target = @{ retrieve( "$path_base/$lang{$target}/word/$target.display" ) };
-my @unit_target    = @{ retrieve( "$path_base/$lang{$target}/word/$target.${unit}" ) };
+my $path_target = "$fs_data/test/$lang{$target}/$target";
 
-my %index_feature_target = %{ retrieve( "$path_base/$lang{$target}/$feature/$target.index_$feature" ) };
-my @index_unit_target = @{ retrieve( "$path_base/$lang{$target}/word/$target.index_$unit" ) };
+my @word_target    = @{ retrieve( "$path_target/$target.word"    ) };
+my @display_target = @{ retrieve( "$path_target/$target.display" ) };
+my @unit_target    = @{ retrieve( "$path_target/$target.${unit}" ) };
 
-my @phrase_lines_target = @{ retrieve( "$path_base/$lang{$target}/word/$target.phrase_lines" )};
+my %index_feature_target = %{ retrieve( "$path_target/$target.index_$feature" ) };
+my @index_unit_target = @{ retrieve( "$path_target/$target.index_$unit" ) };
 
+my @phrase_lines_target = @{ retrieve( "$path_target/$target.phrase_lines" )};
 
-# this will record which words are to be marked in the display
-
-my %marked_source;
-my %marked_target;
 
 #
 # this is where we calculated the matches
 #
 
-# this holds information about matches
-# 	- that is, roelant's "parallels"
-#
+# this hash holds information about matching units
 
 my %match;
 
@@ -367,12 +363,12 @@ for my $key (sort keys %index_feature_source)
 
 	for my $i ( 0..$#{$index_feature_target{$key}} )
 	{
-		my $target_word_id = ${$index_feature_target{$key}}[$i];
+		my $target_word_id = $index_feature_target{$key}[$i];
 		my $target_unit_id = $index_unit_target[$target_word_id];
 
 		for my $j ( 0..$#{$index_feature_source{$key}} )
 		{
-			my $source_word_id = ${$index_feature_source{$key}}[$j];
+			my $source_word_id = $index_feature_source{$key}[$j];
 			my $source_unit_id = $index_unit_source[$source_word_id];
 			
 			push @{ $match{$target_unit_id}{$source_unit_id}{TARGET} }, $target_word_id;
@@ -467,6 +463,11 @@ for my $target_unit_id (sort {$a <=> $b} keys %match)
 		next if ( scalar( @{$match{$target_unit_id}{$source_unit_id}{TARGET}} ) < 2);
 		next if ( scalar( @{$match{$target_unit_id}{$source_unit_id}{SOURCE}} ) < 2);
 
+		# this will record which words are to be marked in the display
+
+		my %marked_source;
+		my %marked_target;
+
 		# this array will hold shared words in the target
 
 		my @target_terms;
@@ -478,7 +479,7 @@ for my $target_unit_id (sort {$a <=> $b} keys %match)
 		#   of word frequency and distance between words
 		
 		my $score;
-		my $distance = ${$match{$target_unit_id}{$source_unit_id}{TARGET}}[-1] - ${$match{$target_unit_id}{$source_unit_id}{TARGET}}[0];
+		my $distance = $match{$target_unit_id}{$source_unit_id}{TARGET}[-1] - $match{$target_unit_id}{$source_unit_id}{TARGET}[0];
 		
 		# examine each shared term in the target in order by position
 		# within the line
@@ -507,7 +508,7 @@ for my $target_unit_id (sort {$a <=> $b} keys %match)
 		# now examine each shared term in the source as above
 		#
 
-		$distance += ${$match{$target_unit_id}{$source_unit_id}{SOURCE}}[-1] - ${$match{$target_unit_id}{$source_unit_id}{SOURCE}}[0];
+		$distance += $match{$target_unit_id}{$source_unit_id}{SOURCE}[-1] - $match{$target_unit_id}{$source_unit_id}{SOURCE}[0];
 		
 		# go through the terms in order by position
 		
@@ -540,22 +541,22 @@ for my $target_unit_id (sort {$a <=> $b} keys %match)
 				. "line=\"$unit_source[$source_unit_id]{LOCUS}\" "
 				. "link=\"$url_cgi/context.pl?source=$source;line=$unit_source[$source_unit_id]{LOCUS}\">";
 
-		# here we print the unit by alternating @space and @display
+		# here we print the unit by alternating @punct and @display
 		# the loop variable is the position in the unit
 
 		for (0..$#{$unit_source[$source_unit_id]{WORD}}) {
 
 			# here we get the word_id from its position in the phrase
 			
-			my $source_word_id = ${$unit_source[$source_unit_id]{WORD}}[$_];
+			my $source_word_id = $unit_source[$source_unit_id]{WORD}[$_];
 			
 			# print the interword material
 			
-			print XML ${$unit_source[$source_unit_id]{SPACE}}[$_];
+			print XML $unit_source[$source_unit_id]{PUNCT}[$_];
 			
-			# if marked, then add an xml tag
+			# if this is a matching word, then add an xml tag
 			
-			if (defined $marked_source{$source_word_id}) { print XML '<span class="marked">' }
+			if (defined $marked_source{$source_word_id}) { print XML '<span class="matched">' }
 
 			# print the display copy of the word
 			
@@ -566,7 +567,7 @@ for my $target_unit_id (sort {$a <=> $b} keys %match)
 			if (defined $marked_source{$source_word_id}) { print XML '</span>' }
 		}
 
-		print XML ${$unit_source[$source_unit_id]{SPACE}}[-1];
+		print XML $unit_source[$source_unit_id]{PUNCT}[-1];
 		print XML "</phrase>\n";
 		
 		# same as above, for the target now
@@ -577,16 +578,16 @@ for my $target_unit_id (sort {$a <=> $b} keys %match)
 
 		for (0..$#{$unit_target[$target_unit_id]{WORD}}) {
 
-			my $target_word_id = ${$unit_target[$target_unit_id]{WORD}}[$_];
+			my $target_word_id = $unit_target[$target_unit_id]{WORD}[$_];
 			
-			print XML ${$unit_target[$target_unit_id]{SPACE}}[$_];
+			print XML $unit_target[$target_unit_id]{PUNCT}[$_];
 			
-			if (defined $marked_target{$target_word_id}) { print XML '<span class="marked">' }
+			if (defined $marked_target{$target_word_id}) { print XML '<span class="matched">' }
 			print XML $display_target[$target_word_id];
 			if (defined $marked_target{$target_word_id}) { print XML '</span>' }
 		}
 
-		print XML ${$unit_target[$target_unit_id]{SPACE}}[-1];		
+		print XML $unit_target[$target_unit_id]{PUNCT}[-1];
 		print XML "</phrase>\n";
 
 		print XML "\t</tessdata>\n";
@@ -645,5 +646,3 @@ END
 
 	}
 }
-
-
