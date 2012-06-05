@@ -10,7 +10,7 @@ use Getopt::Long;
 use Graph;
 use Storable qw(nstore retrieve);
 
-use lib '/Users/chris/Sites/tesserae/perl';
+use lib '/Users/chris/tesserae/perl';
 use TessSystemVars;
 
 

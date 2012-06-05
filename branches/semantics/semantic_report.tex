@@ -1,0 +1,97 @@
+\documentclass[]{article}
+
+\usepackage{xltxtra}
+\usepackage{rotating}
+\usepackage{graphicx}
+\usepackage[xetex, breaklinks=true, hyperfootnotes=false, hyperfigures=false, colorlinks=true]{hyperref}
+\usepackage{fontspec}
+
+\title{Notes on tests of a synonym-detector}
+\author{Chris Forstall}
+
+\date{2012-06-03}
+
+\begin{document}
+	
+	\setmainfont{Arial}
+	
+	\maketitle
+
+
+	\section{Introduction}
+		
+		We have successfully implemented the dictionary-based approach to synonym detection of Jeff Rydberg-Cox.  This method assigns a similarity score to two Latin headwords based on the number of shared terms in their English definitions.  An arbitrary similarity threshold is selected, above which words are considered to match.  A stoplist of very common English words are deleted from the dictionary entries before calculating similarity.
+		
+		By varying the threshold as well as the size of the stoplist, we can alter the number and the selection of synonyms over the corpus.  Preliminary results suggest that a larger stoplist and a lower similarity threshold might provide the best distribution of synonyms, but some qualitative inspection of the synonym lists will be necessary to confirm that computer-assigned "matches" have some literary validity.
+
+	\section{Method}
+	
+		
+		We use a method developed by Jeff Rydberg-Cox for the Perseus "similar words" lookup tool, which is no longer available in Perseus 4.0.  The similarity of two words is a normalized count of the shared English terms in their respective entries in a Latin-English dictionary.  Rydberg-cox used the Perseus XML transcription of Lewis and Short; we have access to the same edition, but are still developing a method for extracting the English definitions from entries.  For now, our tests are done using the dictionary for Whitaker's Words (available at \url{http://archives.nd.edu/whitaker/dictpage.htm}).
+		
+	\subsection{Similarity}
+		
+		Each English entry is treated as a bag of words.  Where two different Latin headwords have the same orthography, their entries are concatenated.  Words on the stoplist, described below, are deleted.
+
+		To calculate a normalized score for any two words, the total number of terms shared between the two entries is divided by the total number of words in the two entries.  For words occurring in both entries or several times in one entry, every instance is counted.
+		
+		For example, consider the two entries below:
+		
+		\vspace{1em}
+		
+		\begin{description}
+			\item[alludo] frolic/play/sport around/with, play against; jest, make mocking allusion to; 
+			\item[iocus] joke, jest, sport;
+		\end{description}
+		
+		Assume for the moment that \emph{make} as well as the prepositions \emph{to}, \emph{with}, \emph{against}, and \emph{around} are stopwords.  The counts for these two entries look like this:
+		
+		\begin{tabular}{llll}
+					&	alludo	&	jocus	\\
+			allusion	&	1		&	0		\\
+			frolic		&	1		&	0		\\
+			jest		&	1		&	1		\\
+			joke		&	0		&	1		\\
+			mocking	&	1		&	0		\\
+			play		&	2		&	0		\\
+			sport		&	1		&	1		\\
+			\hline
+			total		&	7		&	3		\\
+		\end{tabular}
+		
+		\vspace{1em}
+		
+		Their similarity would be calculated as follows:
+		
+		\vspace{1em}
+		
+		\begin{tabular}{lr}
+
+			shared	&	4	\\
+			total		&	10	\\
+			\hline
+			similarity	&	0.4	\\
+		\end{tabular}
+		
+	\subsection{Stop words}
+	
+		The list of English terms to be excluded is determined by the number of entries in which a given term appears.  A word which appears in the definitions of very many different terms is unlikely to be as helpful in distinguishing meaning as a relatively rare word.  We therefore set an arbitrary cutoff, \emph{max heads}, the maximum number of Latin headwords under which an English term is found.  Larger values of \emph{max heads} mean we include more English words in our calculations; smaller values of \emph{max heads} mean more English words are ignored.
+		
+	\subsection{Synonymy}
+	
+		For the purposes of Tesserae's search algorithm, synonymy must be a binary decision.  Either two words are similar enough to match, or they aren't.  We set an arbitrary cutoff, \emph{min similarity}, at or above which words are considered to match.
+		
+	
+	\subsection{Testing}
+	
+	In these tests we varied \emph{max heads} over the values 50, 100, and 200.  The dictionary has about 35,000 headwords in it, so even the largest of these values is relatively exclusive.  Independently, we varied \emph{min similarity} over the values 0.50, 0.70, and 0.90.
+	
+	The effects of these two variables were measured using automatic means.  The overall level of synonymy in the dictionary was measured by the distribution of synonyms.  The holistic effect upon Tesserae was gauged by the increase in the number of results returned by the standard Lucan 1 ~ Aeneid search.
+		
+	\section{results}
+	
+	Figures 1Ð9 show, for various values of \emph{max heads} and \emph{min similarity}, how many words in the dictionary have a given number of synonyms.  In this case, what we really are interested in measuring is  The word itself is also counted, so that a word with no synonyms counts as 1, a word with a single synonym counts as 2, and so on.
+	
+	
+	
+\end{document}
