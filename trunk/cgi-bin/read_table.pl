@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -13,28 +13,68 @@ use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use strict;
 use warnings;
 
+use Getopt::Long;
 use Storable qw(nstore retrieve);
 
 use TessSystemVars;
 
 #
-# is the program being run from the command line or
-# the web interface?
+# usage
+#
 
-my $output = "html";
-my $quiet = 1;
+my $usage = "usage: read_table.pl --source SOURCE --target TARGET [--feature FEATURE] [--unit UNIT] [--stopwords N] [--no-cgi] [--quiet]\n";
 
-if ((getpwuid($>))[0] ne $apache_user) 
-{
-	$output = "cmdline";
-}
+#
+# set some parameters
+#
+
+# source means the alluded-to, older text
+
+my $source;
+
+# target means the alluding, newer text
+
+my $target;
+
+# unit means the level at which results are returned: 
+# - choice right now is 'phrase' or 'line'
+
+my $unit = "line";
+
+# feature means the feature set compared: 
+# - choice is 'word' or 'stem'
+
+my $feature = "stem";
+
+# stopwords is the number of words on the stoplist
+
+my $stopwords = 10;
+
+# is the program being run from the web or
+# from the command line?
+
+my $no_cgi = 0;
+
+# print debugging messages to stderr?
+
+my $quiet = 0;
+
+
+GetOptions( 'source=s'	=> \$source,
+			'target=s'	=> \$target,
+			'unit=s'	=> \$unit,
+			'feature=s'	=> \$feature,
+			'stopwords=i' => \$stopwords, 
+			'no-cgi'	=> \$no_cgi,
+			'quiet' 	=> \$quiet );
+
 
 # html header
 #
 # put this stuff early on so the web browser doesn't
 # give up
 
-if ($output eq "html")
+unless ($no_cgi)
 {
 	use CGI qw/:standard/;
 
@@ -53,10 +93,6 @@ END
 
 }
 
-#
-# set some parameters
-#  - from command line arguments if any
-#  - otherwise use default vergil-lucan case
 
 #
 # determine the session ID
@@ -99,39 +135,15 @@ $session = sprintf("%08x", hex($session)+1);
 
 my $session_file = "$fs_tmp/tesresults-$session.xml";
 
-if ($output eq "html")
-{
-	open (XML, '>' . $session_file) || die "can't open " . $session_file . ':' . $!;
-}
-else
+if ($no_cgi)
 {
 	open (XML, ">&STDOUT") || die "can't write to STDOUT";
 }
-#
-# set some parameters using web-form input
-#
+else
+{
+	open (XML, '>' . $session_file) || die "can't open " . $session_file . ':' . $!;
+}
 
-# source means the alluded-to, older text
-
-my $source;
-
-# target means the alluding, newer text
-
-my $target;
-
-# unit means the level at which results are returned: 
-# - choice right now is 'phrase' or 'line'
-
-my $unit;
-
-# feature means the feature set compared: 
-# - choice is 'word' or 'stem'
-
-my $feature;
-
-# stopwords is the number of words on the stoplist
-
-my $stopwords;
 
 #
 # abbreviations of canonical citation refs
@@ -153,20 +165,30 @@ my %lang = %{retrieve($file_lang)};
 # if web input doesn't seem to be there, 
 # then check command line arguments
 
-if ( $output eq "html")
+if ($no_cgi) {
+
+	unless (defined ($source and $target)) {
+
+		print STDERR $usage;
+		exit;
+	}
+}
+else
 {
 	my $query = new CGI || die "$!";
 
 	$source		= $query->param('source') || "";
 	$target		= $query->param('target') || "";
 	$unit     	= $query->param('unit')   || "line";
-	$feature		= $query->param('feature')		|| "stem";
+	$feature	= $query->param('feature')		|| "stem";
 	$stopwords	= defined($query->param('stoplist')) ? $query->param('stoplist') : 10;
 
 	if ($source eq "" or $target eq "")
 	{
 		die "read_table.pl called from web interface with no source/target";
 	}
+	
+	$quiet = 1;
 	
 	if ($unit eq "window")
 	{
@@ -189,47 +211,21 @@ END
 
 	}
 }
-else
-{
 
-	$quiet = 0;
+unless ($quiet) {
 
-	my @text;
-
-	$feature = "word";
-	$unit		= "line";
-	$stopwords = 10;
-
-	for (@ARGV)
-	{
-		if 	( /--word/ )			{ $feature = 'word' }
-		elsif ( /--stem/ )			{ $feature = 'stem' }
-		elsif ( /--semantic/  )		{ $feature = 'semantic'  }
-		elsif ( /--line/ )			{ $unit = 'line' }
-		elsif ( /--phrase/ )			{ $unit = 'phrase' }
-		elsif	( /--session=(\w+)/)	{ $session = $1 }
-		elsif ( /--stopwords=(\d+)/)	{ $stopwords = $1 }
-		else
-		{
-			unless (/^--/)
-			{
-				push @text, $_;
-			}
-		}
-	}
-
-	if (@text)
-	{
-		$target = shift @text || die "no target specified";
-		$source = shift @text || die "no source specified";
-	}
+	print STDERR "target=$target\n";
+	print STDERR "source=$source\n";
+	print STDERR "lang=$lang{$target};\n";
+	print STDERR "feature=$feature\n";
+	print STDERR "unit=$unit\n";
+	print STDERR "stopwords=$stopwords\n";
 }
+
 
 # a stop list
 # - hard coded in TessSystemVars, work on this in future
 # - feature-set-specific
-
-print STDERR "debug: target=$target; source=$source; lang=$lang{$target}; feature=$feature\n";
 
 my @stoplist = @{$top{$lang{$target} . '_' . $feature}};
 
@@ -242,7 +238,7 @@ else
 	@stoplist = ();
 }
 
-my %freq = %{ retrieve( "$fs_data/common/$lang{$target}.${feature}_count" )};
+my %freq = %{ retrieve( "$fs_data/common/$lang{$target}.${feature}.count" )};
 
 #
 # read data from table
@@ -293,8 +289,8 @@ my %freq = %{ retrieve( "$fs_data/common/$lang{$target}.${feature}_count" )};
 #	switch 'source' and 'target' and you get the same info for
 #   the other text.
 
-if ($output ne "html")
-{
+unless ($quiet) {
+	
 	print STDERR "reading source data\n";
 }
 
@@ -307,8 +303,8 @@ my %index_source_int = %{ retrieve( "$fs_data/v3/$lang{$source}/$feature/$source
 
 my @phrase_lines_source = @{ retrieve( "$fs_data/v3/$lang{$source}/word/$source.phrase_lines" )};
 
-if ($output ne "html")
-{
+unless ($quiet) {
+	
 	print STDERR "reading target data\n";
 }
 
@@ -369,15 +365,15 @@ my @match_source;
 # consider each key in the source doc
 #
 
-if ($output ne "html")
-{
+unless ($quiet) {
+	
 	print STDERR "comparing $target and $source\n";
 }
 
 # draw a progress bar
 
-if ($quiet == 0)
-{
+unless ($quiet) {
+	
 	print STDERR "0% |" . (" "x40) . "| 100%\r0% |";
 }
 
@@ -387,25 +383,18 @@ my $end_point = scalar(keys %index_source_ext);
 
 # start with each key in the source
 
-for my $key (sort keys %index_source_ext)
-{
+for my $key (sort keys %index_source_ext) {
+	
 	# advance the progress bar
 
 	$progress++;
 
-	if ($quiet == 0)
-	{
-		if ($progress/$end_point > $last_progress+.025)
-		{
-			if ($output eq "html")
-			{
-				my $percent_done = sprintf("%i%%", 100*$progress/$end_point);
-				print "<p>$percent_done done</p>\n";
-			}
-			else
-			{
-				print STDERR ".";
-			}
+	unless ($quiet) {
+		
+		if ($progress/$end_point > $last_progress+.025) {
+			
+			print STDERR ".";
+			
 			$last_progress = $progress/$end_point;
 		}
 	}
@@ -442,17 +431,14 @@ for my $key (sort keys %index_source_ext)
 # assign scores, write output
 #
 
-if ($output ne "html")
-{
+unless ($quiet) {
+	
 	print STDERR "\n";
 
 	print STDERR "writing xml output\n";
-}
 
-# draw a progress bar
+	# draw a progress bar
 
-if ($quiet == 0)
-{
 	print STDERR "0% |" . (" "x40) . "| 100%\r0% |";
 }
 
@@ -486,19 +472,12 @@ for my $target_ref_ext (0..$#match_target)
 
 	$progress++;
 
-	if ($quiet == 0)
-	{
-		if ($progress/$end_point > $last_progress+.025)
-		{
-			if ($output eq "html")
-			{
-				my $percent_done = sprintf("%i%%", 100*$progress/$end_point);
-				print "<p>$percent_done done</p>\n";
-			}
-			else
-			{
-				print STDERR ".";
-			}
+	unless ($quiet) {
+		
+		if ($progress/$end_point > $last_progress+.025)	{
+			
+			print STDERR ".";
+
 			$last_progress = $progress/$end_point;
 		}
 	}
@@ -683,12 +662,9 @@ print XML "</results>\n";
 
 my $redirect = "$url_cgi/get-data.pl?session=$session;sort=target";
 
-if ($quiet == 1)
-{
-	if ($output eq "html")
-	{
+unless ($no_cgi) {
 
-		print <<END;
+	print <<END;
 
    <meta http-equiv="Refresh" content="0; url='$redirect'">
 </head>
@@ -704,24 +680,11 @@ if ($quiet == 1)
 
 END
 
-	}
 }
 else
 {
-	if ( $output eq "cmdline" )
-	{
+	unless ($quiet) {
 		print STDERR "\n";
-	}
-	elsif ( $output eq "html")
-	{
-		print <<END;
-
-	<p>Your results are done.  <a href="$redirect">Click here</a>.</p>
-</body>
-</html>
-
-END
-
 	}
 }
 

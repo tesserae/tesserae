@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/tesserae/perl';	# PERL_PATH
 
 #
 # synonyms_add_column.pl
@@ -27,7 +27,7 @@ my $lang;
 my %stem_lookup;
 my %syn_lookup;
 
-my $self_match = 0;
+my $self_match = 1;
 
 #
 # process the files specified as cmd line args
@@ -171,6 +171,11 @@ while (my $name = shift @ARGV)
 			push @syn, @{$syn_lookup{$word}};
 		}
 		
+		if ($self_match == 1) {
+		
+			push @syn, $word;
+		}
+		
 		# flatten duplicates
 
 		my %uniq;
@@ -263,7 +268,7 @@ while (my $name = shift @ARGV)
 	# write the new column
 	#
 	
-	my $file_out = "$fs_data/v3/$lang/semantic/$name";
+	my $file_out = "$fs_data/v3/$lang/syn/$name";
 
 	print STDERR "writing $file_out.index_line_int\n";
 	nstore \%syn_index_line_int, "$file_out.index_line_int";

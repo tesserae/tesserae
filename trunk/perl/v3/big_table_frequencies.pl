@@ -5,7 +5,7 @@
 # in order to calculate stop words
 # and frequency-based scores
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/tesserae/perl';	# PERL_PATH
 
 use TessSystemVars;
 
@@ -74,9 +74,9 @@ for my $lang(@lang)
 		}
 	}
 
-	print STDERR "writing $fs_data/common/$lang.word_count\n";
+	print STDERR "writing $fs_data/common/$lang.word.count\n";
 
-	nstore \%total, "$fs_data/common/$lang.word_count";
+	nstore \%total, "$fs_data/common/$lang.word.count";
 
 	#
 	# stem counts
@@ -101,9 +101,9 @@ for my $lang(@lang)
 		}
 	}
 
-	print STDERR "writing $fs_data/common/$lang.stem_count\n";
+	print STDERR "writing $fs_data/common/$lang.stem.count\n";
 
-	nstore \%stem_count, "$fs_data/common/$lang.stem_count";
+	nstore \%stem_count, "$fs_data/common/$lang.stem.count";
 
 	print STDERR "\n";
 	
@@ -154,9 +154,9 @@ for my $lang(@lang)
 		}
 	}
 	
-	print STDERR "writing $fs_data/common/$lang.semantic_count\n";
+	print STDERR "writing $fs_data/common/$lang.syn.count\n";
 	
-	nstore \%stem_count, "$fs_data/common/$lang.semantic_count";
+	nstore \%stem_count, "$fs_data/common/$lang.syn.count";
 	
 	print STDERR "\n";
 	
