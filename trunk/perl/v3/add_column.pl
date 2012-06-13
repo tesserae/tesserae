@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 # add_column.pl
 #
@@ -226,6 +226,8 @@ while (my $file_in = shift @ARGV)
 			# the wisdom of this could be disputed, but roelant does it too
 
 			my $key = lc($words[$i]);
+			
+			$key =~ tr/jv/iu/;
 
 			$count{$key}++;
 				

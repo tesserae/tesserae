@@ -9,26 +9,34 @@
 # to remove the need for Frontier::Client, which is used to get
 # stems from the Archimedes server but is kind of a hassle to install.
 
+use strict;
+use warnings;
+
+use lib '/Users/chris/Sites/tesserae/perl';
+use TessSystemVars;
+use EasyProgressBar;
+
 use Storable qw(nstore retrieve);
+
+my $file_csv = "$fs_data/common/latinlexicon.csv";
+my $file_cache = "$fs_data/common/la.stem.cache";
 
 my %stem;
 
-print STDERR "reading csv file...\n";
+print STDERR "reading csv file: $file_csv\n";
 
-my $final = 1220933;
-my $counter = 0;
-my $progress = 0;
+open (FH, "<", $file_csv) || die "can't open csv: $!";
 
-print STDERR (" " x 43) . "| 100%\r0% |";
-
-open FH, "<latinlexicon.csv";
+my $pr = ProgressBar->new(-s $file_csv);
 
 while (my $line = <FH>) {
+	
+	$pr->advance(length($line));
 
 	chomp $line;
 	my @field = split /,/, $line;
 	
-	my ($token, $grammar, $headword) = @field[1,2,3];
+	my ($token, $grammar, $headword) = @field[0..2];
 	
 	$token = lc($token);
 	$token =~ tr/jv/iu/;
@@ -38,30 +46,17 @@ while (my $line = <FH>) {
 	$headword =~ s/[^a-z]//g;
 	
 	push @{$stem{$token}}, $headword;
-	
-	$counter++;
-	
-	if ($counter/$final > $progress + .025) {
-		
-		print STDERR ".";
-		
-		$progress = $counter/$final;
-	}
 }
-
-print STDERR "\n";
 
 close FH;
 
 print STDERR "rationalizing headwords...\n";
 
-$final = scalar(keys %stem);
-$counter = 0;
-$progress = 0;
-
-print STDERR (" " x 43) . "| 100%\r0% |";
+$pr = ProgressBar->new(scalar(keys %stem));
 
 for my $headword (keys %stem) {
+
+	$pr->advance();
 
 	my %uniq;
 	
@@ -72,20 +67,10 @@ for my $headword (keys %stem) {
 		
 	$stem{$headword} = [(keys %uniq)];
 	
-	$counter++;
-	
-	if ($counter/$final > $progress + .025) {
-		
-		print STDERR ".";
-		
-		$progress = $counter/$final;
-	}	
 }
 
-print STDERR "\n";
+print STDERR "saving: $file_cache";
 
-print STDERR "saving...";
-
-nstore \%stem, "la.stem.cache";
+nstore \%stem, $file_cache;
 
 print STDERR "\n";

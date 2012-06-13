@@ -5,7 +5,7 @@
 <?php $url_cgi="http://tesserae.caset.buffalo.edu/cgi-bin" ?><!-- URL_CGI -->
 <?php $url_image="http://tesserae.caset.buffalo.edu/images" ?><!-- URL_IMAGE -->
 <?php $url_text="http://tesserae.caset.buffalo.edu/texts" ?><!-- URL_TEXT -->
-<?php $fs_html="/Users/chris/tesserae/html" ?><!-- FS_HTML -->
+<?php $fs_html="/Users/chris/Sites/tesserae/html" ?><!-- FS_HTML -->
 
 
 <html lang="en">

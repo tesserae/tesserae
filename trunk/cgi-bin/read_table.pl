@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -458,7 +458,7 @@ my $commonwords = join(", ", @stoplist);
 
 print XML <<END;
 <?xml version="1.0" encoding="UTF-8" ?>
-<results source="$source" target="$target" sessionID="$session">
+<results source="$source" target="$target" unit="$unit" feature="$feature" sessionID="$session">
 	<comments>V3 results.  Caution: these are still unstable.</comments>
 	<commonwords>$commonwords</commonwords>
 END
@@ -627,6 +627,7 @@ for my $target_ref_ext (0..$#match_target)
 		print XML "\t<tessdata keypair=\"$keypair\" score=\"$distance\">\n";
 
 		print XML "\t\t<phrase text=\"source\" work=\"$abbr{$source}\" "
+				. "unitID=\"$source_ref_ext\" "
 				. "line=\"$loc_source[$source_ref_ext]\" "
 				. "link=\"$url_cgi/context.pl?source=$source;line=$loc_source[$source_ref_ext]\">";
 		for (0..$#{$unit_source[$source_ref_ext]{WORD}})
@@ -637,6 +638,7 @@ for my $target_ref_ext (0..$#match_target)
 		print XML "</phrase>\n";
 		
 		print XML "\t\t<phrase text=\"target\" work=\"$abbr{$target}\" "
+				. "unitID=\"$target_ref_ext\" "
 				. "line=\"$loc_target[$target_ref_ext]\" "
 				. "link=\"$url_cgi/context.pl?source=$target;line=$loc_target[$target_ref_ext]\">";
 
