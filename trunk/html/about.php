@@ -52,7 +52,7 @@
 				<p>
 					This ongoing work, begun in 2008, has been made possible by grants from the 
 					<a href="http://digitalhumanities.buffalo.edu/">Digital Humanities Initiative at Buffalo</a>. 
-					Beginning in 2012, Tesserae is also funded by a Digital Humanities <a 
+					Tesserae is funded by a Digital Humanities <a 
 					href="http://www.neh.gov/ODH/ODHUpdate/tabid/108/EntryId/177/Announcing-22-New-Start-Up-Grant-Awards-March-2012.aspx"
 					>Start-Up Grant</a> from the National Endowment for the Humanities, Office of Digital Humanities.
 				</p>

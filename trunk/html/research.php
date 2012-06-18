@@ -40,9 +40,14 @@
 				<h3>Forthcoming</h3>
 
 				<p class="hanging">
-					Coffee, N., J.-P. Koenig, S. Poornima, C. Forstall, R. Ossewaarde, 
-					and S. Jacobson (2012) “Intertextuality in the Digital Age.”
-					<em>Transactions of the American Philological Association</em> 142.2.
+					Coffee, N., J.-P. Koenig, S. Poornima, C. Forstall, R. Ossewaarde, and S. Jacobson. (forthcoming)
+					“The Tesserae Project: Intertextual Analysis of Latin Poetry”
+					<em>Literary and Linguistic Computing</em>
+				</p>
+
+				<p class="hanging">
+					Coffee, N., J.-P. Koenig, S. Poornima, C. Forstall, R. Ossewaarde, and S. Jacobson. (forthcoming)
+					“Intertextuality in the Digital Age.” <em>Transactions of the American Philological Association</em> 142.2.
 				</p>
 
 				<h3>Recent</h3>
