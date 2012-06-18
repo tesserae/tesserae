@@ -35,8 +35,6 @@ my $lang_override;
 my %text;
 my %part;
 
-my $preserve = 0;
-
 #
 # get files to be processed from cmd line args
 #
@@ -121,8 +119,8 @@ while (my $file_in = shift @ARGV)
 for my $lang (keys %text)
 {
 
-	my $mode = $preserve ? ">>" : ">";
-	open (FH, $mode, "$fs_html/textlist.$lang.php");
+	open (FHL, ">", "$fs_html/textlist.$lang.l.php");
+	open (FHR, ">", "$fs_html/textlist.$lang.r.php");
 
 	for my $name ( sort @{$text{$lang}} )
 	{
@@ -133,21 +131,24 @@ for my $lang (keys %text)
 
 		$display =~ s/\b([a-z])/uc($1)/eg;
 
-		print FH "<option value=\"$name\">$display</option>\n";
-	}
+		print FHL "<option value=\"$name\">$display</option>\n";
+		
+		if ( defined $part{$name} ) {
 
-	for my $name ( sort keys %part)
-	{
-		for my $part ( sort { $a <=> $b } @{$part{$name}})
-		{
-			my $display = $name;
-
-			$display =~ s/\./ - /g;
-	      $display =~ s/\_/ /g;
-
-			$display =~ s/\b([a-z])/uc($1)/eg;
-
-			print FH "<option value=\"$name.part.$part\">$display - Book $part</option>\n";
+			print FHR "<optgroup label=\"$name\">\n";
+			
+			print FHR "   <option value=\"$name\">$display - Full Text</option>\n";
+		
+			for my $part ( sort { $a <=> $b } @{$part{$name}}) {
+				
+				print FHR "   <option value=\"$name.part.$part\">$display - Book $part</option>\n";
+			}
+			
+			print FHR "</optgroup>\n";
+		}
+		else {
+		
+			print FHR "<option value=\"$name\">$display</option>\n";
 		}
 	}
 
