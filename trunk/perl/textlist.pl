@@ -152,5 +152,6 @@ for my $lang (keys %text)
 		}
 	}
 
-	close FH;
+	close FHL;
+	close FHR;
 }
