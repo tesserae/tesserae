@@ -14,7 +14,7 @@ use warnings;
 
 use TessSystemVars;
 
-use File::Path qw(make_path remove_tree);
+use File::Path qw(mkpath rmtree);
 use Storable qw(nstore retrieve);
 
 #
@@ -328,7 +328,7 @@ while (my $file_in = shift @ARGV)
 
 	# make sure the directory exists
 	
-	unless (-d "$fs_data/v3/$lang/word" ) { make_path ("$fs_data/v3/$lang/word") }
+	unless (-d "$fs_data/v3/$lang/word" ) { mkpath ("$fs_data/v3/$lang/word") }
 
 	my $file_out = "$fs_data/v3/$lang/word/$name";
 
