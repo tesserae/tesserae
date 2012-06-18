@@ -15,7 +15,7 @@ use warnings;
 
 use TessSystemVars;
 
-use File::Path qw(make_path remove_tree);
+use File::Path qw(mkpath rmtree);
 use Storable qw(nstore retrieve);
 
 my $lang_default = 'la';
@@ -185,7 +185,7 @@ while (my $name = shift @ARGV)
 
 	# make sure the directory exists
 	
-	unless (-d "$fs_data/v3/$lang/stem") { make_path("$fs_data/v3/$lang/stem/") }
+	unless (-d "$fs_data/v3/$lang/stem") { mkpath("$fs_data/v3/$lang/stem/") }
 
 	# write the new column
 

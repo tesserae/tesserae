@@ -302,9 +302,9 @@ sub export_cache {
 	my $file = shift;
 	
 	print STDERR "writing $file\n";
-	
 	nstore \%syn, $file;
-	
+
+	print STDERR "writing $file.param\n";	
 	nstore [$max_heads, $min_similarity], "$file.param";
 }
 
