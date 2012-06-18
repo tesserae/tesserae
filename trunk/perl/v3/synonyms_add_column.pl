@@ -263,7 +263,7 @@ while (my $name = shift @ARGV)
 			}
 		}
 	}
-	
+		
 	#
 	# write the new column
 	#

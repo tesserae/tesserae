@@ -177,10 +177,10 @@ else
 {
 	my $query = new CGI || die "$!";
 
-	$source		= $query->param('source') || "";
-	$target		= $query->param('target') || "";
-	$unit     	= $query->param('unit')   || "line";
-	$feature	= $query->param('feature')		|| "stem";
+	$source		= $query->param('source')   || "";
+	$target		= $query->param('target') 	 || "";
+	$unit     	= $query->param('unit') 	 || "line";
+	$feature		= $query->param('feature')	 || "stem";
 	$stopwords	= defined($query->param('stoplist')) ? $query->param('stoplist') : 10;
 
 	if ($source eq "" or $target eq "")
@@ -239,6 +239,20 @@ else
 }
 
 my %freq = %{ retrieve( "$fs_data/common/$lang{$target}.${feature}.count" )};
+
+#
+# if the featureset is synonyms, get the parameters used
+# to create the synonym dictionary for debugging purposes
+#
+
+my $max_heads = "NA";
+my $min_similarity = "NA";
+
+if ( $feature eq "syn" ) { 
+
+	($max_heads, $min_similarity) = @{ retrieve("$fs_data/common/$lang{$target}.syn.cache.param") };
+}
+
 
 #
 # read data from table
@@ -454,12 +468,22 @@ binmode XML, ":utf8";
 
 my $commonwords = join(", ", @stoplist);
 
+# add a featureset-specific message
+
+my %feature_notes = (
+	
+	word => "Exact matching only.",
+	stem => "Stem matching enabled.  Forms whose stem is ambiguous will match all possibilities.",
+	syn  => "Stem + synonym matching.  This search is still in development.  Note that stopwords may match on less-common synonyms.  max_heads=$max_heads; min_similarity=$min_similarity"
+	
+	);
+
 # print the xml doc header
 
 print XML <<END;
 <?xml version="1.0" encoding="UTF-8" ?>
 <results source="$source" target="$target" unit="$unit" feature="$feature" sessionID="$session">
-	<comments>V3 results.  Caution: these are still unstable.</comments>
+	<comments>V3 results. $feature_notes{$feature}</comments>
 	<commonwords>$commonwords</commonwords>
 END
 

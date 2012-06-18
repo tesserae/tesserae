@@ -29,11 +29,11 @@ our $fs_text	= $fs_base . '/texts';
 our $fs_tmp  	= $fs_base . '/tmp';
 our $fs_xsl  	= $fs_base . '/xsl';
 
-my $url_base	= 'http://tesserae.caset.buffalo.edu';
+my $url_base	= 'http://localhost/~chris/tesserae';
 
 our $url_cgi	= $url_base . '/cgi-bin';
 our $url_css	= $url_base . '/css';
-our $url_html	= $url_base;
+our $url_html	= $url_base . '/html';
 our $url_image	= $url_base . '/images';
 our $url_text	= $url_base . '/texts';
 our $url_tmp	= $url_base . '/tmp';
