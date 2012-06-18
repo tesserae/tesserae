@@ -92,18 +92,21 @@ div#nav_sub li a
 div#footer
 {
 	position: relative;
-	padding-left: 200px;
-	padding-right: 100px;
 	background : #e1e6c6;
-	text-align: center;
+	height: 130px;
+	text-align: left;
 }
 
 div#footer_content
 {
+	position: absolute;
+	left: 25%;
+	width: 50%;
 }
 
 div#footer_content p
 {
+	position: static;
 	margin: 0px;
 	font-size : 10px;
 	color : #777;
@@ -116,16 +119,26 @@ div#footer_content a
 	font-weight: bold;
 }
 
-div#footer_icon
+div.footer_icon_right
 {
 	position: absolute;
-	bottom: 5px;
-	left: 100px;
+	text-align: right;
+	right: 5px;
+	top: 20%;
 }
 
-div#footer_icon img
+div.footer_icon_left
 {
-	max-height: 75px;
+	position: absolute;
+	vertical-align: top;
+	left: 5px;
+	top: 20%;
+}
+
+
+div#footer img
+{
+	max-height: 62px;
 }
 
 
@@ -133,6 +146,7 @@ div#main
 {
 	padding: 25px 100px;
 	text-align: justify;
+	min-height: 340px;
 }
 
 div.figure

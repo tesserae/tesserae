@@ -1,6 +1,10 @@
 			<div id="footer">
-				<div id="footer_icon">
-					<img src="<?php echo $url_image . "/DHIBlogo.png" ?>" alt="DHIB logo">
+				<div class="footer_icon_left">
+					<img src="<?php echo $url_image . "/DHIBlogo.png" ?>" alt="DHIB">
+					<img src="<?php echo $url_image . "/uccs.png" ?>" alt="VAST Lab">
+				</div>
+				<div class="footer_icon_right">
+					<img src="<?php echo $url_image . "/neh_logo_horizontal_rgb.jpg" ?>" alt="NEH">
 				</div>
 				<div id="footer_content">
 					<p> 
@@ -14,16 +18,18 @@
    					<p>
 						This project is funded by the
 						<a href="http://www.neh.gov/ODH/ODHUpdate/tabid/108/EntryId/177/Announcing-22-New-Start-Up-Grant-Awards-March-2012.aspx">
-							<b>Office of Digital Humanities of the National Endowment for the Humanities</b>
-						</a> and the 
+							<b>Office of Digital Humanities</b><br /> 
+							of the <b>National Endowment for the Humanities</b>
+						</a>
+						<br /> and by the 
 						<a href="http://digitalhumanities.buffalo.edu/">
 							<b>Digital Humanities Initiative at Buffalo</b>
 						</a>.<br />
 					</p>
 					<p>	
 						Inquiries or comments about this website should be 
-						directed to <a href="mailto:ncoffee@buffalo.edu">
-						<b>Neil Coffee</b></a>.<br />
+						directed to <br/>
+						<a href="mailto:ncoffee@buffalo.edu"> <b>Neil Coffee</b></a> |
    		
 						Department of Classics | 338 MFAC | Buffalo, NY 14261<br />
 
