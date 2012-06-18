@@ -225,9 +225,9 @@ while (my $file_in = shift @ARGV)
 			# convert to lower-case
 			# the wisdom of this could be disputed, but roelant does it too
 
-			my $key = lc($words[$i]);
+			my $key = TessSystemVars::lcase($lang, $words[$i]);
 			
-			$key =~ tr/jv/iu/;
+			$key = TessSystemVars::standardize($lang, $words[$i]);
 
 			$count{$key}++;
 				
