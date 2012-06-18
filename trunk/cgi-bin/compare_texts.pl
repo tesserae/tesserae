@@ -120,6 +120,9 @@ if ($debug >= 1) {
 
 
 foreach (@text) {
+	
+	s/lucan\.pharsalia\.book1\.tess/lucan.pharsalia\/lucan.pharsalia.part.1.tess/;
+	
 	unless (-r $_)
 	{
 		die "can't open file ".$_.": ".$!."\n";
