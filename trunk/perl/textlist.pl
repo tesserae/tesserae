@@ -135,7 +135,7 @@ for my $lang (keys %text)
 		
 		if ( defined $part{$name} ) {
 
-			print FHR "<optgroup label=\"$name\">\n";
+			print FHR "<optgroup label=\"$display\">\n";
 			
 			print FHR "   <option value=\"$name\">$display - Full Text</option>\n";
 		
