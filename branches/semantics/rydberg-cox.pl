@@ -10,7 +10,7 @@ use Getopt::Long;
 use Graph;
 use Storable qw(nstore retrieve);
 
-use lib '/Users/chris/tesserae/perl';
+use lib '/Users/chris/Sites/tesserae/perl';
 use TessSystemVars;
 
 
@@ -29,7 +29,7 @@ my $quiet = 0;
 
 # the dictionary to parse
 
-my $file_dict  = "$fs_data/common/DICTPAGE.RAW";
+my $file_dict_import  = "$fs_data/common/DICTPAGE.RAW";
 
 # the cache file to write
 
@@ -51,13 +51,17 @@ my $file_text = "none";
 
 my $file_hist = "none";
 
+# file to save a cache of the dictionary to
+
+my $file_dict_export = "none";
 
 # set parameters from cmd line options if given 
 
 GetOptions ('max_heads=i' => \$max_heads, 
 				'min_similarity=f' => \$min_similarity, 
-				'dictionary=s' => \$file_dict, 
+				'dictionary=s' => \$file_dict_import, 
 				'cache:s' => \$file_cache,
+				'dict_cache:s' => \$file_dict_export,
 				'html:s' => \$file_html,
 				'text:s' => \$file_text,
 				'groups:s' => \$file_group,
@@ -82,7 +86,7 @@ my @syn_group;
 # read the dictionary
 #
 
-read_dictionary($file_dict);
+read_dictionary($file_dict_import);
 
 #
 # index each head by english words
@@ -169,8 +173,14 @@ if ($file_hist ne "none") {
 	export_hist($file_hist);
 }
 
+#
+# save the dictionary to a cache
+#
 
+if ($file_dict_export ne "none") {
 
+	export_dictionary($file_dict_export);
+}
 #
 # subroutines
 #
@@ -468,7 +478,7 @@ sub export_list_html {
 	print "<body>\n";
 	print "  <h2>Synonym Test</h2>\n";
 	print "  <table>\n";
-	print "    <tr><td>dictionary</td><td>$file_dict</td></tr>\n";
+	print "    <tr><td>dictionary</td><td>$file_dict_import</td></tr>\n";
 	print "    <tr><td>max heads</td><td>$max_heads</td></tr>\n";
 	print "    <tr><td>min similarity</td><td>$min_similarity</td></tr>\n";
 	print "    <tr><td>total words</td><td>$all_words</td></tr>\n";
@@ -522,6 +532,8 @@ sub export_cache {
 	print STDERR "writing $file\n";
 	
 	nstore \%syn, $file;
+	
+	nstore [$max_heads, $min_similarity], "$file.param";
 }
 
 # run the benchmark set
@@ -605,7 +617,7 @@ sub statistics {
 		}
 	}
 	
-	print STDERR "file: $file_dict\n";
+	print STDERR "file: $file_dict_import\n";
 	print STDERR "total number of headwords: " . scalar(keys %dict) . "\n";
 	print STDERR "max headwords per key: $max_heads\n";
 	print STDERR "minimum similarity score: $min_similarity\n";
@@ -686,7 +698,15 @@ sub export_hist {
 	if ($file ne "") { close FH }
 }
 
+# save the dictionary as a binary
 
+sub export_dictionary {
+
+	my $file = shift;
+
+	print STDERR "writing dictionary to $file\n";
+	nstore \%dict, $file;
+}
 
 #
 # The following is a new package

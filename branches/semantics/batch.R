@@ -1,18 +1,18 @@
 heads = c(50, 100, 200)
 sims  = c(50, 70, 90)
 
-for (h in 1:3) {
-	
-	for (s in 1:3) {
-		
-		hdata <- read.table(paste("batch/h", heads[h], "s", sims[s], ".hist", sep=""), header=TRUE)
-		
-		x11(title=paste("heads=", heads[h], "; sim=", sims[s], sep=""))
-		
-		plot(hdata, main=paste("heads=", heads[h], "\nsim=", sims[s], sep=""), xlab="number of words", ylab="number of synonyms")
-				
-	}
-}
+# for (h in 1:3) {
+# 	
+# 	for (s in 1:3) {
+# 		
+# 		hdata <- read.table(paste("batch/h", heads[h], "s", sims[s], ".hist", sep=""), header=TRUE)
+# 		
+# 		x11(title=paste("heads=", heads[h], "; sim=", sims[s], sep=""))
+# 		
+# 		plot(hdata, main=paste("heads=", heads[h], "\nsim=", sims[s], sep=""), xlab="number of words", ylab="number of synonyms")
+# 				
+# 	}
+# }
 
 for (h in heads) {
 	
@@ -61,7 +61,7 @@ for (s in sims) {
 	xmax = max(h50$syns,  h100$syns,  h200$syns)
 	ymax = max(h50$words, h100$words, h200$words)
 	
-	plot(h50$syns, h50$words, main=paste("similarity=", s, sep=""), xlab="# synonyms", ylab="# words", type="l", xlim=c(1,xmax), ylim=c(1,ymax), log="xy")
+	plot(h50$syns, h50$words, main=paste("similarity=", (s/100), sep=""), xlab="# synonyms", ylab="# words", type="l", xlim=c(1,xmax), ylim=c(1,ymax), log="xy")
 	
 	lines(h50$syns,  h50$words,  lw=2, lt=1, col=1)
 	lines(h100$syns, h100$words, lw=2, lt=2, col=2)
