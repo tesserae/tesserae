@@ -141,6 +141,11 @@ div#footer img
 	max-height: 62px;
 }
 
+div#results_sort
+{
+	padding: 25px 100px;
+	text-align: justify;
+}
 
 div#main
 {

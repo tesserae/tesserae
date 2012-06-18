@@ -116,7 +116,7 @@
 						</ul>
 					</div>
 									
-					<div id="main">
+					<div id="results_sort">
 						<form>
 							<xsl:attribute name="action"><xsl:value-of select="concat($url_cgi, '/get-data.pl')"/></xsl:attribute>
 							<xsl:attribute name="method">post</xsl:attribute>
