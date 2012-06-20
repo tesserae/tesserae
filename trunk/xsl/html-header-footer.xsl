@@ -196,7 +196,7 @@
 					</div>
 				
 					<div id="footer">
-						<div id="footer_icon">
+						<div id="footer_icon_left">
 							<img>
 								<xsl:attribute name="src">
 									<xsl:value-of select="concat($url_image, '/DHIBlogo.png')"/>
@@ -205,24 +205,49 @@
 									DHIB logo
 								</xsl:attribute>
 							</img>
+							<img>
+								<xsl:attribute name="src">
+									<xsl:value-of select="concat($url_image, '/uccs.png')"/>
+								</xsl:attribute>
+								<xsl:attribute name="alt">
+									VAST Lab logo
+								</xsl:attribute>
+							</img>
+						</div>
+						<div id="footer_icon_right">
+							<img>
+								<xsl:attribute name="src">
+									<xsl:value-of select="concat($url_image, '/neh_logo_horizontal_rgb.jpg')"/>
+								</xsl:attribute>
+								<xsl:attribute name="alt">
+									NEH logo
+								</xsl:attribute>
+							</img>
 						</div>
 						<div id="footer_content">
 							<p> 
 								Tesserae is a collaborative project of the 
 								<a href="http://www.buffalo.edu">University at Buffalo</a>'s <br />
 								<a href="http://www.classics.buffalo.edu"><b>Department of Classics</b></a> and
-								<a href="http://linguistics.buffalo.edu"><b>Department of Linguistics</b></a>
+								<a href="http://linguistics.buffalo.edu"><b>Department of Linguistics</b></a>,<br />
+								and the <a href="http://vast.uccs.edu">VAST Lab</a> of the 
+								<a href="http://www.uccs.edu/">University of Colorado at Colorado Springs</a>.
 							</p>
-		   					<p>
+	   					<p>
 								This project is funded by the
+								<a href="http://www.neh.gov/ODH/ODHUpdate/tabid/108/EntryId/177/Announcing-22-New-Start-Up-Grant-Awards-March-2012.aspx">
+									<b>Office of Digital Humanities</b><br /> 
+									of the <b>National Endowment for the Humanities</b>
+								</a>
+								<br /> and by the 
 								<a href="http://digitalhumanities.buffalo.edu/">
 									<b>Digital Humanities Initiative at Buffalo</b>
 								</a>.<br />
 							</p>
 							<p>	
 								Inquiries or comments about this website should be 
-								directed to <a href="mailto:ncoffee@buffalo.edu">
-								<b>Neil Coffee</b></a>.<br />
+								directed to <br/>
+								<a href="mailto:ncoffee@buffalo.edu"> <b>Neil Coffee</b></a> |
 
 								Department of Classics | 338 MFAC | Buffalo, NY 14261<br />
 

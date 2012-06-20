@@ -1,10 +1,10 @@
 			<div id="footer">
 				<div class="footer_icon_left">
-					<img src="<?php echo $url_image . "/DHIBlogo.png" ?>" alt="DHIB">
-					<img src="<?php echo $url_image . "/uccs.png" ?>" alt="VAST Lab">
+					<img src="<?php echo $url_image . "/DHIBlogo.png" ?>" alt="DHIB logo">
+					<img src="<?php echo $url_image . "/uccs.png" ?>" alt="VAST Lab logo">
 				</div>
 				<div class="footer_icon_right">
-					<img src="<?php echo $url_image . "/neh_logo_horizontal_rgb.jpg" ?>" alt="NEH">
+					<img src="<?php echo $url_image . "/neh_logo_horizontal_rgb.jpg" ?>" alt="NEH logo">
 				</div>
 				<div id="footer_content">
 					<p> 
