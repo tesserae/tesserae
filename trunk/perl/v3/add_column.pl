@@ -164,7 +164,7 @@ while (my $file_in = shift @ARGV)
 
 	# open the input text
 
-	open (TEXT, $file_in) or die("Can't open file ".$file_in);
+	open (TEXT, "<:utf8", $file_in) or die("Can't open file ".$file_in);
 
 	# examine each line of the input text
 
