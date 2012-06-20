@@ -33,7 +33,7 @@
 		 					</td>
 							<td align ="center">
 								<select name="target" ID="target">
-									<?php include $fs_html.'/textlist.la.l.php'; ?>
+									<?php include $fs_html.'/textlist.la.r.php'; ?>
 								</select>
 		 					</td>
 						</tr>
