@@ -11,28 +11,46 @@ use warnings;
 use Getopt::Std;
 use Storable;
 
-use lib '.';
+use lib '/Users/chris/Sites/tesserae/perl'; # TESS_PATH
+use TessSystemVars;
 use EasyProgressBar;
 
+# data locations
+
+my %file = (
+	
+	wc_ALL => "$fs_data/common/la.word.count",
+	wc_AEN => "$fs_data/v3/la/word/vergil.aeneid.count",
+	wc_BC  => "$fs_data/v3/la/word/lucan.pharsalia.part.1.count",
+	stems  => "$fs_data/common/la.stem.cache",
+	syns   => "$fs_data/common/whit.cache",
+	
+	idf_phrase => "data/la.idf_phrase",
+	idf_text   => "data/la.idf_text",
+	
+	rec => "data/rec.cache"
+);
+
 # the stem dictionary
-my %stem_lookup = %{ retrieve("data/la.stem.cache") };
+my %stem_lookup = %{ retrieve($file{stems}) };
 
 # the synonym dictionary
-my %semantic_lookup = %{ retrieve("data/whit.cache") };
+my %semantic_lookup = %{ retrieve($file{syns}) };
 
 # word frequencies
 my %freq;
 
-$freq{ALL} = retrieve("data/la.word.freq");
-$freq{AEN} = retrieve("data/vergil.word.freq");
-$freq{BC}  = retrieve("data/lucan.word.freq");
+for (qw(ALL AEN BC)) { 
+	
+	$freq{$_} = count_to_freq(retrieve($file{'wc_' . $_}));
+}
 
 # inverse document frequencies
-my %idf_by_phrase = %{retrieve("data/la.idf_phrase")};
-my %idf_by_text = %{retrieve("data/la.idf_text")};
+my %idf_by_phrase = %{retrieve($file{idf_phrase})};
+my %idf_by_text = %{retrieve($file{idf_text})};
 
 # the table of parallels
-my @rec = @{ retrieve("data/rec.cache") };
+my @rec = @{ retrieve($file{rec}) };
 
 # look for "quiet" flag 
 our $opt_q;
@@ -1148,6 +1166,31 @@ sub cosim {
 	my $sim = sprintf("%.08f", $dot_product/($eucl_dist_BC * $eucl_dist_AEN));
 	
 	return $sim;
+}
+
+#
+# convert word counts to word frequencies
+#
+
+sub count_to_freq {
+	
+	my $count_ref = shift;
+	my %count = %$count_ref;
+	my %freq;
+	
+	my $total;
+
+	for my $count (values %count) {
+
+		$total += $count;
+	}
+
+	for my $word (keys %count) {
+		
+		$freq{$word} = $count{$word}/$total;
+	}
+	
+	return \%freq;
 }
 
 # print an array as a comma-separated row

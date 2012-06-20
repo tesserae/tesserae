@@ -84,8 +84,13 @@ for my $text ('lucan', 'vergil')
 		my @words;
 		
 		for my $wi (@{$$phrase{WORD}}) {
+			
+			my $word = $word[$wi];
+			
+			$word = lc($word);
+			$word =~ tr/jv/iu/;
 		
-			push @words, $word[$wi];
+			push @words, $word;
 		}
 		
 		$_ = [@words];
@@ -150,13 +155,13 @@ for my $rec_index (0..$#rec) {
 		
 		if ($max <= .3) {
 			
-			if (length($ln) < 3 && defined $phrase_index{$text}{"$bn.${ln}0"}) {
+			if (defined $phrase_index{$text}{"$bn.${ln}0"}) {
 				
 				# print STDERR "checking lost trailing zeros\n";
 				
 				push @phrase_index, @{$phrase_index{$text}{"$bn.${ln}0"}};
 				
-				if (length($ln) < 2 && defined $phrase_index{$text}{"$bn.${ln}00"}) { 
+				if (defined $phrase_index{$text}{"$bn.${ln}00"}) { 
 					
 					push @phrase_index, @{$phrase_index{$text}{"$bn.${ln}00"}} ;
 				}
@@ -174,7 +179,8 @@ for my $rec_index (0..$#rec) {
 		
 #		print STDERR "decided $decided by $max\n";
 				
-		$rec[$rec_index]{$pref . '_PHRASE'} = [@{$phrase{$text}[$decided]}];
+		$rec[$rec_index]{$pref . '_PHRASE'} = $phrase{$text}[$decided];
+		$rec[$rec_index]{$pref . '_PHRASEID'} = $decided;
 	}
 }
 
