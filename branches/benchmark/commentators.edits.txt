@@ -1,0 +1,26 @@
+ROW	OLD	NEW	NOTES
+41	7.623	7.622	matched phrase
+42	7.607	7.610	intervening break
+84	10.421	10.423	intervening break
+99	"excipere"	"excepit"	as in vergil
+129	"lion simile"	"leo"
+129	"lion simile"	"leonem"
+137	3.163-171	3.171
+143	10.35	10.535	matched phrase
+188	7.47	7.46	matched phrase
+239	luc 1.423	1.424	intervening break
+255	"mores sinistri"	"moresque sinistros"
+258	1.454	1.456
+258	"Gallic transmigration theory"	"regit idem spiritus artus orbe alio"
+258	6.724	6.751
+258	"Virgilian transmigration theory"	"rursus et incipiant in corpora velle reverti"
+260	8.254	8.245
+260	verg. "regna"	"regia"
+282	"1.491-3"	"Incerti, quo quemque fugae tulit impetus, urgent praecipitem populum"
+282	"2.796-800"	"Atque hic ingentem comitum adfluxisse novorum"
+302	"2.505 coniunxue maritum / fletibus"	""	This row should be deleted. The vergil phrase is just the lucan text again.
+308	"2.707-25"	"age, care pater, cervici imponere nostrae"
+309	"2.747-51"	"Ascanium Anchisenque patrem Teucrosque Penatis"
+321	8.861	8.681	typo?
+334	2.262	3.262	matched phrase
+352	"Arruns"	"Aruns"	as in lucan

@@ -1,4 +1,4 @@
-# check-phrase.pl
+# build-rec.pl
 # 
 # This script is supposed to read a set of benchmark, hand-graded allusions
 # from a CSV file and correlate the phrases referenced with phrases in our
@@ -14,7 +14,7 @@
 # Chris Forstall
 # 2011-12-08
 #
-# rev. 2012-06-12
+# rev. 2012-06-12 from check-phrase.pl
 
 use strict;
 use warnings;
@@ -22,9 +22,12 @@ use warnings;
 use Data::Dumper;
 use Storable qw(nstore retrieve);
 
+use Getopt::Long;
+
 # lowest similarity accaptable without remark
 
-my $warn_threshold = .4;
+my $warn_threshold = .18;
+my $check_alts_threshold = .3;
 
 # location of the data
 
@@ -44,8 +47,16 @@ my %file = (
 	vergil_loc_line     => "$fs_data/v3/la/word/vergil.aeneid.loc_line",
 	vergil_phrase_lines => "$fs_data/v3/la/word/vergil.aeneid.phrase_lines",
 	
-	benchmark => "bench.csv"
+	benchmark => "bench2.csv",
+	cache     => "data/rec.cache"
 );
+
+# check for command-line overrides
+
+GetOptions(	"bench=s"	=> \$file{benchmark},
+				"cache=s"	=> \$file{cache},
+				"check=f"	=> \$check_alts_threshold,
+				"warn=f" 	=> \$warn_threshold );
 
 # load the data
 
@@ -127,7 +138,7 @@ print STDERR "aligning records\n";
 # match up each record with a parsed phrase 
 #
 
-for my $rec_index (0..$#rec) {	
+REC: for my $rec_index (0..$#rec) {	
 
 	for my $text ('lucan', 'vergil') {
 		
@@ -139,7 +150,13 @@ for my $rec_index (0..$#rec) {
 		my $bn = $rec[$rec_index]{$pref . '_BOOK'};
 		my $ln = $rec[$rec_index]{$pref . '_LINE'};
 		
-		if (! defined $phrase_index{$text}{"$bn.$ln"} ) { die "$text $bn.$ln has no entry in phrase_index" }
+		$ln =~ s/-.*//;
+		$ln =~ s/[^0-9]//g;
+		
+		if (! defined $phrase_index{$text}{"$bn.$ln"} ) { 
+					
+			die "$rec_index : $text $bn.$ln has no entry in phrase_index" 
+		}
 		
 		my @phrase_index = @{$phrase_index{$text}{"$bn.$ln"}};
 			
@@ -149,11 +166,19 @@ for my $rec_index (0..$#rec) {
 	
 		# do the search
 		
-		my ($decided, $max) = Align($search, $text, \@phrase_index);
+		my ($decided, $max, $debug_string) = Align($search, $text, \@phrase_index);
+		
+		# check for total failure
+		
+		if (not defined $debug_string) {
+			
+			print STDERR "Empty search string\n\n";
+			$debug_string = $search;
+		}
 		
 		# if the results are really bad, check for a missing zero in the line number
 		
-		if ($max <= .3) {
+		if ($max < $check_alts_threshold) {
 			
 			if (defined $phrase_index{$text}{"$bn.${ln}0"}) {
 				
@@ -166,15 +191,15 @@ for my $rec_index (0..$#rec) {
 					push @phrase_index, @{$phrase_index{$text}{"$bn.${ln}00"}} ;
 				}
 				
-				($decided, $max) = Align($search, $text, \@phrase_index);
+				($decided, $max, $debug_string) = Align($search, $text, \@phrase_index);
 			}
 		}
 		
 		if ($max <= $warn_threshold) {
 		
-			print STDERR "$text $bn.$ln : $search\n";
-			print STDERR " $max\t$decided\t$loc_phrase{$text}[$decided]\t" . join(" ", @{$phrase{$text}[$decided]}) . "\n";
-					
+			print STDERR "$rec_index : $text $bn.$ln : $debug_string\n";
+			print STDERR "  $max\t$decided\t$loc_phrase{$text}[$decided]\t" . join(" ", @{$phrase{$text}[$decided]}) . "\n";
+			print STDERR "\n";
 		}
 		
 #		print STDERR "decided $decided by $max\n";
@@ -184,7 +209,9 @@ for my $rec_index (0..$#rec) {
 	}
 }
 
-nstore \@rec, 'data/rec.cache';
+print STDERR "writing " . scalar(@rec) . " records to $file{cache}\n";
+
+nstore \@rec, $file{cache};
 
 
 
@@ -299,10 +326,18 @@ sub Align {
 
 	my @phrase_index = @$pi_ref;
 
+	# check for empty search
+	
+	if ($#search < 0) {
+		
+		return ($phrase_index[0], 0, undef);
+	}
+
 	# this holds the max consecutive words matched
 
 	my $max = 0;
 	my $decided = $phrase_index[0];
+	my $debug_string = join(" ", @search);
 
 	# try to match words
 	# for each of the phrases beginning on this line
@@ -312,12 +347,20 @@ sub Align {
 		my @target = @{$phrase{$text}[$pi]};
 	
 		my $matched = 0;
+		
+		my @temp;
 	
 		# now see how much of the phrase we can match
 	
 		for my $s (@search) {
 			
-			if ( grep { $_ eq $s } @target ) { $matched++ }
+			if ( grep { $_ eq $s } @target ) { 
+				
+				$matched++;
+				
+				push @temp, uc($s);
+			}
+			else { push @temp, $s }
 		}
 		
 		$matched = sprintf("%.2f", $matched/scalar(@search));
@@ -326,13 +369,9 @@ sub Align {
 			 
 			$max = $matched; 
 			$decided = $pi;
+			$debug_string = join(" ", @temp);
 		}
 	}
-	
-	unless (defined $decided) {
-	
-		print STDERR "\$search=$search; \$#phrase_index=$#phrase_index\n";
-	}
-	
-	return ($decided, $max);
+		
+	return ($decided, $max, $debug_string);
 }
