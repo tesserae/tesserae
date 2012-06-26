@@ -196,7 +196,7 @@
 					</div>
 				
 					<div id="footer">
-						<div id="footer_icon_left">
+						<div class="footer_icon_left">
 							<img>
 								<xsl:attribute name="src">
 									<xsl:value-of select="concat($url_image, '/DHIBlogo.png')"/>
@@ -214,7 +214,7 @@
 								</xsl:attribute>
 							</img>
 						</div>
-						<div id="footer_icon_right">
+						<div class="footer_icon_right">
 							<img>
 								<xsl:attribute name="src">
 									<xsl:value-of select="concat($url_image, '/neh_logo_horizontal_rgb.jpg')"/>
