@@ -176,7 +176,7 @@ while (my $file_in = shift @ARGV)
 		# Assumption is that a line looks like:
 		# <001>	this is a verse
 
-		$l =~ /^<(.+)>\s+(.+)/;
+		$l =~ /^<(.+?)>\s+(.+)/;
 
 		my ($verseno, $verse) = ($1, $2);
 
@@ -203,6 +203,7 @@ while (my $file_in = shift @ARGV)
 		# remove html special chars
 
 		$verse =~ s/&[a-z];//ig;
+		$verse =~ s/[<>]//g;
 				
 		# save the inter-word material
 				

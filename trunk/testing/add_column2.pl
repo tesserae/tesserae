@@ -16,6 +16,7 @@ use TessSystemVars;
 
 use File::Path qw(mkpath rmtree);
 use Storable qw(nstore retrieve);
+use Getopt::Long;
 
 #
 # these lines set language-specific variables
@@ -32,19 +33,19 @@ my $file_lang = "$fs_data/common/lang";
 
 if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
 
-my $lang;
-my $lang_override;
+#
+# allow language for individual files to be given on the
+# command line, using flags --la or --grc
+#
 
-my $wchar_greek = 'a-z\*\(\)\\\/\=\|\+\'';
-my $wchar_latin = 'a-zA-Z';
+my %lang_override;
+my @force_la;
+my @force_grc;
 
-my %non_word = (
-	'la' => qr([^$wchar_latin]+), 
-	'grc' => qr([^$wchar_greek]+) );
-my %is_word = (
-	'la' => qr([$wchar_latin]+), 
-	'grc' => qr([$wchar_greek]+) );
-		   
+GetOptions("la=s" => \@force_la, "grc=s" => \@force_grc);
+
+for (@force_la)  { $lang_override{$_} = "la" }
+for (@force_grc) { $lang_override{$_} = "grc" }
 
 #
 # get files to be processed from cmd line args
@@ -53,29 +54,34 @@ my %is_word = (
 while (my $file_in = shift @ARGV)
 {
 
-	# allow language to be set from cmd line args
-
-	if ($file_in =~ /^--(la|grc)/)
-	{
-		$lang_override = $1;
-		next;
-	}
-
-	#
 	# large files split into parts are kept in their
 	# own subdirectories; if an arg has no .tess extension
 	# it may be such a directory
 
 	if ($file_in !~ /\.tess/)
 	{
+		# if it is, add all the .tess files in it
+		
 		if (-d $file_in)
 		{
 			opendir (DH, $file_in);
 
-			push @ARGV, (grep {/\.part\./ && -f} map { "$file_in/$_" } readdir DH);
+			my @parts = (grep {/\.part\./ && -f} map { "$file_in/$_" } readdir DH);
+
+			push @ARGV, @parts;
+			
+			# if lang_override was set for the directory,
+			# apply to all the contents
+			
+			if (defined $lang_override{$file_in}) { 
+				
+				for (@parts) { $lang_override{$_} = $lang_override{$file_in}}
+			}
 
 			closedir (DH);
 		}
+		
+		# move on to the next full text
 
 		next;
 	}
@@ -94,7 +100,7 @@ while (my $file_in = shift @ARGV)
 	# 3. somewhere in the path to the text
 	# - then give up
 
-	if ( defined $lang_override )
+	if ( defined $lang_override{$file_in} )
 	{
 		$lang = $lang_override;
 	}
@@ -108,7 +114,8 @@ while (my $file_in = shift @ARGV)
 	}
 	else
 	{
-		die "please specify language using --la|grc";
+		print STDERR "Can't guess the language of $file_in!  Skipping.\nTry again, specifying language using --la|grc.\n";
+		next;
 	}
 
 	# parse and index:
@@ -158,7 +165,7 @@ while (my $file_in = shift @ARGV)
 
 	# open the input text
 
-	open (TEXT, $file_in) or die("Can't open file ".$file_in);
+	open (TEXT, "<:utf8", $file_in) or die("Can't open file ".$file_in);
 
 	# examine each line of the input text
 
