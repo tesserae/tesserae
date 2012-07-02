@@ -126,14 +126,18 @@ sub standardize {
 	
 	for (@string) {
 		
+		$_ = lcase($lang, $_);
+		
 		if ($lang eq 'la')
 		{
-			tr/jvJV/iuIU/;	# replace j and v with i and u throughout
+			tr/jv/iu/;	# replace j and v with i and u throughout
+			s/[^a-z]//g;
 		}
 		
 		if ($lang eq 'grc')
 		{
 			s/\\/\//;	# change grave accent (context-specific) to acute (dictionary form)
+			s/0-9\.#//g;
 		}
 	}
 	

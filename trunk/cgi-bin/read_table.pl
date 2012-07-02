@@ -17,6 +17,7 @@ use Getopt::Long;
 use Storable qw(nstore retrieve);
 
 use TessSystemVars;
+use EasyProgressBar;
 
 #
 # usage
@@ -69,16 +70,17 @@ GetOptions( 'source=s'	=> \$source,
 			'quiet' 	=> \$quiet );
 
 
+
 # html header
 #
 # put this stuff early on so the web browser doesn't
 # give up
 
-unless ($no_cgi)
-{
+unless ($no_cgi) {
+	
 	use CGI qw/:standard/;
 
-	print header;
+	print header();
 
 	my $stylesheet = "$url_css/style.css";
 
@@ -92,7 +94,6 @@ unless ($no_cgi)
 END
 
 }
-
 
 #
 # determine the session ID
@@ -143,7 +144,6 @@ else
 {
 	open (XML, '>' . $session_file) || die "can't open " . $session_file . ':' . $!;
 }
-
 
 #
 # abbreviations of canonical citation refs
@@ -229,16 +229,20 @@ unless ($quiet) {
 
 my @stoplist = @{$top{$lang{$target} . '_' . $feature}};
 
-if ($stopwords > 0)
-{
+if ($stopwords > 0) {
+	
 	@stoplist = @stoplist[0..$stopwords-1];
 }
-else
-{
+else {
+	
 	@stoplist = ();
 }
 
-my %freq = %{ retrieve( "$fs_data/common/$lang{$target}.${feature}.count" )};
+#
+# calculate feature frequencies
+#
+
+# my %freq = %{ retrieve( "$fs_data/common/$lang{$target}.${feature}.count" )};
 
 #
 # if the featureset is synonyms, get the parameters used
@@ -258,207 +262,115 @@ if ( $feature eq "syn" ) {
 # read data from table
 #
 
-# about these data structures
-# 
-#    @unit_source
-#
-#    this is an array of all the phrases/lines in the source text
-#	 each element is an anonymous array of words
-#
-#    you can address any individual word in two dimensions:
-# 	    $unit_source[$source_ref_ext][$source_ref_int]
-#    where
-#		$source_ref_ext = line number (serial, starting at 0)
-#		$source_ref_int	= word's position in the line (ditto)
-#
-#	@loc_source
-#
-#	this contains the canonical locus citation for each unit
-#
-# 	%index_source_ext and %index_source_int
-#
-#	these hashes work together to provide an index of all the
-#	features in the text.  one gives line numbers and the other
-#	gives the position in its line of each feature, both are
-#	indexed by the features themselves.
-#
-#	so, in the case where $unit='line' and $feature='word':
-#
-#		$index_source_ext{'arma'} 
-#			gives an array of line numbers where arma occurs
-#
-#		$index_source_int{'arma'}
-#			gives an array of line-internal word positions
-#
-#		the two arrays will have the same number of elements
-#		and their elements are co-ordinated.		
-#
-#	let's say we want to find the first occurrence of 'arma'
-#	
-#		$source_ref_ext = ${$index_source_ext{'arma'}}[0];
-#		$source_ref_int = ${$index_source_int{'arma'}}[0];
-#	then
-#		$unit_source[$source_ref_ext][$source_ref_int] eq 'arma'
-#
-#	switch 'source' and 'target' and you get the same info for
-#   the other text.
 
 unless ($quiet) {
 	
 	print STDERR "reading source data\n";
 }
 
-my @word_source = @{ retrieve( "$fs_data/v3/$lang{$source}/word/$source.word" ) };
-my @unit_source = @{ retrieve( "$fs_data/v3/$lang{$source}/word/$source.${unit}" ) };
-my @loc_source =  @{ retrieve( "$fs_data/v3/$lang{$source}/word/$source.loc_${unit}" ) };
+my $path_source = "$fs_data/v3/$lang{$source}/$source";
 
-my %index_source_ext = %{ retrieve( "$fs_data/v3/$lang{$source}/$feature/$source.index_${unit}_ext" ) };
-my %index_source_int = %{ retrieve( "$fs_data/v3/$lang{$source}/$feature/$source.index_${unit}_int" ) };
-
-my @phrase_lines_source = @{ retrieve( "$fs_data/v3/$lang{$source}/word/$source.phrase_lines" )};
+my @token_source   = @{ retrieve( "$path_source/$source.token"    ) };
+my @unit_source    = @{ retrieve( "$path_source/$source.${unit}" ) };
+my %index_source   = %{ retrieve( "$path_source/$source.index_$feature" ) };
 
 unless ($quiet) {
-	
+
 	print STDERR "reading target data\n";
 }
 
-my @word_target = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.word" ) };
-my @unit_target = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.${unit}" ) };
-my @loc_target  = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.loc_${unit}" ) };
+my $path_target = "$fs_data/v3/$lang{$target}/$target";
 
-my %index_target_ext = %{ retrieve( "$fs_data/v3/$lang{$target}/$feature/$target.index_${unit}_ext" ) };
-my %index_target_int = %{ retrieve( "$fs_data/v3/$lang{$target}/$feature/$target.index_${unit}_int" ) };
+my @token_target   = @{ retrieve( "$path_target/$target.token"    ) };
+my @unit_target    = @{ retrieve( "$path_target/$target.${unit}" ) };
+my %index_target   = %{ retrieve( "$path_target/$target.index_$feature" ) };
 
-my @phrase_lines_target = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.phrase_lines" )};
+
 
 #
-# some more crazy data structures
 #
-# these are designed to hold information about matches
-# 	- that is, roelant's "parallels"
+# this is where we calculated the matches
 #
-# here's how they work:
 #
-# @match_target is an array
-# 	- the index is serial unit id in the target, i.e. $target_ref_ext.
-#   - the elements are anonymous hashes
-#		- the keys to each hash are unit ids in the source text, 
-#				i.e. $source_ref_ext
-#		- the values to each hash are anonymous arrays
-#				of unit-internal word positions in the *target*
-#		- whence the "target" in the name of the array above
-#
-# @match_source is almost the same
-#	- the index is still unit id in the *target*
-#	- the keys to the anonymous hashes are still unit id in the *source*
-#	- but the unit-internal word positions stored in the lowest
-#		level anonymous arrays are now for the *source* text
-#	- whence the "source" in the name of the high-level array
-#
-#	let's stop here for a second.
-#
-#	in addressing a match, in either @match_source or @match_target, 
-#	unit ids always go in the same order:
-#		$target_ref_ext is the index of the high-level array
-#		$source_ref_ext is the key to the anonymous hash
-#
-#	if you want to find the internal address of a word in the source, 
-#	look to @match_source, of a word in the target, @match_target.
-#
-# examples:
-# 	if we want to find out which units in the target match something in the source
-#		grep { defined $match_target[$_] } (0..$#match_target)
-#
-#	if we want to find out which units in the source match a given unit in target
-#		keys %{ $match_target[$target_ref_ext] }
 
-my @match_target;
-my @match_source;
+
+# this hash holds information about matching units
+
+my %match;
 
 #
 # consider each key in the source doc
 #
 
 unless ($quiet) {
-	
+
 	print STDERR "comparing $target and $source\n";
 }
 
 # draw a progress bar
 
-unless ($quiet) {
-	
-	print STDERR "0% |" . (" "x40) . "| 100%\r0% |";
-}
+my $pr;
 
-my $progress = 0;
-my $last_progress = 0;
-my $end_point = scalar(keys %index_source_ext);
+$pr = $quiet ? 0 : ProgressBar->new(scalar(keys %index_source));
 
 # start with each key in the source
 
-for my $key (sort keys %index_source_ext) {
-	
+for my $key (keys %index_source) {
+
 	# advance the progress bar
 
-	$progress++;
-
-	unless ($quiet) {
-		
-		if ($progress/$end_point > $last_progress+.025) {
-			
-			print STDERR ".";
-			
-			$last_progress = $progress/$end_point;
-		}
-	}
+	$pr->advance() unless $quiet;
 
 	# skip key if it doesn't exist in the target doc
 
-	next unless ( defined $index_target_ext{$key} );
+	next unless ( defined $index_target{$key} );
 
 	# skip key if it's in the stoplist
 
 	next if ( grep { $_ eq $key } @stoplist);
 
-	# for each unit id in the target having that feature,
+	# 
 
-	for my $i ( 0..$#{$index_target_ext{$key}} )
-	{
-		my $target_ref_int = ${$index_target_int{$key}}[$i];
-		my $target_ref_ext = ${$index_target_ext{$key}}[$i];
+	for my $token_id_target ( @{$index_target{$key}} ) {
 
-		for my $j ( 0..$#{$index_source_ext{$key}} )
-		{
-			my $source_ref_int = ${$index_source_int{$key}}[$j];
-			my $source_ref_ext = ${$index_source_ext{$key}}[$j];
+		my $unit_id_target = $token_target[$token_id_target]{uc($unit) . '_ID'};
 
-			${$match_target[$target_ref_ext]}{$source_ref_ext}{$target_ref_int} += 
-				( defined $freq{$key} ? 1/$freq{$key} : 0 );
-			${$match_source[$target_ref_ext]}{$source_ref_ext}{$source_ref_int} +=
-				( defined $freq{$key} ? 1/$freq{$key} : 0 );
+		for my $token_id_source ( @{$index_source{$key}} ) {
+
+			my $unit_id_source = $token_source[$token_id_source]{uc($unit) . '_ID'};
+			
+			push @{ $match{$unit_id_target}{$unit_id_source}{TARGET} }, $token_id_target;
+			push @{ $match{$unit_id_target}{$unit_id_source}{SOURCE} }, $token_id_source;
 		}
 	}
 }
 
 #
-# assign scores, write output
+# remove dups
 #
 
-unless ($quiet) {
-	
+for my $unit_id_target ( keys %match ) {
+
+	for my $unit_id_source ( keys %{$match{$unit_id_target}} ) {
+				
+		$match{$unit_id_target}{$unit_id_source}{TARGET} = TessSystemVars::uniq($match{$unit_id_target}{$unit_id_source}{TARGET});
+		$match{$unit_id_target}{$unit_id_source}{SOURCE} = TessSystemVars::uniq($match{$unit_id_target}{$unit_id_source}{SOURCE});
+	}
+}
+
+
+#
+#
+# assign scores, write output
+#
+#
+
+unless ($no_cgi) {
+
 	print STDERR "\n";
 
 	print STDERR "writing xml output\n";
-
-	# draw a progress bar
-
-	print STDERR "0% |" . (" "x40) . "| 100%\r0% |";
 }
-
-$progress = 0;
-$last_progress = 0;
-$end_point = $#match_target;
 
 # this line should ensure that the xml output is encoded utf-8
 
@@ -478,6 +390,16 @@ my %feature_notes = (
 	
 	);
 
+#
+# print results
+#
+
+print STDERR "writing results\n";
+
+# draw a progress bar
+
+$pr = $quiet ? 0 : ProgressBar->new(scalar(keys %match));
+
 # print the xml doc header
 
 print XML <<END;
@@ -489,67 +411,33 @@ END
 
 # now look at the matches one by one, according to unit id in the target
 
-for my $target_ref_ext (0..$#match_target)
+for my $unit_id_target (sort {$a <=> $b} keys %match)
 {
 
 	# advance the progress bar
 
-	$progress++;
-
-	unless ($quiet) {
-		
-		if ($progress/$end_point > $last_progress+.025)	{
-			
-			print STDERR ".";
-
-			$last_progress = $progress/$end_point;
-		}
-	}
-
-	# skip anything that doesn't have a match in the source
-
-	next unless defined ($match_target[$target_ref_ext]);
-
+	$pr->advance() unless $quiet;
+	
 	# look at all the source units where the feature occurs
 	# sort in numerical order
 
-	for my $source_ref_ext ( sort {$a <=> $b} keys %{$match_target[$target_ref_ext]})
+	for my $unit_id_source ( sort {$a <=> $b} keys %{$match{$unit_id_target}})
 	{
 
 		# skip any match that doesn't involve two shared features in each text
 		
-		next if ( scalar( keys %{$match_target[$target_ref_ext]{$source_ref_ext}} ) < 2);
-		next if ( scalar( keys %{$match_source[$target_ref_ext]{$source_ref_ext}} ) < 2);
+		next if ( scalar( @{$match{$unit_id_target}{$unit_id_source}{TARGET}} ) < 2);
+		next if ( scalar( @{$match{$unit_id_target}{$unit_id_source}{SOURCE}} ) < 2);
 
-		# these arrays will be used to reconstitute the original line/phrase from the
-		# array of words.  having a copy specifically for display is useful because we
-		# want to be able to mark certain words as matched with html tags.
+		# this will record which words are to be marked in the display
 
-		my @display_source;
-		my @display_target;
+		my %marked_source;
+		my %marked_target;
 
-		for ( @{$unit_source[$source_ref_ext]{WORD}} )
-		{
-			push @display_source, $word_source[$_];
-		}
-		
-		for ( @{$unit_target[$target_ref_ext]{WORD}} )
-		{
-			push @display_target, $word_target[$_];
-		}		
-		
-		if ($lang{$source} eq "grc")
-		{
-			@display_source = beta_to_uni(@display_source);
-		}
-		if ($lang{$target} eq "grc")
-		{
-			@display_target = beta_to_uni(@display_target);
-		}
+		# this array will hold "matched-on" keys
 
-		# this array will hold shared words in the target
-
-		my @target_terms;
+		my @matched_keys_target;
+		my @matched_keys_source;
 		
 		#
 		# here's the place where a scoring algorithm should be
@@ -558,119 +446,93 @@ for my $target_ref_ext (0..$#match_target)
 		#   of word frequency and distance between words
 		
 		my $score;
-		my $distance;
-		my $last_val = -1;
-
+		my $distance = $match{$unit_id_target}{$unit_id_source}{TARGET}[-1] - $match{$unit_id_target}{$unit_id_source}{TARGET}[0];
+		
 		# examine each shared term in the target in order by position
 		# within the line
 		
-		for my $target_ref_int ( sort {$a <=> $b} keys %{$match_target[$target_ref_ext]{$source_ref_ext}} )
-		{
+		for my $token_id_target (@{$match{$unit_id_target}{$unit_id_source}{TARGET}} ) {
 			
 			# add this term to the list of shared terms
 			
-			push @target_terms, lc($display_target[$target_ref_int]);
+			push @matched_keys_target, $token_target[$token_id_target]{DISPLAY};
 			
 			# mark the display copy as matched
 
-			my $marked = $word_target[${$unit_target[$target_ref_ext]{WORD}}[$target_ref_int]];
-			if ($lang{$target} eq "grc") { $marked = beta_to_uni($marked) }
-			
-			$display_target[$target_ref_int] = "<span class=\"matched\">$marked</span>";
-			
-			# add the distance between this and the previous term
-			
-			unless ($last_val == -1)
-			{
-				$distance += ($target_ref_int - $last_val);
-			}
-			$last_val = $target_ref_int;
-			
+			$marked_target{$token_id_target} = 1;
+						
 			# add the frequency score for this term
 			
-			$score += $match_target[$target_ref_ext]{$source_ref_ext}{$target_ref_int};
+			$score += 1;
 		}
-
-		# this array will hold shared words in the source
-
-		my @source_terms;
 
 		#
 		# now examine each shared term in the source as above
 		#
-		
-		# reinitialize the last-term position
-		
-		$last_val = -1;
+
+		$distance += $match{$unit_id_target}{$unit_id_source}{SOURCE}[-1] - $match{$unit_id_target}{$unit_id_source}{SOURCE}[0];
 		
 		# go through the terms in order by position
 		
-		for my $source_ref_int ( sort {$a <=> $b} keys %{$match_source[$target_ref_ext]{$source_ref_ext}} )
-		{
+		for my $token_id_source ( @{$match{$unit_id_target}{$unit_id_source}{SOURCE}} ) {
+
 			# add the term to shared terms
 			
-			push @source_terms, lc($display_source[$source_ref_int]);
+			push @matched_keys_source, $token_source[$token_id_source]{DISPLAY};
 			
 			# mark the display copy
 
-			my $marked = $word_source[${$unit_source[$source_ref_ext]{WORD}}[$source_ref_int]];
-			if ($lang{$source} eq "grc") { $marked = beta_to_uni($marked) }
-			
-			$display_source[$source_ref_int] = "<span class=\"matched\">$marked</span>";
-
-			# add the distance between this and the previous term
-
-			unless ($last_val == -1)
-			{
-				$distance += ($source_ref_int - $last_val);
-			}
-			$last_val = $source_ref_int;
+			$marked_source{$token_id_source} = 1;
 
 			# add the frequency score for this term
 
-			$score += $match_source[$target_ref_ext]{$source_ref_ext}{$source_ref_int};
+			$score += 1;
 		}
 		
-		# this multiplier puts the score into an easier range to read
-		
-		$score = sprintf("%i", $score == 0 ? 0 : log($score*1000));
-
 		# format the list of all unique shared words
-
-		my @combined_terms = (@source_terms, @target_terms);
-
-		if ($lang{$target} eq "grc")
-		{
-			@combined_terms = beta_to_uni(@combined_terms);
-		}
-
-		my $keypair = join(", ", @{TessSystemVars::uniq(\@combined_terms)});
+		
+		my $keypair = join(", ", @matched_keys_target, @matched_keys_source);
 
 		# now write the xml record for this match
 
-		print XML "\t<tessdata keypair=\"$keypair\" score=\"$distance\">\n";
+		print XML "\t<tessdata keypair=\"$keypair\" score=\"" . sprintf("%.2f", $score/($distance || 1)) . "\">\n";
 
 		print XML "\t\t<phrase text=\"source\" work=\"$abbr{$source}\" "
-				. "unitID=\"$source_ref_ext\" "
-				. "line=\"$loc_source[$source_ref_ext]\" "
-				. "link=\"$url_cgi/context.pl?source=$source;line=$loc_source[$source_ref_ext]\">";
-		for (0..$#{$unit_source[$source_ref_ext]{WORD}})
-		{
-			print XML ${$unit_source[$source_ref_ext]{SPACE}}[$_] . $display_source[$_];
+				. "unitID=\"$unit_id_source\" "
+				. "line=\"$unit_source[$unit_id_source]{LOCUS}\" "
+				. "link=\"$url_cgi/context.pl?source=$source;line=$unit_source[$unit_id_source]{LOCUS}\">";
+
+		# here we print the unit
+
+		for my $token_id_source (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
+			
+			if (defined $marked_source{$token_id_source}) { print XML '<span class="matched">' }
+
+			# print the display copy of the token
+			
+			print XML $token_source[$token_id_source]{DISPLAY};
+			
+			# close the tag if necessary
+			
+			if (defined $marked_source{$token_id_source}) { print XML '</span>' }
 		}
-		print XML ${$unit_source[$source_ref_ext]{SPACE}}[$#{$unit_source[$source_ref_ext]{SPACE}}];
+
 		print XML "</phrase>\n";
 		
+		# same as above, for the target now
+		
 		print XML "\t\t<phrase text=\"target\" work=\"$abbr{$target}\" "
-				. "unitID=\"$target_ref_ext\" "
-				. "line=\"$loc_target[$target_ref_ext]\" "
-				. "link=\"$url_cgi/context.pl?source=$target;line=$loc_target[$target_ref_ext]\">";
+				. "unitID=\"$unit_id_target\" "
+				. "line=\"$unit_target[$unit_id_target]{LOCUS}\" "
+				. "link=\"$url_cgi/context.pl?source=$target;line=$unit_target[$unit_id_target]{LOCUS}\">";
 
-		for (0..$#{$unit_target[$target_ref_ext]{WORD}})
-		{
-			print XML ${$unit_target[$target_ref_ext]{SPACE}}[$_] . $display_target[$_];
+		for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
+			
+			if (defined $marked_target{$token_id_target}) { print XML '<span class="matched">' }
+			print XML $token_target[$token_id_target]{DISPLAY};
+			if (defined $marked_target{$token_id_target}) { print XML '</span>' }
 		}
-		print XML ${$unit_target[$target_ref_ext]{SPACE}}[$#{$unit_target[$target_ref_ext]{SPACE}}];		
+
 		print XML "</phrase>\n";
 
 		print XML "\t</tessdata>\n";
@@ -688,9 +550,7 @@ print XML "</results>\n";
 
 my $redirect = "$url_cgi/get-data.pl?session=$session;sort=target";
 
-unless ($no_cgi) {
-
-	print <<END;
+print <<END unless ($no_cgi);
 
    <meta http-equiv="Refresh" content="0; url='$redirect'">
 </head>
@@ -705,60 +565,3 @@ unless ($no_cgi) {
 </html>
 
 END
-
-}
-else
-{
-	unless ($quiet) {
-		print STDERR "\n";
-	}
-}
-
-sub beta_to_uni
-{
-
-	my @text = @_;
-
-	for (@text)
-	{
-
-		s/(\*)([^a-z ]+)/$2$1/g;
-
-		s/\)/\x{0313}/ig;
-		s/\(/\x{0314}/ig;
-		s/\//\x{0301}/ig;
-		s/\=/\x{0342}/ig;
-		s/\\/\x{0300}/ig;
-		s/\+/\x{0308}/ig;
-		s/\|/\x{0345}/ig;
-
-		s/\*a/\x{0391}/ig;	s/a/\x{03B1}/ig;  
-		s/\*b/\x{0392}/ig;	s/b/\x{03B2}/ig;
-		s/\*g/\x{0393}/ig; 	s/g/\x{03B3}/ig;
-		s/\*d/\x{0394}/ig; 	s/d/\x{03B4}/ig;
-		s/\*e/\x{0395}/ig; 	s/e/\x{03B5}/ig;
-		s/\*z/\x{0396}/ig; 	s/z/\x{03B6}/ig;
-		s/\*h/\x{0397}/ig; 	s/h/\x{03B7}/ig;
-		s/\*q/\x{0398}/ig; 	s/q/\x{03B8}/ig;
-		s/\*i/\x{0399}/ig; 	s/i/\x{03B9}/ig;
-		s/\*k/\x{039A}/ig; 	s/k/\x{03BA}/ig;
-		s/\*l/\x{039B}/ig; 	s/l/\x{03BB}/ig;
-		s/\*m/\x{039C}/ig; 	s/m/\x{03BC}/ig;
-		s/\*n/\x{039D}/ig; 	s/n/\x{03BD}/ig;
-		s/\*c/\x{039E}/ig; 	s/c/\x{03BE}/ig;
-		s/\*o/\x{039F}/ig; 	s/o/\x{03BF}/ig;
-		s/\*p/\x{03A0}/ig; 	s/p/\x{03C0}/ig;
-		s/\*r/\x{03A1}/ig; 	s/r/\x{03C1}/ig;
-									s/s\b/\x{03C2}/ig;
-		s/\*s/\x{03A3}/ig; 	s/s/\x{03C3}/ig;
-		s/\*t/\x{03A4}/ig; 	s/t/\x{03C4}/ig;
-		s/\*u/\x{03A5}/ig; 	s/u/\x{03C5}/ig;
-		s/\*f/\x{03A6}/ig; 	s/f/\x{03C6}/ig;
-		s/\*x/\x{03A7}/ig; 	s/x/\x{03C7}/ig;
-		s/\*y/\x{03A8}/ig; 	s/y/\x{03C8}/ig;
-		s/\*w/\x{03A9}/ig; 	s/w/\x{03C9}/ig;
-
-	}
-
-	return wantarray ? @text : $text[0];
-}

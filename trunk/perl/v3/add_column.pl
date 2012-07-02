@@ -16,11 +16,25 @@ use TessSystemVars;
 
 use File::Path qw(mkpath rmtree);
 use Storable qw(nstore retrieve);
+use Getopt::Long;
 
 #
-# these lines set language-specific variables
-# such as what is a letter and what isn't
+# splitting phrases
 #
+
+# punctuation marks which delimit phrases
+
+my $phrase_delimiter = '[\.\?\!\;\:]';
+
+# a complicated regex to test for their presence
+# if you match this $1 and $2 will be set to the parts
+# belonging to the left and right phrases respectively
+
+my $split_punct = qr/(.*"?$phrase_delimiter"?)(\s*)(.*)/;
+
+# 
+# some parameters
+# 
 
 my %abbr;
 my $file_abbr = "$fs_data/common/abbr";
@@ -32,19 +46,21 @@ my $file_lang = "$fs_data/common/lang";
 
 if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
 
+#
+# allow language for individual files to be given on the
+# command line, using flags --la or --grc
+#
+
 my $lang;
-my $lang_override;
 
-my $wchar_greek = 'a-z\*\(\)\\\/\=\|\+\'';
-my $wchar_latin = 'a-zA-Z';
+my %lang_override;
+my @force_la;
+my @force_grc;
 
-my %non_word = (
-	'la' => qr([^$wchar_latin]+), 
-	'grc' => qr([^$wchar_greek]+) );
-my %is_word = (
-	'la' => qr([$wchar_latin]+), 
-	'grc' => qr([$wchar_greek]+) );
-		   
+GetOptions("la=s" => \@force_la, "grc=s" => \@force_grc);
+
+for (@force_la)  { $lang_override{$_} = "la" }
+for (@force_grc) { $lang_override{$_} = "grc" }
 
 #
 # get files to be processed from cmd line args
@@ -53,29 +69,34 @@ my %is_word = (
 while (my $file_in = shift @ARGV)
 {
 
-	# allow language to be set from cmd line args
-
-	if ($file_in =~ /^--(la|grc)/)
-	{
-		$lang_override = $1;
-		next;
-	}
-
-	#
 	# large files split into parts are kept in their
 	# own subdirectories; if an arg has no .tess extension
 	# it may be such a directory
 
 	if ($file_in !~ /\.tess/)
 	{
+		# if it is, add all the .tess files in it
+		
 		if (-d $file_in)
 		{
 			opendir (DH, $file_in);
 
-			push @ARGV, (grep {/\.part\./ && -f} map { "$file_in/$_" } readdir DH);
+			my @parts = (grep {/\.part\./ && -f} map { "$file_in/$_" } readdir DH);
+
+			push @ARGV, @parts;
+			
+			# if lang_override was set for the directory,
+			# apply to all the contents
+			
+			if (defined $lang_override{$file_in}) { 
+				
+				for (@parts) { $lang_override{$_} = $lang_override{$file_in}}
+			}
 
 			closedir (DH);
 		}
+		
+		# move on to the next full text
 
 		next;
 	}
@@ -94,9 +115,9 @@ while (my $file_in = shift @ARGV)
 	# 3. somewhere in the path to the text
 	# - then give up
 
-	if ( defined $lang_override )
+	if ( defined $lang_override{$file_in} )
 	{
-		$lang = $lang_override;
+		$lang = $lang_override{$file_in};
 	}
 	elsif ( defined $lang{$name} )			
 	{ 
@@ -108,7 +129,55 @@ while (my $file_in = shift @ARGV)
 	}
 	else
 	{
-		die "please specify language using --la|grc";
+		print STDERR "Can't guess the language of $file_in!  Skipping.\nTry again, specifying language using --la|grc.\n";
+		next;
+	}
+	
+	#
+	# initialize variables
+	#
+	
+	my @token;
+	my @line;
+	my @phrase = ({});
+
+	my %ref;
+
+	my %index_form;
+	my %index_stem;
+	my %index_syn;
+
+	#
+	# check for the dictionaries
+	#
+	
+	my %stem;
+	my %syn;
+	
+	my $file_stem = "$fs_data/common/$lang.stem.cache";
+	my $file_syn  = "$fs_data/common/$lang.syn.cache";
+	
+	my $no_stems;
+	my $no_syns;
+	
+	if (-r $file_stem) {
+		
+		%stem = %{ retrieve($file_stem) };
+		
+		if (-r $file_syn) {
+	
+			%syn = %{ retrieve($file_syn) };
+		}
+		else {
+			
+			print STDERR "Can't find syn dictionary!  Syn indexing disabled.\n";
+			$no_syns = 1;
+		}
+	}
+	else {
+		
+		print STDERR "Can't find stem dictionary! Stem and syn indexing disabled.\n";
+		$no_stems = 1;		
 	}
 
 	# parse and index:
@@ -116,49 +185,6 @@ while (my $file_in = shift @ARGV)
 	# - every word will get a serial id
 	# - every line is a list of words
 	# - every phrase is a list of words
-	
-	# an array of features
-	
-	my @word;
-
-	# an array of units
-
-	my @line;
-	my @phrase;
-
-	# locus of the first line of each unit
-
-	my @loc_line;
-	my @loc_phrase;
-	
-	# unit id
-
-	my $line_id = 0;
-	my $phrase_id = 0;
-
-	# counts unique word forms
-
-	my %count;
-	
-	# an index of all the units containing a given word
-
-	my %index_line_int;
-	my %index_line_ext;
-
-	my %index_phrase_int;
-	my %index_phrase_ext;
-	
-	# this holds the abbreviation for the author/work
-
-	my %ref;
-	
-	# a display copy of each line
-	
-	my @space;
-	
-	# a list of every line a phrase includes
-	
-	my @phrase_lines;
 
 	print STDERR "reading text: $file_in\n";
 
@@ -168,25 +194,29 @@ while (my $file_in = shift @ARGV)
 
 	# examine each line of the input text
 
-	while (my $l = <TEXT>)
-	{
-		# leave the newline for now
+	while (my $l = <TEXT>) {
+		
+		chomp $l;
 
 		# parse a line of text; reads in verse number and the verse. 
 		# Assumption is that a line looks like:
 		# <001>	this is a verse
 
-		$l =~ /^<(.+?)>\s+(.+)/;
-
-		my ($verseno, $verse) = ($1, $2);
+		$l =~ /^<(.+)>\s+(.+)/;
+		
+		my ($locus, $verse) = ($1, $2);
 
 		# skip lines with no locus or line
 
-		next unless (defined $verseno and defined $verse);
+		next unless (defined $locus and defined $verse);
+		
+		# start a new line
+		
+		push @line, {};
 
 		# examine the locus of each line
 
-		$verseno =~ s/^(.*)\s//;
+		$locus =~ s/^(.*)\s//;
 		
 		# save the abbreviation of the author/work
 		
@@ -194,180 +224,261 @@ while (my $file_in = shift @ARGV)
 
 		# save the book/poem/line number
 
-		$loc_line[$line_id] = $verseno;
-
-		# add the current line to the list for the current phrase
-
-		push @{$phrase_lines[$phrase_id]}, $line_id;
+		$line[-1]{LOCUS} = $locus;
 
 		# remove html special chars
 
 		$verse =~ s/&[a-z];//ig;
 		$verse =~ s/[<>]//g;
-				
-		# save the inter-word material
-				
-		my @spaces = split ($is_word{$lang}, $verse);
 
-		# split into words
-
-		my @words = split ($non_word{$lang}, $verse);
-			
-		# make sure the arrays align correctly
-		# spaces should have one extra element
-			
-		if ($words[0] eq "")		{ shift @words }
+		#
+		# check for enjambement with prev line
+		#
 		
-		# add words to the current phrase, line
+		if (defined $#{$phrase[-1]{TOKEN_ID}}) {
 
-		for my $i (0..$#words)
-		{
-				
-			# convert to lower-case
-			# the wisdom of this could be disputed, but roelant does it too
-
-			my $key = TessSystemVars::lcase($lang, $words[$i]);
-			
-			$key = TessSystemVars::standardize($lang, $words[$i]);
-
-			$count{$key}++;
-				
-			# add the word to a bunch of indices
-			#
-			# there's some more detail about these in read_table.pl
-			# and I'll write proper documentation later.
-			#
-			# @phrase is an array of phrases
-			#   - the index is serial phrase id
-			#	- each value is an anonymous array of the words in that phrase
-			#
-			# %index_phrase_ext is a hash of phrase ids in which the word occurs
-			#   - the keys are words 
-			#	- the values are anonymous arrays of phrase ids
-			#
-			# %index_phrase_int is a hash of phrase-internal word positions
-			#    corresponding to the phrases in %index_phrase_ext
-			#   - the keys are words
-			#   - the values are word position in a phrase
-				
-			push @word, $words[$i];
-
-			push @{$line[$line_id]{SPACE}}, $spaces[$i];
-			push @{$line[$line_id]{WORD}}, $#word;
-			push @{$index_line_int{$key}}, $#{$line[$line_id]{WORD}};		
-			push @{$index_line_ext{$key}}, $line_id;
-
-			if ($i == 0 and $#{$phrase[$phrase_id]{SPACE}} > -1)
-			{
-				$spaces[$i] = " / " . $spaces[$i];
-			}
-			
-			
-			if ($i == 0 and $#{$phrase[$phrase_id]{SPACE}} > $#{$phrase[$phrase_id]{WORD}})
-			{
-				${$phrase[$phrase_id]{SPACE}}[$#{$phrase[$phrase_id]{SPACE}}] .= $spaces[$i];
-			}
-			else
-			{
-				push @{$phrase[$phrase_id]{SPACE}}, $spaces[$i];
-			}
-			
-			if ($spaces[$i] =~ /[\.\?\!\;\:]/) 
-			{
-				$phrase_id++;
-				
-				push @{$phrase[$phrase_id]{SPACE}}, "";
-				
-				push @{$phrase_lines[$phrase_id]}, $line_id;
-			}
-			
-			push @{$phrase[$phrase_id]{WORD}}, $#word;
-			push @{$index_phrase_int{$key}}, $#{$phrase[$phrase_id]{WORD}};
-			push @{$index_phrase_ext{$key}}, $phrase_id;
-		}
-
-		if ($#spaces > $#words)
-		{
-			push @{$phrase[$phrase_id]{SPACE}}, $spaces[$#spaces];
-			
-			if ($spaces[$#spaces] =~ /[\.\?\!\;\:]/) 
-			{ 
-				$phrase_id++;
-			}
-			
-			push @{$line[$line_id]{SPACE}}, $spaces[$#spaces];
-		}
-		else
-		{
-			push @{$line[$line_id]{SPACE}}, "";
+			push @token, {TYPE => 'PUNCT', DISPLAY => ' / '};
+			push @{$phrase[-1]{TOKEN_ID}}, $#token;
 		}
 		
-		# increment line_id
+		# split the line into tokens				
+		# add tokens to the current phrase, line
 
-		$line_id++;
-	}
+		while (length($verse) > 0) {
+			
+			#
+			# add word token
+			#
+			
+			if ( $verse =~ s/^($is_word{$lang})// ) {
+			
+				my $token = $1;
+			
+				# this display form
+				# -- just as it appears in the text
 
-	close TEXT;
+				my $display = $token;
 
-	print scalar(@line) . " lines\n";
-	print scalar(@phrase) . " phrases\n";
+				if ($lang eq "grc") {
 
+					$display = TessSystemVars::beta_to_uni($display);
+				}
+
+				# the searchable form 
+				# -- flatten orthographic variation
+
+				my $form = TessSystemVars::lcase($lang, $token);
+				$form = TessSystemVars::standardize($lang, $form);
+
+				# add the token to the master list
+
+				push @token, { 
+					TYPE => 'WORD',
+					DISPLAY => $display, 
+					FORM => $form ,
+					LINE_ID => $#line,
+					PHRASE_ID => $#phrase
+				};
+
+				# add token id to the line and phrase
+
+				push @{$line[-1]{TOKEN_ID}}, $#token;
+				push @{$phrase[-1]{TOKEN_ID}}, $#token;
+
+				# note that this phrase extends over this line
+
+				$phrase[-1]{LINE_ID}{$#line} = 1;
+				
+				#
+				# index
+				#
+				
+				# by form
+				
+				push @{$index_form{$form}}, $#token;
+				
+				# by stem
+				
+				next if $no_stems;
+				
+				my @stems = defined $stem{$form} ? @{$stem{$form}} : ($form);
+				
+				for my $stem (@stems) {
+				
+					push @{$index_stem{$stem}}, $#token;
+				}
+				
+				# by syn
+				
+				next if $no_syns;
+				
+				my %syns;
+				
+				for my $stem (@stems) {
+				
+					$syns{$stem} = 1;
+					
+					if (defined $syn{$stem}) {
+					
+						for my $syn (@{$syn{$stem}}) {
+							$syns{$syn} = 1;
+						}
+					}
+				}
+				
+				for my $syn (keys %syns) {
+				
+					push @{$index_syn{$syn}}, $#token;
+				}
+			}
+
+			#
+			# add punct token
+			#
+			
+			elsif ( $verse =~ s/^($non_word{$lang})// ) {
+			
+				my $token = $1;
+			
+				# check for phrase-delimiting punctuation
+				#
+				# if we find any, then this token should
+				# be split into two, so that one part can
+				# go with each phrase.
+
+				if ($token =~ $split_punct) {
+
+					my ($left, $space, $right) = ($1, $2, $3);
+
+					push @token, {TYPE => 'PUNCT', DISPLAY => $left};
+
+					push @{$line[-1]{TOKEN_ID}}, $#token;
+					push @{$phrase[-1]{TOKEN_ID}}, $#token;
+
+					# add intervening white space to the line,
+					# but not to either phrase
+
+					if ($space ne '') {
+
+						push @token, {TYPE => 'PUNCT', DISPLAY => $space};
+						push @{$line[-1]{TOKEN_ID}}, $#token;
+					}
+
+					# start a new phrase
+
+					push @phrase, {};
+					
+					# now let the body of the function handle what remains
+
+					$token = $right;
+				}
+
+				# skip empty strings
+
+				if ($token ne '') {
+
+					# add to the current phrase, line
+
+					push @token, {TYPE => 'PUNCT', DISPLAY => $token};
+
+					push @{$line[-1]{TOKEN_ID}}, $#token;
+					push @{$phrase[-1]{TOKEN_ID}}, $#token;
+				}
+			}
+			else {
+				
+				warn "Can't parse <<$l>> on $file_in line $.. Skipping.";
+				next;
+			}			
+		}				
+	}	
 	
-	for my $i (0..$#phrase)
-	{
-		$loc_phrase[$i] = $loc_line[$phrase_lines[$i][0]];
+	# if the poem ends with a phrase-delimiting punct token,
+	# there will be an empty final phrase -- delete if exists
 	
-		if ($#{$phrase[$i]{SPACE}} == $#{$phrase[$i]{WORD}})
-		{
-			push @{$phrase[$i]{SPACE}}, "";
-		}
-	}
+	pop @phrase unless defined $phrase[-1]{TOKEN_ID};
 	
 	#
-	# save the data using Storable
-	# 
+	# tidy up relationship between phrases and lines:
+	#  - convert the LINE_ID tag of phrases to a simple array
+	#  - add a LOCUS tag with range of lines in human-readable form
+	#
+		
+	for my $phrase_id (0..$#phrase) { 
+		
+		$phrase[$phrase_id]{LINE_ID} = [sort {$a <=> $b} keys %{$phrase[$phrase_id]{LINE_ID}} ];
 
+		# if there's a range, make it easy to read;
+			
+		my $loc_1 = $line[$phrase[$phrase_id]{LINE_ID}[0]]{LOCUS};
+		my $loc_2 = $line[$phrase[$phrase_id]{LINE_ID}[-1]]{LOCUS};
+			
+		my $range;
+		
+		if ($loc_2 ne $loc_1) {
+		
+			my $base_1 = $loc_1;
+			my $base_2 = $loc_2;
+		
+			$base_1 =~ s/(.+\.).+/$1/;
+			$base_2 =~ s/(.+\.).+/$1/;
+		
+			if ($base_1 eq $base_2) {
+			
+				for (0..length($loc_1)) {
+				
+					if (substr($loc_1, $_, 1) ne substr($loc_2, $_, 1)) {
+						
+						$loc_2 = substr($loc_2, $_);
+						last;
+					}
+				}
+			}	
+				
+			$range = "$loc_1-$loc_2";
+		}
+		else {
+			
+			 $range = $loc_1;
+		}
+		
+		$phrase[$phrase_id]{LOCUS} = $range;
+	}
+		
+	#
+	# save the data
+	#
+	
 	# make sure the directory exists
 	
-	unless (-d "$fs_data/v3/$lang/word" ) { mkpath ("$fs_data/v3/$lang/word") }
-
-	my $file_out = "$fs_data/v3/$lang/word/$name";
-
-	print "writing $file_out.word\n";
-	nstore \@word, "$file_out.word";
-
-	print "writing $file_out.space\n";
-	nstore \@space, "$file_out.space";
+	my $path_data = "$fs_data/v3/$lang/$name";
 	
+	unless (-d $path_data ) { mkpath($path_data) }
+
+	my $file_out = "$path_data/$name";
+
+	print "writing $file_out.token\n";
+	nstore \@token, "$file_out.token";
+
 	print "writing $file_out.line\n";
 	nstore \@line, "$file_out.line";
-
+	
 	print "writing $file_out.phrase\n";
 	nstore \@phrase, "$file_out.phrase";
 
-	print "writing $file_out.count\n";
-	nstore \%count, "$file_out.count";
+	print "writing $file_out.index_form\n";
+	nstore \%index_form, "$file_out.index_form";
+	
+	unless ($no_stems) {
 
-	print "writing $file_out.index_phrase_int\n";
-	nstore \%index_phrase_int, "$file_out.index_phrase_int";
+		print "writing $file_out.index_stem\n";
+		nstore \%index_stem, "$file_out.index_stem";
+	}
+	unless ($no_syns) {
 
-	print "writing $file_out.index_phrase_ext\n";
-	nstore \%index_phrase_ext, "$file_out.index_phrase_ext";
-
-	print "writing $file_out.index_line_int\n";
-	nstore \%index_line_int, "$file_out.index_line_int";
-
-	print "writing $file_out.index_line_ext\n";
-	nstore \%index_line_ext, "$file_out.index_line_ext";
-
-	print "writing $file_out.loc_line\n";
-	nstore \@loc_line, "$file_out.loc_line";
-
-	print "writing $file_out.loc_phrase\n";
-	nstore \@loc_phrase, "$file_out.loc_phrase";
-
-	print "writing $file_out.phrase_lines\n";
-	nstore \@phrase_lines, "$file_out.phrase_lines";
+		print "writing $file_out.index_syn\n";
+		nstore \%index_syn, "$file_out.index_syn";
+	}
 
 	# add this ref to the database of abbreviations
 
@@ -384,4 +495,52 @@ while (my $file_in = shift @ARGV)
 		$lang{$name} = $lang;
 		nstore \%lang, $file_lang;
 	}
+}
+
+
+#
+
+sub print_rec {
+
+	my $href = shift;
+	
+	my %rec = %$href;
+	
+	my $string = "";
+	
+	for my $key (keys %rec) {
+	
+		my $value;
+		
+		if (ref($rec{$key}) eq "") {
+			
+			$value = $rec{$key};
+		}
+		
+		if (ref($rec{$key}) eq "SCALAR") {
+			
+			$value = ${$rec{$key}};
+		}
+		
+		if (ref($rec{$key}) eq "ARRAY") {
+		
+			$value = '(' . join(", ", @{$rec{$key}}) . ')';
+		}
+		
+		if (ref($rec{$key}) eq "HASH") {
+		
+			my @pairs;
+			
+			for (keys %{$rec{$key}}) {
+			
+				push @pairs, "$_ => $rec{$key}{$_}";
+			}
+			
+			$value = '(' . join(", ", @pairs) . ')';
+		}
+		
+ 		$string .= "$key: $value\n";
+	}
+	
+	return $string;
 }
