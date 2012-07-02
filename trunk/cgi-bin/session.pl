@@ -147,7 +147,7 @@ print STDERR scalar(@common_keypairs) . " common keypairs\n";
 # format output
 ##################################################
 
-print XML "<results source=\"$source.tess\" target=\"$target.tess\" sessionID=\"$session\">\n";
+print XML "<results source=\"$source.tess\" target=\"$target.tess\" unit=\"window\" feature=\"match\" sessionID=\"$session\" version=\"1\">\n";
 print XML "   <comments>Version 1 results</comments>\n";
 print XML "   <commonwords>" . join(", ", split (/\s+/, $stoplist)) . "</commonwords>\n";
 

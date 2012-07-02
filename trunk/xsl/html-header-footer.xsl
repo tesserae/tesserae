@@ -40,7 +40,7 @@
 										<xsl:attribute name="href">
 											<xsl:value-of select="concat($url_html, '/index.php')"/>
 										</xsl:attribute>
-										Search
+										Search Home
 									</a>
 								</li>
 								<li>

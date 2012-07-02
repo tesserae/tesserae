@@ -23,7 +23,20 @@ use EasyProgressBar;
 # usage
 #
 
-my $usage = "usage: read_table.pl --source SOURCE --target TARGET [--feature FEATURE] [--unit UNIT] [--stopwords N] [--no-cgi] [--quiet]\n";
+my $usage = <<END;
+
+   usage: read_table.pl --source SOURCE --target TARGET [options]
+
+	where options are
+	
+	   --feature   word|stem|syn   = feature set to match on.  default is "stem".
+	   --unit      line|phrase     = textual units to match.   default is "line".
+	   --stopwords 0..250          = number of stopwords.      default is 10.
+	
+	   --no-cgi		= run from terminal not web interface
+	   --quiet     = don't print progress info to stderr
+
+END
 
 #
 # set some parameters
@@ -60,6 +73,14 @@ my $no_cgi = 0;
 
 my $quiet = 0;
 
+# write xml output?
+
+my $out_xml = "";
+
+# write binary output?
+
+my $out_bin = "none"; 
+
 
 GetOptions( 'source=s'	=> \$source,
 			'target=s'	=> \$target,
@@ -67,6 +88,8 @@ GetOptions( 'source=s'	=> \$source,
 			'feature=s'	=> \$feature,
 			'stopwords=i' => \$stopwords, 
 			'no-cgi'	=> \$no_cgi,
+			'xml:s' => \$out_xml,
+			'bin=s' => \$out_bin,
 			'quiet' 	=> \$quiet );
 
 
@@ -136,12 +159,17 @@ $session = sprintf("%08x", hex($session)+1);
 
 my $session_file = "$fs_tmp/tesresults-$session.xml";
 
-if ($no_cgi)
-{
-	open (XML, ">&STDOUT") || die "can't write to STDOUT";
+if ($no_cgi) {
+	
+	unless ($out_xml eq "none") {
+	
+		my $file = ($out_xml eq "" ? '>&STDOUT' : $out_xml);
+	
+		open (XML, $file) || die "can't write to $file";
+	}
 }
-else
-{
+else {
+
 	open (XML, '>' . $session_file) || die "can't open " . $session_file . ':' . $!;
 }
 
@@ -359,13 +387,29 @@ for my $unit_id_target ( keys %match ) {
 }
 
 
+# write binary results
+
+if ($out_bin ne "none") {
+
+	unless ($quiet) {
+	
+		print STDERR "writing $out_bin\n";
+		nstore \%match, $out_bin;
+	}
+}
+
+
+# quit here if xml output is not needed
+
+exit if $out_xml eq "none";
+
 #
 #
 # assign scores, write output
 #
 #
 
-unless ($no_cgi) {
+unless ($quiet) {
 
 	print STDERR "\n";
 
@@ -394,7 +438,7 @@ my %feature_notes = (
 # print results
 #
 
-print STDERR "writing results\n";
+print STDERR "writing results\n" unless $quiet;
 
 # draw a progress bar
 
@@ -404,7 +448,7 @@ $pr = $quiet ? 0 : ProgressBar->new(scalar(keys %match));
 
 print XML <<END;
 <?xml version="1.0" encoding="UTF-8" ?>
-<results source="$source" target="$target" unit="$unit" feature="$feature" sessionID="$session">
+<results source="$source" target="$target" unit="$unit" feature="$feature" sessionID="$session" version="3">
 	<comments>V3 results. $feature_notes{$feature}</comments>
 	<commonwords>$commonwords</commonwords>
 END
@@ -500,7 +544,7 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 		print XML "\t\t<phrase text=\"source\" work=\"$abbr{$source}\" "
 				. "unitID=\"$unit_id_source\" "
 				. "line=\"$unit_source[$unit_id_source]{LOCUS}\" "
-				. "link=\"$url_cgi/context.pl?source=$source;line=$unit_source[$unit_id_source]{LOCUS}\">";
+				. "link=\"$url_cgi/context2.pl?target=$source;unit=$unit;id=$unit_id_source\">";
 
 		# here we print the unit
 
@@ -524,7 +568,7 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 		print XML "\t\t<phrase text=\"target\" work=\"$abbr{$target}\" "
 				. "unitID=\"$unit_id_target\" "
 				. "line=\"$unit_target[$unit_id_target]{LOCUS}\" "
-				. "link=\"$url_cgi/context.pl?source=$target;line=$unit_target[$unit_id_target]{LOCUS}\">";
+				. "link=\"$url_cgi/context2.pl?target=$target;unit=$unit;id=$unit_id_target\">";
 
 		for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
 			

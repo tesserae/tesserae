@@ -154,7 +154,7 @@ if ( $debug >= 1) {
 
 print XML "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 
-print XML "<results source=\"$source\" target=\"$target\" sessionID=\"".$session."\">\n";
+print XML "<results source=\"$source\" target=\"$target\" unit=\"phrase\" feature=\"stem\" sessionID=\"".$session."\" version=\"2\">\n";
 print XML "<comments>$comments</comments>\n";
 print XML "<commonwords>$commonwords</commonwords>\n";
 

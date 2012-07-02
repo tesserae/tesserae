@@ -8,42 +8,27 @@ use warnings;
 
 use Storable;
 use CGI qw/:standard/;
+use Getopt::Long;
 
-print header;
+my ($target, $unit, $id);
+my $no_cgi = 0;
 
-my ($target, $line);
+# get options from command line
 
-my %abbr = %{retrieve("$fs_data/common/abbr")};
-my %lang = %{retrieve("$fs_data/common/lang")};
+GetOptions('no-cgi' => \$no_cgi, 'target=s' => \$target, 'unit=s' => \$unit, 'id=i' => \$id);
 
-my $query = new CGI || die "$!";
+# Get further options from cgi interface if appropriate
 
-my $flag = shift @ARGV || "";
+unless ($no_cgi) {
+	
+	print header;
 
-if ($flag eq "--no-cgi") 
-{
+	my $query = new CGI || die "$!";
 
-   my %temphash;
+   $target = $query->param('target') || $target;
+   $unit   = $query->param('unit')   || $unit;
+   $id     = $query->param('id')     || $id;
 
-   for (@ARGV) 
-	{
-      /--(.+)=(.+)/;
-      $temphash{lc($1)} = $2;
-   }
-
-   $target = $temphash{'target'} || die "no target";
-   $line   = $temphash{'line'} 	|| die "no line";
-
-}
-else 
-{
-   $target = $query->param('target') || die "$!";
-   $line   = $query->param('line')   || die "$!";
-}
-
-
-unless ($flag eq "--no-cgi")
-{
    print <<END;
    <html>
    <head><title>$target</title></head>
@@ -53,36 +38,62 @@ unless ($flag eq "--no-cgi")
 END
 }
 
+#
+# load resources
+#
+
+my %abbr = %{retrieve("$fs_data/common/abbr")};
+my %lang = %{retrieve("$fs_data/common/lang")};
+
+my @token  = @{ retrieve( "$fs_data/v3/$lang{$target}/$target/$target.token" )};
+my @line   = @{ retrieve( "$fs_data/v3/$lang{$target}/$target/$target.line" ) };
+my @phrase = $unit ne 'phrase' ? () :
+             @{ retrieve( "$fs_data/v3/$lang{$target}/$target/$target.phrase" ) };
 
 #
-# load the database for target text
+# generate context
 #
 
-my @word = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.word" )};
-my @unit_target = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.line" ) };
-my @loc_target  = @{ retrieve( "$fs_data/v3/$lang{$target}/word/$target.loc_line" ) };
+my @lines;
 
-# context begins 5 lines before the target line, ends five lines after
+# if the unit is phrase, then start with all the lines the phrase covers
 
-my $start = $line >= 5 ? $line - 5 : 0;
-my $end = ($line + 5) <= $#unit_target ? $line + 5 : $#unit_target;
+if ($unit eq 'phrase') { 
+	
+	@lines = @{$phrase[$id]{LINE_ID}};
+	$id = $lines[0];
+}
+
+# if the unit is lines, then start with the line itself
+
+else {
+
+	@lines = ($id);
+}
+
+# if the context is fewer than 10 lines, then add some
+# to the beginning and the end.
+
+if ($#lines < 9) {
+	
+	my $needed = int((10 - $#lines)/2);
+
+	my $start = $lines[0] >= 5 ? $lines[0] - 5 : 0;
+	my $end = ($lines[-1] + 5) <= $#line ? $lines[-1] + 5 : $#line;
+	
+	@lines = ($start..$end);
+}
 
 # display the text
 
-for my $ref_ext ($start..$end)
-{
+for my $line_id (@lines) {
+
 	my $display;
 	
-	for my $i (0..$#{$unit_target[$ref_ext]{WORD}})
-	{
-		my $w = ${$unit_target[$ref_ext]{WORD}}[$i];
+	for my $token_id (@{$line[$line_id]{TOKEN_ID}}) {
 		
-		my $word_ = $word[$w];
-
-		$display .= ${$unit_target[$ref_ext]{SPACE}}[$i] . $word_;
+		$display .= $token[$token_id]{DISPLAY}
 	}
-	
-	$display .= ${$unit_target[$ref_ext]{SPACE}}[$#{$unit_target[$ref_ext]{SPACE}}];
 	
 	my $mark = "";
 	my $col_l = "";
@@ -91,27 +102,27 @@ for my $ref_ext ($start..$end)
 	my $row_r = "";
 	my $ln = "";
 
-	if ($flag eq "--no-cgi") {
-
-		if ($ref_ext == $line ) { $mark = ">" }
+	if ($no_cgi) {
+		
+		if ($line_id == $id ) { $mark = ">" }
 		$col_l = "";
 		$col_r = "\t";
 		$row_l = "";
 		$row_r = "\n";
-	}
+   }
 	else {
 		
-		if ($ref_ext == $line) { $mark = "&#9758;" }
+		if ($line_id == $id) { $mark = "&#9758;" }
 		$col_l = "<td>";
 		$col_r = "</td>";
 		$row_l = "      <tr>";
 		$row_r = "</tr>\n";
-   }
-
-   print join(" ", $row_l, $col_l, $mark, $col_r, $col_l, $loc_target[$ref_ext], $col_r, $col_l, $display, $col_r, $row_r);
+	}
+	
+   print join(" ", $row_l, $col_l, $mark, $col_r, $col_l, $line[$line_id]{LOCUS}, $col_r, $col_l, $display, $col_r, $row_r);
 }
 
-unless ($flag eq "--no-cgi") {
+unless ($no_cgi) {
    print <<END;
      </table>
      </body>
