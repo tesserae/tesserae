@@ -5,7 +5,7 @@
 # in order to calculate stop words
 # and frequency-based scores
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/tesserae/perl';	# PERL_PATH
 
 use TessSystemVars;
 
@@ -39,11 +39,11 @@ for my $lang(@lang)
 	
 	# get a list of all the word counts
 
-	my @count_files;
+	my @texts;
 
-	opendir (DH, "$fs_data/v3/$lang/word");
+	opendir (DH, "$fs_data/v3/$lang");
 
-	push @count_files, (grep {/\.count$/ && !/\.part\./ && -f} map { "$fs_data/v3/$lang/word/$_" } readdir DH);
+	push @texts, (grep {!/\.part\./ && -d} map { "$fs_data/v3/$lang/$_" } readdir DH);
 
 	closedir (DH);
 
@@ -51,8 +51,8 @@ for my $lang(@lang)
 	# combine the counts for each file to get a corpus count
 	#
 
-	my %count;
-	my %total;
+	my %count_word;
+	my %freq_word;
 
 	for (@count_files)
 	{
@@ -61,23 +61,35 @@ for my $lang(@lang)
 		
 		# get just the short name from the file
 		
-		/.*\/(.+)\.count/;
+		/.*\/(.+)/;
 		my $text_key = $1;
 
 		# retrieve the count
+		
+		my %index = retrieve("$_/$text_key.index_form");
 
-		$count{$text_key} = retrieve($_);
-
-		for (keys %{$count{$text_key}})
-		{
-			$total{$_} += $count{$text_key}{$_};
+		for (keys %index) { 
+			
+			$count_word{$_} = scalar(@{$index{$_}});
 		}
 	}
+	
+	# convert to frequencies
 
+	my $total = 0;
+	for (keys %count_word) { $total += $count_word{$_} }
+	for (keys %count_word) { $freq_word{$_} = $count_word{$_}/$total }
+
+	# save
+	
 	print STDERR "writing $fs_data/common/$lang.word.count\n";
 
-	nstore \%total, "$fs_data/common/$lang.word.count";
+	nstore \%count, "$fs_data/common/$lang.word.count";
 
+	print STDERR "writing $fs_data/common/$lang.word.freq\n";
+	
+	nstore \%freq, "$fs_data/common/$lang.word.freq";	
+	
 	#
 	# stem counts
 	#
@@ -88,23 +100,41 @@ for my $lang(@lang)
 
 	print STDERR "calculating stem counts\n";
 
-	my %stem_count;
-
-	for my $word (keys %total)
-	{
-		if ( defined $stem_cache{$word} )
-		{
-			for my $stem ( @{$stem_cache{$word}} )
-			{
-				$stem_count{$stem} += $total{$word};
+	my %count_stem;
+	my %freq_stem;
+	
+	for my $word (keys %count_word) {
+	
+		if ( defined $stem_cache{$word} ) {
+		
+			for my $stem ( @{$stem_cache{$word}} ) {
+			
+				$count_stem{$stem} += $count_word{$word};
 			}
 		}
+		else {
+
+			$count_stem{$word} += $count_word{$word};
+		}
 	}
+	
+	# convert to frequencies
+	
+	$total = 0;
+
+	for (keys %count_stem) { $total += $count_stem{$_} }
+	for (keys %count_stem) { $freq_stem{$_} = $count_stem{$_}/$total }
+	
+	# save
 
 	print STDERR "writing $fs_data/common/$lang.stem.count\n";
 
-	nstore \%stem_count, "$fs_data/common/$lang.stem.count";
+	nstore \%count_stem, "$fs_data/common/$lang.stem.count";
 
+	print STDERR "writing $fs_data/common/$lang.stem.freq\n";
+	
+	nstore \%freq_stem, "$fs_data/common/$lang.stem.freq";
+		
 	print STDERR "\n";
 	
 	#
@@ -119,17 +149,21 @@ for my $lang(@lang)
 	
 	print STDERR "calculating syn counts\n";
 	
-	my %syn_count;
+	my %count_syn;
+	my %freq_syn;
 	
-	for my $word (keys %total)
-	{
+	for my $word (keys %total) {
 		
 		my %uniq_syn;
 		
-		if ( defined $stem_cache{$word} )
-		{
-			for my $stem ( @{$stem_cache{$word}} )
-			{
+		# if the form has stems, base syns on them
+		
+		if ( defined $stem_cache{$word} ) {
+		
+			for my $stem ( @{$stem_cache{$word}} ) {
+			
+				# check each stem for syns
+				
 				if ( defined $syn_cache{$stem} ) {
 					
 					for my $syn ( @{$syn_cache{$stem}} ) {
@@ -137,27 +171,57 @@ for my $lang(@lang)
 						$uniq_syn{$syn} = 1;
 					}
 				}
+				
+				# add the stem itself
+				
+				$uniq_syn{$stem} = 1;
 			}
 		}
 		
-		if ( defined $syn_cache{$word} ) {
+		# if it has no stems, base syns on form itself
+		
+		else {
 			
-			for my $syn ( @{$syn_cache{$word}} ) {
-				
-				$uniq_syn{$syn} = 1;
+			# check the form for syns
+			
+			if ( defined $syn_cache{$word} ) {
+			
+				for my $syn ( @{$syn_cache{$word}} ) {
+					
+					$uniq_syn{$syn} = 1;
+				}
 			}
+			
+			# add the form itself
+			
+			$uniq_syn{$word} = 1;
 		}
+		
+		# remove duplicates in counting
 		
 		for (keys %uniq_syn) {
 		
-			$syn_count{$_} += $total{$word};
+			$count_syn{$_} += $count_word{$word};
 		}
 	}
 	
+	# convert to frequencies
+	
+	$total = 0;
+	
+	for (keys %count_syn) { $total += $count_syn{$_} }
+	for (keys %count_syn) { $freq_syn{$_} = $count_syn{$_}/$total }
+	
+	# save
+	
 	print STDERR "writing $fs_data/common/$lang.syn.count\n";
 	
-	nstore \%stem_count, "$fs_data/common/$lang.syn.count";
+	nstore \%count_syn, "$fs_data/common/$lang.syn.count";
+
+	print STDERR "writing $fs_data/common/$lang.syn.freq\n";
 	
+	nstore \%freq_syn, "$fs_data/common/$lang.syn.freq";
+		
 	print STDERR "\n";
 	
 }
