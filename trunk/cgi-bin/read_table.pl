@@ -81,13 +81,19 @@ my $no_cgi = 0;
 
 my $quiet = 0;
 
-GetOptions( 'source=s'	=> \$source,
+# maximum span between matching tokens
+
+my $max_dist = 20;
+
+GetOptions( 
+	      'source=s'	=> \$source,
 			'target=s'	=> \$target,
 			'unit=s'	=> \$unit,
 			'feature=s'	=> \$feature,
 			'stopwords=i' => \$stopwords, 
 			'no-cgi'	=> \$no_cgi,
 			'binary=s' => \$file_results,
+			'distance=i' => \$max_dist,
 			'quiet' 	=> \$quiet );
 
 
@@ -230,6 +236,7 @@ unless ($quiet) {
 	print STDERR "feature=$feature\n";
 	print STDERR "unit=$unit\n";
 	print STDERR "stopwords=$stopwords\n";
+	print STDERR "max_dist=$max_dist\n";
 }
 
 
@@ -381,8 +388,6 @@ my $total_matches = 0;
 
 unless ($quiet) {
 
-	print STDERR "\n";
-
 	print STDERR "calculating scores\n";
 }
 
@@ -467,7 +472,12 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 			$score += 1;
 		}
 		
-		$distance++;
+		if ($distance > $max_dist) {
+			
+			delete $match{$unit_id_target}{$unit_id_source};
+			next;
+		}
+		
 		$score = sprintf("%.2f", $score / $distance);
 		
 		# save calculated score, matched words, etc.
