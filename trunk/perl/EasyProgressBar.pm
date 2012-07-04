@@ -11,12 +11,18 @@ our @EXPORT = qw(ProgressBar);
 sub new {
 	my $self = {};
 	
-	$self->{END} = $_[1];
+	shift;
+	
+	my $terminus = shift || die "ProgressBar->new() called with no final value";
+	
+	$self->{END} = $terminus;
+	
+	my $quiet = shift || 0;
 	
 	$self->{COUNT} = 0;
 	$self->{PROGRESS} = 0;
 	
-	print STDERR "0% |" . (" " x 40) . "| 100%";
+	print STDERR "0% |" . (" " x 40) . "| 100%" unless $quiet;
 	
 	bless($self);
 	return $self;
@@ -27,23 +33,26 @@ sub advance {
 	my $self = shift;
 	
 	my $incr = shift;
+
+	my $quiet = shift || 0;
 	
 	if (defined $incr)	{ $self->{COUNT} += $incr }
-	else			   	   { $self->{COUNT}++ }
+	else			   	{ $self->{COUNT}++ }
 	
-	$self->draw();
+	$self->draw() unless $quiet;
 }
 
 sub set {
 
 	my $self = shift;
 	
-	my $new = shift;
+	my $new = shift || 0;
 	
-	if (defined $new)	{ $self->{COUNT} = $new }
-	else				{ $self->{COUNT} = 0 }
+	my $quiet = shift || 0;
 	
-	$self->draw();
+	$self->{COUNT} = $new;
+	
+	$self->draw() unless $quiet;
 }
 
 sub draw {
@@ -69,6 +78,20 @@ sub draw {
 sub finish {
 
 	print STDERR "\n";
+}
+
+sub progress {
+	
+	my $self = shift;
+	
+	return $self->{COUNT};
+}
+
+sub terminus {
+
+	my $self = shift;
+	
+	return $self->{END};
 }
 
 1;
