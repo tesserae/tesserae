@@ -64,6 +64,14 @@ my $feature = "stem";
 
 my $stopwords = 10;
 
+# output file
+
+my $file_results = "tesresults.bin";
+
+# session id
+
+my $session = "NA";
+
 # is the program being run from the web or
 # from the command line?
 
@@ -73,25 +81,14 @@ my $no_cgi = 0;
 
 my $quiet = 0;
 
-# write xml output?
-
-my $out_xml = "";
-
-# write binary output?
-
-my $out_bin = "none"; 
-
-
 GetOptions( 'source=s'	=> \$source,
 			'target=s'	=> \$target,
 			'unit=s'	=> \$unit,
 			'feature=s'	=> \$feature,
 			'stopwords=i' => \$stopwords, 
 			'no-cgi'	=> \$no_cgi,
-			'xml:s' => \$out_xml,
-			'bin=s' => \$out_bin,
+			'binary=s' => \$file_results,
 			'quiet' 	=> \$quiet );
-
 
 
 # html header
@@ -116,61 +113,46 @@ unless ($no_cgi) {
 
 END
 
-}
+	#
+	# determine the session ID
+	# 
 
-#
-# determine the session ID
-# 
+	# open the temp directory
+	# and get the list of existing session files
 
-# open the temp directory
-# and get the list of existing session files
+	opendir(my $dh, $fs_tmp) || die "can't opendir $fs_tmp: $!";
 
-opendir(my $dh, $fs_tmp) || die "can't opendir $fs_tmp: $!";
+	my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}\.xml/ && -f "$fs_tmp/$_" } readdir($dh);
 
-my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}\.xml/ && -f "$fs_tmp/$_" } readdir($dh);
+	closedir $dh;
 
-closedir $dh;
+	# sort them and get the id of the last one
 
-# sort them and get the id of the last one
+	@tes_sessions = sort(@tes_sessions);
 
-@tes_sessions = sort(@tes_sessions);
+	$session = $tes_sessions[-1];
 
-my $session = $tes_sessions[-1];
+	# then add one to it;
+	# if we can't determine the last session id,
+	# then start at 0
 
-# then add one to it;
-# if we can't determine the last session id,
-# then start at 0
-
-if (defined($session))
-{
-   $session =~ s/^.+results-//;
-   $session =~ s/\.xml//;
-}
-else
-{
-   $session = "0"
-}
-
-# put the id into hex notation to save space and make it look confusing
-
-$session = sprintf("%08x", hex($session)+1);
-
-# open the new session file for output
-
-my $session_file = "$fs_tmp/tesresults-$session.xml";
-
-if ($no_cgi) {
-	
-	unless ($out_xml eq "none") {
-	
-		my $file = ($out_xml eq "" ? '>&STDOUT' : $out_xml);
-	
-		open (XML, $file) || die "can't write to $file";
+	if (defined($session))
+	{
+	   $session =~ s/^.+results-//;
+	   $session =~ s/\.xml//;
 	}
-}
-else {
+	else
+	{
+	   $session = "0"
+	}
 
-	open (XML, '>' . $session_file) || die "can't open " . $session_file . ':' . $!;
+	# put the id into hex notation to save space and make it look confusing
+
+	$session = sprintf("%08x", hex($session)+1);
+
+	# open the new session file for output
+
+	$file_results = "$fs_tmp/tesresults-$session.bin";
 }
 
 #
@@ -321,7 +303,6 @@ my %index_target   = %{ retrieve( "$path_target/$target.index_$feature" ) };
 #
 #
 
-
 # this hash holds information about matching units
 
 my %match;
@@ -369,6 +350,7 @@ for my $key (keys %index_source) {
 			
 			push @{ $match{$unit_id_target}{$unit_id_source}{TARGET} }, $token_id_target;
 			push @{ $match{$unit_id_target}{$unit_id_source}{SOURCE} }, $token_id_source;
+			push @{ $match{$unit_id_target}{$unit_id_source}{KEY}    }, $key;
 		}
 	}
 }
@@ -387,73 +369,30 @@ for my $unit_id_target ( keys %match ) {
 }
 
 
-# write binary results
-
-if ($out_bin ne "none") {
-
-	unless ($quiet) {
-	
-		print STDERR "writing $out_bin\n";
-		nstore \%match, $out_bin;
-	}
-}
-
-
-# quit here if xml output is not needed
-
-exit if $out_xml eq "none";
-
 #
 #
-# assign scores, write output
+# assign scores
 #
 #
+
+# how many matches in all?
+
+my $total_matches = 0;
 
 unless ($quiet) {
 
 	print STDERR "\n";
 
-	print STDERR "writing xml output\n";
+	print STDERR "calculating scores\n";
 }
-
-# this line should ensure that the xml output is encoded utf-8
-
-binmode XML, ":utf8";
-
-# format the stoplist
-
-my $commonwords = join(", ", @stoplist);
-
-# add a featureset-specific message
-
-my %feature_notes = (
-	
-	word => "Exact matching only.",
-	stem => "Stem matching enabled.  Forms whose stem is ambiguous will match all possibilities.",
-	syn  => "Stem + synonym matching.  This search is still in development.  Note that stopwords may match on less-common synonyms.  max_heads=$max_heads; min_similarity=$min_similarity"
-	
-	);
-
-#
-# print results
-#
-
-print STDERR "writing results\n" unless $quiet;
 
 # draw a progress bar
 
 $pr = $quiet ? 0 : ProgressBar->new(scalar(keys %match));
 
-# print the xml doc header
-
-print XML <<END;
-<?xml version="1.0" encoding="UTF-8" ?>
-<results source="$source" target="$target" unit="$unit" feature="$feature" sessionID="$session" version="3">
-	<comments>V3 results. $feature_notes{$feature}</comments>
-	<commonwords>$commonwords</commonwords>
-END
-
-# now look at the matches one by one, according to unit id in the target
+#
+# look at the matches one by one, according to unit id in the target
+#
 
 for my $unit_id_target (sort {$a <=> $b} keys %match)
 {
@@ -470,18 +409,21 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 
 		# skip any match that doesn't involve two shared features in each text
 		
-		next if ( scalar( @{$match{$unit_id_target}{$unit_id_source}{TARGET}} ) < 2);
-		next if ( scalar( @{$match{$unit_id_target}{$unit_id_source}{SOURCE}} ) < 2);
+		if ( scalar( @{$match{$unit_id_target}{$unit_id_source}{TARGET}} ) < 2) {
+		
+			delete $match{$unit_id_target}{$unit_id_source};
+			next;
+		}
+		if ( scalar( @{$match{$unit_id_target}{$unit_id_source}{SOURCE}} ) < 2) {
+
+			delete $match{$unit_id_target}{$unit_id_source};
+			next;			
+		}
 
 		# this will record which words are to be marked in the display
 
 		my %marked_source;
 		my %marked_target;
-
-		# this array will hold "matched-on" keys
-
-		my @matched_keys_target;
-		my @matched_keys_source;
 		
 		#
 		# here's the place where a scoring algorithm should be
@@ -490,17 +432,13 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 		#   of word frequency and distance between words
 		
 		my $score;
-		my $distance = $match{$unit_id_target}{$unit_id_source}{TARGET}[-1] - $match{$unit_id_target}{$unit_id_source}{TARGET}[0];
+		my $distance = abs($match{$unit_id_target}{$unit_id_source}{TARGET}[-1] - $match{$unit_id_target}{$unit_id_source}{TARGET}[0]);
 		
 		# examine each shared term in the target in order by position
 		# within the line
 		
 		for my $token_id_target (@{$match{$unit_id_target}{$unit_id_source}{TARGET}} ) {
-			
-			# add this term to the list of shared terms
-			
-			push @matched_keys_target, $token_target[$token_id_target]{DISPLAY};
-			
+						
 			# mark the display copy as matched
 
 			$marked_target{$token_id_target} = 1;
@@ -514,16 +452,12 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 		# now examine each shared term in the source as above
 		#
 
-		$distance += $match{$unit_id_target}{$unit_id_source}{SOURCE}[-1] - $match{$unit_id_target}{$unit_id_source}{SOURCE}[0];
+		$distance += abs($match{$unit_id_target}{$unit_id_source}{SOURCE}[-1] - $match{$unit_id_target}{$unit_id_source}{SOURCE}[0]);
 		
 		# go through the terms in order by position
 		
 		for my $token_id_source ( @{$match{$unit_id_target}{$unit_id_source}{SOURCE}} ) {
 
-			# add the term to shared terms
-			
-			push @matched_keys_source, $token_source[$token_id_source]{DISPLAY};
-			
 			# mark the display copy
 
 			$marked_source{$token_id_source} = 1;
@@ -533,66 +467,59 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 			$score += 1;
 		}
 		
-		# format the list of all unique shared words
+		$distance++;
+		$score = sprintf("%.2f", $score / $distance);
 		
-		my $keypair = join(", ", @matched_keys_target, @matched_keys_source);
-
-		# now write the xml record for this match
-
-		print XML "\t<tessdata keypair=\"$keypair\" score=\"" . sprintf("%.2f", $score/($distance || 1)) . "\">\n";
-
-		print XML "\t\t<phrase text=\"source\" work=\"$abbr{$source}\" "
-				. "unitID=\"$unit_id_source\" "
-				. "line=\"$unit_source[$unit_id_source]{LOCUS}\" "
-				. "link=\"$url_cgi/context2.pl?target=$source;unit=$unit;id=$unit_id_source\">";
-
-		# here we print the unit
-
-		for my $token_id_source (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
-			
-			if (defined $marked_source{$token_id_source}) { print XML '<span class="matched">' }
-
-			# print the display copy of the token
-			
-			print XML $token_source[$token_id_source]{DISPLAY};
-			
-			# close the tag if necessary
-			
-			if (defined $marked_source{$token_id_source}) { print XML '</span>' }
-		}
-
-		print XML "</phrase>\n";
+		# save calculated score, matched words, etc.
 		
-		# same as above, for the target now
+		$match{$unit_id_target}{$unit_id_source}{SCORE} = $score;
+		$match{$unit_id_target}{$unit_id_source}{MARKED_SOURCE} = {%marked_source};
+		$match{$unit_id_target}{$unit_id_source}{MARKED_TARGET} = {%marked_target};
 		
-		print XML "\t\t<phrase text=\"target\" work=\"$abbr{$target}\" "
-				. "unitID=\"$unit_id_target\" "
-				. "line=\"$unit_target[$unit_id_target]{LOCUS}\" "
-				. "link=\"$url_cgi/context2.pl?target=$target;unit=$unit;id=$unit_id_target\">";
-
-		for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
-			
-			if (defined $marked_target{$token_id_target}) { print XML '<span class="matched">' }
-			print XML $token_target[$token_id_target]{DISPLAY};
-			if (defined $marked_target{$token_id_target}) { print XML '</span>' }
-		}
-
-		print XML "</phrase>\n";
-
-		print XML "\t</tessdata>\n";
-
+		$total_matches++;
 	}
 }
 
-# finish off the xml doc
+my %feature_notes = (
+	
+	word => "Exact matching only.",
+	stem => "Stem matching enabled.  Forms whose stem is ambiguous will match all possibilities.",
+	syn  => "Stem + synonym matching.  This search is still in development.  Note that stopwords may match on less-common synonyms.  max_heads=$max_heads; min_similarity=$min_similarity"
+	
+	);
 
-print XML "</results>\n";
+#
+# write binary results
+#
+
+if ($file_results ne "none") {
+
+	$match{META} = {
+
+		SOURCE    => $source,
+		TARGET    => $target,
+		UNIT      => $unit,
+		FEATURE   => $feature,
+		STOPLIST  => [@stoplist],
+		SESSION   => $session,
+		COMMENT   => $feature_notes{$unit},
+		TOTAL     => $total_matches
+	};
+
+	unless ($quiet) {
+		
+		print STDERR "writing $file_results\n";
+	}
+	
+	nstore \%match, $file_results;
+}
+
 
 #
 # redirect browser to the xml results
 #
 
-my $redirect = "$url_cgi/get-data.pl?session=$session;sort=target";
+my $redirect = "$url_cgi/read_bin.pl?session=$session;sort=target";
 
 print <<END unless ($no_cgi);
 

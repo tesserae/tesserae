@@ -35,14 +35,28 @@ while (my $line = <FH>) {
 	
 	$pr->advance(length($line));
 
+	# skip lines whose tokens are in quotation marks
+	# these employ characters with accent marks
+
+	next if $line =~ /^"/;
+	
+	# remove newline
+
 	chomp $line;
+	
+	# split on commas
+	
 	my @field = split /,/, $line;
 	
 	my ($token, $grammar, $headword) = @field[0..2];
 	
+	# standardize the forms
+	
 	$token = TessSystemVars::standardize($lang, $token);
 	
 	$headword = TessSystemVars::standardize($lang, $headword);
+	
+	# add to dictionary
 	
 	push @{$stem{$token}}, $headword;
 }

@@ -235,7 +235,7 @@ while (my $file_in = shift @ARGV)
 		# check for enjambement with prev line
 		#
 		
-		if (defined $#{$phrase[-1]{TOKEN_ID}}) {
+		if (defined $phrase[-1]{TOKEN_ID}) {
 
 			push @token, {TYPE => 'PUNCT', DISPLAY => ' / '};
 			push @{$phrase[-1]{TOKEN_ID}}, $#token;

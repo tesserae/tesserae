@@ -373,6 +373,7 @@ table.output td {
 	font-size : 11px;
 	color : #660;
 	padding: 5px;
+	text-align: left;
 }
 
 table.output th.phrase {
