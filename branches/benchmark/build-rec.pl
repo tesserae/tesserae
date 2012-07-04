@@ -31,21 +31,17 @@ my $check_alts_threshold = .3;
 
 # location of the data
 
-my $fs_data = "/Users/chris/Sites/tesserae/data";
+my $fs_data = "/Users/chris/tesserae/data";
 
 my %file = (
 	
-	lucan_word          => "$fs_data/v3/la/word/lucan.pharsalia.part.1.word",
-	lucan_phrase        => "$fs_data/v3/la/word/lucan.pharsalia.part.1.phrase",
-	lucan_loc_phrase    => "$fs_data/v3/la/word/lucan.pharsalia.part.1.loc_phrase",
-	lucan_loc_line      => "$fs_data/v3/la/word/lucan.pharsalia.part.1.loc_line",
-	lucan_phrase_lines  => "$fs_data/v3/la/word/lucan.pharsalia.part.1.phrase_lines",
+	lucan_token         => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.token",
+	lucan_line          => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.line",			
+	lucan_phrase        => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.phrase",
 	
-	vergil_word         => "$fs_data/v3/la/word/vergil.aeneid.word",
-	vergil_phrase       => "$fs_data/v3/la/word/vergil.aeneid.phrase",
-	vergil_loc_phrase   => "$fs_data/v3/la/word/vergil.aeneid.loc_phrase",
-	vergil_loc_line     => "$fs_data/v3/la/word/vergil.aeneid.loc_line",
-	vergil_phrase_lines => "$fs_data/v3/la/word/vergil.aeneid.phrase_lines",
+	vergil_token        => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.token",
+	vergil_line         => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.line",			
+	vergil_phrase       => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.phrase",
 	
 	benchmark => "bench2.csv",
 	cache     => "data/rec.cache"
@@ -53,7 +49,7 @@ my %file = (
 
 # check for command-line overrides
 
-GetOptions(	"bench=s"	=> \$file{benchmark},
+GetOptions(	    "bench=s"	=> \$file{benchmark},
 				"cache=s"	=> \$file{cache},
 				"check=f"	=> \$check_alts_threshold,
 				"warn=f" 	=> \$warn_threshold );
@@ -62,8 +58,6 @@ GetOptions(	"bench=s"	=> \$file{benchmark},
 
 my %phrase;
 my %loc_phrase;
-my %loc_line;
-my %phrase_lines;
 my %phrase_index;
 
 for my $text ('lucan', 'vergil')
@@ -73,10 +67,30 @@ for my $text ('lucan', 'vergil')
 	# load tesserae structures
 	#
 	
-	@{$phrase{$text}} 		= @{ retrieve($file{$text. "_phrase"})      };
-	@{$loc_phrase{$text}} 	= @{ retrieve($file{$text. "_loc_phrase"})  };
-	@{$loc_line{$text}} 		= @{ retrieve($file{$text. "_loc_line"})    };
-	@{$phrase_lines{$text}}	= @{ retrieve($file{$text. "_phrase_lines"})};
+	@{$phrase{$text}} 		= @{ retrieve($file{$text. "_phrase"}) };
+	my @line         	    = @{ retrieve($file{$text. "_line"})   };
+
+	
+	# index the phrases
+	# 
+	#  for a given line number, an array of phrases which include
+	# any part of that line.
+	
+	for my $phrase_id (0..$#{$phrase{$text}}) {
+		
+		for my $line_id (@{$phrase{$text}[$phrase_id]{LINE_ID}}) {
+			
+			push @{$phrase_index{$text}{$line[$line_id]{LOCUS}}}, $phrase_id;
+		}
+		
+		# save the locus elsewhere before we overwrite the phrase
+		# in the next loop
+		
+		$loc_phrase{$text}[$phrase_id] = $phrase{$text}[$phrase_id]{LOCUS};
+		$loc_phrase{$text}[$phrase_id] =~ s/-.*//;
+			
+	}
+	
 
 	#
 	# simplify the tesserae @phrase arrays to simple arrays of words
@@ -84,7 +98,7 @@ for my $text ('lucan', 'vergil')
 	
 	# get the word list for this text
 
-	my @word = @{ retrieve($file{$text. "_word"}) };
+	my @token = @{ retrieve($file{$text. "_token"}) };
 	
 	# convert word indices to words
 	
@@ -94,30 +108,16 @@ for my $text ('lucan', 'vergil')
 	
 		my @words;
 		
-		for my $wi (@{$$phrase{WORD}}) {
+		for my $i (@{$$phrase{TOKEN_ID}}) {
 			
-			my $word = $word[$wi];
+			next if $token[$i]{TYPE} eq "PUNCT";
 			
-			$word = lc($word);
-			$word =~ tr/jv/iu/;
-		
+			my $word = $token[$i]{FORM};
+					
 			push @words, $word;
 		}
-		
+				
 		$_ = [@words];
-	}
-
-	# index the phrases
-	# 
-	#  for a given line number, an array of phrases which include
-	# any part of that line.
-
-	for my $phrase_id (0..$#{$phrase_lines{$text}})
-	{
-		for my $line_id (@{$phrase_lines{$text}[$phrase_id]}) {
-			
-			push @{$phrase_index{$text}{$loc_line{$text}[$line_id]}}, $phrase_id;
-		}
 	}
 }
 
