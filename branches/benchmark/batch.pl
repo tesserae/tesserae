@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use lib '/Users/chris/Sites/tesserae/perl';
+use lib '/Users/chris/tesserae/perl';
 use TessSystemVars;
 use EasyProgressBar;
 
@@ -15,41 +15,71 @@ use EasyProgressBar;
 my $feature = "stem";
 my $unit    = "phrase";
 
-# different stoplist settings
+# 
+#
+#
 
-my @list;
+my $debug = 0;
 
-for (my $s = 0; $s <= 250; $s += ($s >= 10 ? 5 : 1)) { push @list, $s }
+my $pr = ProgressBar->new(51 * 10, $debug);
 
-# run all the stoplists
-
-for my $i (0..$#list) {
+for (my $stop = 0; $stop <= 250; $stop += 5) {
 	
-	my $stop = $list[$i];
-	
-	print STDERR "running test " . sprintf("%i/%i", $i+1, $#list+1) . "...\n";
-	
-	docmd("perl $fs_cgi/read_table.pl --target lucan.pharsalia.part.1 --source vergil.aeneid --no-cgi --feature $feature --unit $unit --stopwords $stop > .tesresults.xml");
-	
-	my $n = docmd("grep -c '<tessdata ' .tesresults.xml");
-	chomp $n;
-	
-	my $hits = docmd("perl check-recall.pl .tesresults.xml");
-	$hits =~ /found (\d+)\//;
-	$hits = $1;
-	
-	print join("\t", $i, $stop, $n, $hits) . "\n";
+	for (my $dist = 50; $dist >=5; $dist -= 5) {
+		
+		$pr->advance(1, $debug);
+		
+		if ($debug) {
+		
+			print STDERR "running test " . sprintf("%i/%i", $pr->progress(), $pr->terminus()) . "...\n";
+		}
+		
+		# run tesserae search
+		
+		docmd("$fs_cgi/read_table.pl --target lucan.pharsalia.part.1 --source vergil.aeneid"
+			  . " --no-cgi --feature $feature --unit $unit --stopwords $stop --dist $dist"
+			  . ($debug ? "" : " --quiet"));
+				
+		# check the results
+		
+		my $detail = docmd("perl check-recall.pl -d tesresults.bin");
+		
+		# parse the information returned by check-recall
+		
+		my @line = split/\n/, $detail;
+		
+		# first the number of tess results
+		
+		$line[0] =~ /tesserae returned (\d+) results/;
+					  
+		my $n = $1;
+		
+		# now the recall data for each type
+		
+		my @hits;
+		my @rate;
+		
+		for (@line[1..5]) {
+			
+			my ($score, $hits, $total, $rate) = split /\t/;
+			
+			$hits[$score] = $hits;
+			$rate[$score] = $rate;
+		}
+			
+		print join("\t", $stop, $dist, $n, @hits[1..5]) . "\n";
+	}
 }
 
 sub docmd {
 
 	my $cmd = shift;
 	
-	print STDERR "$cmd\n";
+	print STDERR "$cmd\n" if $debug;
 
 	my $res = `$cmd`;
 	
-	print STDERR $res;	
+	print STDERR $res if $debug;
 	
 	return $res;
 }

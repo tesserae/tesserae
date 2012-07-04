@@ -39,6 +39,8 @@ unless (defined $file_tess) {
 	exit;
 }
 
+my $quiet = 1;
+
 #
 # read the data
 #
@@ -51,8 +53,10 @@ my %tess = %{ retrieve($file_tess) };
 # compare 
 #
 
-if ($detail) {
+print "tesserae returned $tess{META}{TOTAL} results\n";
 
+if ($detail) {
+	
 	my ($cref, $tref) = score(\@bench, \%tess);
 	
 	my @count = @$cref;
@@ -86,7 +90,7 @@ sub readTess {
 	
 	open(FH, "<:utf8", $file) || die "can't read $file: $!";
 	
-	print STDERR "reading $file\n";
+	print STDERR "reading $file\n" unless $quiet;
 	
 	my $pr = ProgressBar->new(-s $file);
 	
@@ -119,7 +123,7 @@ sub compare {
 	my %in_tess;
 	my $exists = 0;
 	
-	print STDERR "comparing\n";
+	print STDERR "comparing\n" unless $quiet;
 	
 	# my $pr = ProgressBar->new(scalar(@bench));
 		
@@ -144,7 +148,7 @@ sub score {
 	my @count = (0)x6;
 	my @total = (0)x6;
 	
-	print STDERR "comparing\n";
+	print STDERR "comparing\n" unless $quiet;
 		
 	for (@bench) {
 		
