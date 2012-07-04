@@ -39,13 +39,13 @@ GetOptions("cache=s" => \$file_cache);
 
 my @bench = @{ retrieve($file_cache) };
 
-my @tess = @{ readTess($file_tess) };
+my %tess = %{ retrieve($file_tess) };
 
 #
 # compare 
 #
 
-my $found = compare(\@bench, \@tess);
+my $found = compare(\@bench, \%tess);
 
 print "found $found/" . scalar(@bench) . " or " . sprintf("%02i%%", 100*$found/scalar(@bench)) . ".\n";
 
@@ -69,7 +69,7 @@ sub readTess {
 		
 		$pr->advance(length($_));
 		
-		if (/<tessdata .* score="(\d+)"/) {
+		if (/<tessdata .* score="(.*?)"/) {
 			
 			push @res, {SCORE => $1, SOURCE => "", TARGET => ""};
 		}
@@ -89,27 +89,20 @@ sub compare {
 	my ($benchref, $tessref) = @_;
 	
 	my @bench = @$benchref;
-	my @tess  = @$tessref;
-	
+	my %tess  = %$tessref;
+		
 	my %in_tess;
 	my $exists = 0;
 	
 	print STDERR "comparing\n";
 	
-	my $pr = ProgressBar->new(scalar(@tess) + scalar(@bench));
-	
-	for (@tess) {
+	# my $pr = ProgressBar->new(scalar(@bench));
 		
-		$pr->advance();
-	
-		$in_tess{$$_{TARGET}}{$$_{SOURCE}} = $$_{SCORE};
-	}
-	
 	for (@bench) {
 	
-		$pr->advance();
+		# $pr->advance();
 		
-		if (defined $in_tess{$$_{BC_PHRASEID}}{$$_{AEN_PHRASEID}}) { $exists++ }
+		if (defined $tess{$$_{BC_PHRASEID}}{$$_{AEN_PHRASEID}}) { $exists++ }
 	}
 	
 	return $exists;
