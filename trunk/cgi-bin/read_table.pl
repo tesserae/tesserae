@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -83,7 +83,7 @@ my $quiet = 0;
 
 # maximum span between matching tokens
 
-my $max_dist = 20;
+my $max_dist = 999;
 
 GetOptions( 
 	      'source=s'	=> \$source,

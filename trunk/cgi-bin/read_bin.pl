@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -186,8 +186,14 @@ if ( $feature eq "syn" ) {
 }
 
 
-print_html($page, $batch);
-
+if ($sort eq "xml") {
+	
+	print_xml();
+}
+else {
+	
+	print_html($page, $batch);
+}
 #
 # subroutines
 #
