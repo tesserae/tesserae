@@ -31,7 +31,7 @@ my $check_alts_threshold = .3;
 
 # location of the data
 
-my $fs_data = "/Users/chris/tesserae/data";
+my $fs_data = "/Users/chris/Sites/tesserae/data";
 
 my %file = (
 	
@@ -43,7 +43,7 @@ my %file = (
 	vergil_line         => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.line",			
 	vergil_phrase       => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.phrase",
 	
-	benchmark => "bench2.csv",
+	benchmark => "bench3.csv",
 	cache     => "data/rec.cache"
 );
 
@@ -257,6 +257,8 @@ sub LoadTess {
 
 sub LoadCSV {
 	
+	print STDERR "reading $file{benchmark}\n";
+	
 	my $file = shift;
 	
 	my @rec;
@@ -273,7 +275,9 @@ sub LoadCSV {
 		
 		my @field = split(/,/, $line);
 		
-		next unless ($#field == 6);
+		if ($#field == 6) { push @field, "" };
+		
+		next unless ($#field == 7);
 		
 		for (@field) {
 			
@@ -289,6 +293,24 @@ sub LoadCSV {
 			AEN_TXT	=> $field[5],
 			SCORE 	=> $field[6] 
 			};
+		
+		for (keys %{$rec[-1]}) { 
+			
+			if ($rec[-1]{$_} eq "") {
+		
+				print STDERR "record $#rec has no value for $_.\n";
+				print STDERR "\t$file{benchmark} line $.: " . $line . "\n";
+			}
+		}
+			
+		# which commentators cite this?
+		
+		if ($field[7] ne "") {
+		
+			my @auth = split(/,/, $field[7]);
+			
+			$rec[-1]{AUTH} = [@auth];
+		}
 	}
 	
 	return \@rec;
