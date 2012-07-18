@@ -63,6 +63,8 @@ for (my $stop = 0; $stop <= 250; $stop += 5) {
 			
 			my ($score, $hits, $total, $rate) = split /\t/;
 			
+			if ($score eq "comm.") { $score = 6 }
+			
 			$hits[$score] = $hits;
 			$rate[$score] = $rate;
 		}
