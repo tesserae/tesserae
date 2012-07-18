@@ -55,27 +55,50 @@ my %tess = %{ retrieve($file_tess) };
 
 print "tesserae returned $tess{META}{TOTAL} results\n";
 
+my %in_tess;
+my @count = (0)x6;
+my @total = (0)x6;
+
+my $commentators = 0;
+
+# do the comparison
+
+print STDERR "comparing\n" unless $quiet;
+	
+for (@bench) {
+	
+	$total[$$_{SCORE}]++;
+
+	if (defined $$_{AUTH}) {
+		
+		$commentators++;
+	}
+	
+	if (defined $tess{$$_{BC_PHRASEID}}{$$_{AEN_PHRASEID}}) { 
+		
+		$count[$$_{SCORE}]++;
+
+		if (defined $$_{AUTH}) {
+			
+			$count[6]++;
+		}
+	}
+}	
+
+
+
+# print results
+
 if ($detail) {
-	
-	my ($cref, $tref) = score(\@bench, \%tess);
-	
-	my @count = @$cref;
-	my @total = @$tref;
-	
 	for (1..5) {
 		
 		my $rate = $total[$_] > 0 ? sprintf("%.2f", $count[$_]/$total[$_]) : 'NA';
 	
 		print "$_\t$count[$_]\t$total[$_]\t$rate\n";
 	}
-	
 }
-else {
-	
-	my $found = compare(\@bench, \%tess);
 
-	print "found $found/" . scalar(@bench) . " or " . sprintf("%02i%%", 100*$found/scalar(@bench)) . ".\n";
-}
+print "comm.\t$count[6]\t$commentators\t" . sprintf("%.2f", $count[6]/$commentators) . "\n";
 
 
 #
@@ -135,30 +158,4 @@ sub compare {
 	}
 	
 	return $exists;
-}
-
-sub score {
-	
-	my ($benchref, $tessref) = @_;
-	
-	my @bench = @$benchref;
-	my %tess  = %$tessref;
-	
-	my %in_tess;
-	my @count = (0)x6;
-	my @total = (0)x6;
-	
-	print STDERR "comparing\n" unless $quiet;
-		
-	for (@bench) {
-		
-		$total[$$_{SCORE}]++;
-		
-		if (defined $tess{$$_{BC_PHRASEID}}{$$_{AEN_PHRASEID}}) { 
-			
-			$count[$$_{SCORE}]++;
-		}
-	}
-		
-	return (\@count, \@total);
 }
