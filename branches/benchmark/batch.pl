@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-use lib '/Users/chris/tesserae/perl';
+use lib '/Users/chris/Sites/tesserae/perl';
 use TessSystemVars;
 use EasyProgressBar;
 
@@ -59,7 +59,7 @@ for (my $stop = 0; $stop <= 250; $stop += 5) {
 		my @hits;
 		my @rate;
 		
-		for (@line[1..5]) {
+		for (@line[1..6]) {
 			
 			my ($score, $hits, $total, $rate) = split /\t/;
 			
@@ -67,7 +67,7 @@ for (my $stop = 0; $stop <= 250; $stop += 5) {
 			$rate[$score] = $rate;
 		}
 			
-		print join("\t", $stop, $dist, $n, @hits[1..5]) . "\n";
+		print join("\t", $stop, $dist, $n, @hits[1..6]) . "\n";
 	}
 }
 
