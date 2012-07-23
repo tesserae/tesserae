@@ -48,11 +48,11 @@ for (@run) {
 	docmd("$fs_cgi/read_table.pl --target lucan.pharsalia.part.1 --source vergil.aeneid"
 		  . " --no-cgi --feature $feature --unit $unit --stopwords $stop --dist $dist"
 		  . ($debug ? "" : " --quiet")
-		  . " --bin tesresults.bin");
+		  . " --bin $file.tesresults.bin");
 			
 	# check the results
 	
-	my $detail = docmd("perl check-recall.pl -d tesresults.bin");
+	my $detail = docmd("perl check-recall.pl -d $file.tesresults.bin");
 	
 	# parse the information returned by check-recall
 	
@@ -81,6 +81,8 @@ for (@run) {
 		
 	print join("\t", $stop, $dist, $n, @hits[1..6]) . "\n";
 }
+
+docmd("rm $file.tesresults.bin");
 
 sub docmd {
 
