@@ -16,61 +16,69 @@ my $feature = "stem";
 my $unit    = "phrase";
 
 # 
-#
+# settings
 #
 
 my $debug = 0;
 
-my $pr = ProgressBar->new(51 * 10, $debug);
+my $file = shift @ARGV || die "specify file to run\n";
 
-for (my $stop = 0; $stop <= 40; $stop += 1) {
+my @run = @{ReadFile($file)};
+
+#
+# run tesserae a bunch of times
+#
+
+my $pr = ProgressBar->new(scalar(@run), $debug);
+
+for (@run) {
 	
-	for (my $dist = 50; $dist >=5; $dist -= 5) {
+	my $stop = $$_{stop};
+	my $dist = $$_{dist};
+	
+	$pr->advance(1, $debug);
 		
-		$pr->advance(1, $debug);
+	if ($debug) {
 		
-		if ($debug) {
-		
-			print STDERR "running test " . sprintf("%i/%i", $pr->progress(), $pr->terminus()) . "...\n";
-		}
-		
-		# run tesserae search
-		
-		docmd("$fs_cgi/read_table.pl --target lucan.pharsalia.part.1 --source vergil.aeneid"
-			  . " --no-cgi --feature $feature --unit $unit --stopwords $stop --dist $dist"
-			  . ($debug ? "" : " --quiet"));
-				
-		# check the results
-		
-		my $detail = docmd("perl check-recall.pl -d tesresults.bin");
-		
-		# parse the information returned by check-recall
-		
-		my @line = split/\n/, $detail;
-		
-		# first the number of tess results
-		
-		$line[0] =~ /tesserae returned (\d+) results/;
-					  
-		my $n = $1;
-		
-		# now the recall data for each type
-		
-		my @hits;
-		my @rate;
-		
-		for (@line[1..6]) {
-			
-			my ($score, $hits, $total, $rate) = split /\t/;
-			
-			if ($score eq "comm.") { $score = 6 }
-			
-			$hits[$score] = $hits;
-			$rate[$score] = $rate;
-		}
-			
-		print join("\t", $stop, $dist, $n, @hits[1..6]) . "\n";
+		print STDERR "running test " . sprintf("%i/%i", $pr->progress(), $pr->terminus()) . "...\n";
 	}
+	
+	# run tesserae search
+	
+	docmd("$fs_cgi/read_table.pl --target lucan.pharsalia.part.1 --source vergil.aeneid"
+		  . " --no-cgi --feature $feature --unit $unit --stopwords $stop --dist $dist"
+		  . ($debug ? "" : " --quiet"));
+			
+	# check the results
+	
+	my $detail = docmd("perl check-recall.pl -d tesresults.bin");
+	
+	# parse the information returned by check-recall
+	
+	my @line = split/\n/, $detail;
+	
+	# first the number of tess results
+	
+	$line[0] =~ /tesserae returned (\d+) results/;
+				  
+	my $n = $1;
+	
+	# now the recall data for each type
+	
+	my @hits;
+	my @rate;
+	
+	for (@line[1..6]) {
+		
+		my ($score, $hits, $total, $rate) = split /\t/;
+		
+		if ($score eq "comm.") { $score = 6 }
+		
+		$hits[$score] = $hits;
+		$rate[$score] = $rate;
+	}
+		
+	print join("\t", $stop, $dist, $n, @hits[1..6]) . "\n";
 }
 
 sub docmd {
@@ -84,4 +92,22 @@ sub docmd {
 	print STDERR $res if $debug;
 	
 	return $res;
+}
+
+sub ReadFile {
+
+	my $file = shift;
+	
+	open (FH, "<", $file) || die "can't read $file: $!";
+	
+	my @run;
+	
+	while (my $line = <FH>) {
+		
+		next unless $line =~ /(\d+)\s+(\d+)/;
+		
+		push @run, {stop => $1, dist => $2};
+	}
+	
+	return \@run;
 }
