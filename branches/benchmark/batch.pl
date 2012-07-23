@@ -107,7 +107,7 @@ sub ReadFile {
 		
 		next unless $line =~ /(\d+)\s+(\d+)/;
 		
-		push @run, {stop => $1, dist => $2};
+		push @run, {dist => $2, stop => $1};
 	}
 	
 	return \@run;
