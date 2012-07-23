@@ -109,7 +109,7 @@ sub ReadFile {
 		
 		next unless $line =~ /(\d+)\s+(\d+)/;
 		
-		push @run, {dist => $2, stop => $1};
+		push @run, {dist => $1, stop => $2};
 	}
 	
 	return \@run;
