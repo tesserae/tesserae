@@ -47,7 +47,8 @@ for (@run) {
 	
 	docmd("$fs_cgi/read_table.pl --target lucan.pharsalia.part.1 --source vergil.aeneid"
 		  . " --no-cgi --feature $feature --unit $unit --stopwords $stop --dist $dist"
-		  . ($debug ? "" : " --quiet"));
+		  . ($debug ? "" : " --quiet")
+		  . "--bin tesresults.bin");
 			
 	# check the results
 	
