@@ -240,11 +240,17 @@ unless ($quiet) {
 }
 
 
-# a stop list
-# - hard coded in TessSystemVars, work on this in future
-# - feature-set-specific
+#
+# calculate feature frequencies
+#
 
-my @stoplist = @{$top{$lang{$target} . '_' . $feature}};
+my %freq = %{ retrieve( "$fs_data/common/$lang{$target}.${feature}.count" )};
+
+#
+# create stop list
+#
+
+my @stoplist = sort {$freq{$b} <=> $freq{$a}} keys %freq;
 
 if ($stopwords > 0) {
 	
@@ -254,12 +260,6 @@ else {
 	
 	@stoplist = ();
 }
-
-#
-# calculate feature frequencies
-#
-
-# my %freq = %{ retrieve( "$fs_data/common/$lang{$target}.${feature}.count" )};
 
 #
 # if the featureset is synonyms, get the parameters used
