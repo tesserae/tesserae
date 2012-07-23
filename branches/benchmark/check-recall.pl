@@ -56,8 +56,8 @@ my %tess = %{ retrieve($file_tess) };
 print "tesserae returned $tess{META}{TOTAL} results\n";
 
 my %in_tess;
-my @count = (0)x6;
-my @total = (0)x6;
+my @count = (0)x7;
+my @total = (0)x7;
 
 my $commentators = 0;
 
