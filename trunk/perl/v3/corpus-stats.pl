@@ -43,7 +43,7 @@ for my $lang(@lang)
 
 	opendir (DH, "$fs_data/v3/$lang");
 
-	push @texts, (grep {!/\.part\./ && -d} map { "$fs_data/v3/$lang/$_" } readdir DH);
+	push @texts, (grep {!/\.part\./ && !/^\./} readdir DH);
 
 	closedir (DH);
 
@@ -54,10 +54,10 @@ for my $lang(@lang)
 	my %count_word;
 	my %freq_word;
 
-	for (@count_files)
+	for my $text (@texts)
 	{
 	
-		print STDERR "reading $_\n";
+		print STDERR "reading $text\n";
 		
 		# get just the short name from the file
 		
@@ -66,11 +66,11 @@ for my $lang(@lang)
 
 		# retrieve the count
 		
-		my %index = retrieve("$_/$text_key.index_form");
+		my %index = retrieve("$fs_data/v3/$lang/$text/$text.index_form");
 
 		for (keys %index) { 
 			
-			$count_word{$_} = scalar(@{$index{$_}});
+			$count_word{$_} += scalar(@{$index{$_}});
 		}
 	}
 	
