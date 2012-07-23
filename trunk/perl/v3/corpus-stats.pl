@@ -66,7 +66,7 @@ for my $lang(@lang)
 
 		# retrieve the count
 		
-		my %index = retrieve("$fs_data/v3/$lang/$text/$text.index_form");
+		my %index = %{retrieve("$fs_data/v3/$lang/$text/$text.index_form")};
 
 		for (keys %index) { 
 			
@@ -89,6 +89,8 @@ for my $lang(@lang)
 	print STDERR "writing $fs_data/common/$lang.word.freq\n";
 	
 	nstore \%freq, "$fs_data/common/$lang.word.freq";	
+	
+	print STDERR "\n";
 	
 	#
 	# stem counts
