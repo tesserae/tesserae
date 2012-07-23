@@ -23,7 +23,7 @@ my $debug = 0;
 
 my $pr = ProgressBar->new(51 * 10, $debug);
 
-for (my $stop = 0; $stop <= 250; $stop += 5) {
+for (my $stop = 0; $stop <= 40; $stop += 1) {
 	
 	for (my $dist = 50; $dist >=5; $dist -= 5) {
 		
