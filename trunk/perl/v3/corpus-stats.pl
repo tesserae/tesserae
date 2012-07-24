@@ -5,6 +5,9 @@
 # in order to calculate stop words
 # and frequency-based scores
 
+use strict;
+use warnings;
+
 use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 use TessSystemVars;
@@ -61,7 +64,7 @@ for my $lang(@lang)
 		
 		# get just the short name from the file
 		
-		/.*\/(.+)/;
+		$text =~ /.*\/(.+)/;
 		my $text_key = $1;
 
 		# retrieve the count
@@ -84,11 +87,11 @@ for my $lang(@lang)
 	
 	print STDERR "writing $fs_data/common/$lang.word.count\n";
 
-	nstore \%count, "$fs_data/common/$lang.word.count";
+	nstore \%count_word, "$fs_data/common/$lang.word.count";
 
 	print STDERR "writing $fs_data/common/$lang.word.freq\n";
 	
-	nstore \%freq, "$fs_data/common/$lang.word.freq";	
+	nstore \%freq_word, "$fs_data/common/$lang.word.freq";	
 	
 	print STDERR "\n";
 	
@@ -154,7 +157,7 @@ for my $lang(@lang)
 	my %count_syn;
 	my %freq_syn;
 	
-	for my $word (keys %total) {
+	for my $word (keys %count_word) {
 		
 		my %uniq_syn;
 		
