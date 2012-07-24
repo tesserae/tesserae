@@ -36,3 +36,5 @@ for (keys %stem) {
 		$stem{$_} = ['sum'];
 	}
 }
+
+nstore \%stem, $file_cache;
