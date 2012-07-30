@@ -21,7 +21,7 @@ Here's how to run your texts.
 
    A good place to put the prepared texts is in the "texts" directory, but you don't have to.  If you create a subdirectory of "texts" and put files there, add_column.pl will assume that all texts in the same subdirectory are in the same language, and that the name of the subdirectory indicates the language.  E.g. 
 
-   texts/en/wordsworth.prelude.tess
+   texts/en/wordsworth.prelude.book.1.tess
 
    will be assumed to be in language "en".  Sorting texts by language in this way is only really useful if you have stem dictionaries and want to make sure the right stemmer is applied to the right texts.
 
@@ -43,9 +43,9 @@ Here's how to run your texts.
 
    where FILE is the formatted .tess text file.  LANG is an optional language designator.  This overrides the name of the texts subdirectory (described above).  Again, it's probably unnecessary unless you have a stem dictionary.
 
-   For example, this is the easiest way to get everything installed:
+   For example,
 
-   $ perl perl/add_column.pl texts/*
+   $ perl perl/add_column.pl texts/en/*
 
 4. Run a Tesserae search.
 
@@ -61,7 +61,7 @@ Here's how to run your texts.
 
       --unit UNIT   the units of text to compare.  
                     choices are "line" or "phrase."
-      --stop N      the size of the stoplist.  default is 25.
+      --stop N      the size of the stoplist.  default is 10.
                     the stoplist will be composed of the top N most-
                     frequent words in the TARGET text.
       --dist N      the maximum distance between matching tokens (in tokens).
@@ -75,9 +75,13 @@ Here's how to run your texts.
 
    For example,
 
-   $ perl perl/read_table.pl --source cowper.task --target wordsworth.prelude --stop 35 --dist 10 --out tesresults.xml
+   $ perl perl/read_table.pl --source cowper.task --target wordsworth.prelude.book.1 --stop 35 --dist 10 --out tesresults.xml
 
-   Notes.  With Latin, this works pretty fast, even on large epics.  I found that with big English works (i.e. tens of thousands of lines each), it could really slow down unless you set the stop list relatively high.
+   Notes.  
+
+   With Latin, this works pretty fast, even on large epics.  I found that with big English works (i.e. tens of thousands of lines each), it could really slow down unless you set the stop list relatively high.
+
+   The best way to compare two texts is to use a relatively short text for the target and a longer one for the source.  For example, search for allusions to all of Vergil's Aeneid within a particular book of Lucan's Pharsalia.
 
 5. Convert XML results to something else -- optional.
 

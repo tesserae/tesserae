@@ -78,7 +78,7 @@ my $session = "standalone";
 
 # stopwords is the number of words on the stoplist
 
-my $stopwords = 25;
+my $stopwords = 10;
 
 # output file
 

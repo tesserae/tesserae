@@ -64,8 +64,12 @@ while (my $file_in = shift @ARGV) {
 
 	# the header for the column will be the filename 
 	# minus the path and .tess extension
+	
+	next unless -f $file_in && $file_in =~ /\.tess$/;
 
 	my ($name, $directories, $suffix) = fileparse($file_in, '.tess');
+
+	print STDERR "$name:$directories:$suffix\n";
 
 	# get the language for this doc.  try:
 	# 1. user specified at cmd line
