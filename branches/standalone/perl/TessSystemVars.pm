@@ -1,6 +1,8 @@
 use warnings;
 use strict;
 
+use Cwd;
+
 package TessSystemVars;
 
 require Exporter;
@@ -22,6 +24,8 @@ our $fs_data	= $fs_base . '/data';
 our $fs_text	= $fs_base . '/texts';
 our $fs_tmp  	= $fs_base . '/tmp';
 our $fs_xsl  	= $fs_base . '/xsl';
+
+for ($fs_perl, $fs_data, $fs_text, $fs_tmp, $fs_xsl) { $_ = Cwd::abs_path($_) }
 
 # punctuation marks which delimit phrases
 
@@ -45,12 +49,12 @@ my $wchar_latin = 'a-zA-Z';
 our %non_word = (
 	'la'      => qr([^$wchar_latin]+), 
 	'grc'     => qr([^$wchar_greek]+),
-	'unknown' => qr([^$wchar_latin]+) 
+	'en' => qr([^$wchar_latin]+) 
 	);
 our %is_word = (
 	'la'      => qr([$wchar_latin]+), 
 	'grc'     => qr([$wchar_greek]+),
-	'unknown' => qr([$wchar_latin]+) 
+	'en' => qr([$wchar_latin]+) 
 	);
 		   
 
@@ -117,7 +121,7 @@ sub standardize {
 	
 	# if we don't know the language, assume latin rules
 	
-	if ($lang eq 'unknown') { $lang = 'la' }
+	if ($lang eq 'unknown') { $lang = 'en' }
 	
 	
 	my @string = @_;
@@ -126,12 +130,15 @@ sub standardize {
 		
 		$_ = lcase($lang, $_);
 		
+		if ($lang eq 'en')
+		{
+			s/[^a-z]//g;
+		}
 		if ($lang eq 'la')
 		{
 			tr/jv/iu/;	# replace j and v with i and u throughout
 			s/[^a-z]//g;
-		}
-		
+		}		
 		if ($lang eq 'grc')
 		{
 			s/\\/\//;	# change grave accent (context-specific) to acute (dictionary form)
@@ -148,19 +155,21 @@ sub lcase
 	
 	# if we don't know the language, assume latin rules
 	
-	if ($lang eq 'unknown') { $lang = 'la' }
+	if ($lang eq 'unknown') { $lang = 'en' }
 	
 
 	my @string = @_;
 
 	for (@string)
 	{
-	
-		if ($lang eq 'la')
+		if ($lang eq 'en')
 		{
 			tr/A-Z/a-z/;
 		}
-	
+		if ($lang eq 'la')
+		{
+			tr/A-Z/a-z/;
+		}	
 		if ($lang eq 'grc')
 		{
 			s/^\*([\(\)\/\\\|\=\+]*)([a-z])/$2$1/;
@@ -176,7 +185,7 @@ sub tcase
 
 	# if we don't know the language, assume latin rules
 	
-	if ($lang eq 'unknown') { $lang = 'la' }
+	if ($lang eq 'unknown') { $lang = 'en' }
 
 	my @string = @_;
 	
@@ -185,11 +194,14 @@ sub tcase
 
 		$_ = lcase($lang, $_);
 
-		if ($lang eq 'la')
+		if ($lang eq 'en')
 		{
 			s/^([a-z])/uc($1)/e;
 		}
-	
+		if ($lang eq 'la')
+		{
+			s/^([a-z])/uc($1)/e;
+		}	
 		if ($lang eq 'grc')
 		{
 			s/^([a-z])([\(\)\/\\\|\=\+]*)/\*$2$1/;

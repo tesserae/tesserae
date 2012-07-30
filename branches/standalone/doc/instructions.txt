@@ -1,0 +1,100 @@
+This is a standalone version of Tesserae for James at Tufts; it's kind of a hack, I'm afraid.  Sorry for the bugs.
+
+Here's how to run your texts.
+
+1. Format the texts using the editor of your choice.
+
+   Texts should be verse, with verse lines separated by newlines.
+   Each line that you want indexed should be preceded by a unique identifier enclosed in angle brackets, of the form 
+
+   <name lineno>
+
+   where name is some text string referring to the work, and lineno is an identifier for the line within the work.  Tesserae expects something like classical loci, with an optional book number, poem number, etc. separated from the line number by periods.  For example,
+
+   <propertius 1.2.10>
+   <homer odyssey 9.1>
+   <ovid medicamina 101>
+
+   I think that other styles of line number might work, but I'm not sure how they'll be sorted.  Letters appended to the number showing variant or reordered lines seem to work pretty much as expected.
+
+   I think that lines not beginning with such an identifier will be ignored; blank lines separating paragraphs or sections certainly are fine.  I'm not sure what will happen if there is other material interspersed among the formatted text.
+
+   A good place to put the prepared texts is in the "texts" directory, but you don't have to.  If you create a subdirectory of "texts" and put files there, add_column.pl will assume that all texts in the same subdirectory are in the same language, and that the name of the subdirectory indicates the language.  E.g. 
+
+   texts/en/wordsworth.prelude.tess
+
+   will be assumed to be in language "en".  Sorting texts by language in this way is only really useful if you have stem dictionaries and want to make sure the right stemmer is applied to the right texts.
+
+   Formatted text files ought to have an extension ".tess".  Everything in the file name before that extension will be the identifier for that text in a Tesserae search.  Don't give two files the same name, even if they're in different directories, or one will probably overwrite the other in the database.
+
+2. Delete existing data -- optional.
+
+   The script "perl/clean.pl"  will delete the contents of the "data" directory.  If you think something is messed up, run this, or delete the files by hand. 
+
+   NB: If you've added your own stem dictionaries to "data/common", don't run this script without modifying it or they'll be deleted along with everything else.
+
+3. Add texts to the database.
+
+   "add_column.pl" adds formatted texts to the tesserae database.
+
+   run it this way: 
+
+   $ perl perl/add_column.pl [--lang LANG] FILE
+
+   where FILE is the formatted .tess text file.  LANG is an optional language designator.  This overrides the name of the texts subdirectory (described above).  Again, it's probably unnecessary unless you have a stem dictionary.
+
+   For example, this is the easiest way to get everything installed:
+
+   $ perl perl/add_column.pl texts/*
+
+4. Run a Tesserae search.
+
+   "read_table.pl" looks up two texts (identified by the filename preceding ".tess" extension) and returns a list of parallel phrases in XML format.
+
+   usage:
+
+   $ perl perl/read_table --source SOURCE --target TARGET [options]
+
+   SOURCE is the earlier, alluded-to text.  TARGET is the alluding text.
+
+   options:
+
+      --unit UNIT   the units of text to compare.  
+                    choices are "line" or "phrase."
+      --stop N      the size of the stoplist.  default is 25.
+                    the stoplist will be composed of the top N most-
+                    frequent words in the TARGET text.
+      --dist N      the maximum distance between matching tokens (in tokens).
+                    matches exceeding this span will be dropped.
+                    note that spaces count as tokens, so if you're thinking
+                    about the max number of words between matching words,
+                    cut this number approximately in half.  the default
+                    is 999, presumably high enough to filter out no matches.
+      --out FILE    the name of the output file.  if this is not set, 
+                    the default action is to send the XML output to stdout.
+
+   For example,
+
+   $ perl perl/read_table.pl --source cowper.task --target wordsworth.prelude --stop 35 --dist 10 --out tesresults.xml
+
+   Notes.  With Latin, this works pretty fast, even on large epics.  I found that with big English works (i.e. tens of thousands of lines each), it could really slow down unless you set the stop list relatively high.
+
+5. Convert XML results to something else -- optional.
+
+   Normally we view the results as an HTML table.  Other possibilities are human-friendly plain text and spreadsheet-friendly CSV.  The "xsl" directory contains some XSLT stylesheets to transform the results into these formats.
+
+   xsl/target.xsl  creates an HTML file with results sorted by location 
+                   in the target text.
+   xsl/source.xsl  likewise sorts by location in the source.  
+   xsl/keyword.xsl sorts alphabetically by the shared terms in the phrases 
+                   (not very useful).
+   xsl/score.xsl   sorts by score, but the scores assigned are for now
+                   relatively meaningless.
+   xsl/ttarget.xsl like the above but plain text instead of HTML
+   xsl/ctarget.xsl like the above by as comma separated values
+
+   For example,
+
+   $ xsltproc xsl/target.xsl tesresults.xml > results.html
+
+   
