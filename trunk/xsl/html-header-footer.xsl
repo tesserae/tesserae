@@ -1,9 +1,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-<xsl:variable name="url_cgi" select="'http://localhost/~chris/tesserae/cgi-bin'"/><!-- URL_CGI -->
-<xsl:variable name="url_css" select="'http://localhost/~chris/tesserae/css'"/><!-- URL_CSS -->
-<xsl:variable name="url_html" select="'http://localhost/~chris/tesserae/html'"/><!-- URL_HTML -->
-<xsl:variable name="url_image" select="'http://localhost/~chris/tesserae/images'"/><!-- URL_IMAGE -->
-<xsl:variable name="url_text" select="'http://localhost/~chris/tesserae/texts'"/><!-- URL_TEXT -->
+<xsl:variable name="url_cgi" select="'http://tesserae.caset.buffalo.edu/cgi-bin'"/><!-- URL_CGI -->
+<xsl:variable name="url_css" select="'http://tesserae.caset.buffalo.edu/css'"/><!-- URL_CSS -->
+<xsl:variable name="url_html" select="'http://tesserae.caset.buffalo.edu'"/><!-- URL_HTML -->
+<xsl:variable name="url_image" select="'http://tesserae.caset.buffalo.edu/images'"/><!-- URL_IMAGE -->
+<xsl:variable name="url_text" select="'http://tesserae.caset.buffalo.edu/texts'"/><!-- URL_TEXT -->
 	
 	<xsl:template match="/">
 		<html>

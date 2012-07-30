@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/tesserae/perl';	# PERL_PATH
 
 # add_column.pl
 #
@@ -15,6 +15,9 @@ use warnings;
 use TessSystemVars;
 
 use File::Path qw(mkpath rmtree);
+use File::Spec::Functions;
+use File::Basename;
+use Cwd;
 use Storable qw(nstore retrieve);
 use Getopt::Long;
 
@@ -37,12 +40,12 @@ my $split_punct = qr/(.*"?$phrase_delimiter"?)(\s*)(.*)/;
 # 
 
 my %abbr;
-my $file_abbr = "$fs_data/common/abbr";
+my $file_abbr = catfile($fs_data,'common', 'abbr');
 	
 if ( -s $file_abbr )	{  %abbr = %{retrieve($file_abbr)} }
 
 my %lang;
-my $file_lang = "$fs_data/common/lang";
+my $file_lang = catfile($fs_data, 'common', 'lang');
 
 if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
 
@@ -66,22 +69,21 @@ for (@force_grc) { $lang_override{$_} = "grc" }
 # get files to be processed from cmd line args
 #
 
-while (my $file_in = shift @ARGV)
-{
+while (my $file_in = shift @ARGV) {
 
 	# large files split into parts are kept in their
 	# own subdirectories; if an arg has no .tess extension
 	# it may be such a directory
 
-	if ($file_in !~ /\.tess/)
-	{
+	if ($file_in !~ /\.tess/) {
+	
 		# if it is, add all the .tess files in it
 		
-		if (-d $file_in)
-		{
+		if (-d $file_in) {
+
 			opendir (DH, $file_in);
 
-			my @parts = (grep {/\.part\./ && -f} map { "$file_in/$_" } readdir DH);
+			my @parts = (grep {/\.part\./ && -f} map { catfile($file_in, $_) } readdir DH);
 
 			push @ARGV, @parts;
 			
@@ -104,31 +106,30 @@ while (my $file_in = shift @ARGV)
 	# the header for the column will be the filename 
 	# minus the path and .tess extension
 
-	my $name = $file_in;
+	my ($directories, $name, $extension) = parsefile($file_in, '.tess');
 
-	$name =~ s/.*\///;
-	$name =~ s/\.tess$//;
-
+	next unless $extension eq ".tess";
+	
 	# get the language for this doc.  try:
 	# 1. user specified at cmd line
 	# 2. cached from a previous successful parse
 	# 3. somewhere in the path to the text
 	# - then give up
 
-	if ( defined $lang_override{$file_in} )
-	{
+	if ( defined $lang_override{$file_in} ) {
+	
 		$lang = $lang_override{$file_in};
 	}
-	elsif ( defined $lang{$name} )			
-	{ 
+	elsif ( defined $lang{$name} ) {
+
 		$lang = $lang{$name};
 	}
-	elsif ($file_in =~ /\/(la|grc)\//)
-	{
+	elsif ($file_in =~ /\/(la|grc)\//) {
+
 		$lang = $1;
 	}
-	else
-	{
+	else {
+
 		print STDERR "Can't guess the language of $file_in!  Skipping.\nTry again, specifying language using --la|grc.\n";
 		next;
 	}
@@ -154,8 +155,8 @@ while (my $file_in = shift @ARGV)
 	my %stem;
 	my %syn;
 	
-	my $file_stem = "$fs_data/common/$lang.stem.cache";
-	my $file_syn  = "$fs_data/common/$lang.syn.cache";
+	my $file_stem = catfile($fs_data, 'common', "$lang.stem.cache");
+	my $file_syn  = catfile($fs_data, 'common', "$lang.syn.cache");
 	
 	my $no_stems;
 	my $no_syns;
@@ -451,11 +452,11 @@ while (my $file_in = shift @ARGV)
 	
 	# make sure the directory exists
 	
-	my $path_data = "$fs_data/v3/$lang/$name";
+	my $path_data = catfile($fs_data, 'v3', $lang, $name);
 	
 	unless (-d $path_data ) { mkpath($path_data) }
 
-	my $file_out = "$path_data/$name";
+	my $file_out = catfile($path_data, $name);
 
 	print "writing $file_out.token\n";
 	nstore \@token, "$file_out.token";
