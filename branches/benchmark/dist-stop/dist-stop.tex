@@ -1,0 +1,119 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{subfig}
+\usepackage{fontspec}
+
+\setmainfont{Arial}
+
+\begin{document}
+	\title{Early report on Tesserae V3 benchmark results}
+	\author{Chris Forstall}
+
+	\maketitle
+	
+	\section{Introduction}
+	
+	The goal for the NEH Start-Up Grant period is for Tesserae V3 to achieve 50\% recall of the parallels noted by the commentators. As a baseline, V1 and V2 combined caught about 30\% of the commentators' parallels.   More generally, we hope to increase the number of Type 4 and 5 results while decreasing the number of Types 1 and 2.
+	
+	By default, V3 returns all phrase-pairs sharing two or more common lemmas.  While in theory this was also the goal of V2, many parallels were being lost at the time of our last benchmark test due to a bug in the code.  This means that simply by returning all the parallels meeting the original criteria, we have already increased our recall over the reported V1+V2 results.  On the other hand, the common experience of V3 users is that the additional high-grade parallels are more than compensated for by a vast increase in the results.
+	
+	This means that we go into the NEH grant period with a particular emphasis on precision rather than recall, that is, on narrowing down the results we get by default to weed out type 1 and type 2 parallels rather than trying primarily to capture new parallels of types 4 and 5.
+	
+	\section{Version 3 Benchmark}
+	
+	Here, we repeat the benchmark Lucan-Vergil test on V3, to determine the baseline performance of the new program.  In this test, a V3 search was run on Book 1 of Lucan's Pharsalia, looking for allusions to any part of Vergil's Aeneid.  The search unit was phrases, the feature set was stems, as in the last benchmark test.  We used revision 152 of the V3 search, \emph{read_table.pl}.
+	
+	The combination of the V1 and V2 tests with allusions culled from various commentators produced a benchmark set of 3418 parallels.  Each of these parallels has been hand-graded for literary significance and assigned a Type in the range 1 (worst) to 5 (best).  The V3 results were checked for each of these benchmark parallels.  Results are shown in Table \ref{baseline}.
+	
+	\begin{table}
+		
+		\centering
+		
+		\caption{\label{baseline} The baseline performance of V3 against the benchmark set.}
+		
+		\vspace{1em}
+		
+		\begin{tabular}{rrrr}
+			 	
+							 &		returned	& out of & recall rate		\\
+			Type 1		 &		427		&	491	& 87\%				\\
+			Type 2		 &		2072		&	2284	& 91\%				\\
+			Type 3		 &		368		&	425	& 87\%				\\
+			Type 4		 &		93			&	114	& 82\%				\\
+			Type 5		 &		75			&	101	& 74\%				\\
+			commentators &		283		&	377	& 75\%				\\
+			\hline
+			total results returned	&	101,502 &  &					\\
+		\end{tabular}
+		
+	\end{table}
+	
+	These results confirm that we have already achieved and surpassed our recall goal for the grant period.  However, it is equally clear that precision must be improved.  The total number of results is enough to overwhelm even the most serious user, and the proportion of low-grade parallels is far too high.  The remainder of this paper will look at simple filtering mechanisms that may improve the proportion of good results in V3 output.
+	
+	\section{Filters}
+	
+	Here we test two simple filters: a stop list, and a maxmimum limit on the distance between matching terms.  The stop list we use is based on frequency.  All the stems in the corpus are ranked according to the number of times any word which could possibly be derived from that stem appears.  Unfortunately this causes a few predictable errors: \emph{edo}, for example, has a hugely inflated ranking because its inflected forms include \emph{est}.  In general, however, the ranking method seems to work.  The notion that the most common words in a work will carry little information is widely accepted in textual analysis, though not undisputed.  Here, we form stoplists of various lengths by taking the top $n$ words from the ranked list.  Matches on stop words are not counted toward the minimum 2 words required for a parallel to be returned.
+	
+	That the distance between matching words is relevant is intuitive when reading Type 1 and Type 2 parallels.  In many cases, a grammatical “sentence” stretches over 5–10 lines, with several new ideas or clauses intervening between the matching terms.  In practice, it can be difficult to quantify the span of the allusion.  Where only two words match in each phrase, the distance can be taken to be the sum of the distances between matching words in each.  But where more than two words are involved in at least one, it can sometimes be difficult to determine which words ought to be counted.  For example, two significant words may be placed closely together in each of the two phrases, but by chance some word such as \emph{si} or \emph{ubi} is also shared by both phrases in an appended clause obviously (to the human reader) unrelated to the allusion.  Should this distance be included?  Included but discounted somehow?  Discarded altogether?  In the present preliminary test, we use the simplest measure of distance, which we call \emph{span}.  The span of a parallel is the sum of the greatest distances between matching words in the two sentences.\footnote{Two things should be noted about the distance metric.  First, it may prove unsustainable should we evenutally move to searches which are not based on words, such as context or narratological features.  Second, we are in other work attempting to develop a more finely tuned distance metric which uses word frequency to zero in on the most significant words in the allusion.}  Matches whose span exceeded a particular threshold were discarded.
+	
+	In this experiment we varied the stoplist from 0 to 250 of the most frequent words.  At the same time, we varied the maximum span from 5 to 50 tokens.  Generally speaking, every word is one token and every string of inter-word space and/or punctuation characters is one token, so that a max span of 50 tokens is approximately equivalent to a max span of 25 words.
+	
+	Figure \ref{num-results} shows the total number of results V3 returned for the benchmark Lucan–Vergil search for each combination of stop list size and max span.  The general trends are obvious and intuitive: a larger stop list produces fewer results, as does a smaller max span.  The dopoff of results with increasing stop list size was very rapid for small stop lists: close to an order of magnitude difference between no stop list and one of 50 words; but the rate of decline was less as stoplist size increased.  The effect of max span, on the other hand, was roughly linear.
+	
+	\begin{figure}
+		
+		\centering
+		
+		\includegraphics[width=\textwidth]{num-results.png}
+		
+		\caption{\label{num-results} Total number of results returned by Tesserae V3 with various stop list and maximum span settings.  Phrase-based search with stem matching on Lucan \emph{Pharsalia} Book 1 versus Vergil \emph{Aeneid}. Note that the y-axis is logarithmic.}
+	\end{figure}
+	
+	
+	\begin{tabular}{ll}
+	\hline
+	1 & et\\
+	2 & qui\\
+	3 & quis\\
+	4 & sum\\
+	5 & in\\
+	\\
+	6 & hic\\
+	7 & edo\\
+	8 & tu\\
+	9 & neque\\
+	10 & non\\
+	\\
+	11 & ego\\
+	12 & ille\\
+	13 & cos\\
+	14 & atque\\
+	15 & cum\\
+	\\
+	16 & ut\\
+	17 & fero\\
+	18 & do\\
+	19 & iam\\
+	20 & si\\
+	\\
+	21 & sion\\
+	22 & video\\
+	23 & per\\
+	24 & ad\\
+	25 & omnis\\
+	\\
+	26 & ipse\\
+	27 & magnus\\
+	28 & sed\\
+	29 & ab\\
+	30 & quo\\
+	\end{tabular}
+	\end{table}
+	
+	
+\end{document}  
+	
+	
+	
+	
