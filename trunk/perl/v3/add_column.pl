@@ -70,45 +70,37 @@ for (@force_grc) { $lang_override{$_} = "grc" }
 #
 
 while (my $file_in = shift @ARGV) {
-
+	
 	# large files split into parts are kept in their
 	# own subdirectories; if an arg has no .tess extension
 	# it may be such a directory
 
-	if ($file_in !~ /\.tess/) {
-	
-		# if it is, add all the .tess files in it
-		
-		if (-d $file_in) {
+	if (-d $file_in) {
 
-			opendir (DH, $file_in);
+		opendir (DH, $file_in);
 
-			my @parts = (grep {/\.part\./ && -f} map { catfile($file_in, $_) } readdir DH);
+		my @parts = (grep {/\.part\./ && -f} map { catfile($file_in, $_) } readdir DH);
 
-			push @ARGV, @parts;
+		push @ARGV, @parts;
 			
-			# if lang_override was set for the directory,
-			# apply to all the contents
+		# if lang_override was set for the directory,
+		# apply to all the contents
 			
-			if (defined $lang_override{$file_in}) { 
+		if (defined $lang_override{$file_in}) { 
 				
-				for (@parts) { $lang_override{$_} = $lang_override{$file_in}}
-			}
-
-			closedir (DH);
+			for (@parts) { $lang_override{$_} = $lang_override{$file_in}}
 		}
+
+		closedir (DH);
 		
 		# move on to the next full text
 
 		next;
 	}
-
-	# the header for the column will be the filename 
-	# minus the path and .tess extension
-
-	my ($directories, $name, $extension) = parsefile($file_in, '.tess');
-
-	next unless $extension eq ".tess";
+	
+	my ($name, $path, $suffix) = fileparse($file_in, qr/\.[^.]*/);
+	
+	next unless ($suffix eq ".tess");
 	
 	# get the language for this doc.  try:
 	# 1. user specified at cmd line
@@ -467,19 +459,29 @@ while (my $file_in = shift @ARGV) {
 	print "writing $file_out.phrase\n";
 	nstore \@phrase, "$file_out.phrase";
 
-	print "writing $file_out.index_form\n";
-	nstore \%index_form, "$file_out.index_form";
+	print "writing $file_out.index_word\n";
+	nstore \%index_form, "$file_out.index_word";
 	
-	unless ($no_stems) {
+	print "writing $file_out.freq_word\n";
+	nstore freq_from_index(\%index_form), "$file_out.freq_word";
 
+	unless ($no_stems) {
+		
 		print "writing $file_out.index_stem\n";
 		nstore \%index_stem, "$file_out.index_stem";
+		
+		print "writing $file_out.freq_stem\n";
+		nstore freq_from_index(\%index_stem), "$file_out.freq_stem";
 	}
 	unless ($no_syns) {
-
+		
 		print "writing $file_out.index_syn\n";
 		nstore \%index_syn, "$file_out.index_syn";
+		
+		print "writing $file_out.freq_syn\n";
+		nstore freq_from_index(\%index_syn), "$file_out.freq_syn";
 	}
+
 
 	# add this ref to the database of abbreviations
 
@@ -499,49 +501,25 @@ while (my $file_in = shift @ARGV) {
 }
 
 
-#
-
-sub print_rec {
-
-	my $href = shift;
+sub freq_from_index {
 	
-	my %rec = %$href;
+	my $index_ref = shift;
 	
-	my $string = "";
+	my %index = %$index_ref;
 	
-	for my $key (keys %rec) {
+	my %freq;
 	
-		my $value;
+	my $total = 0;
+	
+	for (keys %index) {
 		
-		if (ref($rec{$key}) eq "") {
-			
-			$value = $rec{$key};
-		}
-		
-		if (ref($rec{$key}) eq "SCALAR") {
-			
-			$value = ${$rec{$key}};
-		}
-		
-		if (ref($rec{$key}) eq "ARRAY") {
-		
-			$value = '(' . join(", ", @{$rec{$key}}) . ')';
-		}
-		
-		if (ref($rec{$key}) eq "HASH") {
-		
-			my @pairs;
-			
-			for (keys %{$rec{$key}}) {
-			
-				push @pairs, "$_ => $rec{$key}{$_}";
-			}
-			
-			$value = '(' . join(", ", @pairs) . ')';
-		}
-		
- 		$string .= "$key: $value\n";
+		$total += scalar(@{$index{$_}});
 	}
 	
-	return $string;
+	for (keys %index) {
+		
+		$freq{$_} = scalar(@{$index{$_}})/$total;
+	}
+	
+	return \%freq;
 }

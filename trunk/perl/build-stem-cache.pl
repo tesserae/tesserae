@@ -17,11 +17,12 @@ use TessSystemVars;
 use EasyProgressBar;
 
 use Storable qw(nstore retrieve);
+use File::Spec::Functions;
 
-my $lang = 'la';
+my $lang = (shift @ARGV) || 'la';
 
-my $file_csv = "$fs_data/common/$lang.lexicon.csv";
-my $file_cache = "$fs_data/common/$lang.stem.cache";
+my $file_csv   = catfile($fs_data, 'common', "$lang.lexicon.csv");
+my $file_cache = catfile($fs_data, 'common', "$lang.stem.cache");
 
 my %stem;
 

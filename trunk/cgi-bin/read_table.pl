@@ -15,6 +15,7 @@ use warnings;
 
 use Getopt::Long;
 use Storable qw(nstore retrieve);
+use File::Spec;
 
 use TessSystemVars;
 use EasyProgressBar;
@@ -34,7 +35,7 @@ my $usage = <<END;
 	   --stopwords 0..250          = number of stopwords.      default is 10.
 	
 	   --no-cgi		= run from terminal not web interface
-	   --quiet     = don't print progress info to stderr
+	   --quiet      = do not print progress info to stderr
 
 END
 
@@ -108,7 +109,7 @@ unless ($no_cgi) {
 
 	print header();
 
-	my $stylesheet = "$url_css/style.css";
+	my $stylesheet = catfile($url_css, "style.css");
 
 	print <<END;
 
@@ -128,7 +129,7 @@ END
 
 	opendir(my $dh, $fs_tmp) || die "can't opendir $fs_tmp: $!";
 
-	my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}\.xml/ && -f "$fs_tmp/$_" } readdir($dh);
+	my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}\.xml/ && -f catfile($fs_tmp, $_) } readdir($dh);
 
 	closedir $dh;
 
@@ -158,14 +159,14 @@ END
 
 	# open the new session file for output
 
-	$file_results = "$fs_tmp/tesresults-$session.bin";
+	$file_results = catfile($fs_tmp, "tesresults-$session.bin");
 }
 
 #
 # abbreviations of canonical citation refs
 #
 
-my $file_abbr = "$fs_data/common/abbr";
+my $file_abbr = catfile($fs_data, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
 # $lang sets the language of input texts
@@ -175,7 +176,7 @@ my %abbr = %{ retrieve($file_abbr) };
 #   for the source and target independently
 # - choices are "grc" and "la"
 
-my $file_lang = "$fs_data/common/lang";
+my $file_lang = catfile($fs_data, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
 # if web input doesn't seem to be there, 
@@ -196,7 +197,7 @@ else
 	$source		= $query->param('source')   || "";
 	$target		= $query->param('target') 	 || "";
 	$unit     	= $query->param('unit') 	 || "line";
-	$feature		= $query->param('feature')	 || "stem";
+	$feature	= $query->param('feature')	 || "stem";
 	$stopwords	= defined($query->param('stoplist')) ? $query->param('stoplist') : 10;
 
 	if ($source eq "" or $target eq "")
@@ -244,7 +245,7 @@ unless ($quiet) {
 # calculate feature frequencies
 #
 
-my %freq = %{ retrieve( "$fs_data/common/$lang{$target}.${feature}.count" )};
+my %freq = %{ retrieve( "$fs_data/v3/$lang{$target}/$target/$target.freq_${feature}")};
 
 #
 # create stop list
@@ -260,6 +261,8 @@ else {
 	
 	@stoplist = ();
 }
+
+unless ($quiet) { print STDERR "stoplist: " . join(",", @stoplist) . "\n"}
 
 #
 # if the featureset is synonyms, get the parameters used

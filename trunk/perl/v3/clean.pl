@@ -40,5 +40,5 @@ if ($clean{text}) {
 
 if ($clean{dict}) {
 
-	unlink glob(catfile($fs_data, 'common', 'la.*'));
+	unlink glob(catfile($fs_data, 'common', 'la.*.cache'));
 }
