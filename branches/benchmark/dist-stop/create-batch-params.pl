@@ -15,20 +15,27 @@ my @settings;
 
 for (my $dist = 5; $dist <= 40; $dist += 5) {
 
-	for (my $stop = 120; $stop > 40; $stop -= 5) {
+	for (my $stop = 0; $stop < 40; $stop ++) {
 		
 		push @settings, {dist => $dist, stop => $stop};
 	}
 	
-	for (my $stop = 40; $stop >= 0; $stop --) {
+	for (my $stop = 40; $stop <= 120; $stop += 5) {
 		
 		push @settings, {dist => $dist, stop => $stop};
-	}
+	}	
 }
 
-my $size = int(scalar(@settings)/($parcels+1));
+my $defaultsize = int(scalar(@settings) / $parcels);
+
 
 for my $i (1..$parcels) {
+	
+	my $size;
+	
+	if    ($i == 0)        { $size = int($defaultsize/2) }
+	elsif ($i != $parcels) { $size = $defaultsize }
+	else                   { $size = scalar(@settings) }
 
 	open FH, ">", "batch.$i";
 	
@@ -37,16 +44,6 @@ for my $i (1..$parcels) {
 		my %s = %{shift @settings};
 		
 		print FH "$s{dist}\t$s{stop}\n";
-	}
-	
-	if ($i == $parcels) {
-	
-		for (0..$#settings) {
-		
-			my %s = %{shift @settings};
-			
-			print FH "$s{dist}\t$s{stop}\n";			
-		}
 	}
 	
 	close FH;
