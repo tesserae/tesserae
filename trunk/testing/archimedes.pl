@@ -4,6 +4,12 @@ use warnings;
 use Frontier::Client;
 use Data::Dumper;
 
+use Getopt::Long;
+
+my $lang = "la";
+
+GetOptions("lang=s" => \$lang);
+
 my @words = @ARGV;
 
 if ( $#words < 0 )
@@ -11,14 +17,8 @@ if ( $#words < 0 )
 	die "Specify words to look up on command line";
 }
 
-my $lang;
-
-if ($words[0] =~ s/^-//)
-{
-	if (lc $words[0] eq "grc") { $lang = "-GRC" 	}
-	else								{ $lang = "-LA"	}
-	shift @words;
-}
+if (lc $lang eq "grc") { $lang = "-GRC" 	}
+else			       { $lang = "-LA"	}
 
 my $client = Frontier::Client->new( url => "http://archimedes.mpiwg-berlin.mpg.de:8098/RPC2", debug => 1);
 

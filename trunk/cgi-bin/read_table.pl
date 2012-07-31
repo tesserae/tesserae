@@ -15,7 +15,7 @@ use warnings;
 
 use Getopt::Long;
 use Storable qw(nstore retrieve);
-use File::Spec;
+use File::Spec::Functions;
 
 use TessSystemVars;
 use EasyProgressBar;
