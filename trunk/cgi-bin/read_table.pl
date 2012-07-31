@@ -65,6 +65,11 @@ my $feature = "stem";
 
 my $stopwords = 10;
 
+# stoplist_basis is where we draw our feature
+# frequencies from: source, target, or corpus
+
+my $stoplist_basis = "corpus";
+
 # output file
 
 my $file_results = "tesresults.bin";
@@ -82,20 +87,26 @@ my $no_cgi = 0;
 
 my $quiet = 0;
 
-# maximum span between matching tokens
+# maximum distance between matching tokens
 
 my $max_dist = 999;
 
+# metric for measuring distance
+
+my $distance_metric = "span";
+
 GetOptions( 
-	      'source=s'	=> \$source,
-			'target=s'	=> \$target,
-			'unit=s'	=> \$unit,
-			'feature=s'	=> \$feature,
-			'stopwords=i' => \$stopwords, 
-			'no-cgi'	=> \$no_cgi,
-			'binary=s' => \$file_results,
-			'distance=i' => \$max_dist,
-			'quiet' 	=> \$quiet );
+			'source=s'     => \$source,
+			'target=s'     => \$target,
+			'unit=s'       => \$unit,
+			'feature=s'    => \$feature,
+			'stopwords=i'  => \$stopwords, 
+			'stbasis=s'    => \$stoplist_basis,
+			'no-cgi'       => \$no_cgi,
+			'binary=s'     => \$file_results,
+			'distance=i'   => \$max_dist,
+			'dibasis=s'    => \$distance_metric,
+			'quiet'        => \$quiet );
 
 
 # html header
@@ -237,7 +248,9 @@ unless ($quiet) {
 	print STDERR "feature=$feature\n";
 	print STDERR "unit=$unit\n";
 	print STDERR "stopwords=$stopwords\n";
+	print STDERR "stoplist basis=$stoplist_basis\n";
 	print STDERR "max_dist=$max_dist\n";
+	print STDERR "distance basis=$distance_metric\n";
 }
 
 
@@ -245,27 +258,23 @@ unless ($quiet) {
 # calculate feature frequencies
 #
 
-# frequencies for the whole corpus
-# my $file_freq = catfile($fs_data, 'common', 'la.'.$feature.'.freq';
+# token frequencies from the target text
 
-# frequencies for the target text
-my $file_freq = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_' . $feature);
-my %freq = %{retrieve( $file_freq)};
+my $file_freq_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_word');
+
+my %freq_target = %{retrieve( $file_freq_target)};
+
+# token frequencies from the target text
+
+my $file_freq_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_word');
+
+my %freq_source = %{retrieve( $file_freq_source)};
 
 #
-# create stop list
+# basis for stoplist is feature frequency from one or both texts
 #
 
-my @stoplist = sort {$freq{$b} <=> $freq{$a}} keys %freq;
-
-if ($stopwords > 0) {
-	
-	@stoplist = @stoplist[0..$stopwords-1];
-}
-else {
-	
-	@stoplist = ();
-}
+my @stoplist = @{load_stoplist($stoplist_basis, $stopwords)};
 
 unless ($quiet) { print STDERR "stoplist: " . join(",", @stoplist) . "\n"}
 
@@ -445,7 +454,7 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 		#   of word frequency and distance between words
 		
 		my $score;
-		my $distance = abs($match{$unit_id_target}{$unit_id_source}{TARGET}[-1] - $match{$unit_id_target}{$unit_id_source}{TARGET}[0]);
+		my $distance = dist(\%{$match{$unit_id_target}{$unit_id_source}}, $distance_metric);
 		
 		# examine each shared term in the target in order by position
 		# within the line
@@ -458,7 +467,7 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 						
 			# add the frequency score for this term
 			
-			$score += 1;
+			$score += 1/$freq_target{$token_target[$token_id_target]{FORM}};
 		}
 
 		#
@@ -477,7 +486,7 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 
 			# add the frequency score for this term
 
-			$score += 1;
+			$score += 1/$freq_source{$token_source[$token_id_source]{FORM}};
 		}
 		
 		if ($distance > $max_dist) {
@@ -554,3 +563,114 @@ print <<END unless ($no_cgi);
 </html>
 
 END
+
+
+#
+# subroutines
+#
+
+#
+# dist : calculate the distance between matching terms
+#
+#   used in determining match scores
+#   and in filtering out bad results
+
+sub dist {
+
+	my ($match_ref, $metric) = @_[0,1];
+	
+	my %match = %$match_ref;
+	
+	my $dist;
+	
+	if ($metric eq "span") {
+	
+		$dist  = abs($match{TARGET}[-1] - $match{TARGET}[0]);
+		$dist += abs($match{SOURCE}[-1] - $match{SOURCE}[0]);
+	}
+	elsif ($metric eq "span-target") {
+		
+		$dist = abs($match{TARGET}[-1] - $match{TARGET}[0]);
+	}
+	elsif ($metric eq "span-source") {
+		
+		$dist = abs($match{SOURCE}[-1] - $match{SOURCE}[0]);
+	}
+	elsif ($metric eq "freq") {
+		
+		my @t = sort {$freq_target{$token_target[$a]{FORM}} <=> $freq_target{$token_target[$b]{FORM}}} @{$match{TARGET}}; 
+			
+		$dist  = abs($t[0] - $t[1]);
+
+		my @s = sort {$freq_source{$token_source[$a]{FORM}} <=> $freq_source{$token_source[$b]{FORM}}} @{$match{SOURCE}}; 
+		
+		$dist += abs($s[0] - $s[1]);
+	}
+	
+	return $dist;
+}
+
+sub load_stoplist {
+
+	my ($stoplist_basis, $stopwords) = @_[0,1];
+	
+	my %basis;
+	my @stoplist;
+	
+	if ($stoplist_basis eq "target") {
+		
+		my $file = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_' . $feature);
+		
+		%basis = %{retrieve($file)};
+	}
+	
+	elsif ($stoplist_basis eq "source") {
+		
+		my $file = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_' . $feature);
+
+		%basis = %{retrieve($file)};		
+	}
+	
+	elsif ($stoplist_basis eq "corpus") {
+
+		my $file = catfile($fs_data, 'common', $lang{$target} . '.' . $feature . '.freq');
+		
+		%basis = %{retrieve($file)};
+	}
+	
+	elsif ($stoplist_basis eq "both") {
+		
+		my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_' . $feature);
+		
+		%basis = %{retrieve($file_target)};
+		
+		my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_' . $feature);
+		
+		my %basis2 = %{retrieve($file_source)};
+		
+		for (keys %basis2) {
+		
+			if (defined $basis{$_}) {
+			
+				$basis{$_} = ($basis{$_} + $basis2{$_})/2;
+			}
+			else {
+			
+				$basis{$_} = $basis2{$_};
+			}
+		}
+	}
+		
+	@stoplist = sort {$basis{$b} <=> $basis{$a}} keys %basis;
+	
+	if ($stopwords > 0) {
+		
+		@stoplist = @stoplist[0..$stopwords-1];
+	}
+	else {
+		
+		@stoplist = ();
+	}
+
+	return \@stoplist;
+}
