@@ -1,5 +1,5 @@
 #
-# big_table_frequencies.pl
+# corpus-stats.pl
 #
 # create lists of most frequent tokens by rank order
 # in order to calculate stop words
@@ -12,6 +12,7 @@ use lib '/Users/chris/tesserae/perl';	# PERL_PATH
 
 use TessSystemVars;
 
+use File::Spec::Functions;
 use Storable qw(nstore retrieve);
 
 #
@@ -20,8 +21,8 @@ use Storable qw(nstore retrieve);
 
 my @lang;
 
-for (@ARGV)
-{
+for (@ARGV) {
+
 	if (/gr/)	{ push @lang, "grc" }
 	if (/la/)	{ push @lang, "la"	}
 }
@@ -35,16 +36,22 @@ for (@ARGV)
 # use the cached stem dictionary
 #
 
-for my $lang(@lang)
-{
+for my $lang(@lang) {
 
-	my $file_stem_cache = "$fs_data/common/$lang.stem.cache";
+	my $file_stem_cache = catfile($fs_data, 'common', $lang . '.stem.cache');
+	my $file_syn_cache  = catfile($fs_data, 'common', $lang . '.syn.cache');
+	
+	my $file_freq_word  = catfile($fs_data, 'common', $lang . '.word.freq');
+	my $file_freq_stem  = catfile($fs_data, 'common', $lang . '.stem.freq');
+	my $file_freq_syn   = catfile($fs_data, 'common', $lang . '.syn.freq');
 	
 	# get a list of all the word counts
 
 	my @texts;
+	
+	my $dir = catdir($fs_data, 'v3', $lang);
 
-	opendir (DH, "$fs_data/v3/$lang");
+	opendir (DH, $dir);
 
 	push @texts, (grep {!/\.part\./ && !/^\./} readdir DH);
 
@@ -57,8 +64,7 @@ for my $lang(@lang)
 	my %count_word;
 	my %freq_word;
 
-	for my $text (@texts)
-	{
+	for my $text (@texts) {
 	
 		print STDERR "reading $text\n";
 		
@@ -69,7 +75,9 @@ for my $lang(@lang)
 
 		# retrieve the count
 		
-		my %index = %{retrieve("$fs_data/v3/$lang/$text/$text.index_form")};
+		my $file_index_word = catfile($fs_data, 'v3', $lang, $text, $text.'.index_word');
+		
+		my %index = %{retrieve($file_index_word)};
 
 		for (keys %index) { 
 			
@@ -85,13 +93,9 @@ for my $lang(@lang)
 
 	# save
 	
-	print STDERR "writing $fs_data/common/$lang.word.count\n";
-
-	nstore \%count_word, "$fs_data/common/$lang.word.count";
-
-	print STDERR "writing $fs_data/common/$lang.word.freq\n";
+	print STDERR "writing $file_freq_word\n";
 	
-	nstore \%freq_word, "$fs_data/common/$lang.word.freq";	
+	nstore \%freq_word, $file_freq_word;	
 	
 	print STDERR "\n";
 	
@@ -132,13 +136,9 @@ for my $lang(@lang)
 	
 	# save
 
-	print STDERR "writing $fs_data/common/$lang.stem.count\n";
-
-	nstore \%count_stem, "$fs_data/common/$lang.stem.count";
-
-	print STDERR "writing $fs_data/common/$lang.stem.freq\n";
+	print STDERR "writing $file_freq_stem\n";
 	
-	nstore \%freq_stem, "$fs_data/common/$lang.stem.freq";
+	nstore \%freq_stem, $file_freq_stem;
 		
 	print STDERR "\n";
 	
@@ -146,8 +146,6 @@ for my $lang(@lang)
 	# semantic counts
 	#
 
-	my $file_syn_cache = "$fs_data/common/$lang.syn.cache";
-	
 	print STDERR "reading $file_syn_cache\n";
 	
 	my %syn_cache = %{retrieve($file_syn_cache)};
@@ -219,13 +217,9 @@ for my $lang(@lang)
 	
 	# save
 	
-	print STDERR "writing $fs_data/common/$lang.syn.count\n";
+	print STDERR "writing $file_freq_syn\n";
 	
-	nstore \%count_syn, "$fs_data/common/$lang.syn.count";
-
-	print STDERR "writing $fs_data/common/$lang.syn.freq\n";
-	
-	nstore \%freq_syn, "$fs_data/common/$lang.syn.freq";
+	nstore \%freq_syn, $file_freq_syn;
 		
 	print STDERR "\n";
 	

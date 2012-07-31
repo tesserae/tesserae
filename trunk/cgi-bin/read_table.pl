@@ -245,7 +245,12 @@ unless ($quiet) {
 # calculate feature frequencies
 #
 
-my %freq = %{ retrieve( "$fs_data/v3/$lang{$target}/$target/$target.freq_${feature}")};
+# frequencies for the whole corpus
+# my $file_freq = catfile($fs_data, 'common', 'la.'.$feature.'.freq';
+
+# frequencies for the target text
+my $file_freq = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_' . $feature);
+my %freq = %{retrieve( $file_freq)};
 
 #
 # create stop list
