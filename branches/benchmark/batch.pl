@@ -6,20 +6,30 @@
 use strict;
 use warnings;
 
-use lib '/Users/chris/Sites/tesserae/perl';
+use lib '/Users/chris/tesserae/perl';
 use TessSystemVars;
 use EasyProgressBar;
 
-# static settings
+use Getopt::Long;
 
-my $feature = "stem";
-my $unit    = "phrase";
 
 # 
 # settings
 #
 
+my $feature = "stem";
+my $unit    = "phrase";
+my $stoplist_basis = "corpus";
+my $distance_metric = "span";
 my $debug = 0;
+
+GetOptions( 
+	"feature=s" => \$feature,
+	"unit=s"    => \$unit,
+	"stbasis=s" => \$stoplist_basis,
+	"dibasis=s" => \$distance_metric,
+	"debug|verbose" => \$debug
+	);
 
 my $file = shift @ARGV || die "specify file to run\n";
 
@@ -47,6 +57,7 @@ for (@run) {
 	
 	docmd("$fs_cgi/read_table.pl --target lucan.pharsalia.part.1 --source vergil.aeneid"
 		  . " --no-cgi --feature $feature --unit $unit --stopwords $stop --dist $dist"
+		  . " --dibasis $distance_metric --stbasis $stoplist_basis"
 		  . ($debug ? "" : " --quiet")
 		  . " --bin $file.tesresults.bin");
 			

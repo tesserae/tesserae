@@ -13,7 +13,7 @@ use warnings;
 use Storable;
 use Getopt::Long;
 
-use lib '/Users/chris/Sites/tesserae/perl';
+use lib '/Users/chris/tesserae/perl';
 use EasyProgressBar;
 
 my $usage = "usage: perl check-recall [--cache CACHE] TESRESULTS\n";

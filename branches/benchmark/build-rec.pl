@@ -24,14 +24,15 @@ use Storable qw(nstore retrieve);
 
 use Getopt::Long;
 
+use lib '/Users/chris/tesserae/perl';
+use TessSystemVars;
+
 # lowest similarity accaptable without remark
 
 my $warn_threshold = .18;
 my $check_alts_threshold = .3;
 
 # location of the data
-
-my $fs_data = "/Users/chris/Sites/tesserae/data";
 
 my %file = (
 	
