@@ -1,4 +1,4 @@
-x <- read.table("results.stem.source.txt")
+x <- read.table("results.corpus.stem.di-freq.txt")
 colnames(x) <- c("stop", "dist", "ret", "t1", "t2", "t3", "t4", "t5", "com")
 
 # ratio of good : bad results 

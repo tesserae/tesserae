@@ -1,3 +1,5 @@
+#! /opt/local/bin/perl
+
 # check-recall.pl
 #
 # this checks Tesserae output against a benchmark set
@@ -23,9 +25,10 @@ my $usage = "usage: perl check-recall [--cache CACHE] TESRESULTS\n";
 #
 
 my $file_cache = "data/rec.cache";
+my $table  = 0;
 my $detail = 0;
 
-GetOptions("cache=s" => \$file_cache, "verbose|detail" => \$detail);
+GetOptions("cache=s" => \$file_cache, "verbose|detail" => \$detail, "table" => \$table);
 
 #
 # the file to read
@@ -55,33 +58,39 @@ my %tess = %{ retrieve($file_tess) };
 
 print "tesserae returned $tess{META}{TOTAL} results\n";
 
-my %in_tess;
 my @count = (0)x7;
+my @score = (0)x7;
 my @total = (0)x7;
-
-my $commentators = 0;
+my @order = ();
 
 # do the comparison
 
 print STDERR "comparing\n" unless $quiet;
 	
-for (@bench) {
+for my $i (0..$#bench) {
 	
-	$total[$$_{SCORE}]++;
+	my %rec = %{$bench[$i]};
+	
+	$total[$rec{SCORE}]++;
 
-	if (defined $$_{AUTH}) {
+	if (defined $rec{AUTH}) {
 		
-		$commentators++;
+		$total[6]++;
 	}
 	
-	if (defined $tess{$$_{BC_PHRASEID}}{$$_{AEN_PHRASEID}}) { 
+	if (defined $tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}) { 
 		
-		$count[$$_{SCORE}]++;
+		$count[$rec{SCORE}]++;
+		$score[$rec{SCORE}] += $tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}{SCORE};
 
-		if (defined $$_{AUTH}) {
+		if (defined $rec{AUTH}) {
 			
 			$count[6]++;
+			$score[6] += $tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}{SCORE};
+
 		}
+		
+		push @order, $i;
 	}
 }	
 
@@ -89,16 +98,17 @@ for (@bench) {
 
 # print results
 
-if ($detail) {
-	for (1..5) {
-		
-		my $rate = $total[$_] > 0 ? sprintf("%.2f", $count[$_]/$total[$_]) : 'NA';
+if    ($table)		{ print_html_table()  }
+
+elsif ($detail)     { print_detail() }
+
+else {
+
+	my $rate =  $total[6] > 0 ? sprintf("%.2f", $count[6]/$total[6]) : 'NA';
 	
-		print "$_\t$count[$_]\t$total[$_]\t$rate\n";
-	}
+	print join("\t", "comm.", $count[6], $total[6], $rate) . "\n";	
 }
 
-print "comm.\t$count[6]\t$commentators\t" . sprintf("%.2f", $count[6]/$commentators) . "\n";
 
 
 #
@@ -158,4 +168,46 @@ sub compare {
 	}
 	
 	return $exists;
+}
+
+
+#
+# output subroutines
+#
+
+sub print_detail {
+	
+	if ($detail) {
+		for (1..5) {
+			
+			my $rate =  $total[$_] > 0 ? sprintf("%.2f", $count[$_]/$total[$_]) : 'NA';
+			my $score = $count[$_] > 0 ? sprintf("%.2f", $score[$_]/$count[$_]) : 'NA';
+			
+			print join("\t", $_, $count[$_], $total[$_], $rate, $score) . "\n";
+		}
+	}
+	
+	my $rate =  $total[6] > 0 ? sprintf("%.2f", $count[6]/$total[6]) : 'NA';
+	my $score = $count[6] > 0 ? sprintf("%.2f", $score[6]/$count[6]) : 'NA';
+	
+	print join("\t", "comm.", $count[6], $total[6], $rate, $score) . "\n";
+}
+
+sub print_html_table {
+	
+	@order = sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
+				sort { $bench[$a]{AEN_PHRASEID} <=> $bench[$b]{AEN_PHRASEID} }
+	
+				(@order);
+	
+	for my $i (@order) {
+		
+		print join("\t", 
+				   'B.C. ' . $bench[$i]{BC_BOOK}  . '.' . $bench[$i]{BC_LINE},
+				   'Aen. ' . $bench[$i]{AEN_BOOK} . '.' . $bench[$i]{AEN_LINE},
+				   $bench[$i]{SCORE},
+				   (defined $bench[$i]{AUTH} ? join(",", @{$bench[$i]{AUTH}}) : "")
+				   );
+		print "\n";
+	}
 }
