@@ -15,28 +15,43 @@ use warnings;
 use Storable;
 use Getopt::Long;
 
-use lib '/Users/chris/tesserae/perl';
+use lib '/Users/chris/Sites/tesserae/perl';
+use TessSystemVars;
 use EasyProgressBar;
 
 my $usage = "usage: perl check-recall [--cache CACHE] TESRESULTS\n";
+
+my %file = (
+	
+	lucan_token         => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.token",
+	lucan_phrase        => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.phrase",
+	
+	vergil_token        => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.token",
+	vergil_phrase       => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.phrase",
+	
+	cache     => "$fs_data/bench/rec.cache"
+);
 
 #
 # commandline options
 #
 
-my $file_cache = "data/rec.cache";
 my $table  = 0;
-my $detail = 0;
 
-GetOptions("cache=s" => \$file_cache, "verbose|detail" => \$detail, "table" => \$table);
+my @w = (7);
+
+GetOptions(
+	"cache=s"        => \$file{cache},
+	"table"          => \$table
+	);
 
 #
 # the file to read
 #
 
-my $file_tess  = shift @ARGV;
+$file{tess}  = shift @ARGV;
 
-unless (defined $file_tess) {
+unless (defined $file{tess}) {
 	
 	print STDERR $usage;
 	exit;
@@ -48,15 +63,22 @@ my $quiet = 1;
 # read the data
 #
 
-my @bench = @{ retrieve($file_cache) };
+my @bench = @{ retrieve($file{cache}) };
 
-my %tess = %{ retrieve($file_tess) };
+my %tess = %{ retrieve($file{tess}) };
+
+my %phrase;
+my %token;
+
+for my $text ('lucan', 'vergil') {
+	
+	@{$token{$text}}   = @{ retrieve($file{$text. "_token"})   };
+	@{$phrase{$text}}  = @{ retrieve($file{$text. "_phrase"}) };
+}
 
 #
 # compare 
 #
-
-print "tesserae returned $tess{META}{TOTAL} results\n";
 
 my @count = (0)x7;
 my @score = (0)x7;
@@ -98,53 +120,15 @@ for my $i (0..$#bench) {
 
 # print results
 
-if    ($table)		{ print_html_table()  }
+if    ($table)		{ html_table("html")  }
 
-elsif ($detail)     { print_detail() }
-
-else {
-
-	my $rate =  $total[6] > 0 ? sprintf("%.2f", $count[6]/$total[6]) : 'NA';
-	
-	print join("\t", "comm.", $count[6], $total[6], $rate) . "\n";	
-}
+else              { text_detail("text") }
 
 
 
 #
 # subroutines
 #
-
-sub readTess {
-
-	my $file = shift;
-	
-	my @res;
-	
-	open(FH, "<:utf8", $file) || die "can't read $file: $!";
-	
-	print STDERR "reading $file\n" unless $quiet;
-	
-	my $pr = ProgressBar->new(-s $file);
-	
-	while (<FH>) {
-		
-		$pr->advance(length($_));
-		
-		if (/<tessdata .* score="(.*?)"/) {
-			
-			push @res, {SCORE => $1, SOURCE => "", TARGET => ""};
-		}
-		if (/<phrase text="(.+?)" .* unitID="(\d+)"/) {
-		
-			$res[-1]{uc($1)} = $2;
-		}
-	}
-	
-	close FH;
-	
-	return \@res;
-}
 
 sub compare {
 
@@ -164,7 +148,10 @@ sub compare {
 	
 		# $pr->advance();
 		
-		if (defined $tess{$$_{BC_PHRASEID}}{$$_{AEN_PHRASEID}}) { $exists++ }
+		if (defined $tess{$$_{BC_PHRASEID}}{$$_{AEN_PHRASEID}}) {
+			
+			$exists++;
+		}
 	}
 	
 	return $exists;
@@ -175,16 +162,16 @@ sub compare {
 # output subroutines
 #
 
-sub print_detail {
+sub text_detail {
 	
-	if ($detail) {
-		for (1..5) {
-			
-			my $rate =  $total[$_] > 0 ? sprintf("%.2f", $count[$_]/$total[$_]) : 'NA';
-			my $score = $count[$_] > 0 ? sprintf("%.2f", $score[$_]/$count[$_]) : 'NA';
-			
-			print join("\t", $_, $count[$_], $total[$_], $rate, $score) . "\n";
-		}
+	print "tesserae returned $tess{META}{TOTAL} results\n";
+	
+	for (1..5) {
+		
+		my $rate =  $total[$_] > 0 ? sprintf("%.2f", $count[$_]/$total[$_]) : 'NA';
+		my $score = $count[$_] > 0 ? sprintf("%.2f", $score[$_]/$count[$_]) : 'NA';
+		
+		print join("\t", $_, $count[$_], $total[$_], $rate, $score) . "\n";
 	}
 	
 	my $rate =  $total[6] > 0 ? sprintf("%.2f", $count[6]/$total[6]) : 'NA';
@@ -193,21 +180,123 @@ sub print_detail {
 	print join("\t", "comm.", $count[6], $total[6], $rate, $score) . "\n";
 }
 
-sub print_html_table {
+sub html_table {
 	
+	my $mode = shift;
+		
 	@order = sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
 				sort { $bench[$a]{AEN_PHRASEID} <=> $bench[$b]{AEN_PHRASEID} }
 	
 				(@order);
 	
+	my $frame = `php -f $fs_html/check_recall.php`;
+	
+	my $table_data;
+	
 	for my $i (@order) {
 		
-		print join("\t", 
-				   'B.C. ' . $bench[$i]{BC_BOOK}  . '.' . $bench[$i]{BC_LINE},
-				   'Aen. ' . $bench[$i]{AEN_BOOK} . '.' . $bench[$i]{AEN_LINE},
+		my $phrase_lucan;
+		my %marked_lucan = %{$tess{$bench[$i]{BC_PHRASEID}}{$bench[$i]{AEN_PHRASEID}}{MARKED_TARGET}};
+		
+		for (@{$phrase{lucan}[$bench[$i]{BC_PHRASEID}]{TOKEN_ID}}) {
+		
+			if (defined $marked_lucan{$_}) {
+				$phrase_lucan .= "<span class=\"matched\">$token{lucan}[$_]{DISPLAY}</span>";
+			}
+			else {
+				$phrase_lucan .= $token{lucan}[$_]{DISPLAY};
+			}
+		}
+		
+		my $phrase_vergil;
+		my %marked_vergil = %{$tess{$bench[$i]{BC_PHRASEID}}{$bench[$i]{AEN_PHRASEID}}{MARKED_SOURCE}};
+		
+		for (@{$phrase{vergil}[$bench[$i]{AEN_PHRASEID}]{TOKEN_ID}}) {
+		
+			if (defined $marked_vergil{$_}) {
+				$phrase_vergil .= "<span class=\"matched\">$token{vergil}[$_]{DISPLAY}</span>";
+			}
+			else {
+				$phrase_vergil .= $token{vergil}[$_]{DISPLAY};
+			}
+		}
+		
+		$table_data .= table_row($mode,
+				   $bench[$i]{BC_BOOK}  . '.' . $bench[$i]{BC_LINE},
+				   $phrase_lucan,
+				   $bench[$i]{AEN_BOOK} . '.' . $bench[$i]{AEN_LINE},
+				   $phrase_vergil,
 				   $bench[$i]{SCORE},
+				   $tess{$bench[$i]{BC_PHRASEID}}{$bench[$i]{AEN_PHRASEID}}{SCORE},
 				   (defined $bench[$i]{AUTH} ? join(",", @{$bench[$i]{AUTH}}) : "")
 				   );
-		print "\n";
 	}
+
+	my $recall_stats;
+	
+	for (1..5) {
+		
+		my $rate =  $total[$_] > 0 ? sprintf("%.2f", $count[$_]/$total[$_]) : 'NA';
+		my $score = $count[$_] > 0 ? sprintf("%.2f", $score[$_]/$count[$_]) : 'NA';
+		
+		$recall_stats .= table_row($mode, 
+			$_, 
+			$count[$_], 
+			$total[$_], 
+			$rate, 
+			$score
+			);
+	}
+	
+	my $rate =  $total[6] > 0 ? sprintf("%.2f", $count[6]/$total[6]) : 'NA';
+	my $score = $count[6] > 0 ? sprintf("%.2f", $score[6]/$count[6]) : 'NA';
+	
+	$recall_stats .= table_row($mode, 
+		"comm.", 
+		$count[6], 
+		$total[6], 
+		$rate, 
+		$score
+		);
+	
+	my $stoplist = join(", ", @{$tess{META}{STOPLIST}});
+
+	$frame =~ s/<!--session_id-->/$tess{META}{SESSION}/;
+	$frame =~ s/<!--unit-->/$tess{META}{UNIT}/s;
+	$frame =~ s/<!--feature-->/$tess{META}{FEATURE}/;
+	$frame =~ s/<!--stoplist-->/$stoplist/;
+	$frame =~ s/<!--stbasis-->/$tess{META}{STBASIS}/;
+	$frame =~ s/<!--dist-->/$tess{META}{DIST}/;
+	$frame =~ s/<!--dibasis-->/$tess{META}{DIBASIS}/;
+	$frame =~ s/<!--comment-->/$tess{META}{COMMENT}/;
+	$frame =~ s/<!--all-results-->/$tess{META}{TOTAL}/;
+	
+	$frame =~ s/<!--recall-stats-->/$recall_stats/;
+	
+	$frame =~ s/<!--parallels-->/$table_data/;
+
+	print $frame;
+}
+
+sub table_row {
+
+	my ($mode, @cell) = @_;
+
+	if ($mode eq "text") {
+		
+		for (0..$#cell) {
+	
+			my $w = $w[$_] || 10;
+	
+			$cell[$_] = sprintf("%-${w}s", $cell[$_]);
+		}
+	}
+	
+	my $row_open  = $mode eq "html" ? "\t<tr><td>" : "";
+	my $row_close = $mode eq "html" ? "\t</td></tr>\n" : "\n";
+	my $spacer    = $mode eq "html" ? "</td><td>" : " | ";
+	
+	my $row = $row_open . join($spacer, @cell) . $row_close;
+	
+	return $row;
 }

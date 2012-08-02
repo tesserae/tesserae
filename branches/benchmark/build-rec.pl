@@ -24,7 +24,7 @@ use Storable qw(nstore retrieve);
 
 use Getopt::Long;
 
-use lib '/Users/chris/tesserae/perl';
+use lib '/Users/chris/Sites/tesserae/perl';
 use TessSystemVars;
 
 # lowest similarity accaptable without remark
@@ -45,15 +45,16 @@ my %file = (
 	vergil_phrase       => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.phrase",
 	
 	benchmark => "bench3.csv",
-	cache     => "data/rec.cache"
+	cache     => "$fs_data/bench/rec.cache"
 );
 
 # check for command-line overrides
 
-GetOptions(	    "bench=s"	=> \$file{benchmark},
-				"cache=s"	=> \$file{cache},
-				"check=f"	=> \$check_alts_threshold,
-				"warn=f" 	=> \$warn_threshold );
+GetOptions(	    
+			"bench=s"	=> \$file{benchmark},
+			"cache=s"	=> \$file{cache},
+			"check=f"	=> \$check_alts_threshold,
+			"warn=f" 	=> \$warn_threshold );
 
 # load the data
 
