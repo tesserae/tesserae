@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -201,43 +201,26 @@ if ($no_cgi) {
 		exit;
 	}
 }
-else
-{
+else {
+
 	my $query = new CGI || die "$!";
 
 	$source		= $query->param('source')   || "";
 	$target		= $query->param('target') 	 || "";
 	$unit     	= $query->param('unit') 	 || "line";
-	$feature	= $query->param('feature')	 || "stem";
+	$feature	   = $query->param('feature')	 || "stem";
 	$stopwords	= defined($query->param('stoplist')) ? $query->param('stoplist') : 10;
-
-	if ($source eq "" or $target eq "")
-	{
+	$stoplist_basis = $query->param('stbasis') || $stoplist_basis;
+	$max_dist   = $query->param('dist') || $max_dist;
+	$distance_metric = $query->param('dibasis') || $distance_metric;
+	
+	if ($source eq "" or $target eq "") {
+	
 		die "read_table.pl called from web interface with no source/target";
 	}
 	
 	$quiet = 1;
 	
-	if ($unit eq "window")
-	{
-		my $redirect = "$url_cgi/session.pl?target=$target;source=$source;match=$feature;cutoff=$stopwords";
-
-		print <<END;
-		   <meta http-equiv="Refresh" content="0; url='$redirect'">
-		</head>
-		<body>
-			<p>
-				One moment...
-			</p>
-		   <p>
-		      If you are not redirected automatically, 
-		      <a href="$redirect">click here</a>.
-		   </p>
-		</body>
-		</html>
-END
-
-	}
 }
 
 unless ($quiet) {
@@ -528,8 +511,11 @@ if ($file_results ne "none") {
 		UNIT      => $unit,
 		FEATURE   => $feature,
 		STOPLIST  => [@stoplist],
+		STBASIS   => $stoplist_basis,
+		DIST      => $max_dist,
+		DIBASIS   => $distance_metric,
 		SESSION   => $session,
-		COMMENT   => $feature_notes{$unit},
+		COMMENT   => $feature_notes{$feature},
 		TOTAL     => $total_matches
 	};
 

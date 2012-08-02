@@ -11,14 +11,7 @@ our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tm
 
 our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni);
 
-# useful values for apache_user
-#  magua  : "_www"
-#  billie : "apache"
-#  tamias : "www-data"
-
-our $apache_user = "_www"; 
-
-my $fs_base	= '/Users/chris/tesserae';
+my $fs_base	= '/Users/chris/Sites/tesserae';
 
 our $fs_cgi 	= $fs_base . '/cgi-bin';
 our $fs_data	= $fs_base . '/data';
@@ -29,11 +22,11 @@ our $fs_text	= $fs_base . '/texts';
 our $fs_tmp  	= $fs_base . '/tmp';
 our $fs_xsl  	= $fs_base . '/xsl';
 
-my $url_base	= 'http://tesserae.caset.buffalo.edu';
+my $url_base	= 'http://localhost/~chris/tesserae';
 
 our $url_cgi	= $url_base . '/cgi-bin';
 our $url_css	= $url_base . '/css';
-our $url_html	= $url_base;
+our $url_html	= $url_base . '/html';
 our $url_image	= $url_base . '/images';
 our $url_text	= $url_base . '/texts';
 our $url_tmp	= $url_base . '/tmp';

@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 # this line is necessary to use Frontier::Client on bille
 # use lib '/home/forstall/localperl/lib/perl5/site_perl/5.8.8';
