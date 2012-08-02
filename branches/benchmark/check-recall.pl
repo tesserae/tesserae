@@ -12,7 +12,10 @@
 use strict;
 use warnings;
 
+use CGI qw(:standard);
+
 use Storable;
+use File::Spec::Functions;
 use Getopt::Long;
 
 use lib '/Users/chris/Sites/tesserae/perl';
@@ -20,6 +23,11 @@ use TessSystemVars;
 use EasyProgressBar;
 
 my $usage = "usage: perl check-recall [--cache CACHE] TESRESULTS\n";
+
+my $table = 0;
+my $session;
+my @w = (7);
+my $quiet = 1;
 
 my %file = (
 	
@@ -32,32 +40,59 @@ my %file = (
 	cache     => "$fs_data/bench/rec.cache"
 );
 
+
+# is the program being run from the web or
+# from the command line?
+
+my $query = CGI->new() || die "$!";
+
+my $no_cgi = defined($query->request_method()) ? 0 : 1;
+
 #
 # commandline options
 #
 
-my $table  = 0;
-
-my @w = (7);
-
 GetOptions(
 	"cache=s"        => \$file{cache},
+	"session=s"      => \$session,
 	"table"          => \$table
 	);
+
+#
+# CGI options
+#
+
+unless ($no_cgi) {
+	
+	print header();
+	
+	$session = $query->param('session');
+	$table = 1;
+}
 
 #
 # the file to read
 #
 
-$file{tess}  = shift @ARGV;
+if (defined $session) {
+
+	$file{tess} = catfile($fs_tmp, "tesresults-" . $session . ".bin");
+}
+else {
+	
+	$file{tess}  = shift @ARGV;
+}
 
 unless (defined $file{tess}) {
 	
-	print STDERR $usage;
+	if ($no_cgi) {
+		print STDERR $usage;
+	}
+	else {
+		html_no_table();
+	}
 	exit;
 }
-
-my $quiet = 1;
 
 #
 # read the data
@@ -277,6 +312,31 @@ sub html_table {
 
 	print $frame;
 }
+
+sub html_no_table {
+				
+	my $frame = `php -f $fs_html/check_recall.php`;
+	
+	my $parallels = "<tr><td colspan=\"7\">No data</td></tr>";
+	my $recall_stats = "<tr><td colspan=\"5\">Click &quot;Search&quot; to get started</td></tr>";
+
+	$frame =~ s/<!--session_id-->/NA/;
+	$frame =~ s/<!--unit-->/NA/s;
+	$frame =~ s/<!--feature-->/NA/;
+	$frame =~ s/<!--stoplist-->/NA/;
+	$frame =~ s/<!--stbasis-->/NA/;
+	$frame =~ s/<!--dist-->/NA/;
+	$frame =~ s/<!--dibasis-->/NA/;
+	$frame =~ s/<!--comment-->/NA/;
+	$frame =~ s/<!--all-results-->/NA/;
+	
+	$frame =~ s/<!--recall-stats-->/$recall_stats/;
+	
+	$frame =~ s/<!--parallels-->/$parallels/;
+
+	print $frame;
+}
+
 
 sub table_row {
 
