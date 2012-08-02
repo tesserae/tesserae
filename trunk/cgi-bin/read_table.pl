@@ -13,6 +13,8 @@ use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use strict;
 use warnings;
 
+use CGI qw/:standard/;
+
 use Getopt::Long;
 use Storable qw(nstore retrieve);
 use File::Spec::Functions;
@@ -81,7 +83,9 @@ my $session = "NA";
 # is the program being run from the web or
 # from the command line?
 
-my $no_cgi = 0;
+my $query = CGI->new() || die "$!";
+
+my $no_cgi = defined($query->request_method()) ? 0 : 1;
 
 # print debugging messages to stderr?
 
@@ -95,6 +99,10 @@ my $max_dist = 999;
 
 my $distance_metric = "span";
 
+# passthrough to check_recall.pl?
+
+my $check_recall = 0;
+
 GetOptions( 
 			'source=s'     => \$source,
 			'target=s'     => \$target,
@@ -102,7 +110,6 @@ GetOptions(
 			'feature=s'    => \$feature,
 			'stopwords=i'  => \$stopwords, 
 			'stbasis=s'    => \$stoplist_basis,
-			'no-cgi'       => \$no_cgi,
 			'binary=s'     => \$file_results,
 			'distance=i'   => \$max_dist,
 			'dibasis=s'    => \$distance_metric,
@@ -115,8 +122,6 @@ GetOptions(
 # give up
 
 unless ($no_cgi) {
-	
-	use CGI qw/:standard/;
 
 	print header();
 
@@ -203,16 +208,15 @@ if ($no_cgi) {
 }
 else {
 
-	my $query = new CGI || die "$!";
-
 	$source		= $query->param('source')   || "";
 	$target		= $query->param('target') 	 || "";
-	$unit     	= $query->param('unit') 	 || "line";
-	$feature	   = $query->param('feature')	 || "stem";
-	$stopwords	= defined($query->param('stoplist')) ? $query->param('stoplist') : 10;
+	$unit     	= $query->param('unit') 	 || $unit;
+	$feature	   = $query->param('feature')	 || $feature;
+	$stopwords	= defined($query->param('stoplist')) ? $query->param('stoplist') : $stopwords;
 	$stoplist_basis = $query->param('stbasis') || $stoplist_basis;
 	$max_dist   = $query->param('dist') || $max_dist;
 	$distance_metric = $query->param('dibasis') || $distance_metric;
+	$check_recall = $query->param('check_recall') || $check_recall;
 	
 	if ($source eq "" or $target eq "") {
 	
@@ -529,10 +533,19 @@ if ($file_results ne "none") {
 
 
 #
-# redirect browser to the xml results
+# redirect browser to results
 #
 
-my $redirect = "$url_cgi/read_bin.pl?session=$session;sort=target";
+my $redirect;
+
+if ($check_recall) {
+
+	$redirect = "$url_cgi/check-recall.pl?session=$session;sort=target";
+}
+else {
+
+	$redirect = "$url_cgi/read_bin.pl?session=$session;sort=target";
+}
 
 print <<END unless ($no_cgi);
 
@@ -591,6 +604,18 @@ sub dist {
 		my @s = sort {$freq_source{$token_source[$a]{FORM}} <=> $freq_source{$token_source[$b]{FORM}}} @{$match{SOURCE}}; 
 		
 		$dist += abs($s[0] - $s[1]);
+	}
+	elsif ($metric eq "freq-target") {
+		
+		my @t = sort {$freq_target{$token_target[$a]{FORM}} <=> $freq_target{$token_target[$b]{FORM}}} @{$match{TARGET}}; 
+			
+		$dist  = abs($t[0] - $t[1]);
+	}
+	elsif ($metric eq "freq-source") {
+		
+		my @s = sort {$freq_source{$token_source[$a]{FORM}} <=> $freq_source{$token_source[$b]{FORM}}} @{$match{SOURCE}}; 
+		
+		$dist = abs($s[0] - $s[1]);
 	}
 	
 	return $dist;

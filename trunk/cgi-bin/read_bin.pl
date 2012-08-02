@@ -13,9 +13,12 @@ use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use strict;
 use warnings;
 
+use CGI qw(:standard);
+
 use Getopt::Long;
 use POSIX;
 use Storable qw(nstore retrieve);
+use File::Spec::Functions;
 
 use TessSystemVars;
 use EasyProgressBar;
@@ -24,11 +27,16 @@ use EasyProgressBar;
 
 binmode STDOUT, ":utf8";
 
+# is the program being run from the web or
+# from the command line?
+
+my $query = CGI->new() || die "$!";
+
+my $no_cgi = defined($query->request_method()) ? 0 : 1;
+
 #
 # command-line options
 #
-
-my $no_cgi = 0;
 
 # print debugging messages to stderr?
 
@@ -46,19 +54,20 @@ my $page = 1;
 
 my $batch = 20;
 
+# determine file from session id
 
-GetOptions( 
-	'sort=s'  => \$sort,
-	'page=i'  => \$page,
-	'batch=i' => \$batch,
-	'no-cgi'  => \$no_cgi, 
-	'quiet'   => \$quiet );
+my $session;
 
 #
 # command-line arguments
 #
 
-my $file = shift @ARGV;
+GetOptions( 
+	'sort=s'    => \$sort,
+	'page=i'    => \$page,
+	'batch=i'   => \$batch,
+	'session=s' => \$session,
+	'quiet'     => \$quiet );
 
 #
 # cgi input
@@ -66,18 +75,25 @@ my $file = shift @ARGV;
 
 unless ($no_cgi) {
 	
-	use CGI qw/:standard/;
-
 	print header();
 
 	my $query = new CGI || die "$!";
 
-	my $session = $query->param('session') || die "no session specified from web interface";
-	$sort       = $query->param('sort')    || 'target';
-	$page       = $query->param('page')   || 1;
-	$batch      = $query->param('batch')   || 20;
+	$session = $query->param('session')    || die "no session specified from web interface";
+	$sort       = $query->param('sort')    || $sort;
+	$page       = $query->param('page')    || $page;
+	$batch      = $query->param('batch')   || $batch;
+}
+
+my $file;
+
+if (defined $session) {
+
+	$file = catfile($fs_tmp, "tesresults-" . $session . ".bin");
+}
+else {
 	
-	$file = "$fs_tmp/tesresults-$session.bin";
+	$file = shift @ARGV;
 }
 
 
@@ -117,7 +133,7 @@ my @stoplist = @{$match{META}{STOPLIST}};
 
 # session id
 
-my $session = $match{META}{SESSION};
+$session = $match{META}{SESSION};
 
 # total number of matches
 
