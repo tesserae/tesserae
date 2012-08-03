@@ -49,7 +49,7 @@ closedir (DH);
 #
 # Finally, a list of php files to change
 
-my @php_files = ( "$fs_html/first.php" );
+my @php_files = ( "$fs_html/first.php", "$fs_html/frame.fulltext.php" );
 
 #
 # make installation specific changes.
