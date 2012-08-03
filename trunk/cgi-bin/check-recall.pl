@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl
+#! /usr/bin/perl
 
 # check-recall.pl
 #
