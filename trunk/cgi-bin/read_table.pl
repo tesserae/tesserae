@@ -247,13 +247,13 @@ unless ($quiet) {
 
 # token frequencies from the target text
 
-my $file_freq_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_word');
+my $file_freq_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq.word');
 
 my %freq_target = %{retrieve( $file_freq_target)};
 
 # token frequencies from the target text
 
-my $file_freq_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_word');
+my $file_freq_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq.word');
 
 my %freq_source = %{retrieve( $file_freq_source)};
 
