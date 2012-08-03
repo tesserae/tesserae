@@ -21,9 +21,11 @@ use Storable qw(nstore retrieve);
 use Getopt::Long;
 
 my %clean = (
-	text => 1,
-	dict => 1
+	text => 0,
+	dict => 0
 			 );
+			
+GetOptions( "text" => \$clean{text}, "dict" => \$clean{dict} );
 
 # clear preprocessed texts from the database
 
