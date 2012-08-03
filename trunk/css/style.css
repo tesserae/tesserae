@@ -152,6 +152,7 @@ div#main
 	padding: 25px 100px;
 	text-align: justify;
 	min-height: 340px;
+	background: white;
 }
 
 div.figure
@@ -193,7 +194,6 @@ table.data caption
 
 table.fulltext
 {
-	background : white;
 }
 
 h1
