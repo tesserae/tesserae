@@ -146,6 +146,12 @@ for my $lang(@lang) {
 	# semantic counts
 	#
 
+	unless (-s $file_syn_cache) {
+	
+			print STDERR "can't find $file_syn_cache; skippting\n";
+			next;
+	}
+
 	print STDERR "reading $file_syn_cache\n";
 	
 	my %syn_cache = %{retrieve($file_syn_cache)};
