@@ -463,7 +463,7 @@ while (my $file_in = shift @ARGV) {
 	nstore \%index_form, "$file_out.index_word";
 	
 	print "writing $file_out.freq_word\n";
-	nstore freq_from_index(\%index_form), "$file_out.freq_word";
+	nstore freq_from_index(\%index_form), "$file_out.freq.word";
 
 	unless ($no_stems) {
 		
@@ -471,7 +471,7 @@ while (my $file_in = shift @ARGV) {
 		nstore \%index_stem, "$file_out.index_stem";
 		
 		print "writing $file_out.freq_stem\n";
-		nstore freq_from_index(\%index_stem), "$file_out.freq_stem";
+		nstore freq_from_index(\%index_stem), "$file_out.freq.stem";
 	}
 	unless ($no_syns) {
 		
@@ -479,7 +479,7 @@ while (my $file_in = shift @ARGV) {
 		nstore \%index_syn, "$file_out.index_syn";
 		
 		print "writing $file_out.freq_syn\n";
-		nstore freq_from_index(\%index_syn), "$file_out.freq_syn";
+		nstore freq_from_index(\%index_syn), "$file_out.freq.syn";
 	}
 
 
