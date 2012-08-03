@@ -44,7 +44,7 @@ my %file = (
 	vergil_line         => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.line",			
 	vergil_phrase       => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.phrase",
 	
-	benchmark => "bench3.csv",
+	benchmark => "$fs_data/bench/bench3.csv",
 	cache     => "$fs_data/bench/rec.cache"
 );
 

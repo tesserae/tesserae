@@ -4,7 +4,7 @@
 					<img src="<?php echo $url_image . "/uccs.png" ?>" alt="VAST Lab logo">
 				</div>
 				<div class="footer_icon_right">
-					<img src="<?php echo $url_image . "/neh_logo_horizontal_rgb.jpg" ?>" alt="NEH logo">
+					<img src="<?php echo $url_image . "/neh_logo-light_bg.png" ?>" alt="NEH logo">
 				</div>
 				<div id="footer_content">
 					<p> 

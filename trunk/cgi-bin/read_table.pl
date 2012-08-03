@@ -482,7 +482,7 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 			next;
 		}
 		
-		$score = sprintf("%.2f", $score / $distance);
+		$score = sprintf("%i", log($score / $distance));
 		
 		# save calculated score, matched words, etc.
 		

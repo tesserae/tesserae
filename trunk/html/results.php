@@ -17,7 +17,7 @@
 					<tr>
 						<th></th>
 						<th class="phrase">target phrase</th>
-						<th class="phrase">source matches</th>
+						<th class="phrase">source phrase</th>
 						<th>matched on</th>
 						<th>score</th>
 					</tr>

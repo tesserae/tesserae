@@ -147,6 +147,10 @@ my $comments = $match{META}{COMMENT};
 
 delete $match{META};
 
+# sort the results
+
+my @rec = @{sort_results($sort)};
+
 #
 # load texts
 #
@@ -223,8 +227,8 @@ sub nav_page {
 	my @left = ();
 	my @right = ();
 	
-	my $back_arrow;
-	my $forward_arrow;
+	my $back_arrow = "";
+	my $forward_arrow = "";
 		
 	$html .= "\n<!--page navigation-->\n";
 	
@@ -284,6 +288,29 @@ sub nav_page {
 	
 	$html .= "</tr></table>\n\n";
 	
+	#
+	# sort options
+	#
+	
+	$html .= <<END;
+	
+		<form action="$url_cgi/read_bin.pl" method="post" id="Form1">
+			Sort
+			<select name="rev">
+				<option value="0">increasing</option>
+				<option value="1">decreasing</option>
+			</select>
+			by
+			<select name="sort">
+				<option value="target">target locus</option>
+				<option value="source">source locus</option>
+				<option value="score">score</option>
+			</select>
+			<input type="hidden" name="session" value="$session" />
+			<input type="submit" name="submit" value="Go" />
+		</form>
+END
+		
 	return $html;
 	
 }
@@ -295,116 +322,107 @@ sub print_html {
 	
 	if ($last > $total_matches) { $last = $total_matches }
 	
-	my $i = 0;
-
 	my $html = `php -f $fs_html/results.php`;
 	
 	my ($top, $bottom) = split (/<!--results-->/, $html);
 	
 	$top =~ s/<!--navpage-->/&nav_page()/e;
 	print $top;
+
+	for my $i ($first..$last) {
+
+		my $unit_id_target = $rec[$i]{target};
+		my $unit_id_source = $rec[$i]{source};
+						
+		#
+		# print one row of the table
+		#
+		
+		my $score = $match{$unit_id_target}{$unit_id_source}{SCORE};
+		my %marked_source = %{$match{$unit_id_target}{$unit_id_source}{MARKED_SOURCE}};
+		my %marked_target = %{$match{$unit_id_target}{$unit_id_source}{MARKED_TARGET}};
+
+		# format the list of all unique shared words
 	
-	for my $unit_id_target (sort {$a <=> $b} keys %match) {
+		my $keys = join(", ", @{$match{$unit_id_target}{$unit_id_source}{KEY}});
+
+		# now write the xml record for this match
+
+		print "  <tr>\n";
+
+		# result serial number
+
+		print "    <td>$i.</td>\n";
+		print "    <td>\n";
+		print "      <table>\n";
+		print "        <tr>\n";
 		
-		for my $unit_id_source (sort {$a <=> $b} keys %{$match{$unit_id_target}}) {
-			
-			# advance the counter;
-			# keep going until we get to the first entry to display
-			
-			$i++;
-			next if $i < $first;
-			last if $i > $last;
-			
-			#
-			# print one row of the table
-			#
-			
-			my $score = $match{$unit_id_target}{$unit_id_source}{SCORE};
-			my %marked_source = %{$match{$unit_id_target}{$unit_id_source}{MARKED_SOURCE}};
-			my %marked_target = %{$match{$unit_id_target}{$unit_id_source}{MARKED_TARGET}};
-
-			# format the list of all unique shared words
+		# target locus
 		
-			my $keys = join(", ", @{$match{$unit_id_target}{$unit_id_source}{KEY}});
-
-			# now write the xml record for this match
-
-			print "  <tr>\n";
-
-			# result serial number
-
-			print "    <td>$i.</td>\n";
-			print "    <td>\n";
-			print "      <table>\n";
-			print "        <tr>\n";
-			
-			# target locus
-			
-			print "          <td>\n";
-			print "            <a href=\"javascript:;\""
-			    . " onclick=\"window.open(link='$url_cgi/context2.pl?target=$target;unit=$unit;id=$unit_id_target', "
-			    . " 'context', 'width=520,height=240')\">";
-			print "$abbr{$target} $unit_target[$unit_id_target]{LOCUS}";
-			print "            </a>\n";
-			print "          </td>\n";
-			
-			# target phrase
-			
-			print "          <td>\n";
-			
-			for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
-			
-				if (defined $marked_target{$token_id_target}) { print '<span class="matched">' }
-				print $token_target[$token_id_target]{DISPLAY};
-				if (defined $marked_target{$token_id_target}) { print "</span>" }
-			}
-			
-			print "          </td>\n";
-			
-			print "        </tr>\n";
-			print "      </table>\n";
-			print "    </td>\n";
-			print "    <td>\n";
-			print "      <table>\n";
-			print "        <tr>\n";
-			
-			# source locus
-			
-			print "          <td>\n";
-			print "            <a href=\"javascript:;\""
-			    . " onclick=\"window.open(link='$url_cgi/context2.pl?target=$source;unit=$unit;id=$unit_id_source', "
-			    . " 'context', 'width=520,height=240')\">";
-			print "$abbr{$source} $unit_source[$unit_id_source]{LOCUS}";
-			print "            </a>\n";
-			print "          </td>\n";
-			
-			# source phrase
-			
-			print "          <td>\n";
-			
-			for my $token_id_source (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
-			
-				if (defined $marked_source{$token_id_source}) { print '<span class="matched">' }
-				print $token_source[$token_id_source]{DISPLAY};
-				if (defined $marked_source{$token_id_source}) { print '</span>' }
-			}
-			
-			print "          </td>\n";
-
-			print "        </tr>\n";
-			print "      </table>\n";
-			print "    </td>\n";
-			
-			# keywords
-			
-			print "    <td>$keys</td>\n";
-
-			# score
-			
-			print "    <td>$score</td>\n";
-			
-			print "  </tr>\n";
+		print "          <td>\n";
+		print "            <a href=\"javascript:;\""
+		    . " onclick=\"window.open(link='$url_cgi/context2.pl?target=$target;unit=$unit;id=$unit_id_target', "
+		    . " 'context', 'width=520,height=240')\">";
+		print "$abbr{$target} $unit_target[$unit_id_target]{LOCUS}";
+		print "            </a>\n";
+		print "          </td>\n";
+		
+		# target phrase
+		
+		print "          <td>\n";
+		
+		for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
+		
+			if (defined $marked_target{$token_id_target}) { print '<span class="matched">' }
+			print $token_target[$token_id_target]{DISPLAY};
+			if (defined $marked_target{$token_id_target}) { print "</span>" }
 		}
+		
+		print "          </td>\n";
+		
+		print "        </tr>\n";
+		print "      </table>\n";
+		print "    </td>\n";
+		print "    <td>\n";
+		print "      <table>\n";
+		print "        <tr>\n";
+		
+		# source locus
+		
+		print "          <td>\n";
+		print "            <a href=\"javascript:;\""
+		    . " onclick=\"window.open(link='$url_cgi/context2.pl?target=$source;unit=$unit;id=$unit_id_source', "
+		    . " 'context', 'width=520,height=240')\">";
+		print "$abbr{$source} $unit_source[$unit_id_source]{LOCUS}";
+		print "            </a>\n";
+		print "          </td>\n";
+		
+		# source phrase
+		
+		print "          <td>\n";
+		
+		for my $token_id_source (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
+		
+			if (defined $marked_source{$token_id_source}) { print '<span class="matched">' }
+			print $token_source[$token_id_source]{DISPLAY};
+			if (defined $marked_source{$token_id_source}) { print '</span>' }
+		}
+		
+		print "          </td>\n";
+
+		print "        </tr>\n";
+		print "      </table>\n";
+		print "    </td>\n";
+		
+		# keywords
+		
+		print "    <td>$keys</td>\n";
+
+		# score
+		
+		print "    <td>$score</td>\n";
+		
+		print "  </tr>\n";
 	}
 	
 	$bottom =~ s/<!--session_id-->/$session/;
@@ -535,4 +553,35 @@ END
 	# finish off the xml doc
 
 	print "</results>\n";	
+}
+
+sub sort_results {
+
+	my $sort = shift || 'target';
+	
+	my $rev = shift || 0;
+	
+	my @rec;
+		
+	for my $unit_id_target (sort {$a <=> $b} keys %match) {
+
+		for my $unit_id_source (sort {$a <=> $b} keys %{$match{$unit_id_target}}) {
+			
+			push @rec, {target => $unit_id_target, source => $unit_id_source};
+		}
+	}
+	
+	if ($sort eq "source") {
+	
+		@rec = sort {$$a{source} <=> $$b{source}} @rec;
+	}
+	
+	if ($sort eq "score") {
+	
+		@rec = sort {$match{$$b{target}}{$$b{source}}{SCORE} <=> $match{$$a{target}}{$$a{source}}{SCORE}} @rec;
+	}
+
+	if ($rev) { @rec = reverse @rec };
+	
+	return \@rec;
 }
