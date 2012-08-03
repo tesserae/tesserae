@@ -56,7 +56,7 @@
 					</select>
 				</p>
 
-				<input type="hidden" name="stoplist" value="50"/>
+				<input type="hidden" name="stopwords" value="50"/>
 
 				<center>
 					<input type="submit" onclick="return ValidateForm()" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>

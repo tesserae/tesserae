@@ -15,11 +15,16 @@
 				<h2><a href="<?php echo $url_html.'/full-text.php'; ?>">Full-Text Display</a></h2>
 					
 				<p>
-					We're currently testing new ways of displaying results.  This performs
-					the default <a href="<?php echo $url_html."/index.php"; ?>">Basic Search</a>,
-					but displays the full text of the Target work with references to the Source
-					work highlighted in red.
+					Displays the full text of the poems with references highlighted in red.
 				</p>
+				
+				<h2><a href="<?php echo $url_html.'/check_recall.php'; ?>">Lucan-Vergil Benchmark Test</a></h2>
+
+				<p>
+					Allows you to perform a search of Lucan's Pharsalia Book 1 against Vergil's Aeneid,
+					and compares the results against our 3000-parallel benchmark set.
+				</p>
+
 			</div>
 		
 			<script language="javascript">

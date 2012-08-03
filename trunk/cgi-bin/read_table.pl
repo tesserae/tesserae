@@ -212,7 +212,7 @@ else {
 	$target		= $query->param('target') 	 || "";
 	$unit     	= $query->param('unit') 	 || $unit;
 	$feature	   = $query->param('feature')	 || $feature;
-	$stopwords	= defined($query->param('stoplist')) ? $query->param('stoplist') : $stopwords;
+	$stopwords	= defined($query->param('stopwords')) ? $query->param('stopwords') : $stopwords;
 	$stoplist_basis = $query->param('stbasis') || $stoplist_basis;
 	$max_dist   = $query->param('dist') || $max_dist;
 	$distance_metric = $query->param('dibasis') || $distance_metric;
@@ -671,6 +671,8 @@ sub load_stoplist {
 	@stoplist = sort {$basis{$b} <=> $basis{$a}} keys %basis;
 	
 	if ($stopwords > 0) {
+		
+		if ($stopwords > scalar(@stoplist)) { $stopwords = scalar(@stoplist) }
 		
 		@stoplist = @stoplist[0..$stopwords-1];
 	}

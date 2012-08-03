@@ -55,7 +55,7 @@
 					<tr>
 						<td><span class="h2">Number of stop words:</span></td>
 						<td>
-							<select name="cutoff">
+							<select name="stopwords">
 								<option value="0">0</option>
 								<option value="10" selected="selected">10</option>
 								<option value="20">20</option>

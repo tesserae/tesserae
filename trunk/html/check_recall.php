@@ -36,7 +36,7 @@
 						<tr>
 							<td><span class="h2">Number of stop words:</span></td>
 							<td>
-								<textarea name="cutoff">10</textarea>							
+								<textarea name="stopwords" rows="1" maxlength="3" style="resize:none;">10</textarea>							
 							</td>
 						</tr>
 						<tr>
@@ -53,7 +53,7 @@
 						<tr>
 							<td><span class="h2">Maximum distance:</span></td>
 							<td>
-								<textarea name="dist">999</textarea>
+								<textarea name="dist" rows="1" maxlength="3" style="resize:none;">999</textarea>
 							</td>
 						</tr>
 						<tr>
