@@ -34,13 +34,13 @@
 							</td>
 						</tr>
 						<tr>
-							<td>Number of stop words:</td>
+							<td><span class="h2">Number of stop words:</span></td>
 							<td>
 								<textarea name="cutoff">10</textarea>							
 							</td>
 						</tr>
 						<tr>
-							<td>Stoplist basis:</td>
+							<td><span class="h2">Stoplist basis:</span></td>
 							<td>
 								<select name="stbasis">
 									<option value="corpus">corpus</option>
@@ -51,13 +51,13 @@
 							</td>
 						</tr>
 						<tr>
-							<td>Maximum distance:</td>
+							<td><span class="h2">Maximum distance:</span></td>
 							<td>
 								<textarea name="dist">999</textarea>
 							</td>
 						</tr>
 						<tr>
-							<td>Distance metric:</td>
+							<td><span class="h2">Distance metric:</span></td>
 							<td>
 								<select name="dibasis">
 									<option value="span">span</option>
@@ -76,7 +76,7 @@
 					<input type="hidden" name="source" value="vergil.aeneid"/>
 					<input type="hidden" name="target" value="lucan.pharsalia.part.1"/>
 					<input type="hidden" name="unit" value="phrase"/>
-					<input type="hidden" name="check_recall" value="1"/>
+					<input type="hidden" name="frontend" value="recall"/>
 					
 				</form>
 			</div>
@@ -123,7 +123,7 @@
 							<td>type</td>
 							<td>tesserae returned</td>
 							<td>benchmark has</td>
-							<td>recall</td>
+							<td>recall rate</td>
 							<td>mean score</td>
 						</tr>
 					</thead>

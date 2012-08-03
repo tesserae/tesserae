@@ -99,9 +99,9 @@ my $max_dist = 999;
 
 my $distance_metric = "span";
 
-# passthrough to check_recall.pl?
+# which script should mediate the display of results
 
-my $check_recall = 0;
+my $frontend = 'default';
 
 GetOptions( 
 			'source=s'     => \$source,
@@ -145,7 +145,7 @@ END
 
 	opendir(my $dh, $fs_tmp) || die "can't opendir $fs_tmp: $!";
 
-	my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}\.xml/ && -f catfile($fs_tmp, $_) } readdir($dh);
+	my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}\.bin/ && -f catfile($fs_tmp, $_) } readdir($dh);
 
 	closedir $dh;
 
@@ -162,7 +162,7 @@ END
 	if (defined($session))
 	{
 	   $session =~ s/^.+results-//;
-	   $session =~ s/\.xml//;
+	   $session =~ s/\.bin//;
 	}
 	else
 	{
@@ -216,7 +216,7 @@ else {
 	$stoplist_basis = $query->param('stbasis') || $stoplist_basis;
 	$max_dist   = $query->param('dist') || $max_dist;
 	$distance_metric = $query->param('dibasis') || $distance_metric;
-	$check_recall = $query->param('check_recall') || $check_recall;
+	$frontend   = $query->param('frontend') || $frontend;
 	
 	if ($source eq "" or $target eq "") {
 	
@@ -536,27 +536,23 @@ if ($file_results ne "none") {
 # redirect browser to results
 #
 
-my $redirect;
+my %redirect = ( 
+	default  => "$url_cgi/read_bin.pl?session=$session;sort=target",
+	recall   => "$url_cgi/check-recall.pl?session=$session",
+	fulltext => "$url_cgi/fulltext.pl?session=$session"
+	);
 
-if ($check_recall) {
-
-	$redirect = "$url_cgi/check-recall.pl?session=$session;sort=target";
-}
-else {
-
-	$redirect = "$url_cgi/read_bin.pl?session=$session;sort=target";
-}
 
 print <<END unless ($no_cgi);
 
-   <meta http-equiv="Refresh" content="0; url='$redirect'">
+   <meta http-equiv="Refresh" content="0; url='$redirect{$frontend}'">
 </head>
 <body>
    <p>
       Please wait for your results until the page loads completely.  
       <br/>
       If you are not redirected automatically, 
-      <a href="$redirect">click here</a>.
+      <a href="$redirect{$frontend}">click here</a>.
    </p>
 </body>
 </html>

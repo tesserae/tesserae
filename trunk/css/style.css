@@ -367,6 +367,11 @@ table.input th, table.input td {
 
 }
 
+table.output {
+
+	width : 100%;
+}
+
 table.output td {
 	background-color: #F0F0F0;
 	font-weight : bold;

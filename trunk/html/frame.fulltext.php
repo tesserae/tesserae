@@ -21,6 +21,10 @@
 
 	</head>
 	<body>
+		<div style="text-align: left">
+			<a href="<?php echo $url_html.'/full-text.php' ?>" target="_top">Click to exit full-text mode</a>
+		</div>
+		
 		<div id="main">
 				
 			<a name="top"></a>
@@ -31,10 +35,6 @@
 			</p>
 
 			<!--fulltext-->
-		</div>
-
-		<div style="margin:1em;text-align:left;">
-			<a href="#top">Back to top</a>
 		</div>
 
 	</body>
