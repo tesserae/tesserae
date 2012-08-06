@@ -52,11 +52,19 @@ my $page = 1;
 
 # how many results on a page?
 
-my $batch = 20;
+my $batch = 100;
+
+# reverse order ?
+
+my $rev = 0;
 
 # determine file from session id
 
 my $session;
+
+# format for results
+
+my $export = 'html';
 
 #
 # command-line arguments
@@ -75,14 +83,20 @@ GetOptions(
 
 unless ($no_cgi) {
 	
-	print header();
-
 	my $query = new CGI || die "$!";
 
 	$session = $query->param('session')    || die "no session specified from web interface";
 	$sort       = $query->param('sort')    || $sort;
 	$page       = $query->param('page')    || $page;
 	$batch      = $query->param('batch')   || $batch;
+	$export     = $query->param('export')  || $export;
+
+	my %h = ('-charset'=>'utf-8', '-type'=>'text/html');
+	
+	if ($export eq "xml") { $h{'-type'} = "text/xml"; $h{'-attachment'} = "tesresults-$session.xml" }
+	if ($export eq "csv") { $h{'-type'} = "text/csv"; $h{'-attachment'} = "tesresults-$session.csv" }
+	
+	print header(%h);
 }
 
 my $file;
@@ -149,7 +163,13 @@ delete $match{META};
 
 # sort the results
 
-my @rec = @{sort_results($sort)};
+my @rec = @{sort_results()};
+
+if ($batch eq 'all') {
+
+	$batch = $total_matches;
+	$page  = 1;
+}
 
 #
 # load texts
@@ -205,128 +225,200 @@ if ( $feature eq "syn" ) {
 	($max_heads, $min_similarity) = @{ retrieve("$fs_data/common/$lang{$target}.syn.cache.param") };
 }
 
+#
+# output
+#
 
-if ($sort eq "xml") {
+if ($export eq "html") {
+
+	print_html($page, $batch);	
+}
+elsif ($export eq "csv") {
+	
+}
+elsif  ($export eq "xml") {
 	
 	print_xml();
 }
-else {
-	
-	print_html($page, $batch);
-}
+
+
 #
 # subroutines
 #
 
 sub nav_page {
-	
-	my $html;
+		
+	my $html = "<p>$total_matches results";
 	
 	my $pages = ceil($total_matches/$batch);
 	
-	my @left = ();
-	my @right = ();
+	#
+	# if there's only one page, don't bother
+	#
 	
-	my $back_arrow = "";
-	my $forward_arrow = "";
-		
-	$html .= "\n<!--page navigation-->\n";
-	
-	$html .= "<table><tr>\n";
-	
-	$html .= "<td>$pages pages:</td>";
-	
-	if ($page > 1) {
-		
-		$back_arrow .= "<td>"
-		       . "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=1;batch=$batch\"> &lt;&lt; </a>"
-		       . "</td>\n";
-
-		my $p = $page-1;
+	if ($pages > 1) {
 				
-		$back_arrow .= "<td>"
-		       . "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=$p;batch=$batch\"> &lt; </a>"
-		       . "</td>\n";
-		
-		@left = (($page > 4 ? $page-4 : 1)..$page-1);
-	}
+		$html .= " in $pages pages.</br>\n";
 	
-	if ($page < $pages) {
-		
-		my $p = $page+1;
-		
-		$forward_arrow .= "<td>"
-		       . "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=$p;batch=$batch\"> &gt; </a>"
-		       . "</td>\n";
-		
-		$forward_arrow .= "<td>"
-      		. "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=$pages;batch=$batch\"> &gt;&gt; </a>"
-      		. "</td>\n";		       
-		
-		@right = ($page+1..($page < $pages-4 ? $page+4 : $pages));
-	}
+		#
+		# draw navigation links
+		# 
 	
-	$html .= $back_arrow;
+		my @left = ();
+		my @right = ();
 	
-	for my $p (@left, $page, @right) {
-	
-		$html .= "<td>";
-		
-		if ($page == $p) { 
+		my $back_arrow = "";
+		my $forward_arrow = "";
 			
-			$html .= " $p ";
+		$html .= "Go to page: ";
+	
+		if ($page > 1) {
+		
+			$back_arrow .= "<span>";
+			$back_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=1;batch=$batch\"> [first] </a>\n";
+			$back_arrow .= "</span>";
+
+			my $p = $page-1;
+
+			$back_arrow .= "<span>";				
+			$back_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=$p;batch=$batch\"> [previous] </a>\n";
+			$back_arrow .= "</span>";
+		
+		
+			@left = (($page > 4 ? $page-4 : 1)..$page-1);
 		}
-		else {
+	
+		if ($page < $pages) {
+		
+			my $p = $page+1;
+		
+			$forward_arrow .= "<span>";
+			$forward_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=$p;batch=$batch\"> [next] </a>\n";
+			$forward_arrow .= "</span>";
+
+			$forward_arrow .= "<span>";
+			$forward_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=$pages;batch=$batch\"> [last] </a>\n";		       
+			$forward_arrow .= "</span>";
+		
+			@right = ($page+1..($page < $pages-4 ? $page+4 : $pages));
+		}
+	
+		$html .= $back_arrow;
+	
+		for my $p (@left, $page, @right) {
+		
+			$html .= "<span>";
+		
+			if ($page == $p) { 
 			
-			$html .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=$p;batch=$batch\"> $p </a>";
-		}	
-		
-		$html .= "</td>";
+				$html .= " $p ";
+			}
+			else {
+			
+				$html .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=$p;batch=$batch\"> $p </a>";
+			}	
+			
+			$html .= "</span>";
+		}
+	
+		$html .= $forward_arrow;
+		$html .= "\n";
 	}
+			
+	return $html;
 	
-	$html .= $forward_arrow;
+}
+
+sub re_sort {
 	
-	$html .= "</tr></table>\n\n";
+	my @sel_rev    = ("", "");
+	my %sel_sort   = (target => "", source => "", score => "");
+	my %sel_export = (html => "", xml => "");
+	my %sel_batch  = (50 => '', 100 => '', 200 => '', $total_matches => '');
+
+	$sel_rev[$rev]       = 'selected="selected"';
+	$sel_sort{$sort}     = 'selected="selected"';
+	$sel_export{$export} = 'selected="selected"';
+	$sel_batch{$batch}   = 'selected="selected"';
+
+	my $html=<<END;
 	
-	#
-	# sort options
-	#
-	
-	$html .= <<END;
-	
-		<form action="$url_cgi/read_bin.pl" method="post" id="Form1">
-			Sort
-			<select name="rev">
-				<option value="0">increasing</option>
-				<option value="1">decreasing</option>
-			</select>
-			by
-			<select name="sort">
-				<option value="target">target locus</option>
-				<option value="source">source locus</option>
-				<option value="score">score</option>
-			</select>
-			<input type="hidden" name="session" value="$session" />
-			<input type="submit" name="submit" value="Go" />
-		</form>
-END
+	<form action="$url_cgi/read_bin.pl" method="post" id="Form1">
 		
+		<table>
+			<tr>
+				<td>
+
+			Sort
+
+			<select name="rev">
+				<option value="0" $sel_rev[0]>increasing</option>
+				<option value="1" $sel_rev[1]>decreasing</option>
+			</select>
+
+			by
+
+			<select name="sort">
+				<option value="target" $sel_sort{target}>target locus</option>
+				<option value="source" $sel_sort{source}>source locus</option>
+				<option value="score"  $sel_sort{score}>score</option>
+			</select>
+
+			and format as
+
+			<select name="export">
+				<option value="html" $sel_export{html}>html</option>
+				<option value="xml"  $sel_export{xml}>xml</option>
+			</select>.
+			
+			</td>
+			<td>
+				<input type="hidden" name="session" value="$session" />
+				<input type="submit" name="submit" value="Change Display" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+									
+			Show
+
+			<select name="batch">
+				<option value="50"  $sel_batch{50}>50</option>
+				<option value="100" $sel_batch{100}>100</option>
+				<option value="200" $sel_batch{200}>200</option>
+				<option value="all" $sel_batch{$total_matches}>all</option>
+			</select>
+
+			results at a time.
+			</td>
+		</tr>
+	</table>
+	</form>
+
+END
+	
 	return $html;
 	
 }
 
 sub print_html {
 	
-	my $first = ($page-1) * $batch;
-	my $last  = $first + $batch - 1;
+	my $first; 
+	my $last;
+	
+	$first = ($page-1) * $batch;
+	$last  = $first + $batch - 1;
 	
 	if ($last > $total_matches) { $last = $total_matches }
 	
 	my $html = `php -f $fs_html/results.php`;
 	
-	my ($top, $bottom) = split (/<!--results-->/, $html);
+	my ($top, $bottom) = split /<!--results-->/, $html;
 	
-	$top =~ s/<!--navpage-->/&nav_page()/e;
+	$top =~ s/<!--pager-->/&nav_page()/e;
+	$top =~ s/<!--sorter-->/&re_sort()/e;
+	$top =~ s/<!--session-->/$session/;
+	
 	print $top;
 
 	for my $i ($first..$last) {
@@ -352,7 +444,7 @@ sub print_html {
 
 		# result serial number
 
-		print "    <td>$i.</td>\n";
+		print "    <td>" . sprintf("%i", $i+1) . ".</td>\n";
 		print "    <td>\n";
 		print "      <table>\n";
 		print "        <tr>\n";
@@ -556,10 +648,6 @@ END
 }
 
 sub sort_results {
-
-	my $sort = shift || 'target';
-	
-	my $rev = shift || 0;
 	
 	my @rec;
 		
@@ -571,17 +659,20 @@ sub sort_results {
 		}
 	}
 	
-	if ($sort eq "source") {
+	if ($export eq "html") {
 	
-		@rec = sort {$$a{source} <=> $$b{source}} @rec;
-	}
+		if ($sort eq "source") {
 	
-	if ($sort eq "score") {
+			@rec = sort {$$a{source} <=> $$b{source}} @rec;
+		}
 	
-		@rec = sort {$match{$$b{target}}{$$b{source}}{SCORE} <=> $match{$$a{target}}{$$a{source}}{SCORE}} @rec;
-	}
+		if ($sort eq "score") {
+	
+			@rec = sort {$match{$$a{target}}{$$a{source}}{SCORE} <=> $match{$$b{target}}{$$b{source}}{SCORE}} @rec;
+		}
 
-	if ($rev) { @rec = reverse @rec };
+		if ($rev) { @rec = reverse @rec };
+	}
 	
 	return \@rec;
 }

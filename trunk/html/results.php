@@ -4,10 +4,12 @@
 
 			</div>
 
-			<!-- Sort Menu -->
-
-			<div>
-				<!--navpage-->
+			<div id="results_sort">
+				<!--sorter-->
+			</div>
+			
+			<div id="pager">
+				<!--pager-->
 			</div>
 			
 			<!-- Table of results -->

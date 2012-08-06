@@ -89,6 +89,16 @@ div#nav_sub li a
 	text-decoration: none;
 }
 
+div#pager span
+{
+	padding: 5px;
+}
+div#pager span a
+{
+	text-decoration: none;
+}
+
+
 div#footer
 {
 	position: relative;
@@ -143,7 +153,7 @@ div#footer img
 
 div#results_sort
 {
-	padding: 25px 100px;
+	padding: 15px 100px 5px;
 	text-align: justify;
 }
 
