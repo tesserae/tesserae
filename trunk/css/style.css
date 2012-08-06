@@ -92,10 +92,13 @@ div#nav_sub li a
 div#pager span
 {
 	padding: 5px;
+	font-weight: bold;
 }
+
 div#pager span a
 {
 	text-decoration: none;
+	font-weight: normal;
 }
 
 
