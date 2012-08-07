@@ -121,7 +121,7 @@ GetOptions(
 			'binary=s'     => \$file_results,
 			'distance=i'   => \$max_dist,
 			'dibasis=s'    => \$distance_metric,
-			'cutoff=i'     => \$cutoff,
+			'cutoff=f'     => \$cutoff,
 			'interest=f'   => \$interest,
 			'quiet'        => \$quiet );
 
