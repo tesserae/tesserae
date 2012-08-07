@@ -92,6 +92,7 @@ synonyms($min_similarity);
 #
 # save the cache
 #
+
 if ($file_cache ne "none") {
 
 	 export_cache($file_cache);
@@ -126,16 +127,19 @@ sub read_dictionary {
 			my ($head, $def) = ($1, $2);
 					
 			# save the full definition; for homonyms combine them
+			
 			if (exists $full_def{$head}) { $full_def{$head} .= "; " }
 			
 			$full_def{$head} .= $def;
 		
 			# lowercase the english, divide into words
+			
 			$def = lc($def);
 			
 			my @words = split(/[^a-z]+/, $def);
 			
 			# add each english word to the dictionary for this headword
+			
 			for (@words) {
 			
 				if ($_ ne "") {

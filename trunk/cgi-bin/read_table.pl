@@ -99,6 +99,10 @@ my $max_dist = 999;
 
 my $distance_metric = "span";
 
+# filter results below a certain score
+
+my $cutoff = 0;
+
 # which script should mediate the display of results
 
 my $frontend = 'default';
@@ -113,6 +117,7 @@ GetOptions(
 			'binary=s'     => \$file_results,
 			'distance=i'   => \$max_dist,
 			'dibasis=s'    => \$distance_metric,
+			'cutoff=i'     => \$cutoff,
 			'quiet'        => \$quiet );
 
 
@@ -216,6 +221,7 @@ else {
 	$stoplist_basis = $query->param('stbasis') || $stoplist_basis;
 	$max_dist   = $query->param('dist') || $max_dist;
 	$distance_metric = $query->param('dibasis') || $distance_metric;
+	$cutoff     = $query->param('cutoff')  || $cutoff;
 	$frontend   = $query->param('frontend') || $frontend;
 	
 	if ($source eq "" or $target eq "") {
@@ -238,6 +244,7 @@ unless ($quiet) {
 	print STDERR "stoplist basis=$stoplist_basis\n";
 	print STDERR "max_dist=$max_dist\n";
 	print STDERR "distance basis=$distance_metric\n";
+	print STDERR "score cutoff=$cutoff\n";
 }
 
 
@@ -247,13 +254,13 @@ unless ($quiet) {
 
 # token frequencies from the target text
 
-my $file_freq_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_word');
+my $file_freq_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . ".freq_$feature");
 
 my %freq_target = %{retrieve( $file_freq_target)};
 
 # token frequencies from the target text
 
-my $file_freq_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_word');
+my $file_freq_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . ".freq_$feature");
 
 my %freq_source = %{retrieve( $file_freq_source)};
 
@@ -484,6 +491,12 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 		
 		$score = sprintf("%i", log($score / $distance));
 		
+		if ( $score < $cutoff) {
+
+			delete $match{$unit_id_target}{$unit_id_source};
+			next;			
+		}
+		
 		# save calculated score, matched words, etc.
 		
 		$match{$unit_id_target}{$unit_id_source}{SCORE} = $score;
@@ -519,6 +532,7 @@ if ($file_results ne "none") {
 		DIST      => $max_dist,
 		DIBASIS   => $distance_metric,
 		SESSION   => $session,
+		CUTOFF    => $cutoff,
 		COMMENT   => $feature_notes{$feature},
 		TOTAL     => $total_matches
 	};

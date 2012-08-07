@@ -25,6 +25,9 @@ use EasyProgressBar;
 my $usage = "usage: perl check-recall [--cache CACHE] TESRESULTS\n";
 
 my $table = 0;
+my $sort = 'score';
+my $rev = 1;
+my $cutoff = 0;
 my $session;
 my @w = (7);
 my $quiet = 1;
@@ -55,6 +58,8 @@ my $no_cgi = defined($query->request_method()) ? 0 : 1;
 GetOptions(
 	"cache=s"        => \$file{cache},
 	"session=s"      => \$session,
+	"sort=s"         => \$sort,
+	"reverse"        => \$rev,
 	"table"          => \$table
 	);
 
@@ -66,7 +71,9 @@ unless ($no_cgi) {
 	
 	print header();
 	
-	$session = $query->param('session');
+	$session    = $query->param('session');
+	$sort       = $query->param('sort')    || $sort;
+	$rev        = $query->param('rev')     || $rev;
 	$table = 1;
 }
 
@@ -146,7 +153,7 @@ for my $i (0..$#bench) {
 			$score[6] += $tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}{SCORE};
 
 		}
-		
+				
 		push @order, $i;
 	}
 }	
@@ -218,11 +225,29 @@ sub text_detail {
 sub html_table {
 	
 	my $mode = shift;
+
+	if ($sort eq 'score') {
 		
-	@order = sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
-				sort { $bench[$a]{AEN_PHRASEID} <=> $bench[$b]{AEN_PHRASEID} }
-	
+		@order = sort { $tess{$bench[$a]{BC_PHRASEID}}{$bench[$a]{AEN_PHRASEID}}{SCORE} <=> $tess{$bench[$b]{BC_PHRASEID}}{$bench[$b]{AEN_PHRASEID}}{SCORE} }
+					sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
+					sort { $bench[$a]{AEN_PHRASEID} <=> $bench[$b]{AEN_PHRASEID} }	
+				(@order);		
+	}	
+	elsif ($sort eq 'type') {
+		
+		@order = sort { $bench[$a]{SCORE}  <=> $bench[$b]{SCORE} }
+					sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
+					sort { $bench[$a]{AEN_PHRASEID} <=> $bench[$b]{AEN_PHRASEID} }	
+				(@order);		
+	}
+	else {
+		
+		@order = sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
+					sort { $bench[$a]{AEN_PHRASEID} <=> $bench[$b]{AEN_PHRASEID} }	
 				(@order);
+	}
+	
+	if ($rev) { @order = reverse @order }
 	
 	my $frame = `php -f $fs_html/check_recall.php`;
 	
@@ -303,6 +328,7 @@ sub html_table {
 	$frame =~ s/<!--stbasis-->/$tess{META}{STBASIS}/;
 	$frame =~ s/<!--dist-->/$tess{META}{DIST}/;
 	$frame =~ s/<!--dibasis-->/$tess{META}{DIBASIS}/;
+	$frame =~ s/<!--cutoff-->/$tess{META}{CUTOFF}/;
 	$frame =~ s/<!--comment-->/$tess{META}{COMMENT}/;
 	$frame =~ s/<!--all-results-->/$tess{META}{TOTAL}/;
 	

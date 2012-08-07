@@ -471,7 +471,7 @@ while (my $file_in = shift @ARGV) {
 		nstore \%index_stem, "$file_out.index_stem";
 		
 		print "writing $file_out.freq_stem\n";
-		nstore freq_from_index(\%index_stem), "$file_out.freq_stem";
+		nstore stem_freq(\%index_form, \%stem), "$file_out.freq_stem";
 	}
 	unless ($no_syns) {
 		
@@ -479,7 +479,7 @@ while (my $file_in = shift @ARGV) {
 		nstore \%index_syn, "$file_out.index_syn";
 		
 		print "writing $file_out.freq_syn\n";
-		nstore freq_from_index(\%index_syn), "$file_out.freq_syn";
+		nstore syn_freq(\%index_form, \%stem, \%syn), "$file_out.freq_syn";
 	}
 
 
@@ -522,4 +522,122 @@ sub freq_from_index {
 	}
 	
 	return \%freq;
+}
+
+sub stem_freq {
+
+	my ($index_ref, $stem_ref) = @_[0,1];
+	my %index = %$index_ref;
+	my %stem = %$stem_ref;
+		
+	my %by_stem;
+	my %count;
+	my $total;
+
+	# count and index words
+	
+	for my $word (keys %index) {
+
+		$count{$word} += scalar(@{$index{$word}});
+		
+		$total += $count{$word};
+		
+		next unless defined $stem{$word};
+		
+		for my $stem ( @{$stem{$word}} ) {
+		
+			push @{$by_stem{$stem}}, $word;
+		}
+	}
+	
+	#
+	# calculate the stem-based count
+	#
+	
+	my %stem_count;
+	
+	for my $word1 (keys %count) {
+	
+		# this is to remember what we've
+		# counted once already.
+		
+		my %already_seen;
+		
+		# first count the word itself
+		
+		$stem_count{$word1} = $count{$word1};
+		
+		$already_seen{$word1} = 1;
+		
+		# now for each of its stems
+		
+		for my $stem (@{$stem{$word1}}) {
+			
+			# count each of the words 
+			# with which it shares that stem
+			
+			for my $word2 (@{$by_stem{$stem}}) {
+				
+				next if $already_seen{$word2};
+				
+				$stem_count{$word1} += $count{$word2};
+				
+				$already_seen{$word2} = 1;
+			}
+		}
+	}
+	
+	for (values %stem_count) { $_ /= $total }
+	
+	return \%stem_count;
+}
+
+sub syn_freq {
+
+	my ($index_ref, $stem_ref, $syn_ref) = @_[0..2];
+	
+	my %index = %$index_ref;
+	my %stem  = %$stem_ref;
+	my %syn   = %$syn_ref;
+	
+	my %by_form;
+	
+	# create a word->syn index out of %stem, %syn;
+	
+	for my $form (keys %index) {
+	
+		my %uniq;
+	
+		if (defined $stem{$form}) {
+		
+			for my $stem (@{$stem{$form}}) {
+			
+				$uniq{$stem} = 1;
+				
+				if (defined $syn{$stem}) {
+				
+					for my $syn (@{$syn{$stem}}) {
+					
+						$uniq{$syn} = 1;
+					}
+				}
+			}
+		}
+		else {
+		
+			if (defined $syn{$form}) {
+			
+				for my $syn (@{$syn{$form}}) {
+				
+					$uniq{$syn} = 1;
+				}
+			}
+		}
+		
+		$by_form{$form} = [keys %uniq];
+	}
+	
+	my %syn_freq = %{stem_freq($index_ref, $stem_ref, \%by_form)};
+	
+	return \%syn_freq;
 }

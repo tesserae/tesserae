@@ -69,6 +69,12 @@
 								</select>
 							</td>
 						</tr>
+						<tr>
+							<td><span class="h2">Drop scores below:</span></td>
+							<td>
+								<textarea rows="1" name="cutoff" maxlength="5" style="resize:none;">0</textarea>
+							</td>
+						</tr>
 					</table>
 					
 					<input type="submit" onclick="return ValidateForm()" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>
@@ -106,6 +112,9 @@
 					<br>
 					<b>Distance metric:</b>
 					<!--dibasis-->
+					<br>
+					<b>Score cutoff:</b>
+					<!--cutoff-->
 					<br>
 					<b>Comments:</b>
 					<!--comment-->

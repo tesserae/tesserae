@@ -87,6 +87,7 @@ unless ($no_cgi) {
 
 	$session = $query->param('session')    || die "no session specified from web interface";
 	$sort       = $query->param('sort')    || $sort;
+	$rev        = $query->param('rev')     || $rev;
 	$page       = $query->param('page')    || $page;
 	$batch      = $query->param('batch')   || $batch;
 	$export     = $query->param('export')  || $export;
