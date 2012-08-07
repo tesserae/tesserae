@@ -148,7 +148,7 @@ for my $lang(@lang) {
 
 	unless (-s $file_syn_cache) {
 	
-			print STDERR "can't find $file_syn_cache; skippting\n";
+			print STDERR "can't find $file_syn_cache; skipping\n";
 			next;
 	}
 

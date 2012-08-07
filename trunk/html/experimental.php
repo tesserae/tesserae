@@ -18,7 +18,7 @@
 					Displays the full text of the poems with references highlighted in red.
 				</p>
 				
-				<h2><a href="<?php echo $url_html.'/check_recall.php'; ?>">Lucan-Vergil Benchmark Test</a></h2>
+				<h2><a href="<?php echo $url_cgi.'/check-recall.pl'; ?>">Lucan-Vergil Benchmark Test</a></h2>
 
 				<p>
 					Allows you to perform a search of Lucan's Pharsalia Book 1 against Vergil's Aeneid,

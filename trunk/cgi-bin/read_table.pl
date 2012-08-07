@@ -72,6 +72,10 @@ my $stopwords = 10;
 
 my $stoplist_basis = "corpus";
 
+# minimium frequency for interesting words
+
+my $interest = 0.008;
+
 # output file
 
 my $file_results = "tesresults.bin";
@@ -118,6 +122,7 @@ GetOptions(
 			'distance=i'   => \$max_dist,
 			'dibasis=s'    => \$distance_metric,
 			'cutoff=i'     => \$cutoff,
+			'interest=f'   => \$interest,
 			'quiet'        => \$quiet );
 
 
@@ -213,16 +218,17 @@ if ($no_cgi) {
 }
 else {
 
-	$source		= $query->param('source')   || "";
-	$target		= $query->param('target') 	 || "";
-	$unit     	= $query->param('unit') 	 || $unit;
-	$feature	   = $query->param('feature')	 || $feature;
-	$stopwords	= defined($query->param('stopwords')) ? $query->param('stopwords') : $stopwords;
-	$stoplist_basis = $query->param('stbasis') || $stoplist_basis;
-	$max_dist   = $query->param('dist') || $max_dist;
-	$distance_metric = $query->param('dibasis') || $distance_metric;
-	$cutoff     = $query->param('cutoff')  || $cutoff;
-	$frontend   = $query->param('frontend') || $frontend;
+	$source          = $query->param('source')       || "";
+	$target          = $query->param('target') 	    || "";
+	$unit            = $query->param('unit') 	       || $unit;
+	$feature         = $query->param('feature')	    || $feature;
+	$stopwords       = defined($query->param('stopwords')) ? $query->param('stopwords') : $stopwords;
+	$stoplist_basis  = $query->param('stbasis')      || $stoplist_basis;
+	$max_dist        = $query->param('dist')         || $max_dist;
+	$distance_metric = $query->param('dibasis')      || $distance_metric;
+	$cutoff          = $query->param('cutoff')       || $cutoff;
+	$interest        = $query->param('interest')     || $interest;
+	$frontend        = $query->param('frontend')     || $frontend;
 	
 	if ($source eq "" or $target eq "") {
 	
@@ -245,6 +251,7 @@ unless ($quiet) {
 	print STDERR "max_dist=$max_dist\n";
 	print STDERR "distance basis=$distance_metric\n";
 	print STDERR "score cutoff=$cutoff\n";
+	print STDERR "interesting freq=$interest\n";
 }
 
 
@@ -441,56 +448,36 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 		my %marked_source;
 		my %marked_target;
 		
-		#
-		# here's the place where a scoring algorithm should be
-		#
-		# - right now we have a placeholder that's a function
-		#   of word frequency and distance between words
-		
-		my $score;
-		my $distance = dist(\%{$match{$unit_id_target}{$unit_id_source}}, $distance_metric);
-		
-		# examine each shared term in the target in order by position
-		# within the line
-		
 		for my $token_id_target (@{$match{$unit_id_target}{$unit_id_source}{TARGET}} ) {
 						
-			# mark the display copy as matched
-
 			$marked_target{$token_id_target} = 1;
-						
-			# add the frequency score for this term
-			
-			$score += 1/$freq_target{$token_target[$token_id_target]{FORM}};
 		}
-
-		#
-		# now examine each shared term in the source as above
-		#
-
-		$distance += abs($match{$unit_id_target}{$unit_id_source}{SOURCE}[-1] - $match{$unit_id_target}{$unit_id_source}{SOURCE}[0]);
-		
-		# go through the terms in order by position
 		
 		for my $token_id_source ( @{$match{$unit_id_target}{$unit_id_source}{SOURCE}} ) {
 
-			# mark the display copy
-
 			$marked_source{$token_id_source} = 1;
-
-			# add the frequency score for this term
-
-			$score += 1/$freq_source{$token_source[$token_id_source]{FORM}};
 		}
+				
+		#
+		# calculate the distance
+		# 
+		
+		my $distance = dist(\%{$match{$unit_id_target}{$unit_id_source}}, $distance_metric);
 		
 		if ($distance > $max_dist) {
-			
+		
 			delete $match{$unit_id_target}{$unit_id_source};
 			next;
 		}
 		
-		$score = sprintf("%i", log($score / $distance));
+		#
+		# calculate the score
+		#
 		
+		# score
+		
+		my $score = score_default(\%{$match{$unit_id_target}{$unit_id_source}}, $distance);
+								
 		if ( $score < $cutoff) {
 
 			delete $match{$unit_id_target}{$unit_id_source};
@@ -597,11 +584,11 @@ sub dist {
 		$dist  = abs($match{TARGET}[-1] - $match{TARGET}[0]);
 		$dist += abs($match{SOURCE}[-1] - $match{SOURCE}[0]);
 	}
-	elsif ($metric eq "span-target") {
+	elsif ($metric eq "span_target") {
 		
 		$dist = abs($match{TARGET}[-1] - $match{TARGET}[0]);
 	}
-	elsif ($metric eq "span-source") {
+	elsif ($metric eq "span_source") {
 		
 		$dist = abs($match{SOURCE}[-1] - $match{SOURCE}[0]);
 	}
@@ -615,13 +602,13 @@ sub dist {
 		
 		$dist += abs($s[0] - $s[1]);
 	}
-	elsif ($metric eq "freq-target") {
+	elsif ($metric eq "freq_target") {
 		
 		my @t = sort {$freq_target{$token_target[$a]{FORM}} <=> $freq_target{$token_target[$b]{FORM}}} @{$match{TARGET}}; 
 			
 		$dist  = abs($t[0] - $t[1]);
 	}
-	elsif ($metric eq "freq-source") {
+	elsif ($metric eq "freq_source") {
 		
 		my @s = sort {$freq_source{$token_source[$a]{FORM}} <=> $freq_source{$token_source[$b]{FORM}}} @{$match{SOURCE}}; 
 		
@@ -696,4 +683,82 @@ sub load_stoplist {
 	}
 
 	return \@stoplist;
+}
+
+sub exact_match {
+
+	my ($ref_target, $ref_source) = @_[0,1];
+
+	my @target_id = @$ref_target;
+	my @source_id = @$ref_source;
+	
+	my @ttokens;
+	my @stokens;
+		
+	for (@target_id) {
+	
+		push @ttokens, $token_target[$_]{FORM};
+	}
+	
+	for (@source_id) {
+		push @stokens, $token_source[$_]{FORM};
+	}
+	
+	@ttokens = @{TessSystemVars::uniq(\@ttokens)};
+	@stokens = @{TessSystemVars::uniq(\@ttokens)};
+	
+	my @exact_match = @{TessSystemVars::intersection(\@ttokens, \@stokens)};
+	
+	return scalar(@exact_match);
+}
+
+sub score_default {
+	
+	my $match_ref = shift;
+	my $distance  = shift;
+
+	my %match = %$match_ref;
+	
+	my $score = 0;
+		
+	for my $token_id_target (@{$match{TARGET}} ) {
+									
+		# add the frequency score for this term
+		
+		$score += 1/$freq_target{$token_target[$token_id_target]{FORM}};
+	}
+	
+	for my $token_id_source ( @{$match{SOURCE}} ) {
+
+		# add the frequency score for this term
+
+		$score += 1/$freq_source{$token_source[$token_id_source]{FORM}};
+	}
+	
+	$score = sprintf("%.3f", log($score/$distance));
+	
+	return $score;
+}
+
+sub score_team {
+	
+	my $interesting_words = 0;
+	
+	my $score;
+	
+	for my $token_id_target (@{$match{TARGET}} ) {
+		
+		if ($freq_target{$token_target[$token_id_target]{FORM}} < $interest) { $interesting_words++ }
+	}
+	
+	for my $token_id_source ( @{$match{SOURCE}} ) {
+		
+		if ($freq_source{$token_source[$token_id_source]{FORM}} < $interest) { $interesting_words++ }
+	}
+	
+	my $exact_match = exact_match($match{TARGET}, $match{SOURCE});
+	
+	if ($interesting_words > 1 || $exact_match > 2 ) { $score = 3 }  else { $score = 1 }
+	
+	return $score;
 }

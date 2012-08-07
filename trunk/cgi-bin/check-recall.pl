@@ -24,11 +24,20 @@ use EasyProgressBar;
 
 my $usage = "usage: perl check-recall [--cache CACHE] TESRESULTS\n";
 
+my $session;
+
+my $feature = 'stem';
+my $stopwords = 10;
+my $stoplist_basis = "corpus";
+my $max_dist = 999;
+my $distance_metric = "span";
+my $cutoff = 0;
+my $interest = 0.0008;
+
 my $table = 0;
 my $sort = 'score';
 my $rev = 1;
-my $cutoff = 0;
-my $session;
+
 my @w = (7);
 my $quiet = 1;
 
@@ -59,6 +68,7 @@ GetOptions(
 	"cache=s"        => \$file{cache},
 	"session=s"      => \$session,
 	"sort=s"         => \$sort,
+	"interesting"    => \$interest,
 	"reverse"        => \$rev,
 	"table"          => \$table
 	);
@@ -87,7 +97,7 @@ if (defined $session) {
 }
 else {
 	
-	$file{tess}  = shift @ARGV;
+	$file{tess} = shift @ARGV;
 }
 
 unless (defined $file{tess}) {
@@ -96,6 +106,7 @@ unless (defined $file{tess}) {
 		print STDERR $usage;
 	}
 	else {
+		$session = "NA";
 		html_no_table();
 	}
 	exit;
@@ -236,8 +247,8 @@ sub html_table {
 	elsif ($sort eq 'type') {
 		
 		@order = sort { $bench[$a]{SCORE}  <=> $bench[$b]{SCORE} }
+					sort { $tess{$bench[$a]{BC_PHRASEID}}{$bench[$a]{AEN_PHRASEID}}{SCORE} <=> $tess{$bench[$b]{BC_PHRASEID}}{$bench[$b]{AEN_PHRASEID}}{SCORE} }
 					sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
-					sort { $bench[$a]{AEN_PHRASEID} <=> $bench[$b]{AEN_PHRASEID} }	
 				(@order);		
 	}
 	else {
@@ -319,17 +330,18 @@ sub html_table {
 		$score
 		);
 	
-	my $stoplist = join(", ", @{$tess{META}{STOPLIST}});
+	$session = $tess{META}{SESSION};
+	$feature = $tess{META}{FEATURE};
+	$stopwords = scalar(@{$tess{META}{STOPLIST}});
+	$stoplist_basis = $tess{META}{STBASIS};
+	$max_dist = $tess{META}{DIST};
+	$distance_metric = $tess{META}{DIBASIS};
+	$cutoff = $tess{META}{CUTOFF};
 
-	$frame =~ s/<!--session_id-->/$tess{META}{SESSION}/;
-	$frame =~ s/<!--unit-->/$tess{META}{UNIT}/s;
-	$frame =~ s/<!--feature-->/$tess{META}{FEATURE}/;
-	$frame =~ s/<!--stoplist-->/$stoplist/;
-	$frame =~ s/<!--stbasis-->/$tess{META}{STBASIS}/;
-	$frame =~ s/<!--dist-->/$tess{META}{DIST}/;
-	$frame =~ s/<!--dibasis-->/$tess{META}{DIBASIS}/;
-	$frame =~ s/<!--cutoff-->/$tess{META}{CUTOFF}/;
-	$frame =~ s/<!--comment-->/$tess{META}{COMMENT}/;
+	$frame =~ s/<!--info-->/&info/e;
+	
+	$frame =~ s/<!--sort-->/&re_sort/e;
+
 	$frame =~ s/<!--all-results-->/$tess{META}{TOTAL}/;
 	
 	$frame =~ s/<!--recall-stats-->/$recall_stats/;
@@ -343,24 +355,164 @@ sub html_no_table {
 				
 	my $frame = `php -f $fs_html/check_recall.php`;
 	
-	my $parallels = "<tr><td colspan=\"7\">No data</td></tr>";
-	my $recall_stats = "<tr><td colspan=\"5\">Click &quot;Search&quot; to get started</td></tr>";
+	$frame =~ s/<!--info-->/&info/e; 
 
-	$frame =~ s/<!--session_id-->/NA/;
-	$frame =~ s/<!--unit-->/NA/s;
-	$frame =~ s/<!--feature-->/NA/;
-	$frame =~ s/<!--stoplist-->/NA/;
-	$frame =~ s/<!--stbasis-->/NA/;
-	$frame =~ s/<!--dist-->/NA/;
-	$frame =~ s/<!--dibasis-->/NA/;
-	$frame =~ s/<!--comment-->/NA/;
-	$frame =~ s/<!--all-results-->/NA/;
+	$frame =~ s/<!--sort-->/<p><br>Click &quot;Compare texts&quot; to get started<\/p>/;
 	
-	$frame =~ s/<!--recall-stats-->/$recall_stats/;
-	
-	$frame =~ s/<!--parallels-->/$parallels/;
-
 	print $frame;
+}
+
+sub info {
+		
+	my %sel_feature = (word => "", stem => "", syn=>"");
+	my %sel_stbasis = (corpus => "", target => "", source => "", both => "");
+	my %sel_dibasis = (span => "", span_target => "", span_source => "", 
+                      freq => "", freq_target => "", freq_source => "");
+
+	$sel_feature{$feature}         = 'selected="selected"';
+	$sel_stbasis{$stoplist_basis}  = 'selected="selected"';
+	$sel_dibasis{$distance_metric} = 'selected="selected"';
+
+	my $html = <<END;
+	
+	<form action="$url_cgi/read_table.pl" method="post" ID="Form1">
+
+		<h1>Lucan-Vergil Recall Test</h1>
+
+		<table class="input">
+			<tr>
+				<td><span class="h2">Session:</span></td>
+				<td>$session</td>
+			</tr>
+			<tr>
+				<td><span class="h2">Source:</span></td>
+				<td>Vergil - Aeneid</td>
+			</tr>
+			<tr>
+				<td><span class="h2">Target:</span></td>
+				<td>Lucan - Pharsalia - Book 1</td>
+			</tr>
+			<tr>
+				<td><span class="h2">Unit:</span></td>
+				<td>Phrase</td>
+			</tr>
+			<tr>
+				<td><span class="h2">Feature:</span></td>
+				<td>
+					<select name="feature">
+						<option value="word" $sel_feature{word}>exact form only</option>
+						<option value="stem" $sel_feature{stem}>lemma</option>
+						<option value="syn"  $sel_feature{syn}>lemma + synonyms</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><span class="h2">Number of stop words:</span></td>
+				<td>
+					<input type="text" name="stopwords" value="$stopwords">
+				</td>
+			</tr>
+			<tr>
+				<td><span class="h2">Stoplist basis:</span></td>
+				<td>
+					<select name="stbasis">
+						<option value="corpus" $sel_stbasis{corpus}>corpus</option>
+						<option value="target" $sel_stbasis{target}>target</option>
+						<option value="source" $sel_stbasis{source}>source</option>
+						<option value="both"   $sel_stbasis{both}>target + source</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><span class="h2">Maximum distance:</span></td>
+				<td>
+					<input type="text" name="dist" maxlength="3" value="$max_dist">
+				</td>
+			</tr>
+			<tr>
+				<td><span class="h2">Distance metric:</span></td>
+				<td>
+					<select name="dibasis">
+						<option value="span"        $sel_dibasis{span}>span</option>
+						<option value="span_target" $sel_dibasis{span_target}>span-target</option>
+						<option value="span_source" $sel_dibasis{span_source}>span-source</option>
+						<option value="freq"        $sel_dibasis{freq}>frequency</option>
+						<option value="freq_target" $sel_dibasis{freq_target}>freq-target</option>
+						<option value="freq_source" $sel_dibasis{freq_source}>freq-source</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><span class="h2">Drop scores below:</span></td>
+				<td>
+					<input type="text" name="cutoff" value="$cutoff">
+				</td>
+			</tr>
+			<tr>
+				<td><span class="h2">Minimum frequency for interesting words:</span></td>
+				<td>
+					<input type="text" name="interest" value="$interest">
+				</td>
+			</tr>						
+		</table>
+		
+		<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>
+		
+		<input type="hidden" name="source" value="vergil.aeneid"/>
+		<input type="hidden" name="target" value="lucan.pharsalia.part.1"/>
+		<input type="hidden" name="unit" value="phrase"/>
+		<input type="hidden" name="frontend" value="recall"/>
+		
+	</form>
+
+END
+
+	return $html;
+	
+}
+
+sub re_sort {
+	
+	my @sel_rev     = ("", "");
+	my %sel_sort    = (target => "", score => "", type=> "");
+	
+	$sel_rev[$rev]         = 'selected="selected"';
+	$sel_sort{$sort}       = 'selected="selected"';
+	
+	my $html = <<END;
+	
+	<form action="$url_cgi/check-recall.pl" method="post" id="Form2">
+		
+		<table>
+			<tr>
+				<td>
+
+			Sort results 
+
+			<select name="rev">
+				<option value="0" $sel_rev[0]>increasing</option>
+				<option value="1" $sel_rev[1]>decreasing</option>
+			</select>
+
+			by
+
+			<select name="sort">
+				<option value="target" $sel_sort{target}>target locus</option>
+				<option value="score"  $sel_sort{score}>tess score</option>
+				<option value="type"   $sel_sort{type}>parallel type</option>
+			</select>.
+			
+			</td>
+			<td>
+				<input type="hidden" name="session" value="$session" />
+				<input type="submit" name="submit" value="Change Display" />
+			</td>
+		</tr>
+	</table>
+	</form>
+END
+
+	return $html;
 }
 
 

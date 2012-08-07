@@ -431,7 +431,7 @@ sub print_html {
 		# print one row of the table
 		#
 		
-		my $score = $match{$unit_id_target}{$unit_id_source}{SCORE};
+		my $score = sprintf("%i", $match{$unit_id_target}{$unit_id_source}{SCORE});
 		my %marked_source = %{$match{$unit_id_target}{$unit_id_source}{MARKED_SOURCE}};
 		my %marked_target = %{$match{$unit_id_target}{$unit_id_source}{MARKED_TARGET}};
 
