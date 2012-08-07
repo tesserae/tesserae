@@ -12,22 +12,23 @@ use EasyProgressBar;
 
 use Getopt::Long;
 
-
 # 
 # settings
 #
 
-my $feature = "stem";
-my $unit    = "phrase";
-my $stoplist_basis = "corpus";
+my $feature         = "stem";
+my $unit            = "phrase";
+my $stoplist_basis  = "corpus";
 my $distance_metric = "span";
-my $debug = 0;
+my $cutoff          = 0;
+my $debug           = 0;
 
 GetOptions( 
-	"feature=s" => \$feature,
-	"unit=s"    => \$unit,
-	"stbasis=s" => \$stoplist_basis,
-	"dibasis=s" => \$distance_metric,
+	"feature=s"     => \$feature,
+	"unit=s"        => \$unit,
+	"stbasis=s"     => \$stoplist_basis,
+	"dibasis=s"     => \$distance_metric,
+	"cutoff=f"      => \$cutoff,
 	"debug|verbose" => \$debug
 	);
 
@@ -56,8 +57,8 @@ for (@run) {
 	# run tesserae search
 	
 	docmd("$fs_cgi/read_table.pl --target lucan.pharsalia.part.1 --source vergil.aeneid"
-		  . " --no-cgi --feature $feature --unit $unit --stopwords $stop --dist $dist"
-		  . " --dibasis $distance_metric --stbasis $stoplist_basis"
+		  . " --feature $feature --unit $unit --stopwords $stop --dist $dist"
+		  . " --dibasis $distance_metric --stbasis $stoplist_basis --cutoff $cutoff"
 		  . ($debug ? "" : " --quiet")
 		  . " --bin $file.tesresults.bin");
 			
