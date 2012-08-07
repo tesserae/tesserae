@@ -44,8 +44,9 @@ my $pr = ProgressBar->new(scalar(@run), $debug);
 
 for (@run) {
 	
-	my $stop = $$_{stop};
-	my $dist = $$_{dist};
+	my $stop   = $$_{stop};
+	my $dist   = $$_{dist};
+	my $cutoff = $$_{cutoff};
 	
 	$pr->advance(1, $debug);
 		
@@ -91,7 +92,7 @@ for (@run) {
 		$rate[$type] = $rate;
 	}
 		
-	print join("\t", $stop, $dist, $n, @hits[1..6]) . "\n";
+	print join("\t", $stop, $dist, $cutoff, $n, @hits[1..6]) . "\n";
 }
 
 docmd("rm $file.tesresults.bin");
@@ -119,9 +120,9 @@ sub ReadFile {
 	
 	while (my $line = <FH>) {
 		
-		next unless $line =~ /(\d+)\s+(\d+)/;
+		next unless $line =~ /(\d+)\s+(\d+)\s+([0-9\.]+)/;
 		
-		push @run, {dist => $1, stop => $2};
+		push @run, {dist => $1, stop => $2, cutoff => $3};
 	}
 	
 	return \@run;
