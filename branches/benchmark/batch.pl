@@ -83,12 +83,12 @@ for (@run) {
 	
 	for (@line[1..6]) {
 		
-		my ($score, $hits, $total, $rate) = split /\t/;
+		my ($type, $hits, $total, $rate, $score) = split /\t/;
 		
-		if ($score eq "comm.") { $score = 6 }
+		if ($type eq "comm.") { $type = 6 }
 		
-		$hits[$score] = $hits;
-		$rate[$score] = $rate;
+		$hits[$type] = $hits;
+		$rate[$type] = $rate;
 	}
 		
 	print join("\t", $stop, $dist, $n, @hits[1..6]) . "\n";

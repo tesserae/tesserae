@@ -19,11 +19,14 @@ use EasyProgressBar;
 
 my %file = (
 	
-	wc_ALL => "$fs_data/common/la.word.count",
-	wc_AEN => "$fs_data/v3/la/word/vergil.aeneid.count",
-	wc_BC  => "$fs_data/v3/la/word/lucan.pharsalia.part.1.count",
+	freq_word_ALL => "$fs_data/common/la.word.freq",
+	freq_word_AEN => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.freq_word",
+	freq_word_BC  => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.freq_word",
+	freq_stem_ALL => "$fs_data/common/la.stem.freq",
+	freq_stem_AEN => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.freq_stem",
+	freq_stem_BC  => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.freq_stem",
 	stems  => "$fs_data/common/la.stem.cache",
-	syns   => "$fs_data/common/whit.cache",
+	syns   => "$fs_data/common/la.syn.cache",
 	
 	idf_phrase => "data/la.idf_phrase",
 	idf_text   => "data/la.idf_text",
@@ -40,9 +43,12 @@ my %semantic_lookup = %{ retrieve($file{syns}) };
 # word frequencies
 my %freq;
 
-for (qw(ALL AEN BC)) { 
+for my $feature (qw(word stem)) {
 	
-	$freq{$_} = count_to_freq(retrieve($file{'wc_' . $_}));
+	for my $text (qw(ALL AEN BC)) { 
+	
+		$freq{$feature}{$text} = %{retrieve($file{"freq_$feature_$text"})};
+	}
 }
 
 # inverse document frequencies
@@ -366,6 +372,8 @@ sub num_matching {
 # series BOTH combines numbers for both texts
 #
 # _MIN_ is the minimum value only; supposed to represent the most interesting word
+# _SUM_ is the sum
+# _INV_ is the sum of (1/f) for each freq f
 
 
 
@@ -374,11 +382,14 @@ sub freq_match {
 	my ($match_ref, $rec_ref) = @_;
 	
 	my %match = %$match_ref;
-	my %rec = %$rec_ref;
+	my %rec   = %$rec_ref;
 	
 	my @header = qw/F_M_DOC_AVG_BC F_M_COR_AVG_BC F_M_DOC_AVG_AEN F_M_COR_AVG_AEN 
 					F_M_DOC_AVG_BOTH F_M_COR_AVG_BOTH
-					F_M_DOC_MIN_BC F_M_COR_MIN_BC F_M_DOC_MIN_AEN F_M_COR_MIN_AEN/; 
+					F_M_DOC_MIN_BC F_M_COR_MIN_BC F_M_DOC_MIN_AEN F_M_COR_MIN_AEN
+					F_M_DOC_SUM_BC F_M_COR_SUM_BC F_M_DOC_SUM_AEN F_M_COR_SUM_AEN
+					F_M_DOC_INV_BC F_M_COR_INV_BC F_M_DOC_INV_AEN F_M_COR_INV_AEN/; 
+					
 	my @data;
 	
 	# don't proceed unless there are matching words
@@ -404,7 +415,7 @@ sub freq_match {
 			for my $i (@{$match{$feature}{$text}}) {
 			
 				push @{$values_doc{$text}},    $freq{$text}{$rec{$text . "_PHRASE"}[$i]};
-				push @{$values_corpus{$text}}, $freq{ALL}{$rec{$text . "_PHRASE"}[$i]};
+				push @{$values_corpus{$text}}, $freq{ALL}{$rec{$text   . "_PHRASE"}[$i]};
 			}
 		}
 		
@@ -412,7 +423,7 @@ sub freq_match {
 		push @data, mean(@{$values_corpus{$text}});
 	}
 	
- 	push @data, mean(@{$values_doc{BC}}, @{$values_doc{AEN}});
+ 	push @data, mean(@{$values_doc{BC}},    @{$values_doc{AEN}});
  	push @data, mean(@{$values_corpus{BC}}, @{$values_corpus{AEN}});
 	
 	
@@ -422,11 +433,48 @@ sub freq_match {
 	
 	for my $text qw(BC AEN) {
 	
- 		@{$values_doc{$text}} = sort {$a <=> $b} @{$values_doc{$text}};
+ 		@{$values_doc{$text}}    = sort {$a <=> $b} @{$values_doc{$text}};
  		@{$values_corpus{$text}} = sort {$a <=> $b} @{$values_corpus{$text}};
 
  		push @data, $values_doc{$text}[0];
  		push @data, $values_corpus{$text}[0];
+	}
+	
+	#
+	# sums of frequencies
+	#
+	
+	for my $text qw(BC AEN) {
+	
+ 		push @data, sum(@{$values_doc{$text}});
+ 		push @data, sum(@{$values_corpus{$text}});
+	}
+	
+	#
+	# inverse sums
+	#
+	
+	for my $text qw(BC AEN) {
+	
+		my @inv_doc;
+		my @inv_cor;
+		
+		for (@{$values_doc{$text}}) {
+		
+			next if $_ == 0;
+			
+			push @inv_doc, 1/$_;
+		}
+
+		for (@{$values_corpus{$text}}) {
+		
+			next if $_ == 0;
+			
+			push @inv_cor, 1/$_;
+		}
+	
+ 		push @data, sum(@inv_doc);
+ 		push @data, sum(@inv_cor);
 	}
 	
 
@@ -443,7 +491,6 @@ sub freq_match {
 # F_P_DOC_AVG_BC, F_P_COR_AVG_BC, F_P_DOC_AVG_AEN, F_P_COR_AVG_AEN,
 # F_P_DOC_AVG_BOTH, F_P_COR_AVG_BOTH,
 # F_P_DOC_MIN_BC, F_P_COR_MIN_BC, F_P_DOC_MIN_AEN, F_P_COR_MIN_AEN
-
 
 sub freq_phrase {
 
@@ -1220,11 +1267,22 @@ sub mean {
 	
 	if ($#val < 0) { return "NA" }
 	
+	my $sum = sum(@val);
+		
+	my $mean = $sum / scalar(@val);
+	
+	return $mean;
+}
+
+sub sum {
+
+	my @val = @_;
+	
+	if ($#val < 0) { return "NA" }
+	
 	my $sum;
 	
 	for (@val) { $sum += $_ };
 	
-	my $mean = $sum / scalar(@val);
-	
-	return $mean;
+	return $sum;
 }
