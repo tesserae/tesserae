@@ -19,7 +19,7 @@
 						<td><span class="h2">Source:</span></td>
 						<td>
 							<select name="source" ID="source">
-								<?php include $fs_html.'/textlist.la.l.php'; ?>
+								<?php include $fs_html.'/textlist.en.l.php'; ?>
 							</select>
 						</td>
 					</tr>
@@ -27,7 +27,7 @@
 						<td><span class="h2">Target:</span></td>
 						<td>
 							<select name="target" ID="target">
-								<?php include $fs_html.'/textlist.la.r.php'; ?>
+								<?php include $fs_html.'/textlist.en.r.php'; ?>
 							</select>
 						</td>
 					</tr>
