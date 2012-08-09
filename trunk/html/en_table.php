@@ -44,9 +44,9 @@
 						<td><span class="h2">Feature:</span></td>
 						<td>
 							<select name="feature">
-								<option value="word">exact form only</option>
-								<option value="stem" selected="selected">lemma</option>
-								<option value="syn">lemma + synonyms</option>
+								<option value="word" selected="selected">exact form only</option>
+								<option value="stem" disabled="disabled">lemma</option>
+								<option value="syn" disabled="disabled">lemma + synonyms</option>
 							</select>
 						</td>
 					</tr>
@@ -116,7 +116,7 @@
                 	var ddltrg = document.getElementById('target');
 
                 	ddlsrc.options[0].selected = true;
-                	ddltrg.options[ddltrg.options.length-12].selected = true;
+                	ddltrg.options[ddltrg.options.length-13].selected = true;
 
         	</script>
 

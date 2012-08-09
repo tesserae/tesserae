@@ -17,6 +17,12 @@
 				<p>
 					Displays the full text of the poems with references highlighted in red.
 				</p>
+
+				<h2><a href="<?php echo $url_html.'/en_table.php'; ?>">English Search</a></h2>
+
+				<p>
+					Search a limited number of English texts.  Currently supports exact-match only.
+				</p>
 				
 				<h2><a href="<?php echo $url_cgi.'/check-recall.pl'; ?>">Lucan-Vergil Benchmark Test</a></h2>
 
