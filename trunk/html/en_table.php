@@ -55,9 +55,9 @@
 						<td>
 							<select name="stopwords">
 								<option value="0">0</option>
-								<option value="10" selected="selected">10</option>
+								<option value="10">10</option>
 								<option value="20">20</option>
-								<option value="30">30</option>
+								<option value="30" selected="selected">30</option>
 								<option value="40">40</option>
 								<option value="50">50</option>
 								<option value="100">100</option>
