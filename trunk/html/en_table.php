@@ -116,7 +116,7 @@
                 	var ddltrg = document.getElementById('target');
 
                 	ddlsrc.options[0].selected = true;
-                	ddltrg.options[ddltrg.options.length-1].selected = true;
+                	ddltrg.options[ddltrg.options.length-12].selected = true;
 
         	</script>
 
