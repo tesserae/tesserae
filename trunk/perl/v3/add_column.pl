@@ -50,20 +50,13 @@ my $file_lang = catfile($fs_data, 'common', 'lang');
 if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
 
 #
-# allow language for individual files to be given on the
-# command line, using flags --la or --grc
+# allow language to be given on the command line, 
+# using --lang LANG
 #
 
 my $lang;
 
-my %lang_override;
-my @force_la;
-my @force_grc;
-
-GetOptions("la=s" => \@force_la, "grc=s" => \@force_grc);
-
-for (@force_la)  { $lang_override{$_} = "la" }
-for (@force_grc) { $lang_override{$_} = "grc" }
+GetOptions("lang=s" => \$lang);
 
 #
 # get files to be processed from cmd line args
@@ -83,14 +76,6 @@ while (my $file_in = shift @ARGV) {
 
 		push @ARGV, @parts;
 			
-		# if lang_override was set for the directory,
-		# apply to all the contents
-			
-		if (defined $lang_override{$file_in}) { 
-				
-			for (@parts) { $lang_override{$_} = $lang_override{$file_in}}
-		}
-
 		closedir (DH);
 		
 		# move on to the next full text
@@ -108,24 +93,22 @@ while (my $file_in = shift @ARGV) {
 	# 3. somewhere in the path to the text
 	# - then give up
 
-	if ( defined $lang_override{$file_in} ) {
-	
-		$lang = $lang_override{$file_in};
+	if ( defined $lang ) {
 	}
 	elsif ( defined $lang{$name} ) {
 
 		$lang = $lang{$name};
 	}
-	elsif ($file_in =~ /\/(la|grc)\//) {
+	elsif (Cwd::abs_path($file_in) =~ m/$fs_text\/([a-z]{1,4})\//) {
 
 		$lang = $1;
 	}
 	else {
 
-		print STDERR "Can't guess the language of $file_in!  Skipping.\nTry again, specifying language using --la|grc.\n";
+		print STDERR "Can't guess the language of $file_in! Try reprocessing with --lang LANG\n";
 		next;
 	}
-	
+		
 	#
 	# initialize variables
 	#
@@ -172,6 +155,13 @@ while (my $file_in = shift @ARGV) {
 		print STDERR "Can't find stem dictionary! Stem and syn indexing disabled.\n";
 		$no_stems = 1;		
 	}
+	
+	#
+	# assume unknown lang is like english
+	#
+	
+	unless (defined $is_word{$lang})  { $is_word{$lang}  = $is_word{en} }
+	unless (defined $non_word{$lang}) { $non_word{$lang} = $non_word{en} }
 
 	# parse and index:
 	#

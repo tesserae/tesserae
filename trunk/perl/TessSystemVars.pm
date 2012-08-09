@@ -47,11 +47,16 @@ my $wchar_greek = 'a-z\*\(\)\\\/\=\|\+\'';
 my $wchar_latin = 'a-zA-Z';
 
 our %non_word = (
-	'la' => qr([^$wchar_latin]+), 
-	'grc' => qr([^$wchar_greek]+) );
+	'la'  => qr([^$wchar_latin]+), 
+	'grc' => qr([^$wchar_greek]+),
+	'en'  => qr([^$wchar_latin]+) 
+	); 
+	
 our %is_word = (
-	'la' => qr([$wchar_latin]+), 
-	'grc' => qr([$wchar_greek]+) );
+	'la'  => qr([$wchar_latin]+), 
+	'grc' => qr([$wchar_greek]+),
+	'en'  => qr([$wchar_latin]+) 
+	);
 		   
 
 
@@ -59,8 +64,8 @@ our %is_word = (
 # subroutines
 ########################################
 
-sub uniq
-{									
+sub uniq {
+
 	# removes redundant elements
 
    my @array = @{$_[0]};			# dereference array to be evaluated
@@ -68,8 +73,8 @@ sub uniq
    my %hash;							# temporary
    my @uniq;							# create a new array to hold return value
 
-	for (@array)	
-	{ 
+	for (@array) {
+
 		$hash{$_} = 1; 
 	}
 											
@@ -79,8 +84,7 @@ sub uniq
 }
 
 
-sub intersection 
-{              
+sub intersection {  
 
 	# arguments are any number of arrays,
 	# returns elements common to all as 
@@ -121,16 +125,27 @@ sub standardize {
 		
 		$_ = lcase($lang, $_);
 		
-		if ($lang eq 'la')
-		{
-			tr/jv/iu/;	# replace j and v with i and u throughout
-			s/[^a-z]//g;
+		# latin
+		
+		if ($lang eq 'la') {
+		
+			tr/jv/iu/;	  # replace j and v with i and u throughout
+			s/[^a-z]//g;  # remove everything but letters
 		}
 		
-		if ($lang eq 'grc')
-		{
-			s/\\/\//;	# change grave accent (context-specific) to acute (dictionary form)
-			s/0-9\.#//g;
+		# greek - beta code
+		
+		elsif ($lang eq 'grc') {
+		
+			s/\\/\//;	  # change grave accent (context-specific) to acute (dictionary form)
+			s/0-9\.#//g;  # remove numbers
+		}
+		
+		# english, and everything else
+		
+		else {
+			
+			s/[^a-z]//g;  # remove everything but letters
 		}
 	}
 	
@@ -143,42 +158,62 @@ sub lcase
 
 	my @string = @_;
 
-	for (@string)
-	{
+	for (@string) {
 	
-		if ($lang eq 'la')
-		{
+		# latin
+	
+		if ($lang eq 'la') {
+
 			tr/A-Z/a-z/;
 		}
+
+		# greek - beta code
 	
-		if ($lang eq 'grc')
-		{
+		elsif ($lang eq 'grc') {
+
 			s/^\*([\(\)\/\\\|\=\+]*)([a-z])/$2$1/;
 		}
+		
+		# english and everything else
+
+ 		else {
+
+			$_ = lc($_);
+		}		
 	}
 
 	return wantarray ? @string : shift @string;
 }
 
-sub tcase
-{
+sub tcase {
+
 	my $lang = shift;
 
 	my @string = @_;
 	
-	for (@string)
-	{
+	for (@string) {
 
 		$_ = lcase($lang, $_);
 
-		if ($lang eq 'la')
-		{
-			s/^([a-z])/uc($1)/e;
+		# Latin
+
+		if ($lang eq 'la') {
+		
+			$_ = ucfirst($_);
 		}
+		
+		# Greek - Beta Code
 	
-		if ($lang eq 'grc')
-		{
+		elsif ($lang eq 'grc') {
+		
 			s/^([a-z])([\(\)\/\\\|\=\+]*)/\*$2$1/;
+		}
+		
+		# English and everything else
+		
+		else {
+		
+			$_ = ucfirst($_);
 		}
 	}
 

@@ -23,8 +23,11 @@ my @lang;
 
 for (@ARGV) {
 
-	if (/gr/)	{ push @lang, "grc" }
-	if (/la/)	{ push @lang, "la"	}
+	if (/^[a-zA-Z]{1,4}$/)	{ 
+	
+		next unless -d catdir($fs_data, 'v3', $_);
+		push @lang, $_;
+	}
 }
 
 #
@@ -102,6 +105,13 @@ for my $lang(@lang) {
 	#
 	# stem counts
 	#
+	
+	unless (-s $file_stem_cache) {
+	
+			print STDERR "can't find $file_stem_cache.\n";
+			print STDERR "stem and synonym stats unavailable\n";
+			next;
+	}
 
 	print STDERR "reading $file_stem_cache\n";
 
@@ -148,7 +158,8 @@ for my $lang(@lang) {
 
 	unless (-s $file_syn_cache) {
 	
-			print STDERR "can't find $file_syn_cache; skipping\n";
+			print STDERR "can't find $file_syn_cache\n";
+			print STDERR "synonym stats unavailable.\n";
 			next;
 	}
 
