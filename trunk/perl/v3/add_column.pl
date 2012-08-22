@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl
+#! /opt/local/bin/perl5.12
 
 # the line below is designed to be modified by configure.pl
 
@@ -14,6 +14,7 @@ use warnings;
 
 use TessSystemVars;
 
+use utf8;
 use File::Path qw(mkpath rmtree);
 use File::Spec::Functions;
 use File::Basename;
@@ -175,6 +176,10 @@ while (my $file_in = shift @ARGV) {
 
 	open (TEXT, "<:utf8", $file_in) or die("Can't open file ".$file_in);
 
+	# assume first quote mark is a left one
+	
+	my $toggle = 1;
+
 	# examine each line of the input text
 
 	while (my $l = <TEXT>) {
@@ -322,6 +327,17 @@ while (my $file_in = shift @ARGV) {
 			elsif ( $verse =~ s/^($non_word{$lang})// ) {
 			
 				my $token = $1;
+				
+				# tidy up double quotation marks
+				
+				while ($token =~ /"/) {
+
+					my $quote = $toggle ? '“' : '”';
+
+					$token =~ s/"/$quote/;
+
+					$toggle = ! $toggle;
+				}
 			
 				# check for phrase-delimiting punctuation
 				#
@@ -384,8 +400,8 @@ while (my $file_in = shift @ARGV) {
 	#
 	# tidy up relationship between phrases and lines:
 	#  - convert the LINE_ID tag of phrases to a simple array
-	#  - add a LOCUS tag with range of lines in human-readable form
 	#
+	# convert straight double quote marks to directional unicode ones
 		
 	for my $phrase_id (0..$#phrase) { 
 		
@@ -393,39 +409,7 @@ while (my $file_in = shift @ARGV) {
 
 		# if there's a range, make it easy to read;
 			
-		my $loc_1 = $line[$phrase[$phrase_id]{LINE_ID}[0]]{LOCUS};
-		my $loc_2 = $line[$phrase[$phrase_id]{LINE_ID}[-1]]{LOCUS};
-			
-		my $range;
-		
-		if ($loc_2 ne $loc_1) {
-		
-			my $base_1 = $loc_1;
-			my $base_2 = $loc_2;
-		
-			$base_1 =~ s/(.+\.).+/$1/;
-			$base_2 =~ s/(.+\.).+/$1/;
-		
-			if ($base_1 eq $base_2) {
-			
-				for (0..length($loc_1)) {
-				
-					if (substr($loc_1, $_, 1) ne substr($loc_2, $_, 1)) {
-						
-						$loc_2 = substr($loc_2, $_);
-						last;
-					}
-				}
-			}	
-				
-			$range = "$loc_1-$loc_2";
-		}
-		else {
-			
-			 $range = $loc_1;
-		}
-		
-		$phrase[$phrase_id]{LOCUS} = $range;
+		$phrase[$phrase_id]{LOCUS} = $line[$phrase[$phrase_id]{LINE_ID}[0]]{LOCUS};
 	}
 		
 	#

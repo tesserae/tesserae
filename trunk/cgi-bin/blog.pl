@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 #
 # this script grabs content from the DHIB blogs

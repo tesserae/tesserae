@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 use lib '/var/www/tesserae/perl';
 use TessSystemVars;

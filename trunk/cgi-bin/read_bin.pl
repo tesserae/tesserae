@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 # the line below is designed to be modified by configure.pl
 
@@ -75,6 +75,7 @@ GetOptions(
 	'page=i'    => \$page,
 	'batch=i'   => \$batch,
 	'session=s' => \$session,
+	'export=s'  => \$export,
 	'quiet'     => \$quiet );
 
 #
@@ -236,6 +237,7 @@ if ($export eq "html") {
 }
 elsif ($export eq "csv") {
 	
+	print_csv();
 }
 elsif  ($export eq "xml") {
 	
@@ -276,13 +278,13 @@ sub nav_page {
 		if ($page > 1) {
 		
 			$back_arrow .= "<span>";
-			$back_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=1;batch=$batch\"> [first] </a>\n";
+			$back_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=1;batch=$batch\"> [first] </a>\n";
 			$back_arrow .= "</span>";
 
 			my $p = $page-1;
 
 			$back_arrow .= "<span>";				
-			$back_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=$p;batch=$batch\"> [previous] </a>\n";
+			$back_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> [previous] </a>\n";
 			$back_arrow .= "</span>";
 		
 		
@@ -294,11 +296,11 @@ sub nav_page {
 			my $p = $page+1;
 		
 			$forward_arrow .= "<span>";
-			$forward_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=$p;batch=$batch\"> [next] </a>\n";
+			$forward_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> [next] </a>\n";
 			$forward_arrow .= "</span>";
 
 			$forward_arrow .= "<span>";
-			$forward_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=$pages;batch=$batch\"> [last] </a>\n";		       
+			$forward_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$pages;batch=$batch\"> [last] </a>\n";		       
 			$forward_arrow .= "</span>";
 		
 			@right = ($page+1..($page < $pages-4 ? $page+4 : $pages));
@@ -316,7 +318,7 @@ sub nav_page {
 			}
 			else {
 			
-				$html .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;page=$p;batch=$batch\"> $p </a>";
+				$html .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> $p </a>";
 			}	
 			
 			$html .= "</span>";
@@ -334,7 +336,7 @@ sub re_sort {
 	
 	my @sel_rev    = ("", "");
 	my %sel_sort   = (target => "", source => "", score => "");
-	my %sel_export = (html => "", xml => "");
+	my %sel_export = (html => "", xml => "", csv => "");
 	my %sel_batch  = (50 => '', 100 => '', 200 => '', $total_matches => '');
 
 	$sel_rev[$rev]       = 'selected="selected"';
@@ -369,6 +371,7 @@ sub re_sort {
 
 			<select name="export">
 				<option value="html" $sel_export{html}>html</option>
+				<option value="csv"  $sel_export{csv}>csv</option>
 				<option value="xml"  $sel_export{xml}>xml</option>
 			</select>.
 			
@@ -530,6 +533,90 @@ sub print_html {
 	print $bottom;
 }
 
+sub print_csv {
+	
+	print join (",", 
+	
+		qw(
+			"RESULT"
+			"TARGET_LOC"
+		   "TARGET_TXT"
+			"SOURCE_LOC"
+			"SOURCE_TXT"
+			"SHARED"
+			"SCORE"
+		)
+		) . "\n";
+
+	for my $i (0..$#rec) {
+
+		my $unit_id_target = $rec[$i]{target};
+		my $unit_id_source = $rec[$i]{source};
+						
+		#
+		# print one row of the table
+		#
+		
+		my $score = sprintf("%i", $match{$unit_id_target}{$unit_id_source}{SCORE});
+
+		# format the list of all unique shared words
+	
+		my $keys = join(", ", @{$match{$unit_id_target}{$unit_id_source}{KEY}});
+
+		#
+		# now prepare the csv record for this match
+		#
+
+		my @row;
+		
+		# result serial number
+		
+		push @row, $i+1;
+		
+		# target locus
+		
+		push @row, "\"$abbr{$target} $unit_target[$unit_id_target]{LOCUS}\"";
+		
+		# target phrase
+		
+		my $phrase = "";
+				
+		for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
+		
+			$phrase .= $token_target[$token_id_target]{DISPLAY};
+		}
+		
+		push @row, "\"$phrase\"";
+				
+		# source locus
+		
+		push @row, "\"$abbr{$source} $unit_source[$unit_id_source]{LOCUS}\"";
+		
+		# source phrase
+		
+		$phrase = "";
+		
+		for my $token_id_source (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
+		
+			$phrase .= $token_source[$token_id_source]{DISPLAY};
+		}
+				
+		push @row, "\"$phrase\"";
+		
+		# keywords
+		
+		push @row, "\"$keys\"";
+
+		# score
+
+		push @row, $score;
+		
+		# print row
+		
+		print join(",", @row) . "\n";
+	}
+}
+
 
 sub print_xml {
 
@@ -660,7 +747,7 @@ sub sort_results {
 		}
 	}
 	
-	if ($export eq "html") {
+	if ($export ne "xml") {
 	
 		if ($sort eq "source") {
 	
