@@ -197,6 +197,11 @@ table.data
 	margin : 25px auto;
 }
 
+table.data th
+{
+ 	vertical-align: top;
+}
+
 table.data caption
 {
 	margin : 10px auto 2px;

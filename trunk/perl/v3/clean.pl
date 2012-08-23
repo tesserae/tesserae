@@ -27,20 +27,59 @@ my %clean = (
 			
 GetOptions( "text" => \$clean{text}, "dict" => \$clean{dict} );
 
+# specify languages to clean as arguments
+
+my @lang = @ARGV;
+
+# if none specified, clean all
+
+unless (@lang) {
+
+	opendir (DH, catdir($fs_data, 'v3'));
+	
+	@lang = grep {/^[^.]/ && -d catdir($fs_data, 'v3', $_) } readdir DH;
+	
+	closedir DH;
+}
+
+# these will be modified to remove deleted texts
+
+my %abbr = %{ retrieve(catfile($fs_data, 'common', 'abbr')) };
+my %lang = %{ retrieve(catfile($fs_data, 'common', 'lang')) };
+
 # clear preprocessed texts from the database
 
 if ($clean{text}) {
 	
-	rmtree catfile($fs_data, 'v3');
-	mkpath catfile($fs_data, 'v3');
+	for (@lang) { 
 	
-	unlink catfile($fs_data, 'common', 'abbr');	
-	unlink catfile($fs_data, 'common', 'lang');
+		rmtree catdir($fs_data, 'v3', $_);
+		mkpath catdir($fs_data, 'v3', $_);
+
+		unlink glob(catfile($fs_data, 'common', $_ . '.*.count'));
+	}
 	
-	unlink glob(catfile($fs_data, 'common', 'la.*.count'));
+	for my $text (keys %abbr) {
+	
+		if (grep {/$lang{$text}/} @lang) {
+		
+			delete $abbr{$text};
+			delete $lang{$text};
+		}
+	}
 }
+
+# save changes
+
+nstore \%abbr, catfile($fs_data, 'common', 'abbr');
+nstore \%lang, catfile($fs_data, 'common', 'lang');
+
+# remove dictionaries
 
 if ($clean{dict}) {
 
-	unlink glob(catfile($fs_data, 'common', 'la.*.cache'));
+	for (@lang) {
+
+		unlink glob(catfile($fs_data, 'common', $_ . '.*.cache'));
+	}
 }

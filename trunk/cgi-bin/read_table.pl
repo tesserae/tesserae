@@ -627,14 +627,14 @@ sub load_stoplist {
 	
 	if ($stoplist_basis eq "target") {
 		
-		my $file = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_' . $feature);
+		my $file = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.stop_' . $feature);
 		
 		%basis = %{retrieve($file)};
 	}
 	
 	elsif ($stoplist_basis eq "source") {
 		
-		my $file = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_' . $feature);
+		my $file = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.stop_' . $feature);
 
 		%basis = %{retrieve($file)};		
 	}
@@ -648,11 +648,11 @@ sub load_stoplist {
 	
 	elsif ($stoplist_basis eq "both") {
 		
-		my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_' . $feature);
+		my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.stop_' . $feature);
 		
 		%basis = %{retrieve($file_target)};
 		
-		my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_' . $feature);
+		my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.stop_' . $feature);
 		
 		my %basis2 = %{retrieve($file_source)};
 		

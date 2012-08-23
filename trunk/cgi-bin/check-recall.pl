@@ -445,15 +445,9 @@ sub info {
 			<tr>
 				<td><span class="h2">Drop scores below:</span></td>
 				<td>
-					<input type="text" name="cutoff" value="$cutoff">
+					<input type="text" name="cutoff" maxlen="3" value="$cutoff">
 				</td>
 			</tr>
-			<tr>
-				<td><span class="h2">Minimum frequency for interesting words:</span></td>
-				<td>
-					<input type="text" name="interest" value="$interest">
-				</td>
-			</tr>						
 		</table>
 		
 		<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>

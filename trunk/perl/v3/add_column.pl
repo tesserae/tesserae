@@ -401,7 +401,6 @@ while (my $file_in = shift @ARGV) {
 	# tidy up relationship between phrases and lines:
 	#  - convert the LINE_ID tag of phrases to a simple array
 	#
-	# convert straight double quote marks to directional unicode ones
 		
 	for my $phrase_id (0..$#phrase) { 
 		
@@ -439,6 +438,9 @@ while (my $file_in = shift @ARGV) {
 	print "writing $file_out.freq_word\n";
 	nstore freq_from_index(\%index_form), "$file_out.freq_word";
 
+	print "writing $file_out.stop_word\n";
+	nstore freq_from_index(\%index_form), "$file_out.stop_word";
+
 	unless ($no_stems) {
 		
 		print "writing $file_out.index_stem\n";
@@ -446,6 +448,9 @@ while (my $file_in = shift @ARGV) {
 		
 		print "writing $file_out.freq_stem\n";
 		nstore stem_freq(\%index_form, \%stem), "$file_out.freq_stem";
+		
+		print "writing $file_out.stop_stem\n";
+		nstore freq_from_index(\%index_stem), "$file_out.stop_stem";
 	}
 	unless ($no_syns) {
 		
@@ -454,6 +459,10 @@ while (my $file_in = shift @ARGV) {
 		
 		print "writing $file_out.freq_syn\n";
 		nstore syn_freq(\%index_form, \%stem, \%syn), "$file_out.freq_syn";
+		
+		print "writing $file_out.stop_syn\n";
+		nstore freq_from_index(\%index_syn), "$file_out.stop_syn";
+
 	}
 
 
@@ -473,7 +482,6 @@ while (my $file_in = shift @ARGV) {
 		nstore \%lang, $file_lang;
 	}
 }
-
 
 sub freq_from_index {
 	
