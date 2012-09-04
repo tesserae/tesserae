@@ -5,10 +5,12 @@
 use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
-# read_table.pl
+# multitext.pl
 #
-# select two texts for comparison using the big table
-#
+# the goal of this script is to check the results of 
+# a previous tesserae search against all the other
+# texts to see whether the allusions discovered 
+# exist elsewhere in the corpus as well.
 
 use strict;
 use warnings;
@@ -163,16 +165,6 @@ my $comments = $match{META}{COMMENT};
 
 delete $match{META};
 
-# sort the results
-
-my @rec = @{sort_results()};
-
-if ($batch eq 'all') {
-
-	$batch = $total_matches;
-	$page  = 1;
-}
-
 #
 # load texts
 #
@@ -213,6 +205,24 @@ my @token_target   = @{ retrieve( "$path_target/$target.token"    ) };
 my @unit_target    = @{ retrieve( "$path_target/$target.${unit}" ) };
 my %index_target   = %{ retrieve( "$path_target/$target.index_$feature" ) };
 
+# get the list of all the other texts in the corpus
+
+my @textlist = @{get_textlist($target, $source)};
+
+# filter out results occurring in other texts
+
+search_multi(\@textlist);
+
+# sort the results
+
+my @rec = @{sort_results()};
+
+if ($batch eq 'all') {
+
+	$batch = $total_matches;
+	$page  = 1;
+}
+
 
 #
 # if the featureset is synonyms, get the parameters used
@@ -248,6 +258,23 @@ elsif  ($export eq "xml") {
 #
 # subroutines
 #
+
+sub get_textlist {
+	
+	my ($target, $source) = @_;
+
+	my $directory = catdir($fs_data, 'v3', $lang{$target});
+
+	opendir(DH, $directory);
+	
+	my @textlist = grep {/^[^.]/ && ! /\.part\./} readdir(DH);
+	
+	closedir(DH);
+	
+	@textlist = grep {$_ ne $target && $_ ne $source} @textlist;
+	
+	return \@textlist;
+}
 
 sub nav_page {
 		
@@ -545,8 +572,6 @@ sub print_csv {
 			"SOURCE_TXT"
 			"SHARED"
 			"SCORE"
-			"MARKED_TARGET"
-			"MARKED_SOURCE"
 		)
 		) . "\n";
 
@@ -588,7 +613,14 @@ sub print_csv {
 				
 		for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
 		
-			$phrase .= $token_target[$token_id_target]{DISPLAY};
+			if ($marked_target{$token_id_target}) {
+				
+				$phrase .= uc($token_target[$token_id_target]{DISPLAY});
+			}
+		
+			else {
+				$phrase .= $token_target[$token_id_target]{DISPLAY};
+			}
 		}
 		
 		push @row, "\"$phrase\"";
@@ -615,42 +647,6 @@ sub print_csv {
 		# score
 
 		push @row, $score;
-		
-		# additional columns to help excel color code the matching words
-		
-		# target
-		
-		my @match_token_index;		
-		my $word_count;
-		
-		for my $token_id (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
-		
-			if ($token_target[$token_id]{TYPE} eq "WORD") { $word_count++ }
-		
-			if (defined $marked_target{$token_id}) {
-		
-				push @match_token_index, $word_count;
-			}
-		}
-		
-		push @row, '"' . join(";", @match_token_index) . '"';
-		
-		# source
-		
-		@match_token_index = ();
-		$word_count = 0;
-		
-		for my $token_id (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
-		
-			if ($token_source[$token_id]{TYPE} eq "WORD") { $word_count++ }
-		
-			if (defined $marked_source{$token_id}) {
-		
-				push @match_token_index, $word_count;
-			}
-		}
-		
-		push @row, '"' . join(";", @match_token_index) . '"';
 		
 		# print row
 		
@@ -774,6 +770,187 @@ END
 	# finish off the xml doc
 
 	print "</results>\n";	
+}
+
+sub search_multi {
+
+	# the list of texts to exclude
+
+	my $aref = shift;
+	my @textlist = @$aref;
+	
+	print STDERR "multi-searching on " . scalar(@textlist) . " texts.\n" unless $quiet;
+	
+	#
+	# first, index the matches by the key pairs
+	# on which they matched
+	#
+		
+	my %index_keypair;
+	my %keys_to_look_for;
+			
+	for my $unit_id_target (keys %match) {
+		
+		for my $unit_id_source (keys %{$match{$unit_id_target}}) {
+			
+			# they keys on which this parallel was made
+
+			my @keys = @{$match{$unit_id_target}{$unit_id_source}{KEY}};
+			
+			# arrange the keys into pairs - any one of these in another
+			# text constitutes a match
+			
+			my %pair;
+			
+			for my $key1 (@keys) {
+							
+				for my $key2 (@keys) {
+				
+					next if $key1 eq $key2;
+
+					($key1, $key2) = sort($key1, $key2);
+					
+					$pair{"$key1~$key2"} = 1;
+				}
+				
+				# any key appearing in a parallel is to be checked
+				
+				$keys_to_look_for{$key1} = 1;
+			}
+			
+			# add this parallel to the index under each pair
+			
+			for my $keypair (keys %pair) {
+			
+				push @{$index_keypair{$keypair}}, {
+					TARGET => $unit_id_target, 
+					SOURCE => $unit_id_source
+				};
+			}
+		}
+	}
+	
+	# check all the other texts
+	
+	my $pr;
+	
+	for my $i (0..$#textlist) {
+		
+		my $other = $textlist[$i];
+		
+		unless ($quiet) {
+		
+			print STDERR sprintf("checking %s (%i/%i)\n", $other, $i+1, scalar(@textlist));
+		}
+		
+		my $file = catfile($fs_data, 'v3', $lang{$target}, $other, $other);
+		
+		my %index_other = %{ retrieve($file . '.index_' . $feature) };
+		my @unit_other  = @{ retrieve($file . '.' . $unit) };
+
+		# this is going to record the ids of tokens in the "other" text
+		# which contain any of the keys we're looking for
+		
+		my %matched_token_other;
+
+		# check their indices only for those keys appearing in parallels
+		# between the source and target
+
+		for my $key (keys %keys_to_look_for) {
+			
+			next unless defined $index_other{$key};
+			
+			for my $token_id_other (@{$index_other{$key}}) {
+			
+				push @{$matched_token_other{$token_id_other}}, $key;
+			}
+		}
+				
+		# now gather marked tokens in the other text at the unit level
+		
+		$pr = $quiet ? 0 : ProgressBar->new(scalar @unit_other);
+		
+		for my $unit_id_other (0..$#unit_other) {
+			
+			$pr->advance() unless $quiet;
+			
+			my @matched_tokens;
+		
+			for my $token_id_other (@{$unit_other[$unit_id_other]{TOKEN_ID}}) {
+			
+				if (defined $matched_token_other{$token_id_other} ) {
+				
+					push @matched_tokens, $token_id_other;
+				}
+			}
+			
+			# are there at least two matching tokens in this unit?
+			
+			next unless scalar(@matched_tokens) > 2;
+			
+			# do the tokens match on different keys?
+			
+			my %seen_keys;
+			
+			for my $token_id_other (@matched_tokens) {
+				
+				for my $key (@{$matched_token_other{$token_id_other}}) {
+				
+					$seen_keys{$key}++;
+				}
+			}
+			
+			my @keys = grep {$seen_keys{$_} != scalar(@matched_tokens)} keys %seen_keys;
+			
+			next if scalar(@keys) < 2;
+			
+			# if the keys on which this unit matched are
+			# in the index of matches for the original search
+			# then add this unit to the MULTI parameter for
+			# each of the results indexed under the same keys
+			
+			for my $key1 (@keys) {
+				
+				for my $key2 (@keys) {
+					
+					next if $key1 eq $key2;
+					
+					($key1, $key2) = sort ($key1, $key2);
+					
+					my $pair = "$key1~$key2";
+					
+					next unless defined $index_keypair{$pair};
+					
+					for (@{$index_keypair{$pair}}) {
+					
+						my $unit_id_target = $$_{TARGET};
+						my $unit_id_source = $$_{SOURCE};
+					
+						push @{$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}}, $unit_id_other;
+					}
+				}
+			}
+			
+			#
+			# squash duplicate records caused by multiple key-pairs'
+			# matching the same units
+			#
+			
+			for my $unit_id_target (keys %match) {
+			
+				for my $unit_id_source (keys %{$match{$unit_id_target}}) {
+				
+					next unless defined $match{$unit_id_target}{$unit_id_source}{MULTI}
+									&& defined $match{$unit_id_target}{$unit_id_source}{MULTI}{$other};
+									
+					for ($match{$unit_id_target}{$unit_id_source}{MULTI}{$other}) {
+						
+							$_ = TessSystemVars::uniq($_);
+					}
+				}
+			}
+		}
+	}
 }
 
 sub sort_results {

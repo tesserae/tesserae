@@ -32,17 +32,17 @@ my $file_dict_import  = "$fs_data/common/DICTPAGE.RAW";
 
 # the cache file to write
 
-my $file_cache = "";
+my $file_syn = "$fs_data/common/la.syn.cache";
+my $file_semantic = "$fs_data/common/whit.cache";
 
 # set parameters from cmd line options if given 
 
 GetOptions ('max_heads=i' => \$max_heads, 
 				'min_similarity=f' => \$min_similarity, 
-				'cache:s' => \$file_cache,
+				'syn=s' => \$file_syn,
+				'whitaker=s' => \$file_semantic,
 				'quiet' => $quiet);
 				
-if ($file_cache eq "") { $file_cache = "$fs_data/common/la.syn.cache" }
-
 #
 # global variables
 # 
@@ -93,10 +93,7 @@ synonyms($min_similarity);
 # save the cache
 #
 
-if ($file_cache ne "none") {
-
-	 export_cache($file_cache);
-}
+export_cache();
 
 #
 # subroutines
@@ -303,13 +300,14 @@ sub synonyms {
 
 sub export_cache {
 	
-	my $file = shift;
+	print STDERR "writing $file_syn\n";
+	nstore \%syn, $file_syn;
 	
-	print STDERR "writing $file\n";
-	nstore \%syn, $file;
+	print STDERR "writing $file_syn.param\n";	
+	nstore [$max_heads, $min_similarity], "$file_syn.param";
 
-	print STDERR "writing $file.param\n";	
-	nstore [$max_heads, $min_similarity], "$file.param";
+	print STDERR "writing $file_semantic\n";
+	nstore \%dict, $file_semantic;
 }
 
 sub score {
