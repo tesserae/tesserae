@@ -213,7 +213,7 @@ my @textlist = @{get_textlist($target, $source)};
 
 search_multi(\@textlist);
 
-$file =~ s/\.bin/.multi.bin/;
+$file =~ s/\.bin/.multi.bin/; # hello
 
 nstore \%match, $file;
 
