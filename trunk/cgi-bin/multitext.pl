@@ -213,6 +213,10 @@ my @textlist = @{get_textlist($target, $source)};
 
 search_multi(\@textlist);
 
+$file =~ s/\.bin/.multi.bin/;
+
+nstore \%match, $file;
+
 # sort the results
 
 my @rec = @{sort_results()};
