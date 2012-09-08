@@ -1,5 +1,80 @@
 #! /opt/local/bin/perl5.12
 
+=head1 NAME 
+
+read_bin.pl - Sort and format the results of a Tesserae search.
+
+=head1 SYNOPSIS
+
+B<read_bin.pl> [B<--quiet>] [B<--sort> I<key>] [B<--reverse>] [B<--export> I<mode>] [B<--batch> I<page_size>] [B<--page> I<page_no>] <I<FILE> | B<--session> I<session_id>>
+
+=head1 DESCRIPTION
+
+This script reads the binary results file produced by I<read_table.pl> and presents the results to the user.  It's usually run behind the scenes to create the paged HTML tables seen from the web interface, but it can also be run from the command-line, and can format results as CSV or XML as well as HTML.
+
+It takes a I<FILE> to read as its argument, or alternatively the I<session_id> of a previous web session.  Output is dumped to STDOUT.
+
+Options:
+
+=over
+
+=item --quiet
+
+Don't write progress info to STDERR.
+
+=item B<--sort> target|source|score
+
+Which column to sort the results table by.  B<target> (the default) sorts by location in the target text, B<source>, by location in the source text, and B<score> sorts by the Tesserae-assigned score.
+
+=item B<--reverse>
+
+Reverse the sort order.  For sorting by score this is probably a good idea; otherwise you get the lowest scores first.
+
+=item B<--batch> I<page_size>
+
+For paged results, I<page_size> gives the number of results per page. The default is 100.  If you say B<all> here instead of a number, you'll get all the results on one page.
+
+=item B<--page> I<page_no> 
+
+For paged results, I<page_no> gives the page to display.  The default is 1.
+
+=item B<--export> html|csv|xml
+
+How to format the results.  The default is B<html>.  NB: CSV results are not paged, but will be sorted according to the values of B<--sort> and B<--rev>.  XML results are neither paged nor sorted (actually, they're always sorted by target).
+
+=item B<--session> I<session_id>
+
+When this option is given, the results are read not from a file specified as a command line argument, but rather from the previously created session file in C<tmp/> having id I<session_id>.  This is useful if the results you want to read were generated from the web interface.
+
+=back
+
+=head1 EXAMPLE
+
+% cgi-bin/read_table.pl --export csv results.bin > results.csv
+
+=head1 SEE ALSO
+
+I<cgi-bin/read_table.pl>
+
+=head1 COPYRIGHT
+
+University at Buffalo Public License Version 1.0.
+The contents of this file are subject to the University at Buffalo Public License Version 1.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://tesserae.caset.buffalo.edu/license.txt.
+
+Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
+
+The Original Code is read_bin.pl.
+
+The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
+
+Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
+
+Contributor(s): Neil Coffee, Chris Forstall, James Gawley.
+
+Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
+
+=cut
+
 # the line below is designed to be modified by configure.pl
 
 use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
@@ -72,6 +147,7 @@ my $export = 'html';
 
 GetOptions( 
 	'sort=s'    => \$sort,
+	'reverse'   => \$rev,
 	'page=i'    => \$page,
 	'batch=i'   => \$batch,
 	'session=s' => \$session,

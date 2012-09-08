@@ -1,5 +1,102 @@
 #! /opt/local/bin/perl5.12
 
+=head1 NAME
+
+read_table.pl - Perform a Tesserae search.
+
+=head1 SYNOPSIS
+
+B<read_table.pl> B<--target> I<target_text> B<--source_text> I<source> [B<--unit> I<unit>] [B<--feature> I<feature>] [B<--stop> I<stoplist_size>] [B<--stbasis> I<stoplist_basis>] [B<--distance> I<max_dist>] [B<--dibasis> I<distance_basis>] [B<--cutoff> I<score_cutoff>] [B<--interest> I<max_freq>] [B<--binary> I<file>] [B<--quiet>]
+
+=head1 DESCRIPTION
+
+This script compares two texts in the Tesserae corpus and returns a list of "parallels", pairs of textual units which share common features.  These parallels are kept in a hash which is saved as a Storable binary.  This results file can be read and formatted in a user-friendly way with the companion script I<read_bin.pl>.
+
+This script is primarily called as a cgi executable from the web interface.  It creates a new session id for the results and saves them to the Tesserae I<tmp/> directory.  It then redirects the browser to I<read_bin.pl> which mediates viewing the results.
+
+It can also be run from the command line.  In this case, the results are written to a user specified file.
+
+The names of the source and target texts to be searched must be specified.  B<Target> means the alluding (more recent) text.  B<Source> is the alluded-to (earlier) text.
+
+The name of a text is identical to its filename without the C<.tess> extension.  For example, our benchmark test is to search for allusions to Vergil's Aeneid in Book 1 of Lucan's Pharsalia.  The file containing the Aeneid is I<texts/la/vergil.aeneid.tess> and that containing just the first book of Pharsalia is I<texts/la/lucan.pharsalia/lucan.pharsalia.part.1.tess>.  Thus, a default search, taking Lucan as the alluder and Vergil as the alluded-to, is run like this:
+
+% cgi-bin/read_table.pl --source vergil.aeneid --target lucan.pharsalia.part.1
+
+=head1 OPTIONS 
+
+=over
+
+=item B<--unit> line|phrase
+
+I<unit> specifies the textual units to be compared.  Choices currently are B<line> (the default) which compares verse lines or B<phrase>, which compares grammatical phrases.  For now we assume that the punctuation marks [.;:?] delimit phrases.
+
+=item B<--feature> word|stem|syn 
+
+This specifies the features set to match against.  B<word> only allows matches on forms that are identical. B<stem> (the default), allows matches on any inflected form of the same stem. B<syn> matches not only forms of the same headword but also other headwords taken to be related in meaning.  B<stem> and B<syn> only work if the appropriate dictionaries are installed; neither will work on English texts, and B<syn> won't work on Greek.
+
+=item B<--stop> I<stoplist_size>
+
+I<stoplist_size> is the number of stop words (stems, etc.) to use.  Matches on any of these are excluded from results.  The stop list is calculated by ordering all the features (see above) in the stoplist basis (see below) by frequency and taking the top I<N>, where I<N>=I<stoplist_size>.  The default is 10, I think.
+
+=item B<--stbasis> corpus|target|source|both
+
+Stoplist basis is a string indicating the source for the ranked list of features from which the stoplist is taken.  B<corpus> (the default) derives the stoplist from the entire corpus; B<source>, uses only the source; B<target>, only the target; and B<both> uses the source and target but nothing else.
+
+=item B<--dist> I<max_dist>
+
+This sets the maximum distance between matching words.  For two units (one in the source and one in the target) to be considered a match, each must have at least two words common to the other (regardless of the feature on which they matched).  It's generally true that in good allusions these words are close together in both units.  Setting the maximum distance to I<N> means that matches where either unit's matching words are more than I<N> tokens apart will be excluded. The default distance is 999, which is presumably equivalent to setting no limit.
+
+=item B<--dibasis> span|span-target|span-source|freq|freq-target|freq-source
+
+Distance basis is a string indicating the way to calculate the distance between matching words in a parallel (matching pair of units).  The default is B<span>, which adds together the distance in tokens between the two farthest-apart words in each phrase.  Related to this are B<span-target> which uses the distance between the two farthest-apart words in the target unit only, and B<span-source> which uses the two farthest-apart words in the source unit.  An alternative basis is B<freq>, which uses the distance between the two words with the lowest frequencies (in their own text only), adding the frequency-based distances of the target and source units together.  As for B<span>, you can select the frequency-based distance in only one text with B<freq-target> or B<freq-source>.
+
+=item B<--cutoff> I<score_cutoff>
+
+Each match found by Tesserae is given a score.  Setting a cutoff will cause any match with a score less than this to be dropped from the results.  Default is 0 (presumably equivalent to no cutoff).
+
+=item B<--interest> I<max_freq>
+
+This is a threshold defining the maximum frequency of "interesting" words.  This is still experimental; in a default installation it's not used.
+
+=item B<--binary> I<file>
+
+This is the name of the output file.  The Storable binary containing your results as a big hash will be saved here.  The default is I<results.bin>.
+
+=item B<--quiet>
+
+Don't write progress info to STDERR.
+
+=back
+
+The values of all these options should be printed to STDERR when you run the script from the command-line, and should also be saved with the results.
+
+=head1 KNOWN BUGS
+
+The distance between two words includes punctuation and space tokens as well as word tokens, so that I<max_dist> is probably about twice what you think it should be.
+
+=head1 SEE ALSO
+
+I<cgi-bin/read_table.pl>
+
+=head1 COPYRIGHT
+
+University at Buffalo Public License Version 1.0.
+The contents of this file are subject to the University at Buffalo Public License Version 1.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://tesserae.caset.buffalo.edu/license.txt.
+
+Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
+
+The Original Code is read_table.pl.
+
+The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
+
+Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
+
+Contributor(s): Neil Coffee, Chris Forstall, James Gawley.
+
+Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
+
+=cut
+
 # the line below is designed to be modified by configure.pl
 
 use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
