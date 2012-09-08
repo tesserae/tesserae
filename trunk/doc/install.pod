@@ -4,7 +4,7 @@
 
 Get the code by anonymous SVN checkout:
 
-B<% svn co svn://tesserae.caset.buffalo.edu/trunk tesserae>
+B<% svn co svn://tesserae.caset.buffalo.edu/tesserae/trunk tesserae>
 
 =head2 Step 2: Configure
 
