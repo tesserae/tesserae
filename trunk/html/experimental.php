@@ -11,6 +11,12 @@
 				<p>
 					Here you can try out some new searches we're still testing.  We would appreciate any feedback you have.  Caution: results may not be very stable.
 				</p>
+
+				<h2><a href="<?php echo $url_html.'/multi-text.php'; ?>">Multi-text search</a></h2>
+					
+				<p>
+					Cross-references discovered parallels against the rest of the corpus.
+				</p>
 				
 				<h2><a href="<?php echo $url_html.'/full-text.php'; ?>">Full-Text Display</a></h2>
 					
