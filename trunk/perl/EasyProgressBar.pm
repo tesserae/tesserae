@@ -21,10 +21,12 @@ sub new {
 	
 	$self->{COUNT} = 0;
 	$self->{PROGRESS} = 0;
-	
-	print STDERR "0% |" . (" " x 40) . "| 100%" unless $quiet;
+	$self->{QUIET} = $quiet;
 	
 	bless($self);
+	
+	$self->draw();
+	
 	return $self;
 }
 
@@ -33,13 +35,11 @@ sub advance {
 	my $self = shift;
 	
 	my $incr = shift;
-
-	my $quiet = shift || 0;
 	
 	if (defined $incr)	{ $self->{COUNT} += $incr }
-	else			   	{ $self->{COUNT}++ }
+	else			   	   { $self->{COUNT}++ }
 	
-	$self->draw() unless $quiet;
+	$self->draw();
 }
 
 sub set {
@@ -48,25 +48,26 @@ sub set {
 	
 	my $new = shift || 0;
 	
-	my $quiet = shift || 0;
-	
 	$self->{COUNT} = $new;
 	
-	$self->draw() unless $quiet;
+	$self->draw();
 }
 
 sub draw {
 
 	my $self = shift;
 	
-	if ($self->{COUNT}/$self->{END} > $self->{PROGRESS} + .025) {
+	if ($self->{QUIET} == 0) {
+	
+		if ($self->{COUNT}/$self->{END} > $self->{PROGRESS} + .025) {
 		
-		$self->{PROGRESS} = $self->{COUNT} / $self->{END};
+			$self->{PROGRESS} = $self->{COUNT} / $self->{END};
 		
-		my $bars = int($self->{PROGRESS} * 41);
-		if ($bars == 41) { $bars-- }
+			my $bars = int($self->{PROGRESS} * 41);
+			if ($bars == 41) { $bars-- }
 		
-		print STDERR "\r" . "0% |" . ("#" x $bars) . (" " x (40 - $bars)) . "| 100%";
+			print STDERR "\r" . "0% |" . ("#" x $bars) . (" " x (40 - $bars)) . "| 100%";
+		}
 	}
 	
 	if ($self->{COUNT} >= $self->{END}) {
@@ -77,7 +78,10 @@ sub draw {
 
 sub finish {
 
-	print STDERR "\n";
+	if ($self->{QUIET} == 0) {
+
+		print STDERR "\n";
+	}
 }
 
 sub progress {

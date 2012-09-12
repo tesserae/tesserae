@@ -232,7 +232,7 @@ unless ($no_cgi) {
 
 	print header();
 
-	my $stylesheet = catfile($url_css, "style.css");
+	my $stylesheet = "$url_css/style.css";
 
 	print <<END;
 
@@ -442,7 +442,7 @@ unless ($quiet) {
 
 my $pr;
 
-$pr = $quiet ? 0 : ProgressBar->new(scalar(keys %index_source));
+$pr = ProgressBar->new(scalar(keys %index_source), $quiet);
 
 # start with each key in the source
 
@@ -450,7 +450,7 @@ for my $key (keys %index_source) {
 
 	# advance the progress bar
 
-	$pr->advance() unless $quiet;
+	$pr->advance();
 
 	# skip key if it doesn't exist in the target doc
 
@@ -508,7 +508,7 @@ unless ($quiet) {
 
 # draw a progress bar
 
-$pr = $quiet ? 0 : ProgressBar->new(scalar(keys %match));
+$pr = ProgressBar->new(scalar(keys %match), $quiet);
 
 #
 # look at the matches one by one, according to unit id in the target
@@ -519,7 +519,7 @@ for my $unit_id_target (sort {$a <=> $b} keys %match)
 
 	# advance the progress bar
 
-	$pr->advance() unless $quiet;
+	$pr->advance();
 	
 	# look at all the source units where the feature occurs
 	# sort in numerical order
@@ -637,7 +637,8 @@ if ($file_results ne "none") {
 my %redirect = ( 
 	default  => "$url_cgi/read_bin.pl?session=$session;sort=target",
 	recall   => "$url_cgi/check-recall.pl?session=$session",
-	fulltext => "$url_cgi/fulltext.pl?session=$session"
+	fulltext => "$url_cgi/fulltext.pl?session=$session",
+	multi    => "$url_cgi/multitext.pl?session=$session"
 	);
 
 
