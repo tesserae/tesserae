@@ -354,13 +354,13 @@ sub nav_page {
 		if ($page > 1) {
 		
 			$back_arrow .= "<span>";
-			$back_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=1;batch=$batch\"> [first] </a>\n";
+			$back_arrow .= "<a href=\"$url_cgi/read_multi.pl?session=$session;sort=$sort;rev=$rev;page=1;batch=$batch\"> [first] </a>\n";
 			$back_arrow .= "</span>";
 
 			my $p = $page-1;
 
 			$back_arrow .= "<span>";				
-			$back_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> [previous] </a>\n";
+			$back_arrow .= "<a href=\"$url_cgi/read_multi.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> [previous] </a>\n";
 			$back_arrow .= "</span>";
 		
 		
@@ -372,11 +372,11 @@ sub nav_page {
 			my $p = $page+1;
 		
 			$forward_arrow .= "<span>";
-			$forward_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> [next] </a>\n";
+			$forward_arrow .= "<a href=\"$url_cgi/read_multi.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> [next] </a>\n";
 			$forward_arrow .= "</span>";
 
 			$forward_arrow .= "<span>";
-			$forward_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$pages;batch=$batch\"> [last] </a>\n";		       
+			$forward_arrow .= "<a href=\"$url_cgi/read_multi.pl?session=$session;sort=$sort;rev=$rev;page=$pages;batch=$batch\"> [last] </a>\n";		       
 			$forward_arrow .= "</span>";
 		
 			@right = ($page+1..($page < $pages-4 ? $page+4 : $pages));
@@ -394,7 +394,7 @@ sub nav_page {
 			}
 			else {
 			
-				$html .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> $p </a>";
+				$html .= "<a href=\"$url_cgi/read_multi.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> $p </a>";
 			}	
 			
 			$html .= "</span>";
@@ -422,7 +422,7 @@ sub re_sort {
 
 	my $html=<<END;
 	
-	<form action="$url_cgi/read_bin.pl" method="post" id="Form1">
+	<form action="$url_cgi/read_multi.pl" method="post" id="Form1">
 		
 		<table>
 			<tr>
@@ -923,7 +923,7 @@ sub format_multi_html {
 	# the values are arrays of unit ids within the text
 	
 	my %multi = %$href;
-	
+		
 	my $html = "<table>";
 	
 	for my $other (sort keys %multi) {
@@ -932,25 +932,18 @@ sub format_multi_html {
 		$html .= "<td>$other</td>";
 		$html .= "<td>";
 		
-		my @link;
-				
-		for my $unit_id_other ( @{$multi{$other}} ) {
+		my @a;
+						
+		for my $unit_id_other (sort {$a <=> $b} keys %{$multi{$other}}) {
+						
+			my $locus_other   = $multi{$other}{$unit_id_other};
 
-			my @unit_other = @{retrieve(catfile($fs_data, "v3", $lang{$other}, $other, $other . "." . $unit))};
-
-			my $link;
-		
-			$link = "<a href=\"javascript:;\" onclick=\"window.open(link='$url_cgi/context2.pl?target=$other;unit=$unit;id=$unit_id_other',  'context', 'width=520,height=240')\">";
-					
-			$link .= $unit_other[$unit_id_other]{LOCUS};
+			my $a = "<a href=\"javascript:;\" onclick=\"window.open(link='$url_cgi/context2.pl?target=$other;unit=$unit;id=$unit_id_other',  'context', 'width=520,height=240')\">$locus_other</a>";
 			
-			$link .= "</a>";
-			
-			push @link, $link;
-			
+			push @a, $a;
 		}
 		
-		$html .= join(", ", @link);
+		$html .= join(", ", @a);
 		
 		$html .= "</td>";
 		$html .= "</tr>";

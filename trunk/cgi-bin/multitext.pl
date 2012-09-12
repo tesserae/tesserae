@@ -239,7 +239,11 @@ print <<END unless ($no_cgi);
 	</pre>
 	</div>
 
-   <p>Your results are done!  <a href="$url_cgi/read_multi.pl?session=$session">Click here</a> to proceed.</p>
+	<div style=\"padding:10px; width:50%; position:absolute; left:25%; top:12em; background-color:white; color:black; text-align:left;\">
+   	<p>
+			Your results are done!  <a href="$url_cgi/read_multi.pl?session=$session">Click here</a> to proceed.
+		</p>
+   </div>
 
 </body>
 </html>
@@ -361,31 +365,11 @@ sub search_multi {
 					my $unit_id_target = $$_{TARGET};
 					my $unit_id_source = $$_{SOURCE};
 
-					push @{$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}}, $unit_id_other;
+					$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$unit_id_other} =  $unit_other[$unit_id_other]{LOCUS};
+				}
+			}
+		}
 				
-				}
-			}
-		}
-			
-		#
-		# squash duplicate records caused by multiple key-pairs'
-		# matching the same units
-		#
-			
-		for my $unit_id_target (keys %match) {
-		
-			for my $unit_id_source (keys %{$match{$unit_id_target}}) {
-			
-				next unless defined $match{$unit_id_target}{$unit_id_source}{MULTI}
-								&& defined $match{$unit_id_target}{$unit_id_source}{MULTI}{$other};
-								
-				for ($match{$unit_id_target}{$unit_id_source}{MULTI}{$other}) {
-					
-						$_ = TessSystemVars::uniq($_);
-				}
-			}
-		}
-		
 		unless($no_cgi) {
 		
 			print "</pre></div>\n";
