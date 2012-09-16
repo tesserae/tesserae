@@ -83,9 +83,10 @@ unless ($no_cgi) {
 	
 	$session    = $query->param('session');
 	$sort       = $query->param('sort')    || $sort;
-	$rev        = $query->param('rev')     || $rev;
+	$rev        = $query->param('rev') if defined $query->param('rev');
+	
 	$table = 1;
-}
+} 
 
 #
 # the file to read

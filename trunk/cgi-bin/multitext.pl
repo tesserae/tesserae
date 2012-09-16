@@ -239,7 +239,7 @@ print <<END unless ($no_cgi);
 	</pre>
 	</div>
 
-	<div style=\"padding:10px; width:50%; position:absolute; left:25%; top:12em; background-color:white; color:black; text-align:left;\">
+	<div style=\"padding:10px; width:50%; position:absolute; left:25%; top:12em; background-color:white; color:black;\">
    	<p>
 			Your results are done!  <a href="$url_cgi/read_multi.pl?session=$session">Click here</a> to proceed.
 		</p>
@@ -340,7 +340,7 @@ sub search_multi {
 			}
 			else {
 			
-				print "<div style=\"padding:10px; width:50%; position:absolute; left:25%; top:12em; background-color:grey; color:black; text-align:left;\">\n				<pre>";
+				print "<div style=\"padding:10px; width:50%; position:absolute; left:25%; top:12em; background-color:grey; color:black;\">\n				<pre>";
 			
 			
 				print sprintf("checking %s (%i/%i)\n", $other, $i+1, scalar(@textlist));

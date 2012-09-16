@@ -629,6 +629,8 @@ sub print_html {
 
 sub print_csv {
 	
+	my @others = @{get_textlist($target, $source)};
+	
 	print join (",", 
 	
 		qw(
@@ -642,7 +644,10 @@ sub print_csv {
 			"MARKED_TARGET"
 			"MARKED_SOURCE"
 			"MULTI"
-		)
+		),
+		
+		@others
+
 		) . "\n";
 
 	for my $i (0..$#rec) {
@@ -749,17 +754,25 @@ sub print_csv {
 		
 		# multi-text search
 		
-		my @multi;
+		my %m;
+		@m{@others} = ("") x scalar(@others);
 		
 		if (defined $match{$unit_id_target}{$unit_id_source}{MULTI}) {
 		
-			for my $other (sort keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}}) {
+			for my $other (keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}}) {
 			
-				push @multi, $other . '(' . scalar(@{$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}}) . ')';
+				my @loci;
+				
+				for (sort {$a <=> $b} keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}}) {
+					
+					push @loci, $match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$_};
+				}
+				
+				$m{$other} = '"' . join("; ", @{loci}) . '"';
 			}
 		}
 		
-		push @row, '"' . join("; ", @multi) . '"';
+		push @row, @m{@others};
 		
 		# print row
 		
@@ -952,4 +965,21 @@ sub format_multi_html {
 	$html .= "</table>\n";
 	
 	return $html;
+}
+
+sub get_textlist {
+	
+	my ($target, $source) = @_;
+
+	my $directory = catdir($fs_data, 'v3', $lang{$target});
+
+	opendir(DH, $directory);
+	
+	my @textlist = grep {/^[^.]/ && ! /\.part\./} readdir(DH);
+	
+	closedir(DH);
+	
+	@textlist = grep {$_ ne $target && $_ ne $source} @textlist;
+	
+	return \@textlist;
 }
