@@ -643,7 +643,6 @@ sub print_csv {
 			"SCORE"
 			"MARKED_TARGET"
 			"MARKED_SOURCE"
-			"MULTI"
 		),
 		
 		@others
