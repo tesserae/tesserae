@@ -643,6 +643,8 @@ sub print_csv {
 			"SCORE"
 			"MARKED_TARGET"
 			"MARKED_SOURCE"
+			"OTHER_TEXTS"
+			"OTHER_TOTAL"
 		),
 		
 		@others
@@ -753,10 +755,15 @@ sub print_csv {
 		
 		# multi-text search
 		
+		my $other_texts = 0;
+		my $other_total = 0;
+		
 		my %m;
 		@m{@others} = ("") x scalar(@others);
 		
 		if (defined $match{$unit_id_target}{$unit_id_source}{MULTI}) {
+			
+			$other_texts = scalar(keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}});
 		
 			for my $other (keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}}) {
 			
@@ -768,8 +775,12 @@ sub print_csv {
 				}
 				
 				$m{$other} = '"' . join("; ", @{loci}) . '"';
+				
+				$other_total += scalar(@loci);
 			}
 		}
+		
+		push @row, ($other_texts, $other_total);
 		
 		push @row, @m{@others};
 		

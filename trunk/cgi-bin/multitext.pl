@@ -258,6 +258,8 @@ END
 sub get_textlist {
 	
 	my ($target, $source) = @_;
+	
+	for ($target, $source) { s/\.part\.*// }
 
 	my $directory = catdir($fs_data, 'v3', $lang{$target});
 
