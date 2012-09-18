@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl5.12
+#! /usr/bin/perl
 
 #
 # a new version of prepare.pl

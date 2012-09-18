@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl5.12
+#! /usr/bin/perl
 
 =head1 NAME 
 
@@ -959,9 +959,10 @@ sub format_multi_html {
 						
 		for my $unit_id_other (sort {$a <=> $b} keys %{$multi{$other}}) {
 						
-			my $locus_other   = $multi{$other}{$unit_id_other};
+			my $locus_other   = $multi{$other}{$unit_id_other}{LOCUS};
+			my $score_other   = sprintf("%i", $multi{$other}{$unit_id_other}{SCORE});
 
-			my $a = "<a href=\"javascript:;\" onclick=\"window.open(link='$url_cgi/context2.pl?target=$other;unit=$unit;id=$unit_id_other',  'context', 'width=520,height=240')\">$locus_other</a>";
+			my $a = "<a href=\"javascript:;\" onclick=\"window.open(link='$url_cgi/context2.pl?target=$other;unit=$unit;id=$unit_id_other',  'context', 'width=520,height=240')\">$locus_other ($score_other)</a>";
 			
 			push @a, $a;
 		}

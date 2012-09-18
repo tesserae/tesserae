@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl5.12
+#! /usr/bin/perl
 
 # the line below is designed to be modified by configure.pl
 
@@ -362,12 +362,17 @@ sub search_multi {
 			
 			for (@{$index_keypair{$keypair}}) {
 
-				for my $unit_id_other (@{$index_other{$keypair}}) {
+				for my $unit_id_other (keys %{$index_other{$keypair}}) {
 
 					my $unit_id_target = $$_{TARGET};
 					my $unit_id_source = $$_{SOURCE};
 
-					$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$unit_id_other} =  $unit_other[$unit_id_other]{LOCUS};
+					my $score_other = $index_other{$keypair}{$unit_id_other};
+
+					$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$unit_id_other} = {
+					   LOCUS => $unit_other[$unit_id_other]{LOCUS},
+					   SCORE => $score_other
+					};
 				}
 			}
 		}

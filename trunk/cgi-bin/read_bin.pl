@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl5.12
+#! /usr/bin/perl
 
 =head1 NAME 
 

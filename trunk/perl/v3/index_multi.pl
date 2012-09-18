@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl5.12
+#! /usr/bin/perl
 
 # the line below is designed to be modified by configure.pl
 
@@ -115,7 +115,7 @@ for my $unit (qw/line phrase/) {
 					
 					# index this unit by this pair of forms
 					
-					my $score = ln(1/$freq_word{$form_a} + 1/$freq_word{$form_b}) / abs($i - $j);
+					my $score = log((1/$freq_word{$form_a} + 1/$freq_word{$form_b}) / ($j - $i));
 					
 					$word_pairs{join("~", sort($form_a, $form_b))} = $score;
 					
@@ -131,7 +131,7 @@ for my $unit (qw/line phrase/) {
 							# Neil Coffee wants us to allow $stem_a eq $stem_b,
 							# as long as we already know that $form_a ne $form_b
 							
-							my $score = ln(1/$freq_stem{$stem_a} + 1/$freq_stem{$stem_b}) / abs($i - $j);
+							my $score = log((1/$freq_stem{$form_a} + 1/$freq_stem{$form_b}) / ($j - $i));
 							
 							$stem_pairs{join("~", sort($stem_a, $stem_b))} = $score;
 						}

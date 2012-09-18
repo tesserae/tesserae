@@ -22,7 +22,7 @@ our $fs_text	= $fs_base . '/texts';
 our $fs_tmp  	= $fs_base . '/tmp';
 our $fs_xsl  	= $fs_base . '/xsl';
 
-my $url_base	= 'http://localhost/~chris/tesserae';
+my $url_base	= 'http://ahmik/~chris/tesserae';
 
 our $url_cgi	= $url_base . '/cgi-bin';
 our $url_css	= $url_base . '/css';

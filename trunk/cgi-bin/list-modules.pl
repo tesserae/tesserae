@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl5.12
+#! /usr/bin/perl
 # Change the line above to match the path to perl on your server
 ###############################################################################
 # This software is Copyright.

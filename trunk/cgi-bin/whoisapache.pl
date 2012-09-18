@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl5.12
+#! /usr/bin/perl
 
 use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
