@@ -10,23 +10,23 @@ First install at least the basic Tesserae system.  See I<doc/install.pod> for in
 
 =item html/
 
-	This is the directory out of which the interface is served, so when you set up apache you want this directory to be associated with a human-friendly URL.
+This is the directory out of which the interface is served, so when you set up apache you want this directory to be associated with a human-friendly URL.
 	
 =item tmp/
 
-	This directory has to be writable by whatever user apache will run the scripts as.
+This directory has to be writable by whatever user apache will run the scripts as.
 	
 =item cgi-bin/
 
-   This directory has to be executable by apache.
+This directory has to be executable by apache.
 
-=tem css/
+=item css/
 
-   This directory needs to be accessible to the web as well.
+This directory needs to be accessible to the web as well.
 
 =back
 
-  In addition, make sure when you edit I<perl/TessSystemVars.pm> as instructed in I<doc/install.pod> that you make lines 25--33 (the $url_* paths) point to your own server's URLs.
+In addition, make sure when you edit I<perl/TessSystemVars.pm> as instructed in I<doc/install.pod> that you make lines 25--33 (the $url_* paths) point to your own server's URLs.
 
 =head2 Ancillary programs
 
@@ -48,6 +48,3 @@ and so on.  For each language, two lists are created, a left one (source text) a
    html/textlist.la.r.php
 
 The source list doesn't include partial texts, the target one does.
-
-
-

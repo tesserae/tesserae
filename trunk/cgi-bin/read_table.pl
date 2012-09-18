@@ -130,11 +130,22 @@ my $usage = <<END;
 	where options are
 	
 	   --feature   word|stem|syn   = feature set to match on.  default is "stem".
+
 	   --unit      line|phrase     = textual units to match.   default is "line".
+
 	   --stopwords 0..250          = number of stopwords.      default is 10.
-	
-	   --no-cgi		= run from terminal not web interface
-	   --quiet      = do not print progress info to stderr
+
+	   --distance  N               = max distance between match words.  
+	                                                           default is 999.
+
+	   --stbasis   corpus|target|source|both
+	                               = stoplist basis.           default is corpus.
+
+	   --dibasis   span|freq       = distance metric.          default is span.
+	   
+       --bin       filename        = output file name          default is results.bin	
+
+	   --quiet     = do not print progress info to stderr
 
 END
 
@@ -478,20 +489,6 @@ for my $key (keys %index_source) {
 }
 
 #
-# remove dups
-#
-
-for my $unit_id_target ( keys %match ) {
-
-	for my $unit_id_source ( keys %{$match{$unit_id_target}} ) {
-				
-		$match{$unit_id_target}{$unit_id_source}{TARGET} = TessSystemVars::uniq($match{$unit_id_target}{$unit_id_source}{TARGET});
-		$match{$unit_id_target}{$unit_id_source}{SOURCE} = TessSystemVars::uniq($match{$unit_id_target}{$unit_id_source}{SOURCE});
-	}
-}
-
-
-#
 #
 # assign scores
 #
@@ -514,32 +511,52 @@ $pr = ProgressBar->new(scalar(keys %match), $quiet);
 # look at the matches one by one, according to unit id in the target
 #
 
-for my $unit_id_target (sort {$a <=> $b} keys %match)
-{
+for my $unit_id_target (sort {$a <=> $b} keys %match) {
 
 	# advance the progress bar
 
 	$pr->advance();
-	
+
 	# look at all the source units where the feature occurs
 	# sort in numerical order
 
-	for my $unit_id_source ( sort {$a <=> $b} keys %{$match{$unit_id_target}})
-	{
+	for my $unit_id_source ( sort {$a <=> $b} keys %{$match{$unit_id_target}}) {
 
-		# skip any match that doesn't involve two shared features in each text
+		#
+		# remove matches having fewer than 2 matching words
+		# or matching on fewer than 2 different keys
+		#
+	
+		# do keys first, since its the quickest to calculate
+	
+		$match{$unit_id_target}{$unit_id_source}{KEY} = TessSystemVars::uniq($match{$unit_id_target}{$unit_id_source}{KEY});
+	
+		if ( scalar(@{$match{$unit_id_target}{$unit_id_source}{TARGET}}) < 2) {
+		
+			delete $match{$unit_id_target}{$unit_id_source};
+			next;
+		}
+		
+		# check that the target has two matching words
+	
+		$match{$unit_id_target}{$unit_id_source}{TARGET} = TessSystemVars::uniq($match{$unit_id_target}{$unit_id_source}{TARGET});
 		
 		if ( scalar( @{$match{$unit_id_target}{$unit_id_source}{TARGET}} ) < 2) {
 		
 			delete $match{$unit_id_target}{$unit_id_source};
 			next;
 		}
+		
+		# check that the source has two matching words
+	
+		$match{$unit_id_target}{$unit_id_source}{SOURCE} = TessSystemVars::uniq($match{$unit_id_target}{$unit_id_source}{SOURCE});
+	
 		if ( scalar( @{$match{$unit_id_target}{$unit_id_source}{SOURCE}} ) < 2) {
-
+	
 			delete $match{$unit_id_target}{$unit_id_source};
 			next;			
 		}
-
+	
 		# this will record which words are to be marked in the display
 
 		my %marked_source;
