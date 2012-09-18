@@ -36,7 +36,7 @@ This allows you to check the results of a Tesserae search against the rest of th
 
 It's necessary to index the entire corpus before multi-text searching will work.  Essentially, this involves indexing every line and every sentence in each text by every possible pair of words in it.  Run the following script.  It's a bit slow--it could really benefit from parallel processing.
 
-C<% perl perl/v3/index_multi.pl>
+B<% perl perl/v3/index_multi.pl>
 
 =head3 Usage
 
