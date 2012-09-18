@@ -54,11 +54,21 @@ for my $unit (qw/line phrase/) {
 
 		print STDERR "unit: $unit\ntext: $text\n";
 		
+		# load the text from the database
+		
 		my $file_token = catfile($fs_data, 'v3', $lang, $text, $text . ".token");
 		my $file_unit  = catfile($fs_data, 'v3', $lang, $text, $text . "." . $unit);
-		
+
 		my @token = @{retrieve($file_token)};
 		my @unit  = @{retrieve($file_unit)};
+		
+		# get text- and feature-specific frequencies for scoring
+
+		my $file_freq_word = catfile($fs_data, 'v3', $lang, $text, $text . ".freq_word");
+		my $file_freq_stem = catfile($fs_data, 'v3', $lang, $text, $text . ".freq_stem");
+
+		my %freq_word = %{retrieve( $file_freq_word)};
+		my %freq_stem = %{retrieve( $file_freq_stem)};
 		
 		print "indexing " . scalar(@token) . " tokens / " . scalar(@unit) . " ${unit}s...\n";
 		
@@ -105,7 +115,9 @@ for my $unit (qw/line phrase/) {
 					
 					# index this unit by this pair of forms
 					
-					$word_pairs{join("~", sort($form_a, $form_b))} = 1;
+					my $score = ln(1/$freq_word{$form_a} + 1/$freq_word{$form_b}) / abs($i - $j);
+					
+					$word_pairs{join("~", sort($form_a, $form_b))} = $score;
 					
 					# now check stems
 					
@@ -116,26 +128,27 @@ for my $unit (qw/line phrase/) {
 						
 						for my $stem_b (@stems_b) {
 							
-							# don't include identical stems
+							# Neil Coffee wants us to allow $stem_a eq $stem_b,
+							# as long as we already know that $form_a ne $form_b
 							
-							next if $stem_a eq $stem_b;
+							my $score = ln(1/$freq_stem{$stem_a} + 1/$freq_stem{$stem_b}) / abs($i - $j);
 							
-							$stem_pairs{join("~", sort($stem_a, $stem_b))} = 1;
+							$stem_pairs{join("~", sort($stem_a, $stem_b))} = $score;
 						}
 					}					
 				}
 			}
 			
-			# index the unit once for each unique pair
+			# index the unit for each pair
 
 			for (keys %word_pairs) {
 				
-				push @{$index_word{$_}}, $unit_id;
+				$index_word{$_}{$unit_id} = $word_pairs{$_};
 			}
 			
 			for (keys %stem_pairs) {
 				
-				push @{$index_stem{$_}}, $unit_id;
+				$index_stem{$_}{$unit_id} = $stem_pairs{$_};
 			}
 		}
 		
