@@ -60,7 +60,7 @@ for my $unit (qw/line phrase/) {
 		my @token = @{retrieve($file_token)};
 		my @unit  = @{retrieve($file_unit)};
 		
-		print "indexing " . scalar(@token) . " tokens / " . scalar(@unit) . " lines...\n";
+		print "indexing " . scalar(@token) . " tokens / " . scalar(@unit) . " ${unit}s...\n";
 		
 		my $pr = ProgressBar->new(scalar(@unit));
 		
