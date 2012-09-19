@@ -163,8 +163,6 @@ for my $unit (qw/line phrase/) {
 	}	
 }
 
-
-
 sub get_textlist {
 	
 	my $lang = shift;

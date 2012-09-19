@@ -25,6 +25,10 @@ use File::Spec::Functions;
 use TessSystemVars;
 use EasyProgressBar;
 
+# set autoflush
+
+$|++;
+
 # allow unicode output
 
 binmode STDOUT, ":utf8";
@@ -64,29 +68,27 @@ my $rev = 0;
 
 my $session;
 
-# format for results
+# run in parallel?
 
-my $export = 'html';
+my $max_processes = 4;
 
 #
 # command-line arguments
 #
 
 GetOptions( 
-	'sort=s'    => \$sort,
-	'page=i'    => \$page,
-	'batch=i'   => \$batch,
-	'session=s' => \$session,
-	'export=s'  => \$export,
-	'quiet'     => \$quiet );
+	'sort=s'     => \$sort,
+	'page=i'     => \$page,
+	'batch=i'    => \$batch,
+	'session=s'  => \$session,
+	'parallel=i' => \$max_processes,
+	'quiet'      => \$quiet );
 
 #
 # cgi input
 #
 
 unless ($no_cgi) {
-	
-	$|++;
 	
 	my $query   = new CGI || die "$!";
 
@@ -219,9 +221,9 @@ my %index_target   = %{ retrieve("$file_target.index_$feature") };
 
 my @textlist = @{get_textlist($target, $source)};
 
-# filter out results occurring in other texts
+# search other texts
 
-search_multi(\@textlist);
+search_multi(\@textlist, $max_processes);
 
 if ($no_cgi) {
 
@@ -280,9 +282,23 @@ sub search_multi {
 
 	my $aref = shift;
 	my @textlist = @$aref;
-		
-	print STDERR "multi-searching on " . scalar(@textlist) . " texts.\n" unless $quiet;
 	
+	my $max_processes = shift;
+	
+	#
+	# initialize parallel processing
+	#
+	
+	my $pm;
+	
+	if ($max_processes) {
+	
+		use Parallel::ForkManager;
+		
+		$pm = Parallel::ForkManager->new($max_processes);
+	
+	}
+		
 	#
 	# first, index the matches by the key pairs
 	# on which they matched
@@ -290,11 +306,17 @@ sub search_multi {
 		
 	my %index_keypair;
 	my %keys_to_look_for;
-			
+	
+	print STDERR "parsing the initial search\n" unless $quiet;
+	
+	my $pr = ProgressBar->new(scalar(keys %match), $quiet);
+	
 	for my $unit_id_target (keys %match) {
+	
+		$pr->advance();
 		
 		for my $unit_id_source (keys %{$match{$unit_id_target}}) {
-			
+					
 			# the keys on which this parallel was made
 
 			my @keys = @{$match{$unit_id_target}{$unit_id_source}{KEY}};
@@ -325,28 +347,39 @@ sub search_multi {
 					SOURCE => $unit_id_source
 				};
 			}
-		}
+		}			
 	}
-	
+		
+	print STDERR "multi-searching on " . scalar(@textlist) . " texts.\n" unless $quiet;
+
 	# check all the other texts
 		
 	for my $i (0..$#textlist) {
-		
+			
 		my $other = $textlist[$i];
+		
+		# print status info
 		
 		unless ($quiet) {
 			
 			if ($no_cgi) {
 		
-				print STDERR sprintf("checking %s (%i/%i)\n", $other, $i+1, scalar(@textlist));
+				print STDERR sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other);
 			}
 			else {
 			
-				print "<div style=\"padding:10px; width:50%; position:absolute; left:25%; top:12em; background-color:grey; color:black;\">\n				<pre>";
+				print "<div style=\"padding:10px; width:50%; position:absolute; left:25%; top:12em; background-color:grey; color:black;\">\n<pre>";
 			
 			
-				print sprintf("checking %s (%i/%i)\n", $other, $i+1, scalar(@textlist));
+				print sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other);
 			}
+		}
+
+		# fork
+
+		if ($max_processes) {
+		
+			$pm->start and next;
 		}
 		
 		my $file = catfile($fs_data, 'v3', $lang{$target}, $other, $other);
@@ -381,7 +414,11 @@ sub search_multi {
 		
 			print "</pre></div>\n";
 		}
+		
+		$pm->finish if $max_processes;
 	}
+	
+	$pm->wait_all_children if $max_processes;
 }
 
 #
