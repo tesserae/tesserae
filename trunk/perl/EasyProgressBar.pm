@@ -88,6 +88,13 @@ sub progress {
 	
 	my $self = shift;
 	
+	return $self->{PROGRESS};
+}
+
+sub count {
+
+	my $self = shift;
+	
 	return $self->{COUNT};
 }
 
