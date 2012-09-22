@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 #
 # a new version of prepare.pl
@@ -9,7 +9,7 @@
 #
 # -Chris Forstall, 2011/10/25
 
-use lib '/Users/chris/Sites/tess.orig/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use strict;

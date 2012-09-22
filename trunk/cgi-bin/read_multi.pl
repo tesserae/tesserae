@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 =head1 NAME 
 
@@ -77,7 +77,7 @@ Alternatively, the contents of this file may be used under the terms of either t
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tess.orig/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -771,7 +771,11 @@ sub print_csv {
 				
 				for (sort {$a <=> $b} keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}}) {
 					
-					push @loci, $match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$_};
+					my $locus = $match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$_}{LOCUS};
+					my $score = $match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$_}{SCORE};
+					$score = sprintf("%i", $score);
+					
+					push @loci, "$locus ($score)";
 				}
 				
 				$m{$other} = '"' . join("; ", @{loci}) . '"';

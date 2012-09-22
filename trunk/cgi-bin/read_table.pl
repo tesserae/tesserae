@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 =head1 NAME
 
@@ -99,7 +99,7 @@ Alternatively, the contents of this file may be used under the terms of either t
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tess.orig/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl

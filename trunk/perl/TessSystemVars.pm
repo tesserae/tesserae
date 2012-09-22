@@ -11,7 +11,7 @@ our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tm
 
 our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni);
 
-my $fs_base	= '/Users/chris/Sites/tess.orig';
+my $fs_base	= '/Users/chris/Sites/tesserae';
 
 our $fs_cgi 	= $fs_base . '/cgi-bin';
 our $fs_data	= $fs_base . '/data';
@@ -22,7 +22,7 @@ our $fs_text	= $fs_base . '/texts';
 our $fs_tmp  	= $fs_base . '/tmp';
 our $fs_xsl  	= $fs_base . '/xsl';
 
-my $url_base	= 'http://ahmik/~chris/tess.orig';
+my $url_base	= 'http://localhost/~chris/tesserae';
 
 our $url_cgi	= $url_base . '/cgi-bin';
 our $url_css	= $url_base . '/css';

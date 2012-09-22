@@ -1,9 +1,9 @@
-#! /usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 use strict;
 use warnings;
 
-use lib '/Users/chris/Sites/tess.orig/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 use TessSystemVars qw(uniq intersection);
 

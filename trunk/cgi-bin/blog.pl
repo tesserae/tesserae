@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 #
 # this script grabs content from the DHIB blogs
@@ -8,7 +8,7 @@
 use strict;
 use warnings;
 
-use lib '/Users/chris/Sites/tess.orig/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 use LWP::Simple;

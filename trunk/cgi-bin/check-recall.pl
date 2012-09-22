@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 # check-recall.pl
 #
@@ -18,7 +18,7 @@ use Storable;
 use File::Spec::Functions;
 use Getopt::Long;
 
-use lib '/Users/chris/Sites/tess.orig/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 use EasyProgressBar;
 

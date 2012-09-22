@@ -15,7 +15,7 @@
 # but it should work also on a file without the counts,
 # just one definition per line.
 
-use lib '/Users/chris/Sites/tess.orig/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 use strict;
 use warnings;
