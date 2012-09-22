@@ -21,7 +21,7 @@ GetOptions('no-cgi' => \$no_cgi, 'target=s' => \$target, 'unit=s' => \$unit, 'id
 
 unless ($no_cgi) {
 	
-	print header;
+	print header('-charset'=>'utf-8', '-type'=>'text/html');
 
 	my $query = new CGI || die "$!";
 
