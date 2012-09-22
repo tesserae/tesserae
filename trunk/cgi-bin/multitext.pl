@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tess.orig/perl';	# PERL_PATH
 
 #
 # multitext.pl
@@ -68,9 +68,9 @@ my $rev = 0;
 
 my $session;
 
-# run in parallel?
+# filter multi results?
 
-my $max_processes = 4;
+my $multi_cutoff = 0;
 
 #
 # command-line arguments
@@ -81,7 +81,7 @@ GetOptions(
 	'page=i'     => \$page,
 	'batch=i'    => \$batch,
 	'session=s'  => \$session,
-	'parallel=i' => \$max_processes,
+	'cutoff=i'   => \$multi_cutoff,
 	'quiet'      => \$quiet );
 
 #
@@ -93,6 +93,7 @@ unless ($no_cgi) {
 	my $query   = new CGI || die "$!";
 
 	$session    = $query->param('session') || die "no session specified from web interface";
+	$multi_cutoff = $query->param('mcutoff');
 
 	print header();
 	
@@ -223,7 +224,7 @@ my @textlist = @{get_textlist($target, $source)};
 
 # search other texts
 
-search_multi(\@textlist, $max_processes);
+search_multi(\@textlist);
 
 if ($no_cgi) {
 
@@ -261,7 +262,7 @@ sub get_textlist {
 	
 	my ($target, $source) = @_;
 	
-	for ($target, $source) { s/\.part\.*// }
+	for ($target, $source) { s/\.part\..*// }
 
 	my $directory = catdir($fs_data, 'v3', $lang{$target});
 
@@ -283,22 +284,6 @@ sub search_multi {
 	my $aref = shift;
 	my @textlist = @$aref;
 	
-	my $max_processes = shift;
-	
-	#
-	# initialize parallel processing
-	#
-	
-	my $pm;
-	
-	if ($max_processes) {
-	
-		use Parallel::ForkManager;
-		
-		$pm = Parallel::ForkManager->new($max_processes);
-	
-	}
-		
 	#
 	# first, index the matches by the key pairs
 	# on which they matched
@@ -375,13 +360,6 @@ sub search_multi {
 			}
 		}
 
-		# fork
-
-		if ($max_processes) {
-		
-			$pm->start and next;
-		}
-		
 		my $file = catfile($fs_data, 'v3', $lang{$target}, $other, $other);
 		
 		my %index_other = %{ retrieve("$file.multi_${unit}_${feature}") };
@@ -402,6 +380,8 @@ sub search_multi {
 
 					my $score_other = $index_other{$keypair}{$unit_id_other};
 
+					next if $score_other < $multi_cutoff;
+
 					$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$unit_id_other} = {
 					   LOCUS => $unit_other[$unit_id_other]{LOCUS},
 					   SCORE => $score_other
@@ -414,11 +394,7 @@ sub search_multi {
 		
 			print "</pre></div>\n";
 		}
-		
-		$pm->finish if $max_processes;
 	}
-	
-	$pm->wait_all_children if $max_processes;
 }
 
 #

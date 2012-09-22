@@ -107,6 +107,34 @@
 							</select>
 						</td>
 					</tr>
+					<tr>
+     						<td><span class="h2">Drop scores below:</span></td>
+                                                <td>
+                                                        <select name="cutoff">
+                                                                <option value="0" selected="selected">no cutoff</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                        </select>
+                                                </td>
+					</tr>
+					<tr>
+						<td><span class="h2">Filter matches with other texts:</span></td>
+                                                <td>
+                                                        <select name="mcutoff">
+                                                                <option value="0" selected="selected">no filter</option>
+                                                                <option value="2">more results</option>
+                                                                <option value="3">moderate</option>
+                                                                <option value="6">fewest results</option>
+                                                        </select>
+                                                </td>
+
+					</tr>
+
 				</table>
 
 				<input type="hidden" name="frontend" value="multi" />

@@ -99,7 +99,7 @@ Alternatively, the contents of this file may be used under the terms of either t
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tess.orig/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -214,6 +214,10 @@ my $distance_metric = "span";
 # filter results below a certain score
 
 my $cutoff = 0;
+
+# filter multi-results if passing off to multitext.pl
+
+my $multi_cutoff = 0;
 
 # which script should mediate the display of results
 
@@ -337,6 +341,7 @@ else {
 	$cutoff          = $query->param('cutoff')       || $cutoff;
 	$interest        = $query->param('interest')     || $interest;
 	$frontend        = $query->param('frontend')     || $frontend;
+	$multi_cutoff    = $query->param('mcutoff')      || $multi_cutoff;
 	
 	if ($source eq "" or $target eq "") {
 	
@@ -655,7 +660,7 @@ my %redirect = (
 	default  => "$url_cgi/read_bin.pl?session=$session;sort=target",
 	recall   => "$url_cgi/check-recall.pl?session=$session",
 	fulltext => "$url_cgi/fulltext.pl?session=$session",
-	multi    => "$url_cgi/multitext.pl?session=$session"
+	multi    => "$url_cgi/multitext.pl?session=$session;mcutoff=$multi_cutoff"
 	);
 
 

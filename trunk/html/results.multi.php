@@ -22,7 +22,7 @@
 						<th class="phrase">source phrase</th>
 						<th>matched on</th>
 						<th>score</th>
-						<th>cross-ref</th>
+						<th>cross-ref (score)</th>
 					</tr>
 				</thead>
 				<tbody>

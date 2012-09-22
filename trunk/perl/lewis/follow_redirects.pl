@@ -5,7 +5,7 @@
 # - try to discover entries that just redirect to other
 #   headwords instead of giving a definition
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tess.orig/perl';	# PERL_PATH
 
 use strict;
 use warnings;
