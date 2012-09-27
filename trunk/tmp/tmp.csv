@@ -1,5 +1,0 @@
-Source text: http://tesserae.caset.buffalo.edu/texts/all.aeneid.txt
-Target text: http://tesserae.caset.buffalo.edu/texts/all.lucan.txt
-
-source_phrase,target_phrase,mult_or_sing,word_or_stem,exact_or_partial
-pectore curas ,pectore curas ,multiple,w,exactsuper aethera ,super aethera ,multiple,w,exacturbibus errat ,urbibus errat ,multiple,w,exactIunonis iniquae ,Iunonis iniquae ,multiple,w,exact
