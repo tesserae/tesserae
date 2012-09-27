@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta name="author" content="Neil Coffee, Jean-Pierre Koenig, Shakthi Poornima, Chris Forstall, Roelant Ossewaarde">
+		<meta name="keywords" content="inter-text, text analysis, classics, university at buffalo, latin">
+		<meta name="description" content="Intertext analyzer for Latin texts">
+		<link href="/css/mobile.css" rel="stylesheet" type="text/css"/>
+		<link href="/images/icon.jpg" rel="icon"/>
+	</head>
+
+	<body>
+
+		<div id="container">
+			<div id="top">
+				<center>
+					<h1><b>Tesserae</b></h1>
+					<h2>Intertextual Phrase Matching</h2>
+				</center>
+  			</div>
+
+  			<div id="links">
+				<a href="" class="selected">Basic Search</a>
+				| 
+	    		<a href="/index.php">Full Site</a>
+  			</div>
+
+  			<div style="clear:both;"></div>
+
+  			<div id="search">
+
+				<form action="/cgi-bin/m_session.pl" method="post" id="Form1">
+					
+					<center>
+						<p>
+							<b>Source text</b>
+						</p>
+						
+						<p>
+							<select name="source" id="source">
+								<option selected="selected" value="catullus.carmina">Catullus - Carmina</option>
+								<option value="horace.ars_poetica">Horace - Ars Poetica</option>
+								<option value="horace.carmen_saeculare">Horace - Carmen Saeculare</option>
+								<option value="horace.epistles">Horace - Epistles</option>
+								<option value="horace.epodes">Horace - Epodes</option>
+								<option value="horace.odes">Horace - Odes</option>
+								<option value="horace.satires">Horace - Satires</option>
+								<option value="juvenal">Juvenal - Satires</option>
+								<option value="lucan.pharsalia">Lucan - Pharsalia</option>
+								<option value="lucan.pharsalia.book1">Lucan - Pharsalia book 1</option>
+								<option value="lucretius.de_rerum_natura">Lucretius - De Rerum Natura</option>
+								<option value="martial.epigrams">Martial - Epigrams</option>
+								<option value="ovid.amores">Ovid - Amores</option>
+								<option value="ovid.ars_amatoria">Ovid - Ars Amatoria</option>
+								<option value="ovid.fasti">Ovid - Fasti</option>
+								<option value="ovid.heroides">Ovid - Heroides</option>
+								<option value="ovid.medicamina_faciei_femineae">Ovid - Medicamina Faciei Femineae</option>
+								<option value="ovid.metamorphoses">Ovid - Metamorphoses</option>
+								<option value="ovid.remedia_amoris">Ovid - Remedia Amoris</option>
+								<option value="propertius.elegies">Propertius - Elegies</option>
+								<option value="silius_italicus.punica">Silius Italicus - Punica</option>
+								<option value="statius.thebaid">Statius - Thebaid</option>
+								<option value="tibullus">Tibullus - Elegies</option>
+								<option value="valerius_flaccus">Valerius Flaccus - Argonautica</option>
+								<option value="vergil.aeneid">Vergil - Aeneid</option>
+								<option value="vergil.eclogues">Vergil - Eclogues</option>
+								<option value="vergil.georgics">Vergil - Georgics</option>
+							</select>
+						</p>
+					
+						<p>
+							<b>Target text</b>
+						</p>
+						
+						<p>
+							<select name="target" id="target">
+								<option value="catullus.carmina">Catullus - Carmina</option>
+								<option value="horace.ars_poetica">Horace - Ars Poetica</option>
+								<option value="horace.carmen_saeculare">Horace - Carmen Saeculare</option>
+								<option value="horace.epistles">Horace - Epistles</option>
+								<option value="horace.epodes">Horace - Epodes</option>
+								<option value="horace.odes">Horace - Odes</option>
+								<option value="horace.satires">Horace - Satires</option>
+								<option value="juvenal">Juvenal - Satires</option>
+								<option value="lucan.pharsalia">Lucan - Pharsalia</option>
+								<option value="lucan.pharsalia.book1">Lucan - Pharsalia book 1</option>
+								<option value="lucretius.de_rerum_natura">Lucretius - De Rerum Natura</option>
+								<option value="martial.epigrams">Martial - Epigrams</option>
+								<option value="ovid.amores">Ovid - Amores</option>
+								<option value="ovid.ars_amatoria">Ovid - Ars Amatoria</option>
+								<option value="ovid.fasti">Ovid - Fasti</option>
+								<option value="ovid.heroides">Ovid - Heroides</option>
+								<option value="ovid.medicamina_faciei_femineae">Ovid - Medicamina Faciei Femineae</option>
+								<option value="ovid.metamorphoses">Ovid - Metamorphoses</option>
+								<option value="ovid.remedia_amoris">Ovid - Remedia Amoris</option>
+								<option value="propertius.elegies">Propertius - Elegies</option>
+								<option value="silius_italicus.punica">Silius Italicus - Punica</option>
+								<option value="statius.thebaid">Statius - Thebaid</option>
+								<option value="tibullus">Tibullus - Elegies</option>
+								<option value="valerius_flaccus">Valerius Flaccus - Argonautica</option>
+								<option value="vergil.aeneid">Vergil - Aeneid</option>
+								<option value="vergil.eclogues">Vergil - Eclogues</option>
+								<option selected="selected" value="vergil.georgics">Vergil - Georgics</option>
+							</select>
+						</p>
+
+						<input type="hidden" name="unit" value="words"/>
+						<input type="hidden" name="cutoff" value="30"/>
+
+						<p>
+							<input type="submit" onclick="return ValidateForm()" value="Compare Texts" id="btnSubmit" name="btnSubmit"/>
+						</p>
+					</center>
+				</form>
+
+  			</div>
+
+  			<div id="footer">
+
+      		<div id="footer_content">
+            	<p>
+    					This project is funded by the 
+						<a href="http://digitalhumanities.buffalo.edu/"><b>Digital Humanities Initiative at Buffalo</b></a>. Inquiries or comments about this website should be directed to 
+<a href="mailto:ncoffee@buffalo.edu"><b>Neil Coffee</b></a>.
+					<div style="text-align:center;">
+           			Department of Classics | 338 MFAC | Buffalo, NY 14261
+						<br />
+           			tel: (716) 645-2154 | fax: (716) 645-2225
+					</div>
+					</p>
+      		</div>
+   		</div>
+		</div> <!-- closes container-->	
+
+<!-- Start of StatCounter Code -->
+		<script type="text/javascript">
+			var sc_project=3991965; 
+			var sc_invisible=1; 
+			var sc_partition=48; 
+			var sc_click_stat=1; 
+			var sc_security="23bc1760"; 
+		</script>
+
+		<script type="text/javascript" src="http://www.statcounter.com/counter/counter.js">
+		</script>
+		<noscript>
+			<div class="statcounter">
+				<a href="http://www.statcounter.com/" 
+		target="_blank">
+					<img class="statcounter" src="http://c.statcounter.com/3991965/0/23bc1760/1/" alt="free hit counter" >
+				</a>
+			</div>
+		</noscript>
+<!-- End of StatCounter Code -->
+
+	</body>
+<html>
+
+
