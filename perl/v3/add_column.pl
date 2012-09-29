@@ -2,12 +2,11 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/tesserae/perl';	# PERL_PATH
 
 # add_column.pl
 #
-# add a new text to the big table
-# --identical form matching
+# add a new text to the database
 
 use strict;
 use warnings; 
@@ -20,15 +19,18 @@ use File::Spec::Functions;
 use File::Basename;
 use Cwd;
 use Storable qw(nstore retrieve);
+use DBI;
 use Getopt::Long;
 
 #
-# splitting phrases
+# connect to the Tesserae database
 #
 
-# punctuation marks which delimit phrases
-
-my $phrase_delimiter = '[\.\?\!\;\:]';
+my $dbh = DBI->connect("dbi:mysql:databse=Tesserae;host=localhost;user=tesserae");
+`
+#
+# splitting phrases
+#
 
 # a complicated regex to test for their presence
 # if you match this $1 and $2 will be set to the parts

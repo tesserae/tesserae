@@ -24,7 +24,7 @@ use Storable qw(nstore retrieve);
 
 use Getopt::Long;
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 
 # lowest similarity accaptable without remark

@@ -7,11 +7,11 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_image $url_tmp $apache_user %is_word %non_word);
+our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_image $url_tmp $apache_user %is_word %non_word $phrase_delimiter);
 
 our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni);
 
-my $fs_base	= '/Users/chris/Sites/tesserae';
+my $fs_base	= '/Users/chris/tesserae';
 
 our $fs_cgi 	= $fs_base . '/cgi-bin';
 our $fs_data	= $fs_base . '/data';
@@ -42,6 +42,15 @@ $top{'grc_word'} = [qw{d' kai\\ de\\ te me\\n e)n de/ oi( t' w(\\s ga\\r e)pi\\ 
 $top{'grc_stem'} = [qw{de/ o( kai/ o(/s te su/ ei)mi/ e)gw/ ei)s me/n e)n w(s tis e)pi/ a)/ra a)/n ti/s ga/r a)lla/ ou) au)to/s ou)do/s ou)de/ a)/ron ras nau=s pa=s a)nh/r e)k toi/ dh/ ge ei) kata/ polu/s a)/llos me/gas a)ta/r nu=n e)/rxomai fhmi/ xei/r ui(o/s toi qumo/s e)/xw h)/ ai)/rw min qeo/s e)pei/ u(po/ ei)=mi a)po/ tw=| a)ro/w ippus i(/ppos ris o(/te a)na/ me/ghs o(/ste pe/r ba/llw h)mi/ fi/los a)/ros mh/ e)/nqa e)mo/s para/ i(/sthmi meta/ i(/hmi h)= zeu/s so/s ma/lh ai(re/w ma/la ales a)/gw a)mfi/ peri/ e)/peita h)de/ o(/de ei)=pon ei)=don pro/teros di/dwmi pro/s bai/nw sfei=s e)/pos qea/ phro/s e)/ti e)a/n do/ru e(tai=ros po/lemos au)=te lao/s pou/s fe/rw o)/fra gai=a ma/xomai kako/s pai=s a)ndro/w path/r o)/rnumi ti/qhmi prw=tos dia/ oi)=da o(/sos du/w nao/s di=os su/n o(/stis mu=qos e)/gxos gi/gnomai frh/n ne/w to/te i(kne/omai pei/qw o(/ti teu/xw po/lis a)/nac lei/pw ou)/te pa/thr teu=xos e(/pomai e)qe/lw a(/ma nax ou(=tos e(/kastos pi/ptw kalo/s xa/lkeos xalko/s pote/ a)ei/ me/nos sth=qos au)ti/ka a)/ristos h)=mar e)lau/nw e(o/s olis pri/n oi(=os h)e/ kratero/s h(/rws qe/a e)a/w eron e)/rgon a)llh/lwn ge/rwn e)kei=nos pu=r e)/peimi xe/w eu)= mh/thr me/sos pe/lw potamo/s e)ru/w e)gw/ge a(/ls a)qa/natos ma/xh me/nw kei=mai w)= edium xru/seos pedi/on w)=mos dama/zw au)=qis oi)=os bou=s toi=os no/os feu/gw e)me/w i)/sos a)/pios h)/toi ko/rh summaxe/w pis gunh/ qoo/s o)cu/s kei=nos a)/stu pro/sfhmi o)/ros a)/ge du/o metai/ ti/ktw ristus ou)/tis i(/na e(/ poto/s i(ero/s th=| peda/w w)ku/s lu/w tei=xos xalkou=s kale/w me/las u(pe/r keleu/w h)=dos ei(=s a)/kros pou/ nu/c ou)/ti eu)/xomai ai)=ya ai)/ ale klisi/a eu)ru/s noe/w me/maa di=on o)/llumi qe/w}];
 $top{'grc_syn'}  = $top{'grc_stem'}; 
 
+#
+# some language-processing stuff
+#
+
+# punctuation marks which delimit phrases
+
+our $phrase_delimiter = '[\.\?\!\;\:]';
+
+# what's a word in various languages
 
 my $wchar_greek = 'a-z\*\(\)\\\/\=\|\+\'';
 my $wchar_latin = 'a-zA-Z';
@@ -55,7 +64,7 @@ our %non_word = (
 our %is_word = (
 	'la'  => qr([$wchar_latin]+), 
 	'grc' => qr([$wchar_greek]+),
-	'en'  => qr([$wchar_latin]+) 
+	'en'  => qr('?[$wchar_latin]+(?:['-][$wchar_latin]*)?) 
 	);
 		   
 
