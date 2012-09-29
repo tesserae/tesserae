@@ -1,0 +1,24 @@
+# session files #
+#################
+tmp/*
+
+# generated binaries #
+######################
+data/common/la.*.cache
+data/common/lang
+data/common/abbr
+data/v3/*
+data/v1/*
+
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
