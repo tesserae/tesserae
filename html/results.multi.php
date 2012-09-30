@@ -49,14 +49,36 @@
 					<br>
 					<b>Target Text:</b>
 					<!--target-->
-				</p>
-				<p>
-					<b>Comments:</b>
-					<!--comments-->
-				</p>
-				<p>
+					<br>
+					<b>Unit:</b>
+					<!--unit-->
+					<br>
+					<b>Feature:</b>
+					<!--feature-->
+					<br>
+					<b>Stoplist size:</b>
+					<!--stoplistsize-->
+					<br>
+					<b>Stoplist basis:</b>
+					<!--stbasis-->
+					<br>
 					<b>Stop words:</b>
 					<!--stoplist-->
+					<br>
+					<b>Max distance:</b>
+					<!--maxdist-->
+					<br>
+					<b>Distance metric:</b>
+					<!--dibasis-->
+					<br>
+					<b>Score cutoff:</b>
+					<!--cutoff-->
+					<br>
+					<b>Multi cutoff:</b>
+					<!--mcutoff-->
+					<br>
+					<b>Filter:</b>
+					<!--filter-->
 				</p>
 			</div>
 		

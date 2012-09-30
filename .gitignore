@@ -5,10 +5,14 @@ tmp/*
 # generated binaries #
 ######################
 data/common/la.*.cache
+data/common/la.syn.cache.param
+data/common/*.freq
+data/common/whit.cache
 data/common/lang
 data/common/abbr
 data/v3/*
 data/v1/*
+html/textlist.*
 
 
 # OS generated files #

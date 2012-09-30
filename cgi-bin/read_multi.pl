@@ -77,7 +77,7 @@ Alternatively, the contents of this file may be used under the terms of either t
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -239,6 +239,10 @@ my $distance_metric = $match{META}{DIBASIS};
 # low-score cutoff
 
 my $cutoff = $match{META}{CUTOFF};
+
+# multi-score cutoff
+
+my $mcutoff = $match{META}{MCUTOFF};
 
 # score team filter state
 
@@ -662,13 +666,24 @@ sub print_html {
 		print "  </tr>\n";
 	}
 	
+	my $stoplist = join(", ", @stoplist);
+	my $stoplistsize = scalar(@stoplist);
+	my $filtertoggle = $filter ? 'on' : 'off';
+	
 	$bottom =~ s/<!--session_id-->/$session/;
 	$bottom =~ s/<!--source-->/$source/;
 	$bottom =~ s/<!--target-->/$target/;
-	$bottom =~ s/<!--comments-->/$comments/;
-	
-	my $stoplist = join(", ", @stoplist);
-	
+	$bottom =~ s/<!--unit-->/$unit/;
+	$bottom =~ s/<!--feature-->/$feature/;
+	$bottom =~ s/<!--stoplistsize-->/$stoplistsize/;
+	$bottom =~ s/<!--stbasis-->/$stoplist_basis/;
+	$bottom =~ s/<!--stoplist-->/$stoplist/;
+	$bottom =~ s/<!--maxdist-->/$max_dist/;
+	$bottom =~ s/<!--dibasis-->/$distance_metric/;
+	$bottom =~ s/<!--cutoff-->/$cutoff/;
+	$bottom =~ s/<!--mcutoff-->/$mcutoff/;
+	$bottom =~ s/<!--filter-->/$filtertoggle/;
+			
 	$bottom =~ s/<!--stoplist-->/$stoplist/;
 	
 	print $bottom;
@@ -680,6 +695,35 @@ sub print_delim {
 	
 	my @others = @{get_textlist($target, $source)};
 	
+	#
+	# print header with settings info
+	#
+	
+	my $stoplist = join(" ", @stoplist);
+	my $stoplistsize = scalar(@stoplist);
+	my $filtertoggle = $filter ? 'on' : 'off';
+
+	
+	print <<END;
+
+# Tesserae Multi-text results
+#
+# session   = $session
+# source    = $source
+# target    = $target
+# unit      = $unit
+# feature   = $feature
+# stopsize  = $stoplistsize
+# stbasis   = $stoplist_basis
+# stopwords = $stoplist
+# max_dist  = $max_dist
+# dibasis   = $distance_metric
+# cutoff    = $cutoff
+# m_cutoff  = $mcutoff
+# filter    = $filtertoggle
+
+END
+	
 	print join ($delim, 
 	
 		qw(
@@ -690,8 +734,6 @@ sub print_delim {
 			"SOURCE_TXT"
 			"SHARED"
 			"SCORE"
-			"MARKED_TARGET"
-			"MARKED_SOURCE"
 			"OTHER_TEXTS"
 			"OTHER_TOTAL"
 		),
@@ -756,7 +798,11 @@ sub print_delim {
 				
 		for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
 		
+			if ($marked_target{$token_id_target}) { $phrase .= "**" }
+		
 			$phrase .= $token_target[$token_id_target]{DISPLAY};
+
+			if ($marked_target{$token_id_target}) { $phrase .= "**" }
 		}
 		
 		push @row, "\"$phrase\"";
@@ -771,7 +817,11 @@ sub print_delim {
 		
 		for my $token_id_source (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
 		
+			if ($marked_source{$token_id_source}) { $phrase .= "**" }
+		
 			$phrase .= $token_source[$token_id_source]{DISPLAY};
+			
+			if ($marked_source{$token_id_source}) { $phrase .= "**" }
 		}
 				
 		push @row, "\"$phrase\"";
@@ -783,42 +833,6 @@ sub print_delim {
 		# score
 
 		push @row, $score;
-		
-		# additional columns to help excel color code the matching words
-		
-		# target
-		
-		my @match_token_index;		
-		my $word_count;
-		
-		for my $token_id (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
-		
-			if ($token_target[$token_id]{TYPE} eq "WORD") { $word_count++ }
-		
-			if (defined $marked_target{$token_id}) {
-		
-				push @match_token_index, $word_count;
-			}
-		}
-		
-		push @row, '"' . join(";", @match_token_index) . '"';
-		
-		# source
-		
-		@match_token_index = ();
-		$word_count = 0;
-		
-		for my $token_id (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
-		
-			if ($token_source[$token_id]{TYPE} eq "WORD") { $word_count++ }
-		
-			if (defined $marked_source{$token_id}) {
-		
-				push @match_token_index, $word_count;
-			}
-		}
-		
-		push @row, '"' . join(";", @match_token_index) . '"';
 		
 		# multi-text search
 		
@@ -900,8 +914,8 @@ sub print_xml {
 <results 
 	source="$source" target="$target" unit="$unit" feature="$feature" 
 	sessionID="$session" stop="$stop" stbasis="$stoplist_basis"
-	maxdist="$max_dist" dibasis="$distance_metric" cutoff="$cutoff" version="3">
-	<comments>V3 results. $feature_notes{$feature}</comments>
+	maxdist="$max_dist" dibasis="$distance_metric" cutoff="$cutoff" mcutoff="$mcutoff" version="3">
+	<comments>V3 muti-text results. $feature_notes{$feature}</comments>
 	<commonwords>$commonwords</commonwords>
 END
 
@@ -990,6 +1004,23 @@ END
 			}
 
 			print "</phrase>\n";
+
+			if (defined $match{$unit_id_target}{$unit_id_source}{MULTI}) {
+				
+				for my $other (keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}}) {
+				
+					for my $unit_id_other (sort {$a <=> $b} keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}}) {
+						
+						my $locus = $match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$unit_id_other}{LOCUS};
+						my $score = $match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$unit_id_other}{SCORE};
+						$score = sprintf("%i", $score);
+						
+						print "\t\t<phrase text=\"other\" word=\"$abbr{$other}\" "
+						       . "unitID=\"$unit_id_other\" "
+						       . "line=\"$locus\" />";
+					}					
+				}
+			}
 
 			print "\t</tessdata>\n";
 

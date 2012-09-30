@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 # add_column.pl
 #
@@ -19,15 +19,9 @@ use File::Spec::Functions;
 use File::Basename;
 use Cwd;
 use Storable qw(nstore retrieve);
-use DBI;
+use Parallel::ForkManager;
 use Getopt::Long;
 
-#
-# connect to the Tesserae database
-#
-
-my $dbh = DBI->connect("dbi:mysql:databse=Tesserae;host=localhost;user=tesserae");
-`
 #
 # splitting phrases
 #
@@ -50,16 +44,30 @@ if ( -s $file_abbr )	{  %abbr = %{retrieve($file_abbr)} }
 my %lang;
 my $file_lang = catfile($fs_data, 'common', 'lang');
 
-if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
+#
+# command line options
+#
 
-#
-# allow language to be given on the command line, 
-# using --lang LANG
-#
+# force language of input files
 
 my $lang;
 
-GetOptions("lang=s" => \$lang);
+# number of processes to run in parallel
+
+my $max_processes = 0;
+
+# check user options
+
+GetOptions( 
+	"lang=s" => \$lang, 
+	"processes=i" => \$max_processes
+	);
+
+#
+# initialize process manager for parallel processing
+#
+
+my $prmanager = Parallel::ForkManager->new($max_processes);
 
 #
 # get files to be processed from cmd line args
@@ -90,13 +98,15 @@ while (my $file_in = shift @ARGV) {
 	
 	next unless ($suffix eq ".tess");
 	
+	$prmanager->start and next;
+	
 	# get the language for this doc.  try:
 	# 1. user specified at cmd line
 	# 2. cached from a previous successful parse
 	# 3. somewhere in the path to the text
 	# - then give up
 
-	if ( defined $lang ) {
+	if ( defined $lang and $lang ne "") {
 	}
 	elsif ( defined $lang{$name} ) {
 
@@ -111,7 +121,9 @@ while (my $file_in = shift @ARGV) {
 		print STDERR "Can't guess the language of $file_in! Try reprocessing with --lang LANG\n";
 		next;
 	}
-		
+	
+	if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
+	
 	#
 	# initialize variables
 	#
@@ -391,8 +403,8 @@ while (my $file_in = shift @ARGV) {
 				warn "Can't parse <<$l>> on $file_in line $.. Skipping.";
 				next;
 			}			
-		}				
-	}	
+		}
+	}
 	
 	# if the poem ends with a phrase-delimiting punct token,
 	# there will be an empty final phrase -- delete if exists
@@ -483,7 +495,15 @@ while (my $file_in = shift @ARGV) {
 		$lang{$name} = $lang;
 		nstore \%lang, $file_lang;
 	}
+	
+	# wrap up child process
+	
+	$prmanager->finish;
 }
+
+# make sure all processes are done
+
+$prmanager->wait_all_children;
 
 sub freq_from_index {
 	

@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # title 
@@ -17,6 +17,7 @@ use Getopt::Long;
 use POSIX;
 use Storable qw(nstore retrieve);
 use File::Spec::Functions;
+use Parallel::ForkManager;
 
 use TessSystemVars;
 use EasyProgressBar;
@@ -25,10 +26,23 @@ use EasyProgressBar;
 
 binmode STDOUT, ":utf8";
 
+# number of parallel processes to run
+
+my $max_processes = 2;
+
 # set language
 
 my $lang = 'la';
 
+#
+# command-line options
+#
+
+GetOptions(
+	"lang=s" => \$lang,
+	"processes=i" => \$max_processes
+	);
+	
 # get dictionary
 
 my $file_stem = catfile($fs_data, 'common', $lang . '.stem.cache');
@@ -46,8 +60,16 @@ my @corpus = @{get_textlist($lang)};
 print STDERR "indexing " . scalar(@corpus) . " texts...\n";
 
 for my $unit (qw/line phrase/) {
+	
+	# initialize process manager
+
+	my $prmanager = Parallel::ForkManager->new($max_processes);
 			
 	for my $text (@corpus) {
+	
+		# fork
+		
+		$prmanager->start and next;
 
 		my %index_word;
 		my %index_stem;
@@ -71,12 +93,8 @@ for my $unit (qw/line phrase/) {
 		my %freq_stem = %{retrieve( $file_freq_stem)};
 		
 		print "indexing " . scalar(@token) . " tokens / " . scalar(@unit) . " ${unit}s...\n";
-		
-		my $pr = ProgressBar->new(scalar(@unit));
-		
+				
 		for my $unit_id (0..$#unit) {
-			
-			$pr->advance();
 			
 			# these track the unique word- and stem-pairs in the unit
 
@@ -159,7 +177,15 @@ for my $unit (qw/line phrase/) {
 
 		print STDERR "saving $file_index_stem\n";
 		nstore \%index_stem, $file_index_stem;	
+		
+		# wrap up child process
+		
+		$prmanager->finish;
 	}	
+	
+	# clean up child processes before next loop
+	
+	$prmanager->wait_all_children;
 }
 
 sub get_textlist {

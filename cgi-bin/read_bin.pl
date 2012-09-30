@@ -77,7 +77,7 @@ Alternatively, the contents of this file may be used under the terms of either t
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -669,7 +669,33 @@ sub print_html {
 sub print_delim {
 
 	my $delim = shift;
+
+	#
+	# print header with settings info
+	#
 	
+	my $stoplist = join(" ", @stoplist);
+	my $stoplistsize = scalar(@stoplist);
+	my $filtertoggle = $filter ? 'on' : 'off';
+	
+	print <<END;
+# Tesserae V3 results
+#
+# session   = $session
+# source    = $source
+# target    = $target
+# unit      = $unit
+# feature   = $feature
+# stopsize  = $stoplistsize
+# stbasis   = $stoplist_basis
+# stopwords = $stoplist
+# max_dist  = $max_dist
+# dibasis   = $distance_metric
+# cutoff    = $cutoff
+# filter    = $filtertoggle
+
+END
+
 	print join ($delim, 
 	
 		qw(
@@ -680,8 +706,6 @@ sub print_delim {
 			"SOURCE_TXT"
 			"SHARED"
 			"SCORE"
-			"MARKED_TARGET"
-			"MARKED_SOURCE"
 		)
 		) . "\n";
 
@@ -741,7 +765,11 @@ sub print_delim {
 				
 		for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
 		
+			if ($marked_target{$token_id_target}) { $phrase .= "**" }
+		
 			$phrase .= $token_target[$token_id_target]{DISPLAY};
+
+			if ($marked_target{$token_id_target}) { $phrase .= "**" }
 		}
 		
 		push @row, "\"$phrase\"";
@@ -756,11 +784,15 @@ sub print_delim {
 		
 		for my $token_id_source (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
 		
+			if ($marked_source{$token_id_source}) { $phrase .= "**" }
+		
 			$phrase .= $token_source[$token_id_source]{DISPLAY};
+			
+			if ($marked_source{$token_id_source}) { $phrase .= "**" }
 		}
 				
 		push @row, "\"$phrase\"";
-		
+	
 		# keywords
 		
 		push @row, "\"$keys\"";
@@ -768,42 +800,6 @@ sub print_delim {
 		# score
 
 		push @row, $score;
-		
-		# additional columns to help excel color code the matching words
-		
-		# target
-		
-		my @match_token_index;		
-		my $word_count;
-		
-		for my $token_id (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
-		
-			if ($token_target[$token_id]{TYPE} eq "WORD") { $word_count++ }
-		
-			if (defined $marked_target{$token_id}) {
-		
-				push @match_token_index, $word_count;
-			}
-		}
-		
-		push @row, '"' . join(";", @match_token_index) . '"';
-		
-		# source
-		
-		@match_token_index = ();
-		$word_count = 0;
-		
-		for my $token_id (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
-		
-			if ($token_source[$token_id]{TYPE} eq "WORD") { $word_count++ }
-		
-			if (defined $marked_source{$token_id}) {
-		
-				push @match_token_index, $word_count;
-			}
-		}
-		
-		push @row, '"' . join(";", @match_token_index) . '"';
 		
 		# print row
 		

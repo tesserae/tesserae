@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # multitext.pl
@@ -232,6 +232,7 @@ if ($no_cgi) {
 }
 
 $match{META} = $meta_saved;
+$match{META}{MCUTOFF} = $multi_cutoff;
 
 nstore \%match, $file;
 
@@ -279,7 +280,7 @@ sub get_textlist {
 
 sub search_multi {
 
-	# the list of texts to exclude
+	# the list of texts to check
 
 	my $aref = shift;
 	my @textlist = @$aref;
