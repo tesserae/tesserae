@@ -17,7 +17,6 @@ use Getopt::Long;
 use POSIX;
 use Storable qw(nstore retrieve);
 use File::Spec::Functions;
-use Parallel::ForkManager;
 
 use TessSystemVars;
 use EasyProgressBar;
@@ -40,8 +39,18 @@ my $lang = 'la';
 
 GetOptions(
 	"lang=s" => \$lang,
-	"processes=i" => \$max_processes
+	"parallel=i" => \$max_processes
 	);
+	
+#
+# load module for parallel processing
+# only if necessary
+#
+
+if ($max_processes) {
+
+	use Parallel::ForkManager;
+}
 	
 # get dictionary
 
@@ -62,8 +71,13 @@ print STDERR "indexing " . scalar(@corpus) . " texts...\n";
 for my $unit (qw/line phrase/) {
 	
 	# initialize process manager
+	
+	my $prmanager;
+	
+	if ($max_processes) {
 
-	my $prmanager = Parallel::ForkManager->new($max_processes);
+		$prmanager = Parallel::ForkManager->new($max_processes);
+	}
 			
 	for my $text (@corpus) {
 	
@@ -180,12 +194,18 @@ for my $unit (qw/line phrase/) {
 		
 		# wrap up child process
 		
-		$prmanager->finish;
+		if ($max_processes) {
+
+			$prmanager->finish;
+		}
 	}	
 	
 	# clean up child processes before next loop
 	
-	$prmanager->wait_all_children;
+	if ($max_processes) {
+	
+		$prmanager->wait_all_children;
+	}
 }
 
 sub get_textlist {

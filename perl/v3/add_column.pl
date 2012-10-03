@@ -19,7 +19,6 @@ use File::Spec::Functions;
 use File::Basename;
 use Cwd;
 use Storable qw(nstore retrieve);
-use Parallel::ForkManager;
 use Getopt::Long;
 
 #
@@ -60,14 +59,22 @@ my $max_processes = 0;
 
 GetOptions( 
 	"lang=s" => \$lang, 
-	"processes=i" => \$max_processes
+	"parallel=i" => \$max_processes
 	);
 
 #
 # initialize process manager for parallel processing
 #
 
-my $prmanager = Parallel::ForkManager->new($max_processes);
+my $prmanager;
+
+if ($max_processes) {
+
+	use Parallel::ForkManager;
+
+	$prmanager = Parallel::ForkManager->new($max_processes);
+}
+
 
 #
 # get files to be processed from cmd line args
@@ -98,7 +105,10 @@ while (my $file_in = shift @ARGV) {
 	
 	next unless ($suffix eq ".tess");
 	
-	$prmanager->start and next;
+	if ($max_processes) {
+	
+		$prmanager->start and next;
+	}
 	
 	# get the language for this doc.  try:
 	# 1. user specified at cmd line
@@ -498,12 +508,18 @@ while (my $file_in = shift @ARGV) {
 	
 	# wrap up child process
 	
-	$prmanager->finish;
+	if ($max_processes) {
+	
+		$prmanager->finish;
+	}
 }
 
 # make sure all processes are done
 
-$prmanager->wait_all_children;
+if ($max_processes) {
+
+	$prmanager->wait_all_children;
+}
 
 sub freq_from_index {
 	
