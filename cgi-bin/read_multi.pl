@@ -222,6 +222,8 @@ my $feature = $match{META}{FEATURE};
 
 # stoplist
 
+my $stop = $match{META}{STOP};
+
 my @stoplist = @{$match{META}{STOPLIST}};
 
 # stoplist basis
@@ -243,6 +245,10 @@ my $cutoff = $match{META}{CUTOFF};
 # multi-score cutoff
 
 my $mcutoff = $match{META}{MCUTOFF};
+
+# other texts used in search
+
+my @others = @{$match{META}{MTEXTLIST}};
 
 # score team filter state
 
@@ -667,20 +673,21 @@ sub print_html {
 	}
 	
 	my $stoplist = join(", ", @stoplist);
-	my $stoplistsize = scalar(@stoplist);
 	my $filtertoggle = $filter ? 'on' : 'off';
+	my $mtextlist = join(", ", @others);
 	
 	$bottom =~ s/<!--session_id-->/$session/;
 	$bottom =~ s/<!--source-->/$source/;
 	$bottom =~ s/<!--target-->/$target/;
 	$bottom =~ s/<!--unit-->/$unit/;
 	$bottom =~ s/<!--feature-->/$feature/;
-	$bottom =~ s/<!--stoplistsize-->/$stoplistsize/;
+	$bottom =~ s/<!--stoplistsize-->/$stop/;
 	$bottom =~ s/<!--stbasis-->/$stoplist_basis/;
 	$bottom =~ s/<!--stoplist-->/$stoplist/;
 	$bottom =~ s/<!--maxdist-->/$max_dist/;
 	$bottom =~ s/<!--dibasis-->/$distance_metric/;
 	$bottom =~ s/<!--cutoff-->/$cutoff/;
+	$bottom =~ s/<!--mtextlist-->/$mtextlist/;
 	$bottom =~ s/<!--mcutoff-->/$mcutoff/;
 	$bottom =~ s/<!--filter-->/$filtertoggle/;
 			
@@ -693,14 +700,11 @@ sub print_delim {
 	
 	my $delim = shift;
 	
-	my @others = @{get_textlist($target, $source)};
-	
 	#
 	# print header with settings info
 	#
 	
 	my $stoplist = join(" ", @stoplist);
-	my $stoplistsize = scalar(@stoplist);
 	my $filtertoggle = $filter ? 'on' : 'off';
 
 	
@@ -713,7 +717,7 @@ sub print_delim {
 # target    = $target
 # unit      = $unit
 # feature   = $feature
-# stopsize  = $stoplistsize
+# stopsize  = $stop
 # stbasis   = $stoplist_basis
 # stopwords = $stoplist
 # max_dist  = $max_dist
@@ -889,7 +893,6 @@ sub print_xml {
 	# format the stoplist
 
 	my $commonwords = join(", ", @stoplist);
-	my $stop = scalar(@stoplist);
 
 	# add a featureset-specific message
 

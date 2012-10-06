@@ -44,37 +44,42 @@ my %lang;
 my $file_lang = catfile($fs_data, 'common', 'lang');
 
 #
-# command line options
+# declare dictionaries
 #
 
-# force language of input files
+my %stem;
+my %syn;
+
+# working language
 
 my $lang;
 
-# number of processes to run in parallel
+# remember working lang, so we don't have to change
+# with every new text.
 
-my $max_processes = 0;
+my $old_lang = "";
+
+# these are for optional use of Lingua::Stem
+
+my $use_lingua_stem = 0;
+my $stemmer;
+
+#
+# command line options
+#
 
 # check user options
 
 GetOptions( 
-	"lang=s" => \$lang, 
-	"parallel=i" => \$max_processes
+	"lang=s" => \$lang,
+	"use-lingua-stem" => \$use_lingua_stem
 	);
 
-#
-# initialize process manager for parallel processing
-#
+# get language list
 
-my $prmanager;
+if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
 
-if ($max_processes) {
-
-	use Parallel::ForkManager;
-
-	$prmanager = Parallel::ForkManager->new($max_processes);
-}
-
+if ($use_lingua_stem) { use Lingua::Stem }
 
 #
 # get files to be processed from cmd line args
@@ -104,12 +109,7 @@ while (my $file_in = shift @ARGV) {
 	my ($name, $path, $suffix) = fileparse($file_in, qr/\.[^.]*/);
 	
 	next unless ($suffix eq ".tess");
-	
-	if ($max_processes) {
-	
-		$prmanager->start and next;
-	}
-	
+		
 	# get the language for this doc.  try:
 	# 1. user specified at cmd line
 	# 2. cached from a previous successful parse
@@ -132,8 +132,6 @@ while (my $file_in = shift @ARGV) {
 		next;
 	}
 	
-	if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
-	
 	#
 	# initialize variables
 	#
@@ -151,35 +149,44 @@ while (my $file_in = shift @ARGV) {
 	#
 	# check for the dictionaries
 	#
-	
-	my %stem;
-	my %syn;
-	
+		
 	my $file_stem = catfile($fs_data, 'common', "$lang.stem.cache");
 	my $file_syn  = catfile($fs_data, 'common', "$lang.syn.cache");
 	
 	my $no_stems;
 	my $no_syns;
 	
-	if (-r $file_stem) {
-		
-		%stem = %{ retrieve($file_stem) };
-		
-		if (-r $file_syn) {
+	if ($lang ne $old_lang) {
 	
-			%syn = %{ retrieve($file_syn) };
+		if (-r $file_stem or $use_lingua_stem) {
+			
+			if ($use_lingua_stem) {
+			
+				$stemmer = Lingua::Stem->new({-locale => $lang});
+			}
+			else {
+			
+				%stem = %{ retrieve($file_stem) };
+			}
+			
+			if (-r $file_syn) {
+		
+				%syn = %{ retrieve($file_syn) };
+			}
+			else {
+				
+				print STDERR "Can't find syn dictionary!  Syn indexing disabled.\n";
+				$no_syns = 1;
+			}
 		}
 		else {
 			
-			print STDERR "Can't find syn dictionary!  Syn indexing disabled.\n";
-			$no_syns = 1;
+			print STDERR "Can't find stem dictionary! Stem and syn indexing disabled.\n";
+			$no_stems = 1;		
 		}
 	}
-	else {
-		
-		print STDERR "Can't find stem dictionary! Stem and syn indexing disabled.\n";
-		$no_stems = 1;		
-	}
+	
+	$old_lang = $lang;
 	
 	#
 	# assume unknown lang is like english
@@ -313,9 +320,7 @@ while (my $file_in = shift @ARGV) {
 				
 				next if $no_stems;
 				
-				my @stems = defined $stem{$form} ? @{$stem{$form}} : ($form);
-				
-				for my $stem (@stems) {
+				for my $stem (@{stems($form)}) {
 				
 					push @{$index_stem{$stem}}, $#token;
 				}
@@ -323,22 +328,8 @@ while (my $file_in = shift @ARGV) {
 				# by syn
 				
 				next if $no_syns;
-				
-				my %syns;
-				
-				for my $stem (@stems) {
-				
-					$syns{$stem} = 1;
-					
-					if (defined $syn{$stem}) {
-					
-						for my $syn (@{$syn{$stem}}) {
-							$syns{$syn} = 1;
-						}
-					}
-				}
-				
-				for my $syn (keys %syns) {
+								
+				for my $syn (@{syns($form)}) {
 				
 					push @{$index_syn{$syn}}, $#token;
 				}
@@ -504,21 +495,7 @@ while (my $file_in = shift @ARGV) {
 	{
 		$lang{$name} = $lang;
 		nstore \%lang, $file_lang;
-	}
-	
-	# wrap up child process
-	
-	if ($max_processes) {
-	
-		$prmanager->finish;
-	}
-}
-
-# make sure all processes are done
-
-if ($max_processes) {
-
-	$prmanager->wait_all_children;
+	}	
 }
 
 sub freq_from_index {
@@ -660,4 +637,46 @@ sub syn_freq {
 	my %syn_freq = %{stem_freq($index_ref, $stem_ref, \%by_form)};
 	
 	return \%syn_freq;
+}
+
+sub stems {
+
+	my $form = shift;
+	
+	my @stems;
+	
+	if ($use_lingua_stem) {
+	
+		@stems = @{$stemmer->stem($form)};
+	}
+	elsif (defined $stem{$form}) {
+	
+		@stems = @{$stem{$form}};
+	}
+	else {
+	
+		@stems = ($form);
+	}
+	
+	return \@stems;
+}
+
+sub syns {
+
+	my $form = shift;
+	
+	my %syns;
+	
+	for my $stem (@{stems($form)}) {
+	
+		if (defined $syn{$stem}) {
+		
+			for (@{$syn{$stem}}) {
+			
+				$syns{$_} = 1;
+			}
+		}
+	}
+	
+	return [keys %syns];
 }

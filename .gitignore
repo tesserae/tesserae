@@ -12,6 +12,7 @@ data/common/lang
 data/common/abbr
 data/v3/*
 data/v1/*
+data/bench/rec.cache
 html/textlist.*
 
 

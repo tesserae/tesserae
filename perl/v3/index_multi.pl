@@ -27,7 +27,7 @@ binmode STDOUT, ":utf8";
 
 # number of parallel processes to run
 
-my $max_processes = 2;
+my $max_processes = 0;
 
 # set language
 
@@ -83,7 +83,10 @@ for my $unit (qw/line phrase/) {
 	
 		# fork
 		
-		$prmanager->start and next;
+		if ($max_processes) {
+		
+			$prmanager->start and next;
+		}
 
 		my %index_word;
 		my %index_stem;

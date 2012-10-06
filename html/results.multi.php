@@ -74,6 +74,9 @@
 					<b>Score cutoff:</b>
 					<!--cutoff-->
 					<br>
+					<b>Multi-text search:</b>
+					<!--mtextlist-->
+					<br>
 					<b>Multi cutoff:</b>
 					<!--mcutoff-->
 					<br>

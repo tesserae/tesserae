@@ -224,6 +224,8 @@ my $feature = $match{META}{FEATURE};
 
 # stoplist
 
+my $stop = $match{META}{STOP};
+
 my @stoplist = @{$match{META}{STOPLIST}};
 
 # stoplist basis
@@ -647,7 +649,6 @@ sub print_html {
 	}
 
 	my $stoplist = join(", ", @stoplist);
-	my $stoplistsize = scalar(@stoplist);
 	my $filtertoggle = $filter ? 'on' : 'off';
 	
 	$bottom =~ s/<!--session_id-->/$session/;
@@ -655,7 +656,7 @@ sub print_html {
 	$bottom =~ s/<!--target-->/$target/;
 	$bottom =~ s/<!--unit-->/$unit/;
 	$bottom =~ s/<!--feature-->/$feature/;
-	$bottom =~ s/<!--stoplistsize-->/$stoplistsize/;
+	$bottom =~ s/<!--stoplistsize-->/$stop/;
 	$bottom =~ s/<!--stbasis-->/$stoplist_basis/;
 	$bottom =~ s/<!--stoplist-->/$stoplist/;
 	$bottom =~ s/<!--maxdist-->/$max_dist/;
@@ -675,7 +676,6 @@ sub print_delim {
 	#
 	
 	my $stoplist = join(" ", @stoplist);
-	my $stoplistsize = scalar(@stoplist);
 	my $filtertoggle = $filter ? 'on' : 'off';
 	
 	print <<END;
@@ -686,7 +686,7 @@ sub print_delim {
 # target    = $target
 # unit      = $unit
 # feature   = $feature
-# stopsize  = $stoplistsize
+# stopsize  = $stop
 # stbasis   = $stoplist_basis
 # stopwords = $stoplist
 # max_dist  = $max_dist
@@ -821,7 +821,6 @@ sub print_xml {
 	# format the stoplist
 
 	my $commonwords = join(", ", @stoplist);
-	my $stop = scalar(@stoplist);
 
 	# add a featureset-specific message
 

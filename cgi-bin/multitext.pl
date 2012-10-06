@@ -72,6 +72,10 @@ my $session;
 
 my $multi_cutoff = 0;
 
+# texts to exclude
+
+my @exclude = ();
+
 #
 # command-line arguments
 #
@@ -81,6 +85,7 @@ GetOptions(
 	'page=i'     => \$page,
 	'batch=i'    => \$batch,
 	'session=s'  => \$session,
+	'exclude=s'  => \@exclude,
 	'cutoff=i'   => \$multi_cutoff,
 	'quiet'      => \$quiet );
 
@@ -232,6 +237,7 @@ if ($no_cgi) {
 }
 
 $match{META} = $meta_saved;
+$match{META}{MTEXTLIST} = \@textlist;
 $match{META}{MCUTOFF} = $multi_cutoff;
 
 nstore \%match, $file;
@@ -261,19 +267,29 @@ END
 
 sub get_textlist {
 	
-	my ($target, $source) = @_;
+	my ($target, $source) = @_[0,1];
 	
-	for ($target, $source) { s/\.part\..*// }
+	for ($target, $source) { s/[\._]part[\._].*// }
 
 	my $directory = catdir($fs_data, 'v3', $lang{$target});
 
 	opendir(DH, $directory);
 	
-	my @textlist = grep {/^[^.]/ && ! /\.part\./} readdir(DH);
+	my @all_texts = grep {/^[^.]/ && ! /[\._]part[\._]/} readdir(DH);
 	
 	closedir(DH);
 	
-	@textlist = grep {$_ ne $target && $_ ne $source} @textlist;
+	my @textlist;
+	
+	for my $text (@all_texts) {
+
+      next if $text eq $target;
+      next if $text eq $source;
+
+      next if grep { $_ eq $text } @exclude;
+
+      push @textlist, $text;
+   	}
 	
 	return \@textlist;
 }

@@ -642,6 +642,7 @@ if ($file_results ne "none") {
 		TARGET    => $target,
 		UNIT      => $unit,
 		FEATURE   => $feature,
+		STOP      => $stopwords,
 		STOPLIST  => [@stoplist],
 		STBASIS   => $stoplist_basis,
 		DIST      => $max_dist,
