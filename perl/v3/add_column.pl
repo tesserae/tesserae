@@ -277,6 +277,17 @@ while (my $file_in = shift @ARGV) {
 				# -- just as it appears in the text
 
 				my $display = $token;
+				
+				#
+				# an experimental feature
+				#
+				
+				if ($token =~ /TESSFORM(.+?)TESSDISPLAY(.+?)/) {
+				
+					($token, $display) = ($1, $2);
+				}
+
+				# convert display greek to unicode
 
 				if ($lang eq "grc") {
 

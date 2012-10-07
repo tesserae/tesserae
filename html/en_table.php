@@ -8,10 +8,10 @@
 			
 			<form action="<?php echo $url_cgi . '/read_table.pl' ?>" method="post" ID="Form1">
 
-				<h1>Advanced Search</h1>
+				<h1>English Search</h1>
 				
 				<p>
-					This page allows you to change the default settings for the search. For explanations of the features, see the <a href="<?php echo $url_html . '/help.php' ?>">Instructions</a> page.
+					For explanations of the features, see the <a href="<?php echo $url_html . '/help.php' ?>">Instructions</a> page.
 				</p>
 
 				<table class="input">
@@ -45,7 +45,7 @@
 						<td>
 							<select name="feature">
 								<option value="word" selected="selected">exact form only</option>
-								<option value="stem" disabled="disabled">lemma</option>
+								<option value="stem">lemma</option>
 								<option value="syn" disabled="disabled">lemma + synonyms</option>
 							</select>
 						</td>
@@ -55,9 +55,9 @@
 						<td>
 							<select name="stopwords">
 								<option value="0">0</option>
-								<option value="10">10</option>
+								<option value="10" selected="selected">10</option>
 								<option value="20">20</option>
-								<option value="30" selected="selected">30</option>
+								<option value="30">30</option>
 								<option value="40">40</option>
 								<option value="50">50</option>
 								<option value="100">100</option>
@@ -101,6 +101,21 @@
 								<option value="freq">frequency</option>
 								<option value="freq-target">freq-target</option>
 								<option value="freq-source">freq-source</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td><span class="h2">Drop scores below:</span></td>
+						<td>
+							<select name="cutoff">
+								<option value="0" selected="selected">no cutoff</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
 							</select>
 						</td>
 					</tr>
