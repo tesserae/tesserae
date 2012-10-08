@@ -7,7 +7,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_image $url_tmp $apache_user %is_word %non_word $phrase_delimiter);
+our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_image $url_tmp $apache_user %is_word %non_word $phrase_delimiter %ancillary);
 
 our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni);
 
@@ -67,7 +67,15 @@ our %is_word = (
 	'en'  => qr('?[$wchar_latin]+(?:['-][$wchar_latin]*)?) 
 	);
 		   
+#
+# are certain modules available?
+#
 
+our %ancillary = ( 
+
+	'Lingua::Stem' => 1, 
+	'Parallel::ForkManager' => 1
+	);
 
 ########################################
 # subroutines

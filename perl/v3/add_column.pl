@@ -21,6 +21,10 @@ use Cwd;
 use Storable qw(nstore retrieve);
 use Getopt::Long;
 
+# optional modules
+
+use if $ancillary{"Lingua::Stem"}, "Lingua::Stem";
+
 #
 # splitting phrases
 #
@@ -79,7 +83,17 @@ GetOptions(
 
 if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
 
-if ($use_lingua_stem) { use Lingua::Stem }
+# check to make sure stemmer module is available
+
+if ($use_lingua_stem and not $ancillary{"Lingua::Stem"}) {
+
+	print STDERR 
+		"Lingua::Stem was not installed when you configured Tesserae.  "
+	   . "If you have installed it since then, please re-configure.  "
+	   . "Falling back on stem dictionary method for now.\n";
+	   
+	$use_lingua_stem = 0;
+}
 
 #
 # get files to be processed from cmd line args
