@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 # modified from v1.prepare.texts.pl
 # to use the v2/v3 stem cache

@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 # the line below is designed to be modified by configure.pl
 
@@ -264,6 +264,17 @@ END
 #
 # subroutines
 #
+
+sub formattime {
+
+	my $seconds = shift;
+	
+	my $minutes = int($seconds/60);
+	
+	$seconds -= $minutes * 60;
+	
+	return sprintf("%02i:%02i", $minutes, $seconds);		
+}
 
 sub get_textlist {
 	
