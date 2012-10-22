@@ -1,6 +1,11 @@
 # session files #
 #################
 tmp/*
+tesresults.*
+
+# private scripts
+
+testing/*
 
 # generated binaries #
 ######################

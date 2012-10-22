@@ -2,7 +2,7 @@
 
 			<?php include "nav_search.php"; ?>
 
-			</div>
+			</div> <!--closes header-->
 
 
 			<div id="main">
@@ -10,8 +10,9 @@
 
 				<p>
 					The Tesserae project aims to provide a flexible and robust web interface 
-					for exploring intertextual parallels. Select two poems below to see 
-					a list of lines sharing two or more words (regardless of inflectional changes).
+					for exploring intertextual parallels. <br />
+					Select two poems below to see a list of lines sharing two or more words 
+					(regardless of inflectional changes).
 				</p>
 
 				<form action="<?php echo $url_cgi.'/read_table.pl'; ?>" method="post" ID="Form1">
@@ -54,14 +55,4 @@
 				</form>
 			</div>
 		
-			<script language="javascript">
-
-				var ddlsrc = document.getElementById('source');
-				var ddltrg = document.getElementById('target');
-
-				ddlsrc.options[0].selected = true;
-				ddltrg.options[ddltrg.options.length-1].selected = true;
-
-			</script>	
-
 			<?php include "last.php"; ?>

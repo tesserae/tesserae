@@ -333,9 +333,9 @@ if ($no_cgi) {
 else {
 
 	$source          = $query->param('source')       || "";
-	$target          = $query->param('target') 	    || "";
-	$unit            = $query->param('unit') 	       || $unit;
-	$feature         = $query->param('feature')	    || $feature;
+	$target          = $query->param('target')       || "";
+	$unit            = $query->param('unit')         || $unit;
+	$feature         = $query->param('feature')      || $feature;
 	$stopwords       = defined($query->param('stopwords')) ? $query->param('stopwords') : $stopwords;
 	$stoplist_basis  = $query->param('stbasis')      || $stoplist_basis;
 	$max_dist        = $query->param('dist')         || $max_dist;
@@ -377,13 +377,13 @@ unless ($quiet) {
 
 # token frequencies from the target text
 
-my $file_freq_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . ".freq_$feature");
+my $file_freq_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . ".freq_score_$feature");
 
 my %freq_target = %{retrieve( $file_freq_target)};
 
 # token frequencies from the target text
 
-my $file_freq_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . ".freq_$feature");
+my $file_freq_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . ".freq_score_$feature");
 
 my %freq_source = %{retrieve( $file_freq_source)};
 
@@ -405,7 +405,7 @@ my $min_similarity = "NA";
 
 if ( $feature eq "syn" ) { 
 
-	($max_heads, $min_similarity) = @{ retrieve("$fs_data/common/$lang{$target}.syn.cache.param") };
+	($max_heads, $min_similarity) = @{ retrieve(catfile($fs_data, "common", "$lang{$target}.syn.cache.param")) };
 }
 
 
@@ -419,23 +419,22 @@ unless ($quiet) {
 	print STDERR "reading source data\n";
 }
 
-my $path_source = "$fs_data/v3/$lang{$source}/$source";
+my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source);
 
-my @token_source   = @{ retrieve( "$path_source/$source.token"    ) };
-my @unit_source    = @{ retrieve( "$path_source/$source.${unit}" ) };
-my %index_source   = %{ retrieve( "$path_source/$source.index_$feature" ) };
+my @token_source   = @{ retrieve("$file_source.token") };
+my @unit_source    = @{ retrieve("$file_source.$unit") };
+my %index_source   = %{ retrieve("$file_source.index_$feature")};
 
 unless ($quiet) {
 
 	print STDERR "reading target data\n";
 }
 
-my $path_target = "$fs_data/v3/$lang{$target}/$target";
+my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target);
 
-my @token_target   = @{ retrieve( "$path_target/$target.token"    ) };
-my @unit_target    = @{ retrieve( "$path_target/$target.${unit}" ) };
-my %index_target   = %{ retrieve( "$path_target/$target.index_$feature" ) };
-
+my @token_target   = @{ retrieve("$file_target.token") };
+my @unit_target    = @{ retrieve("$file_target.$unit") };
+my %index_target   = %{ retrieve("$file_target.index_$feature" ) };
 
 
 #
@@ -762,14 +761,14 @@ sub load_stoplist {
 	
 	if ($stoplist_basis eq "target") {
 		
-		my $file = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.stop_' . $feature);
+		my $file = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
 		
 		%basis = %{retrieve($file)};
 	}
 	
 	elsif ($stoplist_basis eq "source") {
 		
-		my $file = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.stop_' . $feature);
+		my $file = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
 
 		%basis = %{retrieve($file)};		
 	}
@@ -783,11 +782,11 @@ sub load_stoplist {
 	
 	elsif ($stoplist_basis eq "both") {
 		
-		my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.stop_' . $feature);
+		my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
 		
 		%basis = %{retrieve($file_target)};
 		
-		my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.stop_' . $feature);
+		my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
 		
 		my %basis2 = %{retrieve($file_source)};
 		

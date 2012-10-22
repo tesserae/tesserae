@@ -94,6 +94,7 @@ use Getopt::Long;
 use POSIX;
 use Storable qw(nstore retrieve);
 use File::Spec::Functions;
+use File::Basename;
 
 use TessSystemVars;
 use EasyProgressBar;
@@ -178,25 +179,54 @@ unless ($no_cgi) {
 	print header(%h);
 }
 
-my $file;
+#
+# load the search results
+#
+
+my $file_search;
 
 if (defined $session) {
 
-	$file = catfile($fs_tmp, "tesresults-" . $session . ".bin");
+	$file_search = catfile($fs_tmp, "tesresults-" . $session . ".bin");
 }
 else {
 	
-	$file = shift @ARGV;
+	$file_search = shift @ARGV;
 }
 
+print STDERR "reading $file_search\n" unless $quiet;
+
+my %match = %{retrieve($file_search)};
+
+# we're going to use the metadata in the multi
+# directory instead
+
+delete $match{META};
+
+# the directory containing multi results
+
+my $multi_dir;
+
+if (defined $session) {
+
+	$multi_dir = catdir($fs_tmp, "tesresults-$session.multi");
+}
+else {
+
+	my ($name, $path, $suffix) = fileparse($file_search, qr/\.[^.]*/);
+
+	$multi_dir = catdir($path, "$name.multi");
+}
 
 #
-# load the file
+# get the metadata
 #
 
-print STDERR "reading $file\n" unless $quiet;
+print STDERR "reading metadata\n" unless $quiet;
 
-my %match = %{retrieve($file)};
+my $file_meta = catfile($multi_dir, "metadata");
+
+my %meta = %{retrieve($file_meta)};
 
 #
 # set some parameters
@@ -204,71 +234,67 @@ my %match = %{retrieve($file)};
 
 # source means the alluded-to, older text
 
-my $source = $match{META}{SOURCE};
+my $source = $meta{SOURCE};
 
 # target means the alluding, newer text
 
-my $target = $match{META}{TARGET};
+my $target = $meta{TARGET};
 
 # unit means the level at which results are returned: 
 # - choice right now is 'phrase' or 'line'
 
-my $unit = $match{META}{UNIT};
+my $unit = $meta{UNIT};
 
 # feature means the feature set compared: 
 # - choice is 'word' or 'stem'
 
-my $feature = $match{META}{FEATURE};
+my $feature = $meta{FEATURE};
 
 # stoplist
 
-my $stop = $match{META}{STOP};
+my $stop = $meta{STOP};
 
-my @stoplist = @{$match{META}{STOPLIST}};
+my @stoplist = @{$meta{STOPLIST}};
 
 # stoplist basis
 
-my $stoplist_basis = $match{META}{STBASIS};
+my $stoplist_basis = $meta{STBASIS};
 
 # max distance
 
-my $max_dist = $match{META}{DIST};
+my $max_dist = $meta{DIST};
 
 # distance metric
 
-my $distance_metric = $match{META}{DIBASIS};
+my $distance_metric = $meta{DIBASIS};
 
 # low-score cutoff
 
-my $cutoff = $match{META}{CUTOFF};
+my $cutoff = $meta{CUTOFF};
 
 # multi-score cutoff
 
-my $mcutoff = $match{META}{MCUTOFF};
+my $mcutoff = $meta{MCUTOFF};
 
 # other texts used in search
 
-my @others = @{$match{META}{MTEXTLIST}};
+my @others = @{$meta{MTEXTLIST}};
 
 # score team filter state
 
-my $filter = $match{META}{FILTER};
+my $filter = $meta{FILTER};
 
 # session id
 
-$session = $match{META}{SESSION};
+$session = $meta{SESSION};
 
 # total number of matches
 
-my $total_matches = $match{META}{TOTAL};
+my $total_matches = $meta{TOTAL};
 
 # notes
 
-my $comments = $match{META}{COMMENT};
-
-# now delete the metadata from the match records 
-
-delete $match{META};
+my $comments = $meta{COMMENT};
 
 # sort the results
 
@@ -335,8 +361,31 @@ if ( $feature eq "syn" ) {
 }
 
 #
+# load the multi-data
+#
+
+my %multi;
+
+print STDERR "loading multi-data\n" unless $quiet;
+
+my $nothers = scalar(@others);
+
+for my $i (0..$#others) {
+
+	my $other = $others[$i];
+
+	my $file_other = catfile($multi_dir, $other);
+
+	print STDERR " [$i/$nothers] $file_other\n" unless $quiet;
+
+	$multi{$other} = retrieve($file_other);
+}
+
+#
 # output
 #
+
+print STDERR "exporting data\n" unless $quiet;
 
 if ($export eq "html") {
 
@@ -660,10 +709,7 @@ sub print_html {
 
 		print "   <td>";
 				
-		if (defined $match{$unit_id_target}{$unit_id_source}{MULTI}) {
-		
-			print format_multi_html($match{$unit_id_target}{$unit_id_source}{MULTI});
-		}
+		print format_multi_html($unit_id_target, $unit_id_source);
 		
 		print "   </td>";
 		
@@ -1068,16 +1114,16 @@ sub sort_results {
 
 sub format_multi_html {
 	
-	my $href = shift;
+	my ($unit_id_target, $unit_id_source) = @_;
 	
 	# this hash has text identifiers as its keys;
 	# the values are arrays of unit ids within the text
-	
-	my %multi = %$href;
-		
+			
 	my $html = "<table>";
 	
 	for my $other (sort keys %multi) {
+
+		next unless defined $multi{$other}{$unit_id_target}{$unit_id_source};
 
 		$html .= "<tr>";
 		$html .= "<td>$other</td>";
@@ -1085,10 +1131,10 @@ sub format_multi_html {
 		
 		my @a;
 						
-		for my $unit_id_other (sort {$a <=> $b} keys %{$multi{$other}}) {
+		for my $unit_id_other (sort {$a <=> $b} keys %{$multi{$other}{$unit_id_target}{$unit_id_source}}) {
 						
-			my $locus_other   = $multi{$other}{$unit_id_other}{LOCUS};
-			my $score_other   = sprintf("%i", $multi{$other}{$unit_id_other}{SCORE});
+			my $locus_other   = $multi{$other}{$unit_id_target}{$unit_id_source}{$unit_id_other}{LOCUS};
+			my $score_other   = sprintf("%i", $multi{$other}{$unit_id_target}{$unit_id_source}{$unit_id_other}{SCORE});
 
 			my $a = "<a href=\"javascript:;\" onclick=\"window.open(link='$url_cgi/context2.pl?target=$other;unit=$unit;id=$unit_id_other',  'context', 'width=520,height=240')\">$locus_other ($score_other)</a>";
 			

@@ -36,7 +36,7 @@ sub advance {
 	
 	my $incr = shift;
 	
-	if (defined $incr)	{ $self->{COUNT} += $incr }
+	if (defined $incr)	   { $self->{COUNT} += $incr }
 	else			   	   { $self->{COUNT}++ }
 	
 	$self->draw();
@@ -101,6 +101,15 @@ sub count {
 sub terminus {
 
 	my $self = shift;
+	
+	my $new = shift;
+	
+	if (defined $new) {
+	
+		$self->{END} = $new;
+		
+		$self->draw();
+	}
 	
 	return $self->{END};
 }

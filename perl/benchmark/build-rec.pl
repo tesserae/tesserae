@@ -15,6 +15,7 @@
 # 2011-12-08
 #
 # rev. 2012-06-12 from check-phrase.pl
+# rev. 2012-10-18
 
 use strict;
 use warnings;
@@ -44,7 +45,7 @@ my %file = (
 	vergil_line         => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.line",			
 	vergil_phrase       => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.phrase",
 	
-	benchmark => "$fs_data/bench/bench3.csv",
+	benchmark => "$fs_data/bench/bench4.txt",
 	cache     => "$fs_data/bench/rec.cache"
 );
 
@@ -275,25 +276,21 @@ sub LoadCSV {
 		
 		chomp $line;
 		
-		my @field = split(/,/, $line);
-		
-		if ($#field == 6) { push @field, "" };
-		
-		next unless ($#field == 7);
-		
+		my @field = split(/\t/, $line);
+				
 		for (@field) {
 			
 			s/^"(.*)"$/$1/;
 		}
-
+		
 		push @rec, {
-			BC_BOOK	=> $field[0],
-			BC_LINE	=>	$field[1],
-			BC_TXT	=>	$field[2],
-			AEN_BOOK	=>	$field[3],
-			AEN_LINE	=> $field[4],
-			AEN_TXT	=> $field[5],
-			SCORE 	=> $field[6] 
+			BC_BOOK   => $field[0],
+			BC_LINE   => $field[1],
+			BC_TXT    => $field[2],
+			AEN_BOOK  => $field[3],
+			AEN_LINE  => $field[4],
+			AEN_TXT   => $field[5],
+			SCORE     => $field[6] 
 			};
 		
 		for (keys %{$rec[-1]}) { 
@@ -307,7 +304,7 @@ sub LoadCSV {
 			
 		# which commentators cite this?
 		
-		if ($field[7] ne "") {
+		if (defined($field[7]) and $field[7] ne "") {
 		
 			my @auth = split(/,/, $field[7]);
 			

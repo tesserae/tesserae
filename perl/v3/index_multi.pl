@@ -21,6 +21,11 @@ use File::Spec::Functions;
 use TessSystemVars;
 use EasyProgressBar;
 
+# optional modules
+
+use if $ancillary{"Lingua::Stem"}, "Lingua::Stem";
+use if $ancillary{"Parallel::ForkManager"}, "Parallel::ForkManager";
+
 # allow unicode output
 
 binmode STDOUT, ":utf8";
@@ -33,32 +38,65 @@ my $max_processes = 0;
 
 my $lang = 'la';
 
+# these are for optional use of Lingua::Stem
+
+my $use_lingua_stem = 0;
+my $stemmer;
+
+# don't print progress info to STDERR
+
+my $quiet = 0;
+
 #
 # command-line options
 #
 
 GetOptions(
-	"lang=s" => \$lang,
-	"parallel=i" => \$max_processes
+	"lang=s"          => \$lang,
+	"parallel=i"      => \$max_processes,
+	"quiet"           => \$quiet,
+	"use-lingua-stem" => \$use_lingua_stem
 	);
-	
-#
-# load module for parallel processing
-# only if necessary
+
+#		
+# get dictionaries
 #
 
-if ($max_processes) {
-
-	use Parallel::ForkManager;
-}
-	
-# get dictionary
+my %stem;
+my %syn;
 
 my $file_stem = catfile($fs_data, 'common', $lang . '.stem.cache');
+my $file_syn  = catfile($fs_data, 'common', $lang . '.syn.cache');
 
-print STDERR "loading stem dictionary $file_stem\n";
+my %omit;
 
-my %stem = %{retrieve($file_stem)};
+if (-r $file_stem or $use_lingua_stem) {
+		
+	if ($use_lingua_stem) {
+	
+		$stemmer = Lingua::Stem->new({-locale => $lang});
+	}
+	else {
+	
+		%stem = %{ retrieve($file_stem) };
+	}
+	
+	if (-r $file_syn) {
+
+		%syn = %{ retrieve($file_syn) };
+	}
+	else {
+		
+		print STDERR "Can't find syn dictionary!  Syn indexing disabled.\n" unless $quiet;
+		$omit{syn} = 1;
+	}
+}
+else {
+	
+	print STDERR "Can't find stem dictionary! Stem and syn indexing disabled.\n" unless $quiet;
+	$omit{stem} = 1;
+}
+
 
 # get the list of texts to index
 
@@ -103,8 +141,8 @@ for my $unit (qw/line phrase/) {
 		
 		# get text- and feature-specific frequencies for scoring
 
-		my $file_freq_word = catfile($fs_data, 'v3', $lang, $text, $text . ".freq_word");
-		my $file_freq_stem = catfile($fs_data, 'v3', $lang, $text, $text . ".freq_stem");
+		my $file_freq_word = catfile($fs_data, 'v3', $lang, $text, $text . ".freq_score_word");
+		my $file_freq_stem = catfile($fs_data, 'v3', $lang, $text, $text . ".freq_score_stem");
 
 		my %freq_word = %{retrieve( $file_freq_word)};
 		my %freq_stem = %{retrieve( $file_freq_stem)};
@@ -156,11 +194,11 @@ for my $unit (qw/line phrase/) {
 
 					# now check stems
 					
-					my @stems_a = defined $stem{$form_a} ? @{$stem{$form_a}} : ($form_a);
-					my @stems_b = defined $stem{$form_b} ? @{$stem{$form_b}} : ($form_b);
+					next if $omit{stem};
 					
-					next unless @stems_b;
-																				
+					my @stems_a = @{stems($form_a)};
+					my @stems_b = @{stems($form_b)};
+					
 					for my $stem_a (@stems_a) {
 						
 						for my $stem_b (@stems_b) {
@@ -192,8 +230,11 @@ for my $unit (qw/line phrase/) {
 		print STDERR "saving $file_index_word\n";
 		nstore \%index_word, $file_index_word;
 
-		print STDERR "saving $file_index_stem\n";
-		nstore \%index_stem, $file_index_stem;	
+		unless ($omit{stem}) {
+
+			print STDERR "saving $file_index_stem\n";
+			nstore \%index_stem, $file_index_stem;	
+		}
 		
 		# wrap up child process
 		
@@ -224,4 +265,46 @@ sub get_textlist {
 	closedir(DH);
 		
 	return \@textlist;
+}
+
+sub stems {
+
+	my $form = shift;
+	
+	my @stems;
+	
+	if ($use_lingua_stem) {
+	
+		@stems = @{$stemmer->stem($form)};
+	}
+	elsif (defined $stem{$form}) {
+	
+		@stems = @{$stem{$form}};
+	}
+	else {
+	
+		@stems = ($form);
+	}
+	
+	return \@stems;
+}
+
+sub syns {
+
+	my $form = shift;
+	
+	my %syns;
+	
+	for my $stem (@{stems($form)}) {
+	
+		if (defined $syn{$stem}) {
+		
+			for (@{$syn{$stem}}) {
+			
+				$syns{$_} = 1;
+			}
+		}
+	}
+	
+	return [keys %syns];
 }

@@ -1,10 +1,11 @@
 			<div id="footer">
-				<div class="footer_icon_left">
-					<img src="<?php echo $url_image . "/DHIBlogo.png" ?>" alt="DHIB logo">
-					<img src="<?php echo $url_image . "/uccs.png" ?>" alt="VAST Lab logo">
+			<div class="footer_icon_left">
+					<img src="<?php echo $url_image . "/ublogo.png" ?>" width="200" alt="UB logo"> <br />
+					<img src="<?php echo $url_image . "/neh_logo-light_bg.png" ?>" alt="NEH logo"> <br />
 				</div>
 				<div class="footer_icon_right">
-					<img src="<?php echo $url_image . "/neh_logo-light_bg.png" ?>" alt="NEH logo">
+					<img src="<?php echo $url_image . "/DHIBlogo.png" ?>" alt="DHIB logo">
+					<img src="<?php echo $url_image . "/uccs.png" ?>" alt="VAST Lab logo">
 				</div>
 				<div id="footer_content">
 					<p> 
@@ -38,7 +39,6 @@
 				</div>
 			</div>
 		</div> <!-- closes container -->
-
         </body>
 </html>
 

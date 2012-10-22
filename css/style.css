@@ -23,6 +23,14 @@ div#header
 	background: #e1e6c6;
 }
 
+div#banner_logo
+{
+	position: absolute;
+	top: 10px;
+	left: 5px;
+}
+
+
 div#title
 {
 }
@@ -164,9 +172,11 @@ div#results_sort table
 
 div#main
 {
-	padding: 25px 100px;
+	margin: auto;
+	padding: 25px;
 	text-align: justify;
 	min-height: 340px;
+	width: 600px;
 	background: white;
 }
 

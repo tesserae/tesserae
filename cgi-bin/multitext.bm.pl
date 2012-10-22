@@ -21,15 +21,9 @@ use Getopt::Long;
 use POSIX;
 use Storable qw(nstore retrieve);
 use File::Spec::Functions;
-use File::Path qw(mkpath rmtree);
-use File::Basename;
 
 use TessSystemVars;
 use EasyProgressBar;
-
-# optional modules
-
-use if $ancillary{"Parallel::ForkManager"}, "Parallel::ForkManager";
 
 # set autoflush
 
@@ -82,10 +76,6 @@ my $multi_cutoff = 0;
 
 my @exclude = ();
 
-# number of processes to run in parallel
-
-my $max_processes = 0;
-
 #
 # command-line arguments
 #
@@ -97,7 +87,6 @@ GetOptions(
 	'session=s'  => \$session,
 	'exclude=s'  => \@exclude,
 	'cutoff=i'   => \$multi_cutoff,
-	'parallel=i' => \$max_processes,
 	'quiet'      => \$quiet );
 
 #
@@ -190,7 +179,7 @@ my $comments = $match{META}{COMMENT};
 
 # now delete the metadata from the match records
 
-my %meta = %{$match{META}};
+my $meta_saved = $match{META};
 
 delete $match{META};
 
@@ -238,38 +227,29 @@ my %index_target   = %{ retrieve("$file_target.index_$feature") };
 
 my @textlist = @{get_textlist($target, $source)};
 
-# create a directory for multi search data
-
-my $multi_dir;
-
-if ($session =~ /[0-9a-f]{8}/) {
-
-	$multi_dir = catdir($fs_tmp, "tesresults-$session.multi");
-}
-else {
-
-	my ($name, $path, $suffix) = fileparse($file, qr/\.[^.]*/);
-
-	$multi_dir = catdir($path, "$name.multi");
-}
-
-print STDERR "creating $multi_dir\n" unless $quiet;
-
-rmtree($multi_dir);
-mkpath($multi_dir);
-
 # search other texts
 
-search_multi($multi_dir, \@textlist);
+my $bm0 = time;
 
-# save metadata
+search_multi(\@textlist);
 
-$meta{MTEXTLIST} = \@textlist;
-$meta{MCUTOFF} = $multi_cutoff;
+if ($no_cgi) {
 
-my $file_meta = catfile($multi_dir, "metadata");
+	$file =~ s/\.bin/.multi.bin/;
+}
 
-nstore \%meta, $file_meta;
+$match{META} = $meta_saved;
+$match{META}{MTEXTLIST} = \@textlist;
+$match{META}{MCUTOFF} = $multi_cutoff;
+
+my $bm1 = time;
+
+nstore \%match, $file;
+
+my $bm2 = time;
+
+print STDERR "Search took " . formattime($bm1 - $bm0) . "\n";
+print STDERR "Storable took " . formattime($bm2-$bm1) . "\n";
 
 my $redirect = "$url_cgi/read_multi.pl?session=$session";
 
@@ -336,10 +316,9 @@ sub get_textlist {
 
 sub search_multi {
 
-	my ($multi_dir, $aref) = @_;
-
 	# the list of texts to check
-	
+
+	my $aref = shift;
 	my @textlist = @$aref;
 	
 	#
@@ -348,6 +327,7 @@ sub search_multi {
 	#
 		
 	my %index_keypair;
+	my %keys_to_look_for;
 	
 	print STDERR "parsing the initial search\n" unless $quiet;
 	
@@ -378,30 +358,12 @@ sub search_multi {
 			}
 		}			
 	}
-	
-	#
-	# multi search
-	#
 		
 	print STDERR "multi-searching on " . scalar(@textlist) . " texts.\n" unless $quiet;
-
-	# initialize parallel processing
-	
-	my $pm;
-	
-	if ($max_processes) {
-	
-		$pm = Parallel::ForkManager->new($max_processes);
-	}
 
 	# check all the other texts
 		
 	for my $i (0..$#textlist) {
-	
-		if ($max_processes) {
-		
-			$pm->start and next;
-		}
 			
 		my $other = $textlist[$i];
 		
@@ -425,17 +387,12 @@ sub search_multi {
 		my $file = catfile($fs_data, 'v3', $lang{$target}, $other, $other);
 		
 		my %index_other = %{ retrieve("$file.multi_${unit}_${feature}") };
-		my @unit_other  = @{ retrieve("$file.$unit") };
+		my @unit_other  = @{ retrieve($file . '.' . $unit) };
 
-		# this holds results for the other text,
-		# keyed to the target-source parallel
-		
-		my %multi;
-		
 		# check their keypair indices 
 
 		for my $keypair (keys %index_keypair) {
-					
+			
 			next unless defined $index_other{$keypair};
 			
 			for (@{$index_keypair{$keypair}}) {
@@ -449,7 +406,7 @@ sub search_multi {
 
 					next if $score_other < $multi_cutoff;
 
-					$multi{$unit_id_target}{$unit_id_source}{$unit_id_other} = {
+					$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$unit_id_other} = {
 					   LOCUS => $unit_other[$unit_id_other]{LOCUS},
 					   SCORE => $score_other
 					};
@@ -461,15 +418,7 @@ sub search_multi {
 		
 			print "</pre></div>\n";
 		}
-		
-		my $file_out = catfile($multi_dir, $other);
-		
-		nstore \%multi, $file_out;
-		
-		$pm->finish if $max_processes;
 	}
-	
-	$pm->wait_all_children if $max_processes;
 }
 
 

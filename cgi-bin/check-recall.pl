@@ -16,43 +16,42 @@ use CGI qw(:standard);
 
 use Storable;
 use File::Spec::Functions;
+use File::Basename;
 use Getopt::Long;
 
 use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 use EasyProgressBar;
 
+# optional modules
+
+use if $ancillary{"Lingua::Stem"}, "Lingua::Stem";
+my $stemmer;
+
 my $usage = "usage: perl check-recall [--cache CACHE] TESRESULTS\n";
 
 my $session;
 
-my $feature = 'stem';
-my $stopwords = 10;
-my $stoplist_basis = "corpus";
-my $max_dist = 999;
-my $distance_metric = "span";
-my $cutoff = 0;
-my $filter = 1;
-my $interest = 0.0008;
-
-my $table = 0;
+my $process_multi = 0;
+my $use_lingua_stem = 0;
+my $export = 'summary';
 my $sort = 'score';
 my $rev = 1;
 
 my @w = (7);
 my $quiet = 1;
 
-my %file = (
-	
-	lucan_token         => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.token",
-	lucan_phrase        => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.phrase",
-	
-	vergil_token        => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.token",
-	vergil_phrase       => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.phrase",
-	
-	cache     => "$fs_data/bench/rec.cache"
-);
+my %name = ( source => 'vergil.aeneid', target => 'lucan.pharsalia.part.1');
 
+my %file;
+
+$file{cache} = catfile($fs_data, 'bench', 'rec.cache');
+
+for (qw/target source/) {
+
+	$file{"token_$_"} = catfile($fs_data, 'v3', 'la', $name{$_}, $name{$_} . ".token");
+	$file{"unit_$_"}  = catfile($fs_data, 'v3', 'la', $name{$_}, $name{$_} . ".phrase");
+}
 
 # is the program being run from the web or
 # from the command line?
@@ -69,9 +68,9 @@ GetOptions(
 	"cache=s"        => \$file{cache},
 	"session=s"      => \$session,
 	"sort=s"         => \$sort,
-	"interesting"    => \$interest,
 	"reverse"        => \$rev,
-	"table"          => \$table
+	"multi=i"        => \$process_multi,
+	"export=s"       => \$export
 	);
 
 #
@@ -86,7 +85,7 @@ unless ($no_cgi) {
 	$sort       = $query->param('sort')    || $sort;
 	$rev        = $query->param('rev') if defined $query->param('rev');
 	
-	$table = 1;
+	$export = "html";
 	
 	$quiet = 1;
 } 
@@ -120,18 +119,49 @@ unless (defined $file{tess}) {
 # read the data
 #
 
+# the benchmark data
+
 my @bench = @{ retrieve($file{cache}) };
+
+# the tesserae data
 
 my %tess = %{ retrieve($file{tess}) };
 
-my %phrase;
+# the tesserae metadata
+
+my %meta = %{$tess{META}};
+
+$session = $meta{SESSION};
+
+delete $tess{META};
+
+# now load the texts
+
+my %unit;
 my %token;
 
-for my $text ('lucan', 'vergil') {
-	
-	@{$token{$text}}   = @{ retrieve($file{$text. "_token"})   };
-	@{$phrase{$text}}  = @{ retrieve($file{$text. "_phrase"}) };
+for (qw/target source/) {
+ 	
+	@{$token{$_}}   = @{ retrieve($file{"token_$_"})};
+	@{$unit{$_}}    = @{ retrieve($file{"unit_$_"}) };
 }
+
+#
+# abbreviations of canonical citation refs
+#
+
+my $file_abbr = catfile($fs_data, 'common', 'abbr');
+my %abbr = %{ retrieve($file_abbr) };
+
+#
+# dictionaries - loaded only if necessary
+#
+
+my $file_stem = catfile($fs_data, 'common', 'la.stem.cache');
+my $file_syn  = catfile($fs_data, 'common', 'la.syn.cache');
+
+my %stem;
+my %syn;
 
 #
 # compare 
@@ -141,6 +171,10 @@ my @count = (0)x7;
 my @score = (0)x7;
 my @total = (0)x7;
 my @order = ();
+
+# this records benchmark records not found by tesserae
+
+my @missed;
 
 # do the comparison
 
@@ -159,28 +193,59 @@ for my $i (0..$#bench) {
 	
 	if (defined $tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}) { 
 		
+		# tally the match for stats
+		
 		$count[$rec{SCORE}]++;
 		$score[$rec{SCORE}] += $tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}{SCORE};
+		
+		# add the benchmark data to the tess parallel
+		
+		$tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}{TYPE} = $rec{SCORE};
 
 		if (defined $rec{AUTH}) {
 			
+			# tally commentator match
+			
 			$count[6]++;
 			$score[6] += $tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}{SCORE};
-
+			
+			# add commentators to tess parallel
+			
+			$tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}{AUTH} = $rec{AUTH};
+			
 		}
 				
 		push @order, $i;
 	}
+	else {
+	
+		push @missed, $i;
+	}
 }	
 
+print STDERR "bench has " . scalar(@bench) . " records\n";
+print STDERR "order has " . scalar(@order) . " records\n";
+print STDERR "missed has " . scalar(@missed) . " records\n";
 
 
-# print results
+#
+# load multi results
+#
 
-if    ($table)		{ html_table("html")  }
+my @others;
 
-else              { text_detail("text") }
+my %multi = $process_multi ? %{load_multi()} : (); 
 
+#
+# output
+#
+
+binmode STDOUT, ":utf8";
+
+if    ($export eq "summary") { summary()          }
+elsif ($export eq "html")    { html_table()       }
+elsif ($export =~ "^miss")   { print_missed("\t") }
+else                         { print_delim("\t")  }
 
 
 #
@@ -215,13 +280,74 @@ sub compare {
 }
 
 
+sub load_multi {
+
+	#
+	# first locate the multi-data directory
+	#
+	
+	my $multi_dir;
+	
+	if ($session =~ /[0-9a-f]{8}/) {
+	
+		$multi_dir = catdir($fs_tmp, "tesresults-$session.multi");
+	}
+	else {
+	
+		my ($name, $path, $suffix) = fileparse($file{tess}, qr/\.[^.]*/);
+	
+		$multi_dir = catdir($path, "$name.multi");
+	}
+
+	#
+	# read the meta file
+	#
+	
+	print STDERR "reading metadata\n";
+	
+	my $file_meta = catfile($multi_dir, "metadata");
+	
+	%meta = %{retrieve($file_meta)};
+	
+	#
+	# get the textlist
+	#
+	
+	@others = @{$meta{MTEXTLIST}};
+
+	#
+	# check every text
+	#
+
+	# this holds the data
+	
+	my %multi;
+
+	# progress
+
+	print STDERR "reading " . scalar(@others) . " files\n";
+	
+	my $pr = ProgressBar->new(scalar(@others));
+	
+	for my $other (@others) {
+	
+		$pr->advance;
+	
+		my $file_other = catfile($multi_dir, $other);
+		
+		$multi{$other} = retrieve($file_other);
+	}
+	
+	return \%multi;
+}
+
 #
 # output subroutines
 #
 
-sub text_detail {
+sub summary {
 	
-	print "tesserae returned $tess{META}{TOTAL} results\n";
+	print "tesserae returned $meta{TOTAL} results\n";
 	
 	for (1..5) {
 		
@@ -292,25 +418,25 @@ sub html_table {
 		
 		my $phrase_target;
 		
-		for (@{$phrase{lucan}[$unit_id_target]{TOKEN_ID}}) {
+		for (@{$unit{target}[$unit_id_target]{TOKEN_ID}}) {
 		
 			if (defined $marked_target{$_}) {
-				$phrase_target .= "<span class=\"matched\">$token{lucan}[$_]{DISPLAY}</span>";
+				$phrase_target .= "<span class=\"matched\">$token{target}[$_]{DISPLAY}</span>";
 			}
 			else {
-				$phrase_target .= $token{lucan}[$_]{DISPLAY};
+				$phrase_target .= $token{target}[$_]{DISPLAY};
 			}
 		}
 		
 		my $phrase_source;
 		
-		for (@{$phrase{vergil}[$unit_id_source]{TOKEN_ID}}) {
+		for (@{$unit{source}[$unit_id_source]{TOKEN_ID}}) {
 		
 			if (defined $marked_source{$_}) {
-				$phrase_source .= "<span class=\"matched\">$token{vergil}[$_]{DISPLAY}</span>";
+				$phrase_source .= "<span class=\"matched\">$token{source}[$_]{DISPLAY}</span>";
 			}
 			else {
-				$phrase_source .= $token{vergil}[$_]{DISPLAY};
+				$phrase_source .= $token{source}[$_]{DISPLAY};
 			}
 		}
 		
@@ -352,21 +478,11 @@ sub html_table {
 		$score
 		);
 	
-	$session = $tess{META}{SESSION};
-	$feature = $tess{META}{FEATURE};
-	$stopwords = scalar(@{$tess{META}{STOPLIST}});
-	$stoplist_basis = $tess{META}{STBASIS};
-	$max_dist = $tess{META}{DIST};
-	$distance_metric = $tess{META}{DIBASIS};
-	$cutoff = $tess{META}{CUTOFF};
-	$filter = $tess{META}{FILTER};
-	$interest = $tess{META}{INTEREST};
-
 	$frame =~ s/<!--info-->/&info/e;
 	
 	$frame =~ s/<!--sort-->/&re_sort/e;
 
-	$frame =~ s/<!--all-results-->/$tess{META}{TOTAL}/;
+	$frame =~ s/<!--all-results-->/$meta{TOTAL}/;
 	
 	$frame =~ s/<!--recall-stats-->/$recall_stats/;
 	
@@ -394,10 +510,10 @@ sub info {
                       freq => "", freq_target => "", freq_source => "");
     my @sel_filter = ("", "");
 
-	$sel_feature{$feature}         = 'selected="selected"';
-	$sel_stbasis{$stoplist_basis}  = 'selected="selected"';
-	$sel_dibasis{$distance_metric} = 'selected="selected"';
-	$sel_filter[$filter]           = 'checked="checked"';
+	$sel_feature{$meta{FEATURE}} = 'selected="selected"';
+	$sel_stbasis{$meta{STBASIS}} = 'selected="selected"';
+	$sel_dibasis{$meta{DIBASIS}} = 'selected="selected"';
+	$sel_filter[$meta{FILTER}]   = 'checked="checked"';
 
 	my $html = <<END;
 	
@@ -435,7 +551,7 @@ sub info {
 			<tr>
 				<td><span class="h2">Number of stop words:</span></td>
 				<td>
-					<input type="text" name="stopwords" value="$stopwords">
+					<input type="text" name="stopwords" value="$meta{STOP}">
 				</td>
 			</tr>
 			<tr>
@@ -452,7 +568,7 @@ sub info {
 			<tr>
 				<td><span class="h2">Maximum distance:</span></td>
 				<td>
-					<input type="text" name="dist" maxlength="3" value="$max_dist">
+					<input type="text" name="dist" maxlength="3" value="$meta{DIST}">
 				</td>
 			</tr>
 			<tr>
@@ -471,7 +587,7 @@ sub info {
 			<tr>
 				<td><span class="h2">Drop scores below:</span></td>
 				<td>
-					<input type="text" name="cutoff" maxlen="3" value="$cutoff">
+					<input type="text" name="cutoff" maxlen="3" value="$meta{CUTOFF}">
 				</td>
 			</tr>
 			<tr>
@@ -485,7 +601,7 @@ sub info {
 			<tr>
 				<td><span class="h2">Threshold for interesting words:</span></td>
 				<td>
-					<input type="text" name="interest" maxlen="8" value="$interest">
+					<input type="text" name="interest" maxlen="8" value="$meta{INTEREST}">
 				</td>
 			</tr>
 			-->
@@ -572,4 +688,486 @@ sub table_row {
 	my $row = $row_open . join($spacer, @cell) . $row_close;
 	
 	return $row;
+}
+
+sub print_delim {
+	
+	my $delim = shift;
+	
+	print STDERR "writing output\n";
+	
+	#
+	# print header with settings info
+	#
+	
+	my $stoplist = join(" ", @{$meta{STOPLIST}});
+	my $filtertoggle = $meta{FILTER} ? 'on' : 'off';
+
+	
+	print "# Tesserae Multi-text results\n";
+	print "#\n";
+	print "# session   = $session\n";
+	print "# source    = $meta{SOURCE}\n";
+	print "# target    = $meta{TARGET}\n";
+	print "# unit      = $meta{UNIT}\n";
+	print "# feature   = $meta{FEATURE}\n";
+	print "# stopsize  = $meta{STOP}\n";
+	print "# stbasis   = $meta{STBASIS}\n";
+	print "# stopwords = $stoplist\n";
+	print "# max_dist  = $meta{DIST}\n";
+	print "# dibasis   = $meta{DIBASIS}\n";
+	print "# cutoff    = $meta{CUTOFF}\n";
+	print "# filter    = $filtertoggle\n";
+
+	if ($process_multi) {
+	
+		print "# multitext = " . join(" ", @{$meta{MTEXTLIST}}) . "\n";
+		print "# m_cutoff  = $meta{MCUTOFF}\n";
+	}
+	
+	my @header = qw(
+		"RESULT"
+		"TARGET_BOOK"
+		"TARGET_LINE"
+		"TARGET_TEXT"
+		"SOURCE_BOOK"
+		"SOURCE_LINE"
+		"SOURCE_TEXT"
+		"SHARED"
+		"SCORE"
+		"TYPE"
+		"AUTH");
+		
+	if ($process_multi) {
+	
+		push @header, qw/"OTHER_TEXTS" "OTHER_TOTAL"/;
+		
+		if ($process_multi > 1) {
+		
+			push @header, map { "\"$_\"" } @others;
+		}
+	}
+	
+	print join ($delim, @header) . "\n";
+
+	my $pr = ProgressBar->new(scalar(keys %tess));
+		
+	my $i = 0;
+
+	for my $unit_id_target (keys %tess) {
+	
+		$pr->advance();
+
+		for my $unit_id_source ( keys %{$tess{$unit_id_target}} ) {
+				
+			# a guide to which tokens are marked in each text
+		
+			my %marked_target;
+			my %marked_source;
+			
+			# collect the keys
+			
+			my %seen_keys;
+	
+			for (keys %{$tess{$unit_id_target}{$unit_id_source}{TARGET}}) { 
+			
+				$marked_target{$_} = 1;
+			
+				$seen_keys{join("-", sort keys %{$tess{$unit_id_target}{$unit_id_source}{TARGET}{$_}})} = 1;
+			}
+			
+			for (keys %{$tess{$unit_id_target}{$unit_id_source}{SOURCE}}) {
+			
+				$marked_source{$_} = 1;
+	
+				$seen_keys{join("-", sort keys %{$tess{$unit_id_target}{$unit_id_source}{SOURCE}{$_}})} = 1;
+			}
+		
+			# format the list of all unique shared words
+	
+			my $keys = join("; ", keys %seen_keys);
+
+			# get the score
+		
+			my $score = sprintf("%.1i", $tess{$unit_id_target}{$unit_id_source}{SCORE});
+
+			# get benchmark data
+
+			my $type = $tess{$unit_id_target}{$unit_id_source}{TYPE} || "";
+			
+			my $auth = "";
+			
+			if (defined $tess{$unit_id_target}{$unit_id_source}{AUTH}) {
+			
+				$auth = join(",", @{$tess{$unit_id_target}{$unit_id_source}{AUTH}});
+			}
+			
+			#
+			# now prepare the csv record for this match
+			#
+
+			my @row;
+		
+			# result serial number
+		
+			push @row, ++$i;
+		
+			# target locus
+			
+			my $loc_target = $unit{target}[$unit_id_target]{LOCUS};
+		
+			push @row, (split('\.', $loc_target));
+		
+			# target phrase
+		
+			my $phrase = "";
+				
+			for my $token_id_target (@{$unit{target}[$unit_id_target]{TOKEN_ID}}) {
+		
+				if ($marked_target{$token_id_target}) { $phrase .= "**" }
+		
+				$phrase .= $token{target}[$token_id_target]{DISPLAY};
+
+				if ($marked_target{$token_id_target}) { $phrase .= "**" }
+			}
+		
+			push @row, "\"$phrase\"";
+					
+			# source locus
+			
+			my $loc_source = $unit{source}[$unit_id_source]{LOCUS};
+						
+			push @row, (split('\.', $loc_source));
+			
+			# source phrase
+			
+			$phrase = "";
+			
+			for my $token_id_source (@{$unit{source}[$unit_id_source]{TOKEN_ID}}) {
+			
+				if ($marked_source{$token_id_source}) { $phrase .= "**" }
+			
+				$phrase .= $token{source}[$token_id_source]{DISPLAY};
+				
+				if ($marked_source{$token_id_source}) { $phrase .= "**" }
+			}
+					
+			push @row, "\"$phrase\"";
+		
+			# keywords
+			
+			push @row, "\"$keys\"";
+
+			# score
+
+			push @row, $score;
+	
+			# benchmark data
+			
+			push @row, ($type, $auth);
+		
+			# multi-text search
+			
+			if ($process_multi) {
+		
+				my $other_texts = 0;
+				my $other_total = 0;
+			
+				my %m;
+				@m{@others} = ("") x scalar(@others);
+			
+				for my $other (@others) {
+			
+					if (defined $multi{$other}{$unit_id_target}{$unit_id_source}) {
+					
+						my @loci;
+						
+						for (sort {$a <=> $b} keys %{$multi{$other}{$unit_id_target}{$unit_id_source}}) {
+							
+							my $locus = $multi{$other}{$unit_id_target}{$unit_id_source}{$_}{LOCUS};
+							my $score = $multi{$other}{$unit_id_target}{$unit_id_source}{$_}{SCORE};
+							$score = sprintf("%i", $score);
+							
+							push @loci, "$locus ($score)";
+						}
+						
+						$m{$other} = '"' . join("; ", @{loci}) . '"';
+	
+						$other_texts++;
+											
+						$other_total += scalar(@loci);
+					}
+				}
+			
+				push @row, ($other_texts, $other_total);
+			
+				push @row, @m{@others} if $process_multi > 1;
+			}
+		
+			# print row
+		
+			print join($delim, @row) . "\n";
+		}
+	}
+}
+
+
+sub print_missed {
+	
+	my $delim = shift;
+	
+	#
+	# for this we need the dictionaries
+	#
+	
+	print STDERR "loading stem dictionary\n";
+	
+	%stem = %{retrieve($file_stem)};
+	
+	print STDERR "writing output\n";
+	
+	#
+	# print header with settings info
+	#
+	
+	my $stoplist = join(" ", @{$meta{STOPLIST}});
+	my $filtertoggle = $meta{FILTER} ? 'on' : 'off';
+
+	
+	print "# Tesserae missed results\n";
+	print "#\n";
+	print "# session   = $session\n";
+	print "# source    = $meta{SOURCE}\n";
+	print "# target    = $meta{TARGET}\n";
+	print "# unit      = $meta{UNIT}\n";
+	print "# feature   = $meta{FEATURE}\n";
+	print "# stopsize  = $meta{STOP}\n";
+	print "# stbasis   = $meta{STBASIS}\n";
+	print "# stopwords = $stoplist\n";
+	print "# max_dist  = $meta{DIST}\n";
+	print "# dibasis   = $meta{DIBASIS}\n";
+	print "# cutoff    = $meta{CUTOFF}\n";
+	print "# filter    = $filtertoggle\n";
+	
+	my @header = qw(
+		"RESULT"
+		"TARGET_BOOK"
+		"TARGET_LINE"
+		"TARGET_TEXT"
+		"SOURCE_BOOK"
+		"SOURCE_LINE"
+		"SOURCE_TEXT"
+		"NSHARED"
+		"SHARED"
+		"TYPE"
+		"AUTH");
+			
+	print join ($delim, @header) . "\n";
+
+	my $pr = ProgressBar->new(scalar(@missed));
+
+	for my $i (0..$#missed) {
+	
+		$pr->advance();
+
+		my %rec = %{$bench[$missed[$i]]};
+
+		my $unit_id_target = $rec{BC_PHRASEID};
+		my $unit_id_source = $rec{AEN_PHRASEID};
+		my $type = $rec{SCORE};
+		my $auth = defined $rec{AUTH} ? join(",", @{$rec{AUTH}}) : "";
+			
+		# do a tess search on these two phrases
+
+		my %mini_results = %{minitess($unit_id_target, $unit_id_source, $meta{STOPLIST})};
+		
+		# get the marked words if any
+		
+		my %marked_target = %{$mini_results{marked_target}};
+		my %marked_source = %{$mini_results{marked_source}};
+		
+		# format the list of all unique shared words
+		
+		my $nkeys = scalar(@{$mini_results{seen_keys}});
+	
+		my $keys = join("; ", @{$mini_results{seen_keys}});
+
+		#
+		# now prepare the csv record for this match
+		#
+
+		my @row;
+	
+		# result serial number
+	
+		push @row, ++$i;
+	
+		# target locus
+		
+		my $loc_target = $unit{target}[$unit_id_target]{LOCUS};
+	
+		push @row, (split('\.', $loc_target));
+	
+		# target phrase
+		
+		my $phrase = "";
+			
+		for my $token_id_target (@{$unit{target}[$unit_id_target]{TOKEN_ID}}) {
+	
+			if ($marked_target{$token_id_target}) { $phrase .= "**" }
+	
+			$phrase .= $token{target}[$token_id_target]{DISPLAY};
+
+			if ($marked_target{$token_id_target}) { $phrase .= "**" }
+		}
+		
+		push @row, "\"$phrase\"";
+				
+		# source locus
+		
+		my $loc_source = $unit{source}[$unit_id_source]{LOCUS};
+					
+		push @row, (split('\.', $loc_source));
+		
+		# source phrase
+		
+		$phrase = "";
+		
+		for my $token_id_source (@{$unit{source}[$unit_id_source]{TOKEN_ID}}) {
+		
+			if ($marked_source{$token_id_source}) { $phrase .= "**" }
+		
+			$phrase .= $token{source}[$token_id_source]{DISPLAY};
+			
+			if ($marked_source{$token_id_source}) { $phrase .= "**" }
+		}
+				
+		push @row, "\"$phrase\"";
+	
+		# keywords
+		
+		push @row, ($nkeys, "\"$keys\"");
+
+		# benchmark data
+		
+		push @row, ($type, $auth);
+		
+		# print row
+	
+		print join($delim, @row) . "\n";
+	}
+}
+
+# perform the equivalent of a tesserae search on just two phrases
+
+sub minitess {
+
+	my %unit_id;
+	my $stoplistref;
+	
+	my %results;
+
+	($unit_id{target}, $unit_id{source}, $stoplistref) = @_;
+	
+	my @stoplist = @$stoplistref;
+	
+	#
+	# for each phrase, create an index of word tokens by their stems
+	#
+	
+	my %index;
+		
+	for my $text (qw/target source/) {
+	
+		for my $token_id (@{$unit{$text}[$unit_id{$text}]{TOKEN_ID}}) {
+
+			next unless $token{$text}[$token_id]{TYPE} eq "WORD";
+		
+			my $word = $token{$text}[$token_id]{FORM};
+
+			for my $stem (@{stems($word)}) {
+			
+				push @{$index{$stem}{$text}}, $token_id;
+			}
+		}
+	}
+	
+	for (@stoplist) {
+	
+		delete $index{$_} if defined $index{$_};
+	}
+	
+	#
+	# check the index for stems that occur in both phrases
+	#
+	
+	my %marked;
+	my %seen_keys;
+	
+	for my $stem (keys %index) {
+	
+		next unless defined ($index{$stem}{target} and $index{$stem}{source});
+		
+		# mark all tokens that share a common stem
+		
+		for my $text (qw/target source/) {
+		
+			for my $token_id (@{$index{$stem}{$text}}) {
+			
+				$marked{$text}{$token_id} = 1;
+				
+				my @stems = @{stems($token{$text}[$token_id]{FORM})};
+				
+				$seen_keys{join("-", sort @stems)} = 1;
+			}
+		}
+	}
+	
+	$results{marked_target} = $marked{target}   || {};
+	$results{marked_source} = $marked{source}   || {};
+	$results{seen_keys}     = [keys %seen_keys];
+	
+	return \%results;
+}
+
+sub stems {
+
+	my $form = shift;
+	
+	my @stems;
+	
+	if ($use_lingua_stem) {
+	
+		@stems = @{$stemmer->stem($form)};
+	}
+	elsif (defined $stem{$form}) {
+	
+		@stems = @{$stem{$form}};
+	}
+	else {
+	
+		@stems = ($form);
+	}
+	
+	return \@stems;
+}
+
+sub syns {
+
+	my $form = shift;
+	
+	my %syns;
+	
+	for my $stem (@{stems($form)}) {
+	
+		if (defined $syn{$stem}) {
+		
+			for (@{$syn{$stem}}) {
+			
+				$syns{$_} = 1;
+			}
+		}
+	}
+	
+	return [keys %syns];
 }
