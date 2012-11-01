@@ -96,7 +96,7 @@ unless ($no_cgi) {
 
 if (defined $session) {
 
-	$file{tess} = catfile($fs_tmp, "tesresults-" . $session . ".bin");
+	$file{tess} = catfile($fs_tmp, "tesresults-" . $session);
 }
 else {
 	
@@ -125,15 +125,15 @@ my @bench = @{ retrieve($file{cache}) };
 
 # the tesserae data
 
-my %tess = %{ retrieve($file{tess}) };
-
-# the tesserae metadata
-
-my %meta = %{$tess{META}};
+my %match_target = %{retrieve(catfile($file{tess}, "match.target"))};
+my %match_source = %{retrieve(catfile($file{tess}, "match.source"))};
+my %score        = %{retrieve(catfile($file{tess}, "match.score"))};
+my %meta         = %{retrieve(catfile($file{tess}, "match.meta"))};
+my %type;
+my %auth;
 
 $session = $meta{SESSION};
 
-delete $tess{META};
 
 # now load the texts
 
@@ -191,27 +191,27 @@ for my $i (0..$#bench) {
 		$total[6]++;
 	}
 	
-	if (defined $tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}) { 
+	if (defined $score{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}) { 
 		
 		# tally the match for stats
 		
 		$count[$rec{SCORE}]++;
-		$score[$rec{SCORE}] += $tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}{SCORE};
+		$score[$rec{SCORE}] += $score{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}};
 		
 		# add the benchmark data to the tess parallel
 		
-		$tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}{TYPE} = $rec{SCORE};
+		$type{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}} = $rec{SCORE};
 
 		if (defined $rec{AUTH}) {
 			
 			# tally commentator match
 			
 			$count[6]++;
-			$score[6] += $tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}{SCORE};
+			$score[6] += $score{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}};
 			
 			# add commentators to tess parallel
 			
-			$tess{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}{AUTH} = $rec{AUTH};
+			$auth{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}} = $rec{AUTH};
 			
 		}
 				
@@ -252,33 +252,6 @@ else                         { print_delim("\t")  }
 # subroutines
 #
 
-sub compare {
-
-	my ($benchref, $tessref) = @_;
-	
-	my @bench = @$benchref;
-	my %tess  = %$tessref;
-		
-	my %in_tess;
-	my $exists = 0;
-	
-	print STDERR "comparing\n" unless $quiet;
-	
-	# my $pr = ProgressBar->new(scalar(@bench));
-		
-	for (@bench) {
-	
-		# $pr->advance();
-		
-		if (defined $tess{$$_{BC_PHRASEID}}{$$_{AEN_PHRASEID}}) {
-			
-			$exists++;
-		}
-	}
-	
-	return $exists;
-}
-
 
 sub load_multi {
 
@@ -290,24 +263,12 @@ sub load_multi {
 	
 	if ($session =~ /[0-9a-f]{8}/) {
 	
-		$multi_dir = catdir($fs_tmp, "tesresults-$session.multi");
+		$multi_dir = catdir($fs_tmp, "tesresults-$session", "multi");
 	}
 	else {
 	
-		my ($name, $path, $suffix) = fileparse($file{tess}, qr/\.[^.]*/);
-	
-		$multi_dir = catdir($path, "$name.multi");
+		$multi_dir = catdir($file{tess}, "multi");
 	}
-
-	#
-	# read the meta file
-	#
-	
-	print STDERR "reading metadata\n";
-	
-	my $file_meta = catfile($multi_dir, "metadata");
-	
-	%meta = %{retrieve($file_meta)};
 	
 	#
 	# get the textlist
@@ -365,11 +326,11 @@ sub summary {
 
 sub html_table {
 	
-	my $mode = shift;
+	my $mode = 'html';
 
 	if ($sort eq 'score') {
 		
-		@order = sort { $tess{$bench[$a]{BC_PHRASEID}}{$bench[$a]{AEN_PHRASEID}}{SCORE} <=> $tess{$bench[$b]{BC_PHRASEID}}{$bench[$b]{AEN_PHRASEID}}{SCORE} }
+		@order = sort { $score{$bench[$a]{BC_PHRASEID}}{$bench[$a]{AEN_PHRASEID}} <=> $score{$bench[$b]{BC_PHRASEID}}{$bench[$b]{AEN_PHRASEID}} }
 					sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
 					sort { $bench[$a]{AEN_PHRASEID} <=> $bench[$b]{AEN_PHRASEID} }	
 				(@order);		
@@ -377,7 +338,7 @@ sub html_table {
 	elsif ($sort eq 'type') {
 		
 		@order = sort { $bench[$a]{SCORE}  <=> $bench[$b]{SCORE} }
-					sort { $tess{$bench[$a]{BC_PHRASEID}}{$bench[$a]{AEN_PHRASEID}}{SCORE} <=> $tess{$bench[$b]{BC_PHRASEID}}{$bench[$b]{AEN_PHRASEID}}{SCORE} }
+					sort { $score{$bench[$a]{BC_PHRASEID}}{$bench[$a]{AEN_PHRASEID}} <=> $score{$bench[$b]{BC_PHRASEID}}{$bench[$b]{AEN_PHRASEID}} }
 					sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
 				(@order);		
 	}
@@ -404,12 +365,12 @@ sub html_table {
 		my %marked_target;
 		my %marked_source;
 		
-		for (keys %{$tess{$unit_id_target}{$unit_id_source}{TARGET}}) { 
+		for (keys %{$match_target{$unit_id_target}{$unit_id_source}}) { 
 		
 			$marked_target{$_} = 1;
 		}
 		
-		for (keys %{$tess{$unit_id_target}{$unit_id_source}{SOURCE}}) {
+		for (keys %{$match_source{$unit_id_target}{$unit_id_source}}) {
 		
 			$marked_source{$_} = 1;
 		}
@@ -446,7 +407,7 @@ sub html_table {
 				   $bench[$i]{AEN_BOOK} . '.' . $bench[$i]{AEN_LINE},
 				   $phrase_source,
 				   $bench[$i]{SCORE},
-				   $tess{$unit_id_target}{$unit_id_source}{SCORE},
+				   $score{$unit_id_target}{$unit_id_source},
 				   (defined $bench[$i]{AUTH} ? join(",", @{$bench[$i]{AUTH}}) : "")
 				   );
 	}
@@ -750,15 +711,15 @@ sub print_delim {
 	
 	print join ($delim, @header) . "\n";
 
-	my $pr = ProgressBar->new(scalar(keys %tess));
+	my $pr = ProgressBar->new(scalar(keys %score));
 		
 	my $i = 0;
 
-	for my $unit_id_target (keys %tess) {
+	for my $unit_id_target (keys %score) {
 	
 		$pr->advance();
 
-		for my $unit_id_source ( keys %{$tess{$unit_id_target}} ) {
+		for my $unit_id_source ( keys %{$score{$unit_id_target}} ) {
 				
 			# a guide to which tokens are marked in each text
 		
@@ -769,18 +730,18 @@ sub print_delim {
 			
 			my %seen_keys;
 	
-			for (keys %{$tess{$unit_id_target}{$unit_id_source}{TARGET}}) { 
+			for (keys %{$match_target{$unit_id_target}{$unit_id_source}}) { 
 			
 				$marked_target{$_} = 1;
 			
-				$seen_keys{join("-", sort keys %{$tess{$unit_id_target}{$unit_id_source}{TARGET}{$_}})} = 1;
+				$seen_keys{join("-", sort keys %{$match_target{$unit_id_target}{$unit_id_source}{$_}})} = 1;
 			}
 			
-			for (keys %{$tess{$unit_id_target}{$unit_id_source}{SOURCE}}) {
+			for (keys %{$match_source{$unit_id_target}{$unit_id_source}}) {
 			
 				$marked_source{$_} = 1;
 	
-				$seen_keys{join("-", sort keys %{$tess{$unit_id_target}{$unit_id_source}{SOURCE}{$_}})} = 1;
+				$seen_keys{join("-", sort keys %{$match_source{$unit_id_target}{$unit_id_source}{$_}})} = 1;
 			}
 		
 			# format the list of all unique shared words
@@ -789,17 +750,17 @@ sub print_delim {
 
 			# get the score
 		
-			my $score = sprintf("%.1i", $tess{$unit_id_target}{$unit_id_source}{SCORE});
+			my $score = sprintf("%.1i", $score{$unit_id_target}{$unit_id_source});
 
 			# get benchmark data
 
-			my $type = $tess{$unit_id_target}{$unit_id_source}{TYPE} || "";
+			my $type = $type{$unit_id_target}{$unit_id_source} || "";
 			
 			my $auth = "";
 			
-			if (defined $tess{$unit_id_target}{$unit_id_source}{AUTH}) {
+			if (defined $auth{$unit_id_target}{$unit_id_source}) {
 			
-				$auth = join(",", @{$tess{$unit_id_target}{$unit_id_source}{AUTH}});
+				$auth = join(",", @{$auth{$unit_id_target}{$unit_id_source}});
 			}
 			
 			#

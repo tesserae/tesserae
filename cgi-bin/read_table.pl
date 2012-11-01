@@ -107,6 +107,8 @@ use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 # select two texts for comparison using the big table
 #
 
+my $t0 = time;
+
 use strict;
 use warnings;
 
@@ -115,6 +117,7 @@ use CGI qw/:standard/;
 use Getopt::Long;
 use Storable qw(nstore retrieve);
 use File::Spec::Functions;
+use File::Path qw(mkpath rmtree);
 
 use TessSystemVars;
 use EasyProgressBar;
@@ -188,7 +191,7 @@ my $interest = 0.008;
 
 # output file
 
-my $file_results = "tesresults.bin";
+my $file_results = "tesresults";
 
 # session id
 
@@ -224,6 +227,7 @@ my $multi_cutoff = 0;
 # which script should mediate the display of results
 
 my $frontend = 'default';
+my %redirect;
 
 GetOptions( 
 			'source=s'     => \$source,
@@ -256,8 +260,7 @@ unless ($no_cgi) {
 <html>
 <head>
 	<title>Tesserae results</title>
-   <link rel="stylesheet" type="text/css" href="$stylesheet" />
-
+	<link rel="stylesheet" type="text/css" href="$stylesheet" />
 END
 
 	#
@@ -269,7 +272,7 @@ END
 
 	opendir(my $dh, $fs_tmp) || die "can't opendir $fs_tmp: $!";
 
-	my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}\.bin/ && -f catfile($fs_tmp, $_) } readdir($dh);
+	my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}/ && -d catfile($fs_tmp, $_) } readdir($dh);
 
 	closedir $dh;
 
@@ -283,13 +286,12 @@ END
 	# if we can't determine the last session id,
 	# then start at 0
 
-	if (defined($session))
-	{
+	if (defined($session)) {
+
 	   $session =~ s/^.+results-//;
-	   $session =~ s/\.bin//;
 	}
-	else
-	{
+	else {
+
 	   $session = "0"
 	}
 
@@ -299,8 +301,9 @@ END
 
 	# open the new session file for output
 
-	$file_results = catfile($fs_tmp, "tesresults-$session.bin");
+	$file_results = catfile($fs_tmp, "tesresults-$session");
 }
+
 
 #
 # abbreviations of canonical citation refs
@@ -353,6 +356,25 @@ else {
 	
 	$quiet = 1;
 	
+	# how to redirect browser to results
+
+	%redirect = ( 
+		default  => "$url_cgi/read_bin.pl?session=$session;sort=target",
+		recall   => "$url_cgi/check-recall.pl?session=$session",
+		fulltext => "$url_cgi/fulltext.pl?session=$session",
+		multi    => "$url_cgi/multitext.pl?session=$session;mcutoff=$multi_cutoff"
+	);
+
+	
+	print <<END;
+	<meta http-equiv="Refresh" content="0; url='$redirect{$frontend}'">
+	</head>
+	<body>
+		<p>
+			Searching...
+		</p>
+END
+
 }
 
 unless ($quiet) {
@@ -443,9 +465,13 @@ my %index_target   = %{ retrieve("$file_target.index_$feature" ) };
 #
 #
 
+my $t1 = time;
+
 # this hash holds information about matching units
 
-my %match;
+my %match_target;
+my %match_source;
+my %match_score;
 
 #
 # consider each key in the source doc
@@ -460,7 +486,12 @@ unless ($quiet) {
 
 my $pr;
 
-$pr = ProgressBar->new(scalar(keys %index_source), $quiet);
+if ($no_cgi) {
+	$pr = ProgressBar->new(scalar(keys %index_source), $quiet);
+}
+else {
+	$pr = HTMLProgress->new(scalar(keys %index_source));
+}
 
 # start with each key in the source
 
@@ -488,11 +519,13 @@ for my $key (keys %index_source) {
 
 			my $unit_id_source = $token_source[$token_id_source]{uc($unit) . '_ID'};
 			
-			$match{$unit_id_target}{$unit_id_source}{TARGET}{$token_id_target}{$key} = 1;
-			$match{$unit_id_target}{$unit_id_source}{SOURCE}{$token_id_source}{$key} = 1;
+			$match_target{$unit_id_target}{$unit_id_source}{$token_id_target}{$key} = 1;
+			$match_source{$unit_id_target}{$unit_id_source}{$token_id_source}{$key} = 1;
 		}
 	}
 }
+
+print "search>>" . (time-$t1) . "\n" if $no_cgi;
 
 #
 #
@@ -500,24 +533,32 @@ for my $key (keys %index_source) {
 #
 #
 
+$t1 = time;
+
 # how many matches in all?
 
 my $total_matches = 0;
 
-unless ($quiet) {
-
-	print STDERR "calculating scores\n";
-}
-
 # draw a progress bar
 
-$pr = ProgressBar->new(scalar(keys %match), $quiet);
+if ($no_cgi) {
+
+	print STDERR "calculating scores\n" unless $quiet;
+
+	$pr = ProgressBar->new(scalar(keys %match_target), $quiet);
+}
+else {
+
+	print "<p>Scoring...</p>\n";
+
+	$pr = HTMLProgress->new(scalar(keys %match_target));
+}
 
 #
 # look at the matches one by one, according to unit id in the target
 #
 
-for my $unit_id_target (sort {$a <=> $b} keys %match) {
+for my $unit_id_target (keys %match_target) {
 
 	# advance the progress bar
 
@@ -526,7 +567,7 @@ for my $unit_id_target (sort {$a <=> $b} keys %match) {
 	# look at all the source units where the feature occurs
 	# sort in numerical order
 
-	for my $unit_id_source ( sort {$a <=> $b} keys %{$match{$unit_id_target}}) {
+	for my $unit_id_source (keys %{$match_target{$unit_id_target}}) {
 
 		#
 		# remove matches having fewer than 2 matching words
@@ -535,17 +576,19 @@ for my $unit_id_target (sort {$a <=> $b} keys %match) {
 			
 		# check that the target has two matching words
 			
-		if ( scalar( keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}} ) < 2) {
+		if ( scalar( keys %{$match_target{$unit_id_target}{$unit_id_source}} ) < 2) {
 		
-			delete $match{$unit_id_target}{$unit_id_source};
+			delete $match_target{$unit_id_target}{$unit_id_source};
+			delete $match_source{$unit_id_target}{$unit_id_source};
 			next;
 		}
 		
 		# check that the source has two matching words
 	
-		if ( scalar( keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}} ) < 2) {
+		if ( scalar( keys %{$match_source{$unit_id_target}{$unit_id_source}} ) < 2) {
 	
-			delete $match{$unit_id_target}{$unit_id_source};
+			delete $match_target{$unit_id_target}{$unit_id_source};
+			delete $match_source{$unit_id_target}{$unit_id_source};
 			next;			
 		}		
 	
@@ -553,27 +596,29 @@ for my $unit_id_target (sort {$a <=> $b} keys %match) {
 		
 		my %seen_forms;	
 		
-		for my $token_id_target (keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}} ) {
+		for my $token_id_target (keys %{$match_target{$unit_id_target}{$unit_id_source}} ) {
 						
 			$seen_forms{$token_target[$token_id_target]{FORM}}++;
 		}
 		
 		if (scalar(keys %seen_forms) < 2) {
 		
-			delete $match{$unit_id_target}{$unit_id_source};
+			delete $match_target{$unit_id_target}{$unit_id_source};
+			delete $match_source{$unit_id_target}{$unit_id_source};
 			next;			
 		}	
 		
 		%seen_forms = ();
 		
-		for my $token_id_source ( keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}} ) {
+		for my $token_id_source ( keys %{$match_source{$unit_id_target}{$unit_id_source}} ) {
 		
 			$seen_forms{$token_source[$token_id_source]{FORM}}++;
 		}
 
 		if (scalar(keys %seen_forms) < 2) {
 		
-			delete $match{$unit_id_target}{$unit_id_source};
+			delete $match_target{$unit_id_target}{$unit_id_source};
+			delete $match_source{$unit_id_target}{$unit_id_source};
 			next;			
 		}	
 				
@@ -581,11 +626,12 @@ for my $unit_id_target (sort {$a <=> $b} keys %match) {
 		# calculate the distance
 		# 
 		
-		my $distance = dist(\%{$match{$unit_id_target}{$unit_id_source}}, $distance_metric);
+		my $distance = dist($match_target{$unit_id_target}{$unit_id_source}, $match_source{$unit_id_target}{$unit_id_source}, $distance_metric);
 		
 		if ($distance > $max_dist) {
 		
-			delete $match{$unit_id_target}{$unit_id_source};
+			delete $match_target{$unit_id_target}{$unit_id_source};
+			delete $match_source{$unit_id_target}{$unit_id_source};
 			next;
 		}
 		
@@ -593,9 +639,10 @@ for my $unit_id_target (sort {$a <=> $b} keys %match) {
 		# filter based on scoring team's algorithm
 		#
 		
-		if ($filter and not score_team($match{$unit_id_target}{$unit_id_source})) {
+		if ($filter and not score_team($match_target{$unit_id_target}{$unit_id_source}, $match_source{$unit_id_target}{$unit_id_source})) {
 		
-			delete $match{$unit_id_target}{$unit_id_source};
+			delete $match_target{$unit_id_target}{$unit_id_source};
+			delete $match_source{$unit_id_target}{$unit_id_source};
 			next;			
 		}
 		
@@ -605,17 +652,18 @@ for my $unit_id_target (sort {$a <=> $b} keys %match) {
 		
 		# score
 		
-		my $score = score_default(\%{$match{$unit_id_target}{$unit_id_source}}, $distance);
+		my $score = score_default($match_target{$unit_id_target}{$unit_id_source}, $match_source{$unit_id_target}{$unit_id_source}, $distance);
 								
 		if ( $score < $cutoff) {
 
-			delete $match{$unit_id_target}{$unit_id_source};
+			delete $match_target{$unit_id_target}{$unit_id_source};
+			delete $match_source{$unit_id_target}{$unit_id_source};
 			next;			
 		}
 		
 		# save calculated score, matched words, etc.
 		
-		$match{$unit_id_target}{$unit_id_source}{SCORE} = $score;
+		$match_score{$unit_id_target}{$unit_id_source} = $score;
 		
 		$total_matches++;
 	}
@@ -629,68 +677,66 @@ my %feature_notes = (
 	
 	);
 
+print "score>>" . (time-$t1) . "\n" if $no_cgi;
+
 #
 # write binary results
 #
 
-if ($file_results ne "none") {
+$t1 = time;
 
-	$match{META} = {
+my %match_meta = (
 
-		SOURCE    => $source,
-		TARGET    => $target,
-		UNIT      => $unit,
-		FEATURE   => $feature,
-		STOP      => $stopwords,
-		STOPLIST  => [@stoplist],
-		STBASIS   => $stoplist_basis,
-		DIST      => $max_dist,
-		DIBASIS   => $distance_metric,
-		SESSION   => $session,
-		CUTOFF    => $cutoff,
-		FILTER    => $filter,
-		INTEREST  => $interest,
-		COMMENT   => $feature_notes{$feature},
-		TOTAL     => $total_matches
-	};
+	SOURCE    => $source,
+	TARGET    => $target,
+	UNIT      => $unit,
+	FEATURE   => $feature,
+	STOP      => $stopwords,
+	STOPLIST  => [@stoplist],
+	STBASIS   => $stoplist_basis,
+	DIST      => $max_dist,
+	DIBASIS   => $distance_metric,
+	SESSION   => $session,
+	CUTOFF    => $cutoff,
+	FILTER    => $filter,
+	INTEREST  => $interest,
+	COMMENT   => $feature_notes{$feature},
+	TOTAL     => $total_matches
+);
 
-	unless ($quiet) {
-		
-		print STDERR "writing $file_results\n";
-	}
+
+if ($no_cgi) {
 	
-	nstore \%match, $file_results;
+	print STDERR "writing $file_results\n" unless $quiet;
+}
+else {
+
+	print "<p>Writing session data.</p>";
 }
 
+rmtree($file_results);
+mkpath($file_results);
+	
+nstore \%match_target, catfile($file_results, "match.target");
+nstore \%match_source, catfile($file_results, "match.source");
+nstore \%match_score,  catfile($file_results, "match.score");
+nstore \%match_meta,   catfile($file_results, "match.meta");
 
-#
-# redirect browser to results
-#
-
-my %redirect = ( 
-	default  => "$url_cgi/read_bin.pl?session=$session;sort=target",
-	recall   => "$url_cgi/check-recall.pl?session=$session",
-	fulltext => "$url_cgi/fulltext.pl?session=$session",
-	multi    => "$url_cgi/multitext.pl?session=$session;mcutoff=$multi_cutoff"
-	);
-
+print "store>>" . (time-$t1) . "\n" if $no_cgi;
 
 print <<END unless ($no_cgi);
 
-   <meta http-equiv="Refresh" content="0; url='$redirect{$frontend}'">
-</head>
-<body>
-   <p>
-      Please wait for your results until the page loads completely.  
-      <br/>
-      If you are not redirected automatically, 
+	<p>
+      Your search is done.  If you are not redirected automatically, 
       <a href="$redirect{$frontend}">click here</a>.
-   </p>
+	</p>
 </body>
 </html>
 
 END
 
+
+print "total>>" . (time-$t0)  . "\n" if $no_cgi;
 
 #
 # subroutines
@@ -704,12 +750,13 @@ END
 
 sub dist {
 
-	my ($match_ref, $metric) = @_[0,1];
+	my ($match_t_ref, $match_s_ref, $metric) = @_;
 	
-	my %match = %$match_ref;
+	my %match_target = %$match_t_ref;
+	my %match_source = %$match_s_ref;
 	
-	my @target_id = sort {$a <=> $b} keys %{$match{TARGET}};
-	my @source_id = sort {$a <=> $b} keys %{$match{SOURCE}};
+	my @target_id = sort {$a <=> $b} keys %match_target;
+	my @source_id = sort {$a <=> $b} keys %match_source;
 	
 	my $dist;
 	
@@ -848,21 +895,21 @@ sub exact_match {
 
 sub score_default {
 	
-	my $match_ref = shift;
-	my $distance  = shift;
+	my ($match_t_ref, $match_s_ref, $distance) = @_;
 
-	my %match = %$match_ref;
+	my %match_target = %$match_t_ref;
+	my %match_source = %$match_s_ref;
 	
 	my $score = 0;
 		
-	for my $token_id_target (keys %{$match{TARGET}} ) {
+	for my $token_id_target (keys %match_target ) {
 									
 		# add the frequency score for this term
 		
 		$score += 1/$freq_target{$token_target[$token_id_target]{FORM}};
 	}
 	
-	for my $token_id_source ( keys %{$match{SOURCE}} ) {
+	for my $token_id_source ( keys %match_source ) {
 
 		# add the frequency score for this term
 
@@ -878,8 +925,10 @@ sub score_team {
 
 	# the parallel to check
 	
-	my $ref = shift;
-	my %match = %$ref;
+	my ($match_t_ref, $match_s_ref) = @_;
+
+	my %match_target = %$match_t_ref;
+	my %match_source = %$match_s_ref;
 	
 	# count interesting words in three categories
 	
@@ -892,7 +941,7 @@ sub score_team {
 	
 	# check all the tokens in the target phrase
 	
-	for my $token_id_target (keys %{$match{TARGET}} ) {
+	for my $token_id_target (keys %match_target ) {
 		
 		for (0..2) {
 		
@@ -905,7 +954,7 @@ sub score_team {
 	
 	# and the source phrase
 	
-	for my $token_id_source ( keys %{$match{SOURCE}} ) {
+	for my $token_id_source ( keys %match_source ) {
 		
 		for (0..2) {
 		
@@ -918,7 +967,7 @@ sub score_team {
 	
 	# get the number of exact matches
 	
-	my $exact_match = exact_match($match{TARGET}, $match{SOURCE});
+	my $exact_match = exact_match(\%match_target, \%match_source);
 	
 	# promote parallel to "keep" if it meets the criteria
 	

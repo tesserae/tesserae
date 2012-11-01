@@ -78,9 +78,10 @@ my $session;
 
 my $multi_cutoff = 0;
 
-# texts to exclude
+# texts to exclude / include
 
 my @exclude = ();
+my @include = ();
 
 # number of processes to run in parallel
 
@@ -96,6 +97,7 @@ GetOptions(
 	'batch=i'    => \$batch,
 	'session=s'  => \$session,
 	'exclude=s'  => \@exclude,
+	'include=s'  => \@include,
 	'cutoff=i'   => \$multi_cutoff,
 	'parallel=i' => \$max_processes,
 	'quiet'      => \$quiet );
@@ -113,18 +115,20 @@ unless ($no_cgi) {
 
 	print header();
 	
+	my $redirect = "$url_cgi/read_multi.pl?session=$session";
+	
 	print <<END;
 	
 <html>
-   <head>
+	<head>
 		<title>Multi-text search in progress...</title>
 		<link rel="stylesheet" type="text/css" href="$url_css/style.css" />
+		<meta http-equiv="Refresh" content="0; url='$redirect'">
 	</head>
 	<body>
-	   <h2>Multi-text search in progress</h2>	
+		<h2>Multi-text search in progress</h2>	
 	
-	   <p>Please be patient while your results are checked against the rest of the corpus.<br />This can take a while.</p>
-	   <p>When the search is done, a link to your results will appear below.</p>
+		<p>Please be patient while your results are checked against the rest of the corpus.<br />This can take a while.</p>
 	
 END
 
@@ -134,7 +138,7 @@ my $file;
 
 if (defined $session) {
 
-	$file = catfile($fs_tmp, "tesresults-" . $session . ".bin");
+	$file = catdir($fs_tmp, "tesresults-" . $session);
 }
 else {
 	
@@ -148,7 +152,10 @@ else {
 
 print STDERR "reading $file\n" unless $quiet;
 
-my %match = %{retrieve($file)};
+my %match_target = %{retrieve(catfile($file, "match.target"))};
+my %match_source = %{retrieve(catfile($file, "match.source"))};
+my %score        = %{retrieve(catfile($file, "match.score"))};
+my %meta         = %{retrieve(catfile($file, "match.meta"))};
 
 #
 # set some parameters
@@ -156,43 +163,38 @@ my %match = %{retrieve($file)};
 
 # source means the alluded-to, older text
 
-my $source = $match{META}{SOURCE};
+my $source = $meta{SOURCE};
 
 # target means the alluding, newer text
 
-my $target = $match{META}{TARGET};
+my $target = $meta{TARGET};
 
 # unit means the level at which results are returned: 
 # - choice right now is 'phrase' or 'line'
 
-my $unit = $match{META}{UNIT};
+my $unit = $meta{UNIT};
 
 # feature means the feature set compared: 
 # - choice is 'word' or 'stem'
 
-my $feature = $match{META}{FEATURE};
+my $feature = $meta{FEATURE};
 
 # stoplist
 
-my @stoplist = @{$match{META}{STOPLIST}};
+my @stoplist = @{$meta{STOPLIST}};
 
 # session id
 
-$session = $match{META}{SESSION};
+$session = $meta{SESSION};
 
 # total number of matches
 
-my $total_matches = $match{META}{TOTAL};
+my $total_matches = $meta{TOTAL};
 
 # notes
 
-my $comments = $match{META}{COMMENT};
+my $comments = $meta{COMMENT};
 
-# now delete the metadata from the match records
-
-my %meta = %{$match{META}};
-
-delete $match{META};
 
 #
 # load texts
@@ -240,20 +242,7 @@ my @textlist = @{get_textlist($target, $source)};
 
 # create a directory for multi search data
 
-my $multi_dir;
-
-if ($session =~ /[0-9a-f]{8}/) {
-
-	$multi_dir = catdir($fs_tmp, "tesresults-$session.multi");
-}
-else {
-
-	my ($name, $path, $suffix) = fileparse($file, qr/\.[^.]*/);
-
-	$multi_dir = catdir($path, "$name.multi");
-}
-
-print STDERR "creating $multi_dir\n" unless $quiet;
+my $multi_dir = catdir($file, "multi");
 
 rmtree($multi_dir);
 mkpath($multi_dir);
@@ -267,22 +256,14 @@ search_multi($multi_dir, \@textlist);
 $meta{MTEXTLIST} = \@textlist;
 $meta{MCUTOFF} = $multi_cutoff;
 
-my $file_meta = catfile($multi_dir, "metadata");
-
-nstore \%meta, $file_meta;
-
-my $redirect = "$url_cgi/read_multi.pl?session=$session";
+nstore \%meta, catfile($file, "match.meta");
 
 print <<END unless ($no_cgi);
 
-	</pre>
-	</div>
-
-	<div style=\"padding:10px; width:50%; position:absolute; left:25%; top:12em; background-color:white; color:black;\">
    	<p>
-			Your results are done!  <a href="$url_cgi/read_multi.pl?session=$session">Click here</a> to proceed.
-		</p>
-   </div>
+			Your results are done!  If you are not redirected automatically, 
+			<a href="$url_cgi/read_multi.pl?session=$session">Click here</a> to proceed.
+	</p>
 
 </body>
 </html>
@@ -293,17 +274,6 @@ END
 #
 # subroutines
 #
-
-sub formattime {
-
-	my $seconds = shift;
-	
-	my $minutes = int($seconds/60);
-	
-	$seconds -= $minutes * 60;
-	
-	return sprintf("%02i:%02i", $minutes, $seconds);		
-}
 
 sub get_textlist {
 	
@@ -318,6 +288,11 @@ sub get_textlist {
 	my @all_texts = grep {/^[^.]/ && ! /[\._]part[\._]/} readdir(DH);
 	
 	closedir(DH);
+	
+	if (@include) {
+	
+		@all_texts = @{TessSystemVars::intersection(\@include, \@all_texts)};
+	}
 	
 	my @textlist;
 	
@@ -349,21 +324,33 @@ sub search_multi {
 		
 	my %index_keypair;
 	
-	print STDERR "parsing the initial search\n" unless $quiet;
+	my $pr;
 	
-	my $pr = ProgressBar->new(scalar(keys %match), $quiet);
+	if ($no_cgi) {
 	
-	for my $unit_id_target (keys %match) {
+		print STDERR "parsing the initial search\n" unless $quiet;
+	
+		$pr = ProgressBar->new(scalar(keys %match_target), $quiet);
+	}
+	else {
+	
+		print "<p>parsing the intitial search...\n";
+		
+		$pr = HTMLProgress->new(scalar(keys %match_target));
+		
+	}
+	
+	for my $unit_id_target (keys %match_target) {
 	
 		$pr->advance();
 		
-		for my $unit_id_source (keys %{$match{$unit_id_target}}) {
+		for my $unit_id_source (keys %{$match_target{$unit_id_target}}) {
 								
 			# arrange the keys into pairs - any one of these in another
 			# text constitutes a match
 			
-			my $target_pairs = unique_keypairs($match{$unit_id_target}{$unit_id_source}{TARGET});
-			my $source_pairs = unique_keypairs($match{$unit_id_target}{$unit_id_source}{SOURCE});
+			my $target_pairs = unique_keypairs($match_target{$unit_id_target}{$unit_id_source});
+			my $source_pairs = unique_keypairs($match_source{$unit_id_target}{$unit_id_source});
 			
 			my @pairs = @{TessSystemVars::intersection($target_pairs, $source_pairs)};
 			
@@ -382,8 +369,19 @@ sub search_multi {
 	#
 	# multi search
 	#
-		
-	print STDERR "multi-searching on " . scalar(@textlist) . " texts.\n" unless $quiet;
+			
+	if ($no_cgi) {
+	
+		print STDERR "multi-searching on " . scalar(@textlist) . " texts.\n" unless $quiet;
+	
+		$pr = ProgressBar->new($#textlist+1, $quiet);
+	}
+	else {
+	
+		print "<p>cross-referencing against " . scalar(@textlist) . " texts...</p>\n";
+	
+		$pr = HTMLProgress->new($#textlist+1);
+	}
 
 	# initialize parallel processing
 	
@@ -398,6 +396,8 @@ sub search_multi {
 		
 	for my $i (0..$#textlist) {
 	
+		$pr->advance;
+	
 		if ($max_processes) {
 		
 			$pm->start and next;
@@ -407,21 +407,21 @@ sub search_multi {
 		
 		# print status info
 		
-		unless ($quiet) {
-			
-			if ($no_cgi) {
-		
-				print STDERR sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other);
-			}
-			else {
-			
-				print "<div style=\"padding:10px; width:50%; position:absolute; left:25%; top:12em; background-color:grey; color:black;\">\n<pre>";
-			
-			
-				print sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other);
-			}
-		}
-
+# 		unless ($quiet) {
+# 			
+# 			if ($no_cgi) {
+# 		
+# 				print STDERR sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other);
+# 			}
+# 			else {
+# 			
+# 				print "<div style=\"padding:10px; width:50%; position:absolute; left:25%; top:12em; background-color:grey; color:black;\">\n<pre>";
+# 			
+# 			
+# 				print sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other);
+# 			}
+# 		}
+# 
 		my $file = catfile($fs_data, 'v3', $lang{$target}, $other, $other);
 		
 		my %index_other = %{ retrieve("$file.multi_${unit}_${feature}") };
@@ -456,12 +456,7 @@ sub search_multi {
 				}
 			}
 		}
-				
-		unless($no_cgi) {
-		
-			print "</pre></div>\n";
-		}
-		
+						
 		my $file_out = catfile($multi_dir, $other);
 		
 		nstore \%multi, $file_out;
@@ -504,76 +499,3 @@ sub unique_keypairs {
 	return [keys %pair];
 }
 
-#
-# test version of html progress bar
-#
-
-package HTMLBar;
-	
-sub new {
-	my $self = {};
-	
-	shift;
-	
-	my $terminus = shift || die "HTMLBar->new() called with no final value";
-	
-	$self->{END} = $terminus;
-	
-	$self->{COUNT} = 0;
-	$self->{PROGRESS} = 0;
-	
-	bless($self);
-	
-	print "0%";
-	
-	print " "x44;
-	
-	print "100%\n";
-	
-	return $self;
-}
-
-sub advance {
-
-	my $self = shift;
-	
-	my $incr = shift;
-	
-	if (defined $incr)	{ $self->{COUNT} += $incr }
-	else			   	   { $self->{COUNT} ++       }
-	
-	if ($self->{COUNT}/$self->{END} > $self->{PROGRESS} + .02) {
-
-		my $old_bars = POSIX::floor($self->{PROGRESS} * 50);
-	
-		$self->{PROGRESS} = $self->{COUNT} / $self->{END};
-	
-		my $new_bars = POSIX::floor($self->{PROGRESS} * 50);
-		
-		if ($new_bars > $old_bars) {
-		
-			print "=" x ($new_bars - $old_bars);
-		}
-	}	
-}
-
-sub finish {
-
-	my $self = shift;
-	
-	print "\n";
-}
-
-sub progress {
-	
-	my $self = shift;
-	
-	return $self->{COUNT};
-}
-
-sub terminus {
-
-	my $self = shift;
-	
-	return $self->{END};
-}

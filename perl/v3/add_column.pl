@@ -539,39 +539,33 @@ for my $file_in (@files) {
 
 	# add this ref to the database of abbreviations
 
-	unless (defined $abbr{$name}) {
+	my $abbr = (sort { $ref{$b} <=> $ref{$a} } keys %ref)[0];
+	
+	my $temp_file = catfile($temp_dir, $name . ".abbr");
 
-		my $abbr = (sort { $ref{$b} <=> $ref{$a} } keys %ref)[0];
-		
-		my $temp_file = catfile($temp_dir, $name . ".abbr");
-
-		if (open (LAFH, ">", $temp_file)) {
-		
-			print LAFH "$lang\n";
-			close LAFH;
-		}
-		else {
-		
-			warn "can't write to $temp_file; language info for $name won't be remembered.";
-		}
+	if (open (LAFH, ">", $temp_file)) {
+	
+		print LAFH "$abbr\n";
+		close LAFH;
+	}
+	else {
+	
+		warn "can't write to $temp_file; language info for $name won't be remembered.";
 	}
 
 	# save the language designation for this file
 
-	unless (defined $lang{$name}) {
+	$temp_file = catfile($temp_dir, $name . ".lang");
 
-		my $temp_file = catfile($temp_dir, $name . ".lang");
-
-		if (open (LAFH, ">", $temp_file)){
-		
-			print LAFH "$lang\n";
-			close LAFH;
-		}
-		else {
-		
-			warn "can't write to $temp_file; language info for $name won't be remembered.";
-		}
-	}	
+	if (open (LAFH, ">", $temp_file)){
+	
+		print LAFH "$lang\n";
+		close LAFH;
+	}
+	else {
+	
+		warn "can't write to $temp_file; language info for $name won't be remembered.";
+	}
 	
 	$pm->finish if $max_processes;
 }
@@ -594,10 +588,16 @@ for (@names) {
 	
 	chomp $lang;
 	
+	s/\.lang$//;
+	
 	$lang{$_} = $lang;
 	
 	close LAFH;
 }
+
+closedir(DH);
+
+opendir(DH, $temp_dir);
 
 @names = grep {/\.abbr$/} readdir(DH);
 
@@ -608,6 +608,8 @@ for (@names) {
 	my $abbr = <LAFH>;
 	
 	chomp $abbr;
+
+	s/\.abbr$//;
 	
 	$abbr{$_} = $abbr;
 	
@@ -620,6 +622,10 @@ closedir(DH);
 
 nstore \%lang, $file_lang;
 nstore \%abbr, $file_abbr;
+
+# clean up temp dir
+
+rmtree($temp_dir);
 
 sub freq_stop {
 	

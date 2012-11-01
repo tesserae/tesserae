@@ -187,7 +187,7 @@ my $file_search;
 
 if (defined $session) {
 
-	$file_search = catfile($fs_tmp, "tesresults-" . $session . ".bin");
+	$file_search = catdir($fs_tmp, "tesresults-" . $session);
 }
 else {
 	
@@ -196,37 +196,16 @@ else {
 
 print STDERR "reading $file_search\n" unless $quiet;
 
-my %match = %{retrieve($file_search)};
+my %match_target = %{retrieve(catfile($file_search, "match.target"))};
+my %match_source = %{retrieve(catfile($file_search, "match.source"))};
+my %score        = %{retrieve(catfile($file_search, "match.score"))};
+my %meta         = %{retrieve(catfile($file_search, "match.meta"))};
 
-# we're going to use the metadata in the multi
-# directory instead
-
-delete $match{META};
 
 # the directory containing multi results
 
-my $multi_dir;
+my $multi_dir = catdir($file_search, "multi");
 
-if (defined $session) {
-
-	$multi_dir = catdir($fs_tmp, "tesresults-$session.multi");
-}
-else {
-
-	my ($name, $path, $suffix) = fileparse($file_search, qr/\.[^.]*/);
-
-	$multi_dir = catdir($path, "$name.multi");
-}
-
-#
-# get the metadata
-#
-
-print STDERR "reading metadata\n" unless $quiet;
-
-my $file_meta = catfile($multi_dir, "metadata");
-
-my %meta = %{retrieve($file_meta)};
 
 #
 # set some parameters
@@ -312,12 +291,12 @@ if ($batch eq 'all') {
 
 # abbreviations of canonical citation refs
 
-my $file_abbr = "$fs_data/common/abbr";
+my $file_abbr = catfile($fs_data, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
 # language of input texts
 
-my $file_lang = "$fs_data/common/lang";
+my $file_lang = catfile($fs_data, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
 # read source text
@@ -327,11 +306,11 @@ unless ($quiet) {
 	print STDERR "reading source data\n";
 }
 
-my $path_source = "$fs_data/v3/$lang{$source}/$source";
+my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source);
 
-my @token_source   = @{ retrieve( "$path_source/$source.token"    ) };
-my @unit_source    = @{ retrieve( "$path_source/$source.${unit}" ) };
-my %index_source   = %{ retrieve( "$path_source/$source.index_$feature" ) };
+my @token_source   = @{ retrieve( "$file_source.token"    ) };
+my @unit_source    = @{ retrieve( "$file_source.${unit}" ) };
+my %index_source   = %{ retrieve( "$file_source.index_$feature" ) };
 
 # read target text
 
@@ -340,11 +319,11 @@ unless ($quiet) {
 	print STDERR "reading target data\n";
 }
 
-my $path_target = "$fs_data/v3/$lang{$target}/$target";
+my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target);
 
-my @token_target   = @{ retrieve( "$path_target/$target.token"    ) };
-my @unit_target    = @{ retrieve( "$path_target/$target.${unit}" ) };
-my %index_target   = %{ retrieve( "$path_target/$target.index_$feature" ) };
+my @token_target   = @{ retrieve( "$file_target.token"    ) };
+my @unit_target    = @{ retrieve( "$file_target.${unit}" ) };
+my %index_target   = %{ retrieve( "$file_target.index_$feature" ) };
 
 
 #
@@ -357,7 +336,9 @@ my $min_similarity = "NA";
 
 if ( $feature eq "syn" ) { 
 
-	($max_heads, $min_similarity) = @{ retrieve("$fs_data/common/$lang{$target}.syn.cache.param") };
+	my $file_param = catfile($fs_data, 'common', $lang{$target} . ".syn.cache.param");
+
+	($max_heads, $min_similarity) = @{ retrieve($file_param) };
 }
 
 #
@@ -604,18 +585,18 @@ sub print_html {
 		
 		my %seen_keys;
 
-		for (keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}}) { 
+		for (keys %{$match_target{$unit_id_target}{$unit_id_source}}) { 
 		
 			$marked_target{$_} = 1;
 		
-			$seen_keys{join("-", sort keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}{$_}})} = 1;
+			$seen_keys{join("-", sort keys %{$match_target{$unit_id_target}{$unit_id_source}{$_}})} = 1;
 		}
 		
-		for (keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}}) {
+		for (keys %{$match_source{$unit_id_target}{$unit_id_source}}) {
 		
 			$marked_source{$_} = 1;
 
-			$seen_keys{join("-", sort keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}{$_}})} = 1;
+			$seen_keys{join("-", sort keys %{$match_source{$unit_id_target}{$unit_id_source}{$_}})} = 1;
 		}
 		
 		# format the list of all unique shared words
@@ -624,7 +605,7 @@ sub print_html {
 
 		# get the score
 		
-		my $score = sprintf("%i", $match{$unit_id_target}{$unit_id_source}{SCORE});
+		my $score = sprintf("%i", $score{$unit_id_target}{$unit_id_source});
 						
 		#
 		# print one row of the table
@@ -806,18 +787,18 @@ END
 		
 		my %seen_keys;
 
-		for (keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}}) { 
+		for (keys %{$match_target{$unit_id_target}{$unit_id_source}}) { 
 		
 			$marked_target{$_} = 1;
 		
-			$seen_keys{join("-", sort keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}{$_}})} = 1;
+			$seen_keys{join("-", sort keys %{$match_target{$unit_id_target}{$unit_id_source}{$_}})} = 1;
 		}
 		
-		for (keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}}) {
+		for (keys %{$match_source{$unit_id_target}{$unit_id_source}}) {
 		
 			$marked_source{$_} = 1;
 
-			$seen_keys{join("-", sort keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}{$_}})} = 1;
+			$seen_keys{join("-", sort keys %{$match_source{$unit_id_target}{$unit_id_source}{$_}})} = 1;
 		}
 		
 		# format the list of all unique shared words
@@ -826,7 +807,7 @@ END
 
 		# get the score
 		
-		my $score = sprintf("%i", $match{$unit_id_target}{$unit_id_source}{SCORE});
+		my $score = sprintf("%i", $score{$unit_id_target}{$unit_id_source});
 
 		#
 		# now prepare the csv record for this match
@@ -891,28 +872,30 @@ END
 		
 		my %m;
 		@m{@others} = ("") x scalar(@others);
-		
-		if (defined $match{$unit_id_target}{$unit_id_source}{MULTI}) {
-			
-			$other_texts = scalar(keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}});
-		
-			for my $other (keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}}) {
-			
-				my @loci;
-				
-				for (sort {$a <=> $b} keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}}) {
 					
-					my $locus = $match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$_}{LOCUS};
-					my $score = $match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$_}{SCORE};
+		$other_texts = 0;
+		
+		for my $other (@others) {
+			
+			my @loci;
+			
+			if (defined $multi{$other}{$unit_id_target}{$unit_id_source}) {
+			
+				$other_texts++;
+				
+				for (sort {$a <=> $b} keys %{$multi{$other}{$unit_id_target}{$unit_id_source}}) {
+					
+					my $locus = $multi{$other}{$unit_id_target}{$unit_id_source}{$_}{LOCUS};
+					my $score = $multi{$other}{$unit_id_target}{$unit_id_source}{$_}{SCORE};
 					$score = sprintf("%i", $score);
 					
 					push @loci, "$locus ($score)";
 				}
-				
-				$m{$other} = '"' . join("; ", @{loci}) . '"';
-				
-				$other_total += scalar(@loci);
 			}
+				
+			$m{$other} = '"' . join("; ", @{loci}) . '"';
+				
+			$other_total += scalar(@loci);
 		}
 		
 		push @row, ($other_texts, $other_total);
@@ -938,142 +921,152 @@ sub print_xml {
 
 	# format the stoplist
 
-	my $commonwords = join(", ", @stoplist);
-
-	# add a featureset-specific message
-
-	my %feature_notes = (
+	my $stoplist = join("; ", @stoplist);
 	
-		word => "Exact matching only.",
-		stem => "Stem matching enabled.  Forms whose stem is ambiguous will match all possibilities.",
-		syn  => "Stem + synonym matching.  This search is still in development.  Note that stopwords may match on less-common synonyms.  max_heads=$max_heads; min_similarity=$min_similarity"
+	# filter state
 	
-		);
+	my $filtertoggle = $filter ? "yes" : "no";
+	
+	# other texts
+	
+	my $mtextlist = join("; ", @others);
 
 	print STDERR "writing results\n" unless $quiet;
 
 	# draw a progress bar
 
-	my $pr = $quiet ? 0 : ProgressBar->new(scalar(keys %match));
+	my $pr = ProgressBar->new($#rec+1, $quiet);
 
 	# print the xml doc header
 
 	print <<END;
 <?xml version="1.0" encoding="UTF-8" ?>
-<results 
-	source="$source" target="$target" unit="$unit" feature="$feature" 
-	sessionID="$session" stop="$stop" stbasis="$stoplist_basis"
-	maxdist="$max_dist" dibasis="$distance_metric" cutoff="$cutoff" mcutoff="$mcutoff" version="3">
-	<comments>V3 muti-text results. $feature_notes{$feature}</comments>
-	<commonwords>$commonwords</commonwords>
+<results>
+	<meta>
+		<session>$session</session>
+		<source>$source</source>
+		<target>$target</target>
+		<unit>$unit</unit>
+		<feature>$feature</feature>
+		<stop>$stop</stop>
+		<stbasis>$stoplist_basis</stbasis>
+		<stoplist>$stoplist</stoplist>
+		<maxdist>$max_dist</maxdist>
+		<dibasis>$distance_metric</dibasis>
+		<cutoff>$cutoff</cutoff>
+		<filter>$filtertoggle</filter>
+		<mcutoff>$mcutoff</mcutoff>
+		<mtextlist>$mtextlist</mtextlist>
+		<version>3</version>
+	</meta> 
 END
 
 	# now look at the matches one by one, according to unit id in the target
 
-	for my $unit_id_target (sort {$a <=> $b} keys %match) {
+	for my $i (0..$#rec) {
 
 		# advance the progress bar
 
-		$pr->advance() unless $quiet;
+		$pr->advance();
+
+		# get unit ids from rec
+
+		my $unit_id_target = $rec[$i]{target};
+		my $unit_id_source = $rec[$i]{source};
 	
-		# look at all the source units where the feature occurs
-		# sort in numerical order
-
-		for my $unit_id_source ( sort {$a <=> $b} keys %{$match{$unit_id_target}}) {
-
-			# a guide to which tokens are marked in each text
+		# a guide to which tokens are marked in each text
+	
+		my %marked_target;
+		my %marked_source;
 		
-			my %marked_target;
-			my %marked_source;
-			
-			# collect the keys
-			
-			my %seen_keys;
-	
-			for (keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}}) { 
-			
-				$marked_target{$_} = 1;
-			
-				$seen_keys{join("-", sort keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}{$_}})} = 1;
-			}
-			
-			for (keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}}) {
-			
-				$marked_source{$_} = 1;
-	
-				$seen_keys{join("-", sort keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}{$_}})} = 1;
-			}
-			
-			# format the list of all unique shared words
+		# collect the keys
 		
-			my $keys = join(", ", keys %seen_keys);
-	
-			# get the score
-			
-			my $score = sprintf("%i", $match{$unit_id_target}{$unit_id_source}{SCORE});
-	
-			#
-			# now write the xml record for this match
-			#
+		my %seen_keys;
 
-			print "\t<tessdata keypair=\"$keys\" score=\"$score\">\n";
-
-			print "\t\t<phrase text=\"source\" work=\"$abbr{$source}\" "
-					. "unitID=\"$unit_id_source\" "
-					. "line=\"$unit_source[$unit_id_source]{LOCUS}\">";
-
-			# here we print the unit
-
-			for my $token_id_source (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
-			
-				if (defined $marked_source{$token_id_source}) { print '<span class="matched">' }
-
-				# print the display copy of the token
-			
-				print $token_source[$token_id_source]{DISPLAY};
-			
-				# close the tag if necessary
-			
-				if (defined $marked_source{$token_id_source}) { print '</span>' }
-			}
-
-			print "</phrase>\n";
+		for (keys %{$match_target{$unit_id_target}{$unit_id_source}}) { 
 		
-			# same as above, for the target now
+			$marked_target{$_} = 1;
 		
-			print "\t\t<phrase text=\"target\" work=\"$abbr{$target}\" "
-					. "unitID=\"$unit_id_target\" "
-					. "line=\"$unit_target[$unit_id_target]{LOCUS}\">";
+			$seen_keys{join("-", sort keys %{$match_target{$unit_id_target}{$unit_id_source}{$_}})} = 1;
+		}
+		
+		for (keys %{$match_source{$unit_id_target}{$unit_id_source}}) {
+		
+			$marked_source{$_} = 1;
 
-			for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
+			$seen_keys{join("-", sort keys %{$match_source{$unit_id_target}{$unit_id_source}{$_}})} = 1;
+		}
 			
-				if (defined $marked_target{$token_id_target}) { print '<span class="matched">' }
-				print $token_target[$token_id_target]{DISPLAY};
-				if (defined $marked_target{$token_id_target}) { print "</span>" }
-			}
+		# format the list of all unique shared words
+	
+		my $keys = join(", ", keys %seen_keys);
 
-			print "</phrase>\n";
+		# get the score
+		
+		my $score = sprintf("%i", $score{$unit_id_target}{$unit_id_source});
+	
+		#
+		# now write the xml record for this match
+		#
 
-			if (defined $match{$unit_id_target}{$unit_id_source}{MULTI}) {
-				
-				for my $other (keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}}) {
-				
-					for my $unit_id_other (sort {$a <=> $b} keys %{$match{$unit_id_target}{$unit_id_source}{MULTI}{$other}}) {
+		print "\t<tessdata keypair=\"$keys\" score=\"$score\">\n";
+
+		print "\t\t<phrase text=\"source\" work=\"$abbr{$source}\" "
+				. "unitID=\"$unit_id_source\" "
+				. "line=\"$unit_source[$unit_id_source]{LOCUS}\">";
+
+		# here we print the unit
+
+		for my $token_id_source (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
+		
+			if (defined $marked_source{$token_id_source}) { print '<span class="matched">' }
+
+			# print the display copy of the token
+		
+			print $token_source[$token_id_source]{DISPLAY};
+		
+			# close the tag if necessary
+		
+			if (defined $marked_source{$token_id_source}) { print '</span>' }
+		}
+
+		print "</phrase>\n";
+	
+		# same as above, for the target now
+	
+		print "\t\t<phrase text=\"target\" work=\"$abbr{$target}\" "
+				. "unitID=\"$unit_id_target\" "
+				. "line=\"$unit_target[$unit_id_target]{LOCUS}\">";
+
+		for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
+		
+			if (defined $marked_target{$token_id_target}) { print '<span class="matched">' }
+			print $token_target[$token_id_target]{DISPLAY};
+			if (defined $marked_target{$token_id_target}) { print "</span>" }
+		}
+
+		print "</phrase>\n";
+
+		# multi data
+
+		for my $other (@others) {
+
+			if (defined $multi{$other}{$unit_id_target}{$unit_id_source}) {
 						
-						my $locus = $match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$unit_id_other}{LOCUS};
-						my $score = $match{$unit_id_target}{$unit_id_source}{MULTI}{$other}{$unit_id_other}{SCORE};
-						$score = sprintf("%i", $score);
+				for my $unit_id_other (sort {$a <=> $b} keys %{$multi{$other}{$unit_id_target}{$unit_id_source}}) {
 						
-						print "\t\t<phrase text=\"other\" word=\"$abbr{$other}\" "
-						       . "unitID=\"$unit_id_other\" "
-						       . "line=\"$locus\" />";
-					}					
+					my $locus = $multi{$other}{$unit_id_target}{$unit_id_source}{$unit_id_other}{LOCUS};
+					my $score = $multi{$other}{$unit_id_target}{$unit_id_source}{$unit_id_other}{SCORE};
+					$score = sprintf("%i", $score);
+						
+					print "\t\t<phrase text=\"other\" work=\"$abbr{$other}\" "
+						   . "unitID=\"$unit_id_other\" "
+						   . "line=\"$locus\" />\n";
 				}
 			}
-
-			print "\t</tessdata>\n";
-
 		}
+
+		print "\t</tessdata>\n";
 	}
 
 
@@ -1086,28 +1079,25 @@ sub sort_results {
 	
 	my @rec;
 		
-	for my $unit_id_target (sort {$a <=> $b} keys %match) {
+	for my $unit_id_target (sort {$a <=> $b} keys %score) {
 
-		for my $unit_id_source (sort {$a <=> $b} keys %{$match{$unit_id_target}}) {
+		for my $unit_id_source (sort {$a <=> $b} keys %{$score{$unit_id_target}}) {
 			
 			push @rec, {target => $unit_id_target, source => $unit_id_source};
 		}
 	}
 	
-	if ($export ne "xml") {
-	
-		if ($sort eq "source") {
-	
-			@rec = sort {$$a{source} <=> $$b{source}} @rec;
-		}
-	
-		if ($sort eq "score") {
-	
-			@rec = sort {$match{$$a{target}}{$$a{source}}{SCORE} <=> $match{$$b{target}}{$$b{source}}{SCORE}} @rec;
-		}
+	if ($sort eq "source") {
 
-		if ($rev) { @rec = reverse @rec };
+		@rec = sort {$$a{source} <=> $$b{source}} @rec;
 	}
+
+	if ($sort eq "score") {
+
+		@rec = sort {$score{$$a{target}}{$$a{source}} <=> $score{$$b{target}}{$$b{source}}} @rec;
+	}
+
+	if ($rev) { @rec = reverse @rec };
 	
 	return \@rec;
 }
@@ -1121,7 +1111,7 @@ sub format_multi_html {
 			
 	my $html = "<table>";
 	
-	for my $other (sort keys %multi) {
+	for my $other (@others) {
 
 		next unless defined $multi{$other}{$unit_id_target}{$unit_id_source};
 

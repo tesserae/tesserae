@@ -53,6 +53,7 @@ my $side;
 
 GetOptions( 
 	'session=s' => \$session,
+	'side=s'    => \$side,
 	'quiet'     => \$quiet );
 
 #
@@ -73,7 +74,7 @@ my $file;
 
 if (defined $session) {
 
-	$file = catfile($fs_tmp, "tesresults-" . $session . ".bin");
+	$file = catdir($fs_tmp, "tesresults-" . $session);
 }
 else {
 	
@@ -87,7 +88,13 @@ else {
 
 print STDERR "reading $file\n" unless $quiet;
 
-my %match = %{retrieve($file)};
+my %match;
+
+$match{target} = retrieve(catfile($file, "match.target"));
+$match{source} = retrieve(catfile($file, "match.source"));
+
+my %meta  = %{retrieve(catfile($file, "match.meta"))};
+my %score = %{retrieve(catfile($file, "match.score"))};
 
 #
 # set some parameters
@@ -97,61 +104,58 @@ my %name;
 
 # source means the alluded-to, older text
 
-$name{source} = $match{META}{SOURCE};
+$name{source} = $meta{SOURCE};
 
 # target means the alluding, newer text
 
-$name{target} = $match{META}{TARGET};
+$name{target} = $meta{TARGET};
 
 # unit means the level at which results are returned: 
 # - choice right now is 'phrase' or 'line'
 
-my $unit = $match{META}{UNIT};
+my $unit = $meta{UNIT};
 
 # feature means the feature set compared: 
 # - choice is 'word' or 'stem'
 
-my $feature = $match{META}{FEATURE};
+my $feature = $meta{FEATURE};
 
 # stoplist
 
-my @stoplist = @{$match{META}{STOPLIST}};
+my @stoplist = @{$meta{STOPLIST}};
 
 # stoplist basis
 
-my $stoplist_basis = $match{META}{STBASIS};
+my $stoplist_basis = $meta{STBASIS};
 
 # max distance
 
-my $max_dist = $match{META}{DIST};
+my $max_dist = $meta{DIST};
 
 # distance metric
 
-my $distance_metric = $match{META}{DIBASIS};
+my $distance_metric = $meta{DIBASIS};
 
 # low-score cutoff
 
-my $cutoff = $match{META}{CUTOFF};
+my $cutoff = $meta{CUTOFF};
 
 # score team filter state
 
-my $filter = $match{META}{FILTER};
+my $filter = $meta{FILTER};
 
 # session id
 
-$session = $match{META}{SESSION};
+$session = $meta{SESSION};
 
 # total number of matches
 
-my $total_matches = $match{META}{TOTAL};
+my $total_matches = $meta{TOTAL};
 
 # notes
 
-my $comments = $match{META}{COMMENT};
+my $comments = $meta{COMMENT};
 
-# now delete the metadata from the match records 
-
-delete $match{META};
 
 #
 # load texts
@@ -179,7 +183,7 @@ my %line;
 
 for my $text (qw/target source/) {
 
-	unless ($quiet) {
+	if ($no_cgi) {
 	
 		print STDERR "reading $text data\n" unless ($quiet);
 	}
@@ -228,15 +232,15 @@ my %link;
 
 # consider each match of the tesserae file
 
-for my $unit_id_target (sort {$a <=> $b} keys %match) {
+for my $unit_id_target (keys %score) {
 
-	for my $unit_id_source (sort {$a <=> $b} keys %{$match{$unit_id_target}}) {
+	for my $unit_id_source (keys %{$score{$unit_id_target}}) {
 		
 		my %unit_id = (target => $unit_id_target, source => $unit_id_source);
 		
 		# for each token in the "self" text
 		
-		for my $token_id_self (keys %{$match{$unit_id_target}{$unit_id_source}{uc($self)}}) {
+		for my $token_id_self (keys %{$match{$self}{$unit_id_target}{$unit_id_source}}) {
 
 			# create a link to the "other" unit
 			
@@ -248,7 +252,7 @@ for my $unit_id_target (sort {$a <=> $b} keys %match) {
 				
 			# and include the specific words from the "other" text
 			
-			for my $token_id_other (sort keys %{$match{$unit_id_target}{$unit_id_source}{uc($other)}}) {
+			for my $token_id_other (sort keys %{$match{$other}{$unit_id_target}{$unit_id_source}}) {
 				
 				push @{$l{token}}, $token{$other}[$token_id_other]{DISPLAY};
 			}

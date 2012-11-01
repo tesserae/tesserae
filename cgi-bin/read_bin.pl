@@ -184,7 +184,7 @@ my $file;
 
 if (defined $session) {
 
-	$file = catfile($fs_tmp, "tesresults-" . $session . ".bin");
+	$file = catdir($fs_tmp, "tesresults-" . $session);
 }
 else {
 	
@@ -198,7 +198,10 @@ else {
 
 print STDERR "reading $file\n" unless $quiet;
 
-my %match = %{retrieve($file)};
+my %match_target = %{retrieve(catfile($file, "match.target"))};
+my %match_source = %{retrieve(catfile($file, "match.source"))};
+my %score        = %{retrieve(catfile($file, "match.score"))};
+my %meta         = %{retrieve(catfile($file, "match.meta"))};
 
 #
 # set some parameters
@@ -206,63 +209,59 @@ my %match = %{retrieve($file)};
 
 # source means the alluded-to, older text
 
-my $source = $match{META}{SOURCE};
+my $source = $meta{SOURCE};
 
 # target means the alluding, newer text
 
-my $target = $match{META}{TARGET};
+my $target = $meta{TARGET};
 
 # unit means the level at which results are returned: 
 # - choice right now is 'phrase' or 'line'
 
-my $unit = $match{META}{UNIT};
+my $unit = $meta{UNIT};
 
 # feature means the feature set compared: 
 # - choice is 'word' or 'stem'
 
-my $feature = $match{META}{FEATURE};
+my $feature = $meta{FEATURE};
 
 # stoplist
 
-my $stop = $match{META}{STOP};
+my $stop = $meta{STOP};
 
-my @stoplist = @{$match{META}{STOPLIST}};
+my @stoplist = @{$meta{STOPLIST}};
 
 # stoplist basis
 
-my $stoplist_basis = $match{META}{STBASIS};
+my $stoplist_basis = $meta{STBASIS};
 
 # max distance
 
-my $max_dist = $match{META}{DIST};
+my $max_dist = $meta{DIST};
 
 # distance metric
 
-my $distance_metric = $match{META}{DIBASIS};
+my $distance_metric = $meta{DIBASIS};
 
 # low-score cutoff
 
-my $cutoff = $match{META}{CUTOFF};
+my $cutoff = $meta{CUTOFF};
 
 # score team filter state
 
-my $filter = $match{META}{FILTER};
+my $filter = $meta{FILTER};
 
 # session id
 
-$session = $match{META}{SESSION};
+$session = $meta{SESSION};
 
 # total number of matches
 
-my $total_matches = $match{META}{TOTAL};
+my $total_matches = $meta{TOTAL};
 
 # notes
 
-my $comments = $match{META}{COMMENT};
-
-# now delete the metadata from the match records 
-
-delete $match{META};
+my $comments = $meta{COMMENT};
 
 # sort the results
 
@@ -538,7 +537,7 @@ sub print_html {
 						
 		# get the score
 		
-		my $score = sprintf("%i", $match{$unit_id_target}{$unit_id_source}{SCORE});
+		my $score = sprintf("%i", $score{$unit_id_target}{$unit_id_source});
 
 		# a guide to which tokens are marked in each text
 	
@@ -549,18 +548,18 @@ sub print_html {
 		
 		my %seen_keys;
 
-		for (keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}}) { 
+		for (keys %{$match_target{$unit_id_target}{$unit_id_source}}) { 
 		
 			$marked_target{$_} = 1;
 		
-			$seen_keys{join("-", sort keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}{$_}})} = 1;
+			$seen_keys{join("-", sort keys %{$match_target{$unit_id_target}{$unit_id_source}{$_}})} = 1;
 		}
 		
-		for (keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}}) {
+		for (keys %{$match_source{$unit_id_target}{$unit_id_source}}) {
 		
 			$marked_source{$_} = 1;
 
-			$seen_keys{join("-", sort keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}{$_}})} = 1;
+			$seen_keys{join("-", sort keys %{$match_source{$unit_id_target}{$unit_id_source}{$_}})} = 1;
 		}
 		
 		# format the list of all unique shared words
@@ -716,7 +715,7 @@ END
 		
 		# get the score
 		
-		my $score = sprintf("%i", $match{$unit_id_target}{$unit_id_source}{SCORE});
+		my $score = sprintf("%i", $score{$unit_id_target}{$unit_id_source});
 
 		# a guide to which tokens are marked in each text
 	
@@ -727,18 +726,18 @@ END
 		
 		my %seen_keys;
 
-		for (keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}}) { 
+		for (keys %{$match_target{$unit_id_target}{$unit_id_source}}) { 
 		
 			$marked_target{$_} = 1;
 		
-			$seen_keys{join("-", sort keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}{$_}})} = 1;
+			$seen_keys{join("-", sort keys %{$match_target{$unit_id_target}{$unit_id_source}{$_}})} = 1;
 		}
 		
-		for (keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}}) {
+		for (keys %{$match_source{$unit_id_target}{$unit_id_source}}) {
 		
 			$marked_source{$_} = 1;
 
-			$seen_keys{join("-", sort keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}{$_}})} = 1;
+			$seen_keys{join("-", sort keys %{$match_source{$unit_id_target}{$unit_id_source}{$_}})} = 1;
 		}
 		
 		# format the list of all unique shared words
@@ -836,7 +835,7 @@ sub print_xml {
 
 	# draw a progress bar
 
-	my $pr = $quiet ? 0 : ProgressBar->new(scalar(keys %match));
+	my $pr = ProgressBar->new(scalar(@rec), $quiet);
 
 	# print the xml doc header
 
@@ -852,95 +851,90 @@ END
 
 	# now look at the matches one by one, according to unit id in the target
 
-	for my $unit_id_target (sort {$a <=> $b} keys %match) {
+	for my $i (0..$#rec) {
+
+		my $unit_id_target = $rec[$i]{target};
+		my $unit_id_source = $rec[$i]{source};
 
 		# advance the progress bar
 
-		$pr->advance() unless $quiet;
+		$pr->advance();
+			
+		# get the score
 	
-		# look at all the source units where the feature occurs
-		# sort in numerical order
+		my $score = sprintf("%i", $score{$unit_id_target}{$unit_id_source});
 
-		for my $unit_id_source ( sort {$a <=> $b} keys %{$match{$unit_id_target}}) {
-		
-			# get the score
-		
-			my $score = sprintf("%i", $match{$unit_id_target}{$unit_id_source}{SCORE});
+		# a guide to which tokens are marked in each text
 
-			# a guide to which tokens are marked in each text
+		my %marked_target;
+		my %marked_source;
 	
-			my %marked_target;
-			my %marked_source;
-		
-			# collect the keys
-		
-			my %seen_keys;
-
-			for (keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}}) { 
-		
-				$marked_target{$_} = 1;
-		
-				$seen_keys{join("-", sort keys %{$match{$unit_id_target}{$unit_id_source}{TARGET}{$_}})} = 1;
-			}
-		
-			for (keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}}) {
-		
-				$marked_source{$_} = 1;
-
-				$seen_keys{join("-", sort keys %{$match{$unit_id_target}{$unit_id_source}{SOURCE}{$_}})} = 1;
-			}
-		
-			# format the list of all unique shared words
+		# collect the keys
 	
-			my $keys = join(", ", keys %seen_keys);
+		my %seen_keys;
 
-			#
-			# now write the xml record for this match
-			#
-
-			print "\t<tessdata keypair=\"$keys\" score=\"$score\">\n";
-
-			print "\t\t<phrase text=\"source\" work=\"$abbr{$source}\" "
-					. "unitID=\"$unit_id_source\" "
-					. "line=\"$unit_source[$unit_id_source]{LOCUS}\">";
-
-			# here we print the unit
-
-			for my $token_id_source (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
-			
-				if (defined $marked_source{$token_id_source}) { print '<span class="matched">' }
-
-				# print the display copy of the token
-			
-				print $token_source[$token_id_source]{DISPLAY};
-			
-				# close the tag if necessary
-			
-				if (defined $marked_source{$token_id_source}) { print '</span>' }
-			}
-
-			print "</phrase>\n";
-		
-			# same as above, for the target now
-		
-			print "\t\t<phrase text=\"target\" work=\"$abbr{$target}\" "
-					. "unitID=\"$unit_id_target\" "
-					. "line=\"$unit_target[$unit_id_target]{LOCUS}\">";
-
-			for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
-			
-				if (defined $marked_target{$token_id_target}) { print '<span class="matched">' }
-				print $token_target[$token_id_target]{DISPLAY};
-				if (defined $marked_target{$token_id_target}) { print "</span>" }
-			}
-
-			print "</phrase>\n";
-
-			print "\t</tessdata>\n";
-
+		for (keys %{$match_target{$unit_id_target}{$unit_id_source}}) { 
+	
+			$marked_target{$_} = 1;
+	
+			$seen_keys{join("-", sort keys %{$match_target{$unit_id_target}{$unit_id_source}{$_}})} = 1;
 		}
-	}
+	
+		for (keys %{$match_source{$unit_id_target}{$unit_id_source}}) {
+	
+			$marked_source{$_} = 1;
 
+			$seen_keys{join("-", sort keys %{$match_source{$unit_id_target}{$unit_id_source}{$_}})} = 1;
+		}
+		
+		# format the list of all unique shared words
+
+		my $keys = join(", ", keys %seen_keys);
+
+		#
+		# now write the xml record for this match
+		#
+
+		print "\t<tessdata keypair=\"$keys\" score=\"$score\">\n";
+
+		print "\t\t<phrase text=\"source\" work=\"$abbr{$source}\" "
+				. "unitID=\"$unit_id_source\" "
+				. "line=\"$unit_source[$unit_id_source]{LOCUS}\">";
+
+		# here we print the unit
+
+		for my $token_id_source (@{$unit_source[$unit_id_source]{TOKEN_ID}}) {
+		
+			if (defined $marked_source{$token_id_source}) { print '<span class="matched">' }
+
+			# print the display copy of the token
+		
+			print $token_source[$token_id_source]{DISPLAY};
+		
+			# close the tag if necessary
+		
+			if (defined $marked_source{$token_id_source}) { print '</span>' }
+		}
+
+		print "</phrase>\n";
+	
+		# same as above, for the target now
+	
+		print "\t\t<phrase text=\"target\" work=\"$abbr{$target}\" "
+				. "unitID=\"$unit_id_target\" "
+				. "line=\"$unit_target[$unit_id_target]{LOCUS}\">";
+
+		for my $token_id_target (@{$unit_target[$unit_id_target]{TOKEN_ID}}) {
+		
+			if (defined $marked_target{$token_id_target}) { print '<span class="matched">' }
+			print $token_target[$token_id_target]{DISPLAY};
+			if (defined $marked_target{$token_id_target}) { print "</span>" }
+		}
+
+		print "</phrase>\n";
+
+		print "\t</tessdata>\n";
+	}
 
 	# finish off the xml doc
 
@@ -950,29 +944,27 @@ END
 sub sort_results {
 	
 	my @rec;
+	my @score_;
 		
-	for my $unit_id_target (sort {$a <=> $b} keys %match) {
+	for my $unit_id_target (sort {$a <=> $b} keys %score) {
 
-		for my $unit_id_source (sort {$a <=> $b} keys %{$match{$unit_id_target}}) {
+		for my $unit_id_source (sort {$a <=> $b} keys %{$score{$unit_id_target}}) {
 			
 			push @rec, {target => $unit_id_target, source => $unit_id_source};
 		}
 	}
 	
-	if ($export ne "xml") {
-	
-		if ($sort eq "source") {
-	
-			@rec = sort {$$a{source} <=> $$b{source}} @rec;
-		}
-	
-		if ($sort eq "score") {
-	
-			@rec = sort {$match{$$a{target}}{$$a{source}}{SCORE} <=> $match{$$b{target}}{$$b{source}}{SCORE}} @rec;
-		}
+	if ($sort eq "source") {
 
-		if ($rev) { @rec = reverse @rec };
+		@rec = sort {$$a{source} <=> $$b{source}} @rec;
 	}
+
+	if ($sort eq "score") {
+
+		@rec = sort {$score{$$a{target}}{$$a{source}} <=> $score{$$b{target}}{$$b{source}}} @rec;
+	}
+
+	if ($rev) { @rec = reverse @rec };
 	
 	return \@rec;
 }

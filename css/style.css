@@ -419,3 +419,31 @@ table.output th {
 	background-color: #e1e6c6;
 }
 
+div.pr_container {
+
+	text-align: center;
+}
+
+table.pr_bar {
+
+	width:400px;
+	border:1px solid black;
+	padding:1px;
+	margin:auto;
+	border-collapse:collapse;
+}
+td.pr_unit {
+
+	width:10px;
+	padding:0px;
+	margin:1px;
+	color:green;
+	background-color:green;				
+}
+td.pr_spacer {
+
+	width:10px;
+	height:0px;
+	padding:0px;
+	margin:0px;
+}
