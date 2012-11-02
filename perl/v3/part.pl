@@ -31,21 +31,21 @@ while (my $file = shift @ARGV)
 	open (IF, "<$file");
 	open (OF, ">&STDERR");
 
-	while (my $line = <IF>)
-	{
-		if ( $line =~ /^<(.+?)>/ )
-		{
+	while (my $line = <IF>) {
+
+		if ( $line =~ /^<(.+?)>/ ) {
+
 			$n = $1;
 
 			$n =~ s/.*\s+//;
 			$n =~ s/\..*//;
 		}
 
-		if ($n ne $last_n)
-		{
+		if ($n ne $last_n) {
+
 			close OF;
 
-			print STDERR "$nlines lines\n";
+			print STDERR "$nlines lines\n" unless $last_n == -1;
 
 			open (OF, ">$path$name/$name.part.$n.tess");
 
@@ -60,6 +60,8 @@ while (my $file = shift @ARGV)
 
 		$last_n = $n;
 	}
+
+	print STDERR "$nlines lines\n";
 
 	close OF;
 	close IF;

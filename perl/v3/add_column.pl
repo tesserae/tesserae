@@ -62,6 +62,12 @@ my $max_processes = 0;
 my $pm;
 
 #
+# work is prose
+#
+
+my $prose = 0;
+
+#
 # declare language tools
 #
 
@@ -79,7 +85,8 @@ GetOptions(
 	"lang=s"          => \$lang,
 	"parallel=i"      => \$max_processes,
 	"quiet"           => \$quiet,
-	"use-lingua-stem" => \$use_lingua_stem
+	"use-lingua-stem" => \$use_lingua_stem,
+   "prose"           => \$prose
 	);
 
 # get language list
@@ -514,6 +521,13 @@ for my $file_in (@files) {
 
 	print "writing $file_out.token\n" unless $quiet;
 	nstore \@token, "$file_out.token";
+
+	# in the case of prose, overwrite line data
+   # with phrase data
+
+   @line = @phrase if $prose;
+
+   # store line and phrase data
 
 	print "writing $file_out.line\n" unless $quiet;
 	nstore \@line, "$file_out.line";
