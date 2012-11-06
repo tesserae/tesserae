@@ -78,16 +78,27 @@ GetOptions(
 #
 
 unless ($no_cgi) {
-	
-	print header('-charset'=>'utf-8', '-type'=>'text/html');
-	
+		
+	# form data
+		
 	$session    = $query->param('session');
 	$sort       = $query->param('sort')    || $sort;
+	$export     = $query->param('export')  || $export;
 	$rev        = $query->param('rev') if defined $query->param('rev');
 	
-	$export = "html";
-	
 	$quiet = 1;
+	
+	$export = "html" unless $export eq "tab";
+	
+	# header
+	
+	my %h = ('-charset'=>'utf-8', '-type'=>'text/html');
+	
+	if ($export eq "xml") { $h{'-type'} = "text/xml"; $h{'-attachment'} = "tesresults-$session.xml" }
+	if ($export eq "csv") { $h{'-type'} = "text/csv"; $h{'-attachment'} = "tesresults-$session.csv" }
+	if ($export eq "tab") { $h{'-type'} = "text/plain"; $h{'-attachment'} = "tesresults-$session.txt" }
+
+	print header(%h);
 } 
 
 #
@@ -223,10 +234,12 @@ for my $i (0..$#bench) {
 	}
 }	
 
-print STDERR "bench has " . scalar(@bench) . " records\n";
-print STDERR "order has " . scalar(@order) . " records\n";
-print STDERR "missed has " . scalar(@missed) . " records\n";
+unless ($quiet) {
 
+	print STDERR "bench has " . scalar(@bench) . " records\n";
+	print STDERR "order has " . scalar(@order) . " records\n";
+	print STDERR "missed has " . scalar(@missed) . " records\n";
+}
 
 #
 # load multi results
@@ -750,7 +763,7 @@ sub print_delim {
 
 			# get the score
 		
-			my $score = sprintf("%.1i", $score{$unit_id_target}{$unit_id_source});
+			my $score = sprintf("%.3f", $score{$unit_id_target}{$unit_id_source});
 
 			# get benchmark data
 
@@ -760,7 +773,7 @@ sub print_delim {
 			
 			if (defined $auth{$unit_id_target}{$unit_id_source}) {
 			
-				$auth = join(",", @{$auth{$unit_id_target}{$unit_id_source}});
+				$auth = '"' . join(",", @{$auth{$unit_id_target}{$unit_id_source}}) . '"';
 			}
 			
 			#

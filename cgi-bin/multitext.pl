@@ -373,55 +373,31 @@ sub search_multi {
 	if ($no_cgi) {
 	
 		print STDERR "multi-searching on " . scalar(@textlist) . " texts.\n" unless $quiet;
-	
-		$pr = ProgressBar->new($#textlist+1, $quiet);
 	}
 	else {
 	
 		print "<p>cross-referencing against " . scalar(@textlist) . " texts...</p>\n";
-	
-		$pr = HTMLProgress->new($#textlist+1);
 	}
 
-	# initialize parallel processing
-	
-	my $pm;
-	
-	if ($max_processes) {
-	
-		$pm = Parallel::ForkManager->new($max_processes);
-	}
 
 	# check all the other texts
 		
 	for my $i (0..$#textlist) {
-	
-		$pr->advance;
-	
-		if ($max_processes) {
-		
-			$pm->start and next;
-		}
-			
+				
 		my $other = $textlist[$i];
 		
 		# print status info
+			
+		if ($no_cgi) {
 		
-# 		unless ($quiet) {
-# 			
-# 			if ($no_cgi) {
-# 		
-# 				print STDERR sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other);
-# 			}
-# 			else {
-# 			
-# 				print "<div style=\"padding:10px; width:50%; position:absolute; left:25%; top:12em; background-color:grey; color:black;\">\n<pre>";
-# 			
-# 			
-# 				print sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other);
-# 			}
-# 		}
-# 
+			print STDERR sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other) unless $quiet;
+			
+		}
+		else {
+			
+			print sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other);
+		}
+
 		my $file = catfile($fs_data, 'v3', $lang{$target}, $other, $other);
 		
 		my %index_other = %{ retrieve("$file.multi_${unit}_${feature}") };
@@ -431,10 +407,17 @@ sub search_multi {
 		# keyed to the target-source parallel
 		
 		my %multi;
-		
+				
 		# check their keypair indices 
 
+		my $pr;
+		
+		if ($no_cgi) { $pr = ProgressBar->new(scalar(keys %index_keypair), $quiet) }
+		else         { $pr = HTMLProgress->new(scalar(keys %index_keypair)) }
+
 		for my $keypair (keys %index_keypair) {
+		
+			$pr->advance();
 					
 			next unless defined $index_other{$keypair};
 			
@@ -460,11 +443,7 @@ sub search_multi {
 		my $file_out = catfile($multi_dir, $other);
 		
 		nstore \%multi, $file_out;
-		
-		$pm->finish if $max_processes;
-	}
-	
-	$pm->wait_all_children if $max_processes;
+	}	
 }
 
 

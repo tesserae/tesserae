@@ -64,14 +64,19 @@ sub draw {
 		
 			$self->{PROGRESS} = $self->{COUNT} / $self->{END};
 		
-			my $bars = int($self->{PROGRESS} * 41);
-			if ($bars == 41) { $bars-- }
+			my $bars = POSIX::floor($self->{PROGRESS} * 40);
 		
 			print STDERR "\r" . "0% |" . ("#" x $bars) . (" " x (40 - $bars)) . "| 100%";
 		}
 	}
 	
 	if ($self->{COUNT} >= $self->{END}) {
+		
+		$self->{PROGRESS} = $self->{COUNT} / $self->{END};
+		
+		my $bars = POSIX::floor($self->{PROGRESS} * 40);
+		
+		print STDERR "\r" . "0% |" . ("#" x $bars) . (" " x (40 - $bars)) . "| 100%";
 		
 		$self->finish();
 	}	
