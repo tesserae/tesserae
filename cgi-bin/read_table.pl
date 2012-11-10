@@ -214,7 +214,7 @@ my $max_dist = 999;
 
 # metric for measuring distance
 
-my $distance_metric = "span";
+my $distance_metric = "freq";
 
 # filter results below a certain score
 
@@ -222,7 +222,11 @@ my $cutoff = 0;
 
 # filter multi-results if passing off to multitext.pl
 
-my $multi_cutoff = 0;
+my $multi_cutoff = 0;                  
+
+# text list to pass on to multitext.pl
+
+my @include;
 
 # which script should mediate the display of results
 
@@ -348,6 +352,7 @@ else {
 	$interest        = $query->param('interest')     || $interest;
 	$frontend        = $query->param('frontend')     || $frontend;
 	$multi_cutoff    = $query->param('mcutoff')      || $multi_cutoff;
+	@include         = $query->param('include');
 	
 	if ($source eq "" or $target eq "") {
 	
@@ -359,10 +364,11 @@ else {
 	# how to redirect browser to results
 
 	%redirect = ( 
-		default  => "$url_cgi/read_bin.pl?session=$session;sort=target",
+		default  => "$url_cgi/read_bin.pl?session=$session",
 		recall   => "$url_cgi/check-recall.pl?session=$session",
 		fulltext => "$url_cgi/fulltext.pl?session=$session",
 		multi    => "$url_cgi/multitext.pl?session=$session;mcutoff=$multi_cutoff"
+		         . join("", map {";include=$_"} @include)
 	);
 
 	
@@ -374,6 +380,8 @@ else {
 			Searching...
 		</p>
 END
+                                       
+
 
 }
 

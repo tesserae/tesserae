@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
    "http://www.w3.org/TR/html4/strict.dtd">
-<?php $url_html="http://ahmik/~chris/tesserae/html" ?><!-- URL_HTML -->
-<?php $url_css="http://ahmik/~chris/tesserae/css" ?><!-- URL_CSS -->
-<?php $url_cgi="http://ahmik/~chris/tesserae/cgi-bin" ?><!-- URL_CGI -->
-<?php $url_image="http://ahmik/~chris/tesserae/images" ?><!-- URL_IMAGE -->
-<?php $url_text="http://ahmik/~chris/tesserae/texts" ?><!-- URL_TEXT -->
+<?php $url_html="http://localhost/~chris/tesserae/html" ?><!-- URL_HTML -->
+<?php $url_css="http://localhost/~chris/tesserae/css" ?><!-- URL_CSS -->
+<?php $url_cgi="http://localhost/~chris/tesserae/cgi-bin" ?><!-- URL_CGI -->
+<?php $url_image="http://localhost/~chris/tesserae/images" ?><!-- URL_IMAGE -->
+<?php $url_text="http://localhost/~chris/tesserae/texts" ?><!-- URL_TEXT -->
 <?php $fs_html="/Users/chris/Sites/tesserae/html" ?><!-- FS_HTML -->
 
 
@@ -33,9 +33,9 @@
 
 			<div id="nav_main">
 				<ul>
-					<li><a href="<?php echo $url_html ?>">Search Home</a></li>
+					<li><a href="<?php echo $url_html ?>">Search</a></li>
 					<li><a href="<?php echo $url_html . "/help.php" ?>">Help</a></li>
-					<li><a href="<?php echo $url_html . "/about.php" ?>">About</a></li>
-					<li><a href="<?php echo $url_html . "/research.php" ?>">Research</a></li>
+					<li><a href="http://tesserae.caset.buffalo.edu/blog">News</a></li>
+					<li><a href="<?php echo $url_html . "/howtocite.php" ?>">Cite</a></li>
 				</ul>
 			</div>

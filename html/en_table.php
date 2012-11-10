@@ -44,8 +44,8 @@
 						<td><span class="h2">Feature:</span></td>
 						<td>
 							<select name="feature">
-								<option value="word" selected="selected">exact form only</option>
-								<option value="stem">lemma</option>
+								<option value="word">exact form only</option>
+								<option value="stem" selected="selected">lemma</option>
 								<option value="syn" disabled="disabled">lemma + synonyms</option>
 							</select>
 						</td>
@@ -98,7 +98,7 @@
 								<option value="span">span</option>
 								<option value="span-target">span-target</option>
 								<option value="span-source">span-source</option>
-								<option value="freq">frequency</option>
+								<option value="freq" selected="selected">frequency</option>
 								<option value="freq-target">freq-target</option>
 								<option value="freq-source">freq-source</option>
 							</select>

@@ -111,7 +111,8 @@ unless ($no_cgi) {
 	my $query   = new CGI || die "$!";
 
 	$session    = $query->param('session') || die "no session specified from web interface";
-	$multi_cutoff = $query->param('mcutoff');
+	$multi_cutoff = $query->param('mcutoff'); 
+	@include = $query->param('include');
 
 	print header();
 	
@@ -395,6 +396,8 @@ sub search_multi {
 		}
 		else {
 			
+			print "<div style=\"position: absolute; top:200px; height:200px; left:20%; width:60%; background-color:white\">\n";        
+			
 			print sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other);
 		}
 
@@ -437,14 +440,16 @@ sub search_multi {
 					   SCORE => $score_other
 					};
 				}
-			}
+			} 			
 		}
 						
 		my $file_out = catfile($multi_dir, $other);
 		
 		nstore \%multi, $file_out;
-	}	
-}
+		
+		print "</div>\n" unless $no_cgi;    
+	}	     
+}                    
 
 
 sub unique_keypairs {

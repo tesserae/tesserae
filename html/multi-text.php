@@ -2,8 +2,8 @@
 		
 		<?php include "nav_search.php"; ?>
 
-		</div>
-		
+		</div>                                   
+	  
 		<div id="main">
 			
 			<form action="<?php echo $url_cgi.'/read_table.pl'; ?>" method="post" ID="Form1">
@@ -134,13 +134,35 @@
                                                 </td>
 
 					</tr>
+					<tr>
+						<td><span class="h2">Texts to search:</span></td>
+						<td><input type="checkbox" id="select_all" onclick="return SelectAll()" value=1>Select All</input></td>
+					</tr>
+				</table>                       
+				
+				<h2></h2>
+					<?php include $fs_html . '/textlist.la.multi.php' ?>
+				</tr>
 
-				</table>
-
-				<input type="hidden" name="frontend" value="multi" />
-				<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit" />
-			</form>
+				<p>
+					<input type="hidden" name="frontend" value="multi" />
+					<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit" />
+				</p>
+		</form>
 		</div>
+                 
+		<script language="javascript">
+		
+			function SelectAll() {                             
+				var master = document.getElementById('select_all');
+  			   var chkbox = document.getElementsByName('include');
+				                                            
+				for (var i = 0; i < chkbox.length; i++) {
+				 
+				  chkbox[i].checked = master.checked;
+				}
+			}
+		</script>
 
 		<?php include "last.php"; ?>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-<xsl:variable name="url_html" select="'http://ahmik/~chris/tesserae/html'"/><!-- URL_HTML -->
-<xsl:variable name="url_text" select="'http://ahmik/~chris/tesserae/texts'"/><!-- URL_TEXT -->
+<xsl:variable name="url_html" select="'http://localhost/~chris/tesserae/html'"/><!-- URL_HTML -->
+<xsl:variable name="url_text" select="'http://localhost/~chris/tesserae/texts'"/><!-- URL_TEXT -->
 
    <xsl:output method="text"/>
 

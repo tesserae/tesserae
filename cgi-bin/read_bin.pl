@@ -119,7 +119,7 @@ my $quiet = 0;
 
 # sort algorithm
 
-my $sort = 'target';
+my $sort = 'score';
 
 # first page of results to display
 
@@ -131,7 +131,7 @@ my $batch = 100;
 
 # reverse order ?
 
-my $rev = 0;
+my $rev = 1;
 
 # determine file from session id
 
@@ -164,7 +164,7 @@ unless ($no_cgi) {
 
 	$session = $query->param('session')    || die "no session specified from web interface";
 	$sort       = $query->param('sort')    || $sort;
-	$rev        = $query->param('rev')     || $rev;
+	$rev        = $query->param('rev')     if defined ($query->param("rev"));
 	$page       = $query->param('page')    || $page;
 	$batch      = $query->param('batch')   || $batch;
 	$export     = $query->param('export')  || $export;
@@ -636,7 +636,9 @@ sub print_html {
 		print "      </table>\n";
 		print "    </td>\n";
 		
-		# keywords
+		# keywords       
+		
+		if ($lang{$target} eq "grc") { $keys = TessSystemVars::beta_to_uni($keys) }
 		
 		print "    <td>$keys</td>\n";
 

@@ -100,7 +100,7 @@
 								<option value="span">span</option>
 								<option value="span-target">span-target</option>
 								<option value="span-source">span-source</option>
-								<option value="freq">frequency</option>
+								<option value="freq" selected="selected">frequency</option>
 								<option value="freq-target">freq-target</option>
 								<option value="freq-source">freq-source</option>
 							</select>

@@ -10,7 +10,8 @@ use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 use strict;
 use warnings; 
-
+                                       
+use File::Spec::Functions;
 use Storable qw(nstore retrieve);
 
 use TessSystemVars;
@@ -21,12 +22,12 @@ use TessSystemVars;
 #
 
 my %abbr;
-my $file_abbr = "$fs_data/common/abbr";
+my $file_abbr = catfile($fs_data, 'common', 'abbr');
 	
 if ( -s $file_abbr )	{  %abbr = %{retrieve($file_abbr)} }
 
 my %lang;
-my $file_lang = "$fs_data/common/lang";
+my $file_lang = catfile($fs_data, 'common', 'lang');
 
 if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
 
@@ -91,12 +92,19 @@ while (my $file_in = shift @ARGV) {
 		$lang{$name} = $lang;
 		nstore \%lang, $file_lang;
 	}
-}
+}                                                         
+
+my $multi_counter = 1;
 
 for my $lang (keys %text) {
-
-	open (FHL, ">", "$fs_html/textlist.$lang.l.php");
-	open (FHR, ">", "$fs_html/textlist.$lang.r.php");
+                   
+   my $base = catfile($fs_html, "textlist.$lang");
+	
+	open (FHL, ">", "$base.l.php");
+	open (FHR, ">", "$base.r.php");
+	open (FHM, ">", "$base.multi.php");     
+	
+	print FHM "<table>\n<tr>\n";
 
 	for my $name ( sort @{$text{$lang}} ) {
 	
@@ -110,12 +118,17 @@ for my $lang (keys %text) {
 		$display =~ s/\b([a-z])/uc($1)/eg;
 
 		print FHL "<option value=\"$name\">$display</option>\n";
+
+		print FHM "</tr>\n<tr>\n" if ($multi_counter % 2);
+		$multi_counter ++;
+
+		print FHM "\t<td><input type=\"checkbox\" name=\"include\" value=\"$name\">$display</input></td>\n";                            
 		
 		if ( defined $part{$name} ) {
 
 			print FHR "<optgroup label=\"$display\">\n";
 			
-			print FHR "   <option value=\"$name\">$display - Full Text</option>\n";
+#			print FHR "   <option value=\"$name\">$display - Full Text</option>\n";
 		
 			for my $part ( sort { $a <=> $b } @{$part{$name}}) {
 				
@@ -130,6 +143,9 @@ for my $lang (keys %text) {
 		}
 	}
 
-	close FHL;
-	close FHR;
+	print FHM "</tr>\n</table>\n";
+
+	close FHL;                    
+	close FHR;                    
+	close FHM;
 }

@@ -6,10 +6,10 @@
 
 
 			<div id="main">
-				<h1>Experimental Versions</h1>
+				<h1>Other Search Tools</h1>
 
 				<p>
-					Here you can try out some new searches we're still testing.  We would appreciate any feedback you have.  Caution: results may not be very stable.
+					Here you can try out some searches we're still testing.  We would appreciate any feedback you have.  Caution: results may not be very stable.
 				</p>
 
 				<h2><a href="<?php echo $url_html.'/multi-text.php'; ?>">Multi-text search</a></h2>
@@ -24,12 +24,12 @@
 					Displays the full text of the poems with references highlighted in red.
 				</p>
 
-				<h2><a href="<?php echo $url_html.'/en_table.php'; ?>">English Search</a></h2>
+				<h2><a href="<?php echo $url_html.'/legacy.php'; ?>">Older Versions</a></h2>
 
 				<p>
-					Search a limited number of English texts.  Currently supports exact-match only.
+					Access to Tesserae Versions 1 and 2 for those who continue to use them.
 				</p>
-				
+
 				<h2><a href="<?php echo $url_cgi.'/check-recall.pl'; ?>">Lucan-Vergil Benchmark Test</a></h2>
 
 				<p>
