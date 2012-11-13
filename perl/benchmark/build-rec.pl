@@ -37,9 +37,9 @@ my $check_alts_threshold = .3;
 
 my %file = (
 	
-	lucan_token         => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.token",
-	lucan_line          => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.line",			
-	lucan_phrase        => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.phrase",
+	lucan_token         => "$fs_data/v3/la/lucan.bellum_civile.part.1/lucan.bellum_civile.part.1.token",
+	lucan_line          => "$fs_data/v3/la/lucan.bellum_civile.part.1/lucan.bellum_civile.part.1.line",			
+	lucan_phrase        => "$fs_data/v3/la/lucan.bellum_civile.part.1/lucan.bellum_civile.part.1.phrase",
 	
 	vergil_token        => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.token",
 	vergil_line         => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.line",			

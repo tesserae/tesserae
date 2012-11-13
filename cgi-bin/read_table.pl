@@ -373,7 +373,7 @@ else {
 
 	
 	print <<END;
-	<meta http-equiv="Refresh" content="0; url='$redirect{$frontend}'">
+	<!--<meta http-equiv="Refresh" content="0; url='$redirect{$frontend}'">-->
 	</head>
 	<body>
 		<p>
@@ -576,6 +576,13 @@ for my $unit_id_target (keys %match_target) {
 	# sort in numerical order
 
 	for my $unit_id_source (keys %{$match_target{$unit_id_target}}) {
+                                     
+		# intra-textual matching:
+		# 
+		# where source and target are the same text, don't match
+		# a line with itself
+		
+		next if ($source eq $target) and ($unit_id_source == $unit_id_target);
 
 		#
 		# remove matches having fewer than 2 matching words

@@ -41,7 +41,7 @@ my $rev = 1;
 my @w = (7);
 my $quiet = 1;
 
-my %name = ( source => 'vergil.aeneid', target => 'lucan.pharsalia.part.1');
+my %name = ( source => 'vergil.aeneid', target => 'lucan.bellum_civile.part.1');
 
 my %file;
 
@@ -584,7 +584,7 @@ sub info {
 		<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>
 		
 		<input type="hidden" name="source" value="vergil.aeneid"/>
-		<input type="hidden" name="target" value="lucan.pharsalia.part.1"/>
+		<input type="hidden" name="target" value="lucan.bellum_civile.part.1"/>
 		<input type="hidden" name="unit" value="phrase"/>
 		<input type="hidden" name="frontend" value="recall"/>
 		
