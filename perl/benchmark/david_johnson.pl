@@ -32,8 +32,8 @@ my %file = (
 	
 	freq_stem_AEN => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.freq_score_stem",
 	freq_word_AEN => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.freq_score_word",
-	freq_stem_BC  => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.freq_score_stem",
-	freq_word_BC  => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.freq_score_word",
+	freq_stem_BC  => "$fs_data/v3/la/lucan.bellum_civile.part.1/lucan.bellum_civile.part.1.freq_score_stem",
+	freq_word_BC  => "$fs_data/v3/la/lucan.bellum_civile.part.1/lucan.bellum_civile.part.1.freq_score_word",
 	freq_stem_ALL => "$fs_data/common/la.stem.freq",
 	freq_word_ALL => "$fs_data/common/la.word.freq",
 	
@@ -1176,46 +1176,6 @@ sub semantic {
 	return \%param;
 }
 
-sub word_bigram {
-
-	my $rec_ref = shift;
-	
-	my %rec = %$rec_ref;
-	
-	my %param;
-	
-	my %seen;
-	
-	for my $text qw(BC AEN) {
-	
-		my %
-	
-		for my $stem (keys %{$rec{STEM}}) {
-		
-			for my $token_id (@{$rec{STEM}{$stem}}) {
-			
-				$seen{$text}{$token_id}{$stem} = 1;
-			}
-		}
-	}
-	
-	for my $text qw(BC AEN) {
-	
-		$seen{$text} = [map { join("-", keys %seen{$text}{$_}) } keys %seen{$text}];
-	}
-	
-	my %
-	
-	for my $stem_a (@{$seen{BC}}) {
-	
-		for my $stem_b (@{$seen{AEN}}) {
-		
-			next if $stem_a eq $stem_b;
-	
-			
-		}
-	}
-}
 
 #
 #  Levenshtein distance

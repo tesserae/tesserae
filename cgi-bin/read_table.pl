@@ -373,7 +373,7 @@ else {
 
 	
 	print <<END;
-	<!--<meta http-equiv="Refresh" content="0; url='$redirect{$frontend}'">-->
+	<meta http-equiv="Refresh" content="0; url='$redirect{$frontend}'">
 	</head>
 	<body>
 		<p>
@@ -773,7 +773,7 @@ sub dist {
 	my @target_id = sort {$a <=> $b} keys %match_target;
 	my @source_id = sort {$a <=> $b} keys %match_source;
 	
-	my $dist;
+	my $dist = 0;
 	
 	if ($metric eq "span") {
 	
@@ -791,12 +791,22 @@ sub dist {
 	elsif ($metric eq "freq") {
 		
 		my @t = sort {$freq_target{$token_target[$a]{FORM}} <=> $freq_target{$token_target[$b]{FORM}}} @target_id; 
+			      
+		if ($t[0] > $t[1]) { @t[0,1] = @t[1,0] }
 			
-		$dist  = abs($t[0] - $t[1]);
-
+		for ($t[0]..$t[1]) {
+		
+		  $dist++ if $token_target[$_]{TYPE} eq 'WORD';
+		}
+			
 		my @s = sort {$freq_source{$token_source[$a]{FORM}} <=> $freq_source{$token_source[$b]{FORM}}} @source_id; 
 		
-		$dist += abs($s[0] - $s[1]);
+		if ($s[0] > $s[1]) { @s[0,1] = @s[1,0] }
+			
+		for ($s[0]..$s[1]) {
+		
+		  $dist++ if $token_source[$_]{TYPE} eq 'WORD';
+		}
 	}
 	elsif ($metric eq "freq_target") {
 		
@@ -931,7 +941,7 @@ sub score_default {
 		$score += 1/$freq_source{$token_source[$token_id_source]{FORM}};
 	}
 	
-	$score = sprintf("%.3f", log($score/$distance));
+	$score = sprintf("%.3f", log($score/$distance**2));
 	
 	return $score;
 }
