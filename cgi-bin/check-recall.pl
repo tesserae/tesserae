@@ -83,12 +83,10 @@ unless ($no_cgi) {
 		
 	$session    = $query->param('session');
 	$sort       = $query->param('sort')    || $sort;
-	$export     = $query->param('export')  || $export;
+	$export     = $query->param('export')  || 'html';
 	$rev        = $query->param('rev') if defined $query->param('rev');
 	
 	$quiet = 1;
-	
-	$export = "html" unless $export eq "tab";
 	
 	# header
 	
@@ -97,6 +95,8 @@ unless ($no_cgi) {
 	if ($export eq "xml") { $h{'-type'} = "text/xml"; $h{'-attachment'} = "tesresults-$session.xml" }
 	if ($export eq "csv") { $h{'-type'} = "text/csv"; $h{'-attachment'} = "tesresults-$session.csv" }
 	if ($export eq "tab") { $h{'-type'} = "text/plain"; $h{'-attachment'} = "tesresults-$session.txt" }
+	if ($export =~ /^miss/) { $h{'-type'} = "text/plain"; $h{'-attachment'} = "tesresults-$session.missed.txt" }
+
 
 	print header(%h);
 } 

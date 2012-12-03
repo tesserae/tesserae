@@ -40,16 +40,6 @@ for (@ARGV) {
 #
 
 for my $lang(@lang) {
-
-	my $file_stem_cache = catfile($fs_data, 'common', $lang . '.stem.cache');
-	my $file_syn_cache  = catfile($fs_data, 'common', $lang . '.syn.cache');
-
-	my %file_freq = (
-	
-		word  => catfile($fs_data, 'common', $lang . '.word.freq'),
-		stem  => catfile($fs_data, 'common', $lang . '.stem.freq'),
-		syn   => catfile($fs_data, 'common', $lang . '.syn.freq'),
-	);
 	
 	# get a list of all the word counts
 
@@ -74,7 +64,7 @@ for my $lang(@lang) {
 	
 		print STDERR "checking $text:";
 		
-		for my $feature (qw/word stem syn/) {
+		for my $feature (qw/word stem syn 3gr/) {
 		
 			my $file_index = catfile($fs_data, 'v3', $lang, $text, "$text.index_$feature");
 
@@ -97,7 +87,7 @@ for my $lang(@lang) {
 	# after the whole corpus is tallied,	
 	# convert counts to frequencies and save
 	
-	for my $feature (qw/word stem syn/) {
+	for my $feature (qw/word stem syn 3gr/) {
 	
 		next unless defined $count{$feature};
 		
@@ -106,8 +96,10 @@ for my $lang(@lang) {
 			$_ /= $total{$feature};
 		}
 
-		print STDERR "writing $file_freq{$feature}\n";
+		my $file_freq = catfile($fs_data, 'common', $lang . '.' . $feature . '.freq');
+
+		print STDERR "writing $file_freq\n";
 	
-		nstore $count{$feature}, $file_freq{$feature};
+		nstore $count{$feature}, $file_freq;
 	}
 }

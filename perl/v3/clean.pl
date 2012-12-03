@@ -57,6 +57,7 @@ if ($clean{text}) {
 		mkpath catdir($fs_data, 'v3', $_);
 
 		unlink glob(catfile($fs_data, 'common', $_ . '.*.count'));
+		unlink glob(catfile($fs_data, 'common', $_ . '.*.freq'));
 	}
 	
 	for my $text (keys %abbr) {

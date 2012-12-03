@@ -9,7 +9,7 @@ our @ISA = qw(Exporter);
 
 our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_image $url_tmp $apache_user %is_word %non_word $phrase_delimiter %ancillary);
 
-our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni);
+our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni alpha);
 
 my $fs_base = "/Users/chris/Sites/tesserae";
 
@@ -22,7 +22,7 @@ our $fs_text = "/Users/chris/Sites/tesserae/texts";
 our $fs_tmp = "/Users/chris/Sites/tesserae/tmp";
 our $fs_xsl = "/Users/chris/Sites/tesserae/xsl";
 
-my $url_base = "http://localhost/~chris/tesserae";
+my $url_base = "http://ahmik/~chris/tesserae";
 
 our $url_cgi = $url_base . "/cgi-bin";
 our $url_css = $url_base . "/css";
@@ -283,6 +283,20 @@ sub beta_to_uni
 	}
 
 	return wantarray ? @text : $text[0];
+}
+
+sub alpha {
+
+	my ($lang, $form) = @_;
+
+	$form =~ s/[^a-z]//;
+
+	if ($lang eq 'grc') {
+	
+		$form = beta_to_uni($form);
+	}
+
+	return $form;
 }
 
 1;

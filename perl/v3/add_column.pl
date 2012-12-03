@@ -395,6 +395,15 @@ for my $file_in (@files) {
 				
 					push @{$index{syn}{$syn}}, $#token;
 				}
+				
+				# by chr 3-grams
+				
+				my $alpha = TessSystemVars::alpha($lang, $form);
+								
+				for my $ngram (@{chr_ngrams(3, $alpha)}) {
+								
+					push @{$index{"3gr"}{$ngram}}, $#token;
+				}				
 			}
 
 			#
@@ -523,11 +532,11 @@ for my $file_in (@files) {
 	nstore \@token, "$file_out.token";
 
 	# in the case of prose, overwrite line data
-   # with phrase data
+	# with phrase data
 
-   @line = @phrase if $prose;
+	@line = @phrase if $prose;
 
-   # store line and phrase data
+	# store line and phrase data
 
 	print "writing $file_out.line\n" unless $quiet;
 	nstore \@line, "$file_out.line";
@@ -535,7 +544,7 @@ for my $file_in (@files) {
 	print "writing $file_out.phrase\n" unless $quiet;
 	nstore \@phrase, "$file_out.phrase";
 
-	for (qw/word stem syn/) {
+	for (qw/word stem syn 3gr/) {
 	
 		next if $omit{$_};
 
@@ -695,6 +704,7 @@ sub freq_score {
 		
 		if    ($feature eq 'stem') { @indexable = @{stems($word)} }
 		elsif ($feature eq 'syn' ) { @indexable = @{syns($word)}  }
+		elsif ($feature eq '3gr' ) { @indexable = @{chr_ngrams(3, TessSystemVars::alpha($lang, $word))}  }
 		else                       { return {} }
 		
 		for my $key (@indexable) {
@@ -720,6 +730,7 @@ sub freq_score {
 		
 		if    ($feature eq 'stem') { @indexable = @{stems($word1)} }
 		elsif ($feature eq 'syn' ) { @indexable = @{syns($word1)}  }
+		elsif ($feature eq '3gr' ) { @indexable = @{chr_ngrams(3, TessSystemVars::alpha($lang, $word1))}  }
 						
 		# for each of its indexable features
 		
@@ -784,4 +795,21 @@ sub syns {
 	}
 	
 	return [keys %syns];
+}
+
+sub chr_ngrams {
+
+	my ($n, $form) = @_;
+	
+	my %ngrams;
+	
+	if (length($form) >= $n) {
+	
+		for (my $i = 0; $i < length($form) - $n + 1; $i++) {
+		
+			$ngrams{substr($form, $i, 3)} = 1;
+		}
+	}
+	
+	return [keys %ngrams];
 }
