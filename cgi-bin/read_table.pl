@@ -775,29 +775,33 @@ sub dist {
 	
 	my $dist = 0;
 	
-	if ($metric eq "span") {
+	#
+	# distance is calculated by one of the following metrics
+	#
 	
-		$dist  = $target_id[-1] - $target_id[0];
-		$dist += $source_id[-1] - $source_id[0];
-	}
-	elsif ($metric eq "span_target") {
-		
-		$dist = $target_id[-1] - $target_id[0];
-	}
-	elsif ($metric eq "span_source") {
-		
-		$dist = $source_id[-1] - $source_id[0];
-	}
-	elsif ($metric eq "freq") {
+	# freq: count all words between (and including) the two lowest-frequency 
+	# matching words in each phrase.  NB this is the best metric in my opinion.
+	
+	if ($metric eq "freq") {
+	
+		# sort target token ids by frequency of the forms
 		
 		my @t = sort {$freq_target{$token_target[$a]{FORM}} <=> $freq_target{$token_target[$b]{FORM}}} @target_id; 
 			      
+		# consider the two lowest;
+		# put them in order from left to right
+			      
 		if ($t[0] > $t[1]) { @t[0,1] = @t[1,0] }
+			
+		# now go token to token between them, incrementing the distance
+		# only if each token is a word.
 			
 		for ($t[0]..$t[1]) {
 		
 		  $dist++ if $token_target[$_]{TYPE} eq 'WORD';
 		}
+			
+		# now do the same in the source phrase
 			
 		my @s = sort {$freq_source{$token_source[$a]{FORM}} <=> $freq_source{$token_source[$b]{FORM}}} @source_id; 
 		
@@ -808,19 +812,73 @@ sub dist {
 		  $dist++ if $token_source[$_]{TYPE} eq 'WORD';
 		}
 	}
+	
+	# freq_target: as above, but only in the target phrase
+	
 	elsif ($metric eq "freq_target") {
 		
 		my @t = sort {$freq_target{$token_target[$a]{FORM}} <=> $freq_target{$token_target[$b]{FORM}}} @target_id; 
 			
-		$dist  = abs($t[0] - $t[1]);
+		if ($t[0] > $t[1]) { @t[0,1] = @t[1,0] }
+			
+		for ($t[0]..$t[1]) {
+		
+		  $dist++ if $token_target[$_]{TYPE} eq 'WORD';
+		}
 	}
+	
+	# freq_source: ditto, but source phrase only
+	
 	elsif ($metric eq "freq_source") {
 		
 		my @s = sort {$freq_source{$token_source[$a]{FORM}} <=> $freq_source{$token_source[$b]{FORM}}} @source_id; 
 		
-		$dist = abs($s[0] - $s[1]);
+		if ($s[0] > $s[1]) { @s[0,1] = @s[1,0] }
+			
+		for ($s[0]..$s[1]) {
+		
+		  $dist++ if $token_source[$_]{TYPE} eq 'WORD';
+		}
 	}
 	
+	# span: count all words between (and including) first and last matching words
+	
+	elsif ($metric eq "span") {
+	
+		# check all tokens from the first (lowest-id) matching word
+		# to the last.  increment distance only if token is of type WORD.
+	
+		for ($target_id[0]..$target_id[-1]) {
+		
+		  $dist++ if $token_target[$_]{TYPE} eq 'WORD';
+		}
+		
+		for ($source_id[0]..$source_id[-1]) {
+		
+		  $dist++ if $token_source[$_]{TYPE} eq 'WORD';
+		}
+	}
+	
+	# span_target: as above, but in the target only
+	
+	elsif ($metric eq "span_target") {
+		
+		for ($target_id[0]..$target_id[-1]) {
+		
+		  $dist++ if $token_target[$_]{TYPE} eq 'WORD';
+		}
+	}
+	
+	# span_source: ditto, but source only
+	
+	elsif ($metric eq "span_source") {
+		
+		for ($source_id[0]..$source_id[-1]) {
+		
+		  $dist++ if $token_source[$_]{TYPE} eq 'WORD';
+		}
+	}
+		
 	return $dist;
 }
 

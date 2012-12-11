@@ -76,16 +76,14 @@
 				
 				<p>
 					This allows you to exclude matches where the matching words are
-					too far from each other to be relevant.  Note that the distance 
-					is measured in a somewhat idiosyncratic way: due to the way in 
-					which texts are parsed, the spaces and punctuation between words
-					are counted as well as the words themselves.  Additionally, one
-					member of a pair is counted in the distance between them.
+					too far from each other to be relevant.  Distance is measured
+					inclusively in words: two adjacent words thus have a distance of 2.
+					Two words with one between them have a distance of 3.
 				</p>
 				<p>
-					Thus, in most cases adjacent words will be separated by a distance 
-					of 2 tokens.  As a general rule, the max distance should be set larger
-					than you think.  This option is still being revised.
+					<b>Note that the way this distance is calculated has recently
+					changed.</b>  If your results seem more inclusive compared to Fall
+					2012 (and you don't want this) try setting max distance lower.
 				</p>
 				<p>
 					In a Basic Search, there is no max distance limit.
@@ -95,16 +93,16 @@
 				
 				<p>
 					There are two principal modes for calculating the max distance
-					described above.  <b>Span</b> considers the greatest distance
-					between any two matching words in a phrase.  <b>Frequency</b>
-					attempts to zero in on the most relevant words in an allusion,
-					measuring the distance only between the phrase's two most 
-					infrequent words.
+					described above.  <b>Frequency</b>, the default, attempts to zero 
+					in on the most relevant words in an allusion, measuring the distance 
+					only between the phrase's two most infrequent words.  <b>Span</b> 
+					considers the greatest distance between any two matching words in a phrase.  
 				</p>
 				<p>
 					In addition, the max distance threshold can be applied to the
 					sum of the distances of the target and source phrases, or only
-					to one or the other.
+					to one or the other.  Note that this will halve the total
+					distance for each parallel, causing scores to be higher.
 				</p>
 				
 				<h3>Drop Scores Below</h3>

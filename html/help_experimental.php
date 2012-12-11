@@ -7,13 +7,30 @@
 			<div id="main">
 				<h1>Help</h1>
 				
-				<h2>Experimental Searches</h2>
+				<h2>Experimental Search Tools</h2>
 				
 				<p>
 					These searches are still in development.  They may change without notice,
 					perform unpredictably, or include undocumented features.  If you like
 					anything you see here, please let us know so that we can make its
 					further development and inclusion into the main program a priority.
+				</p>
+				
+				<h2>Multi-text Search</h2>
+				
+				<p>
+					This search tool allows you, in addition to performing an Advanced search
+					for parallels between a Target and Source text, to check the results against
+					each of the other texts in our Latin corpus.  Next to each parallel will be
+					listed all the additional loci in the corpus with which it shares two or
+					more words.
+				</p>
+				<p>
+					Enter your search criteria as in an Advanced Search.  Then choose from the
+					list of texts at the bottom of the page those against which you want to
+					cross-check your results.  Note that checking all texts takes some time.
+					If you want most, but not all, boxes checked, you may use the "Select All"
+					first and then individually un-check texts you don't want to include.
 				</p>
 				
 				<h2>Full-Text Display</h2>
@@ -32,21 +49,6 @@
 					If you are a user with suggestions on what features would be useful to
 					you in this interface, please send us an email.  Note that this display
 					uses HTML frames and may not work equally well with all browsers.
-				</p>
-				
-				<h2>English Search</h2>
-				
-				<p>
-					For demonstration purposes, we offer a limited selection of English
-					texts.  Searching is currently limited to exact-match only.  The
-					largest works here are much larger than our classical texts and
-					searches may take significantly longer.
-				</p>
-				<p>
-					If you have a project in English or another language for which 
-					Tesserae might be appropriate, and you're interested in marking up
-					your texts in our format, please get in touch.  We would love to
-					expand our repertory of available search material.
 				</p>
 				
 				<h2>Lucan-Vergil Benchmark Test</h2>
@@ -138,6 +140,50 @@
 				
 				<p>
 					By default, results are sorted in descending order by score.
+				</p>
+
+				<h2>Old Versions</h2>
+				
+				<p>
+					The current version of Tesserae, V3, is significantly different from
+					former versions.  While we continue to offer access to versions 1 and 2,
+					maintaining online support for these systems is not currently a 
+					priority.
+				</p>
+				<p>
+					If you have questions about their use, please feel free to email us,
+					but we encourage all new users to work with V3.
+				</p>
+				
+				<h3>Version 2</h3>
+				
+				<p>
+					Version 2 returns results in much the same format as Version 3, but
+					uses a significantly different search algorithm.  Subsequent testing
+					has revealed that a certain proportion of matches meeting the criteria
+					of sharing two or more headwords were at times dropped from
+					Version 2 results.  Thus, older results may no longer agree with current
+					V2 results.
+				</p>
+				<p>
+					For those interested in reproducing the results reported in our 
+					<em>TAPA</em> or <em>LLC</em> articles, we maintain archival copies 
+					of older databases.  Please email us for more information.
+				</p>
+				
+				<h3>Version 1</h3>
+				
+				<p>
+					Version 1 performed a significantly different search than more recent
+					versions.  Here, the unit of comparison was neither the line nor the
+					grammatical phrase, but any string of up to six words.  In addition,
+					matches were not limited to two-phrase pairs, but included one-to-many
+					and many-to-many matching.
+				</p>
+				<p>
+					While this format is no longer supported, we would be interested to
+					hear from former users who find some value in it.  Perhaps useful
+					features could be incorporated into a future Version 4.
 				</p>
 
 			</div>
