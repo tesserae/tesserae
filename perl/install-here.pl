@@ -15,6 +15,10 @@ use File::Copy;
 use FindBin qw($Bin);
 use File::Spec::Functions;
 
+# languages to install by default
+
+my @install_lang = qw/la/;
+
 # get the main tesserae directory
 
 my $fs_base	= realpath(catfile($Bin, updir($Bin)));
@@ -105,7 +109,6 @@ do_cmd("perl $script");
 
 print STDERR "done\n\n";
 
-
 #
 # build dictionaries
 #
@@ -127,7 +130,7 @@ print STDERR "done\n\n";
 
 print STDERR "adding texts\n";
 
-for my $lang (qw/la/) {
+for my $lang (@install_lang) {
 
 	my $script = catfile($fs{perl}, 'v3', 'add_column.pl');
 	my $texts  = catfile($fs{text}, $lang, '*');
@@ -145,7 +148,9 @@ print "calculating corpus-wide frequencies\n";
 
 $script = catfile($fs{perl}, 'v3', 'corpus-stats.pl');
 
-do_cmd("perl $script");
+my $langs = join(" ", @install_lang);
+
+do_cmd("perl $script $langs");
 
 print STDERR "done\n\n";
 

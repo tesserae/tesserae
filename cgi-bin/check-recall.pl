@@ -701,9 +701,11 @@ sub print_delim {
 	
 	my @header = qw(
 		"RESULT"
+		"TARGET_PHRASE"
 		"TARGET_BOOK"
 		"TARGET_LINE"
 		"TARGET_TEXT"
+		"SOURCE_PHRASE"
 		"SOURCE_BOOK"
 		"SOURCE_LINE"
 		"SOURCE_TEXT"
@@ -786,6 +788,10 @@ sub print_delim {
 		
 			push @row, ++$i;
 		
+			# target phrase id
+			
+			push @row, $unit_id_target;
+		
 			# target locus
 			
 			my $loc_target = $unit{target}[$unit_id_target]{LOCUS};
@@ -806,6 +812,10 @@ sub print_delim {
 			}
 		
 			push @row, "\"$phrase\"";
+					
+			# source phrase id
+			
+			push @row, $unit_id_source;
 					
 			# source locus
 			

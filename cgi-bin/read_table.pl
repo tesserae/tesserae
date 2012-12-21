@@ -999,7 +999,7 @@ sub score_default {
 		$score += 1/$freq_source{$token_source[$token_id_source]{FORM}};
 	}
 	
-	$score = sprintf("%.3f", log($score/$distance**2));
+	$score = sprintf("%.3f", log($score/$distance));
 	
 	return $score;
 }
