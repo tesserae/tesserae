@@ -1,13 +1,22 @@
-
 use strict;
 use warnings;
+
+use Term::UI;
+use Term::ReadLine;
 
 use XML::LibXML;
 use utf8;
 
-$|++;
+use lib '/Users/chris/Sites/tesserae/perl';
+use EasyProgressBar;
 
 binmode STDOUT, ":utf8";
+
+#
+# set up terminal interface
+#
+
+my $term = Term::ReadLine->new('myterm');
 
 #
 # read the list of files from command line
@@ -21,7 +30,7 @@ print STDERR "checking " . scalar(@files) . " files\n";
 # parse each file
 #
 
-for my $i (0..$#files) {
+for my $f (0..$#files) {
 	
 	#
 	# step 1: parse the file
@@ -33,9 +42,9 @@ for my $i (0..$#files) {
 	
 	# open the file
 	
-	open (my $fh, "<", $files[$i])	|| die "can't open $files[$i]: $!";
+	open (my $fh, "<", $files[$f])	|| die "can't open $files[$f]: $!";
 
-	print STDERR "reading " . ($i+1) . "/" . scalar(@files) . " $files[$i]...";
+	print STDERR "reading " . ($f+1) . "/" . scalar(@files) . " $files[$f]...";
 
 	# this line is where the whole file is read 
 	# and turned into an XML::LibXML object.
@@ -52,7 +61,20 @@ for my $i (0..$#files) {
 
 	close ($fh);
 	
-	print STDERR "done\n";
+	print STDERR "\n";
+	
+	my @title = $doc->findnodes("/TEI.2/teiHeader/fileDesc/titleStmt/title");
+	
+	for (@title) {
+	
+		$_ = $_->textContent;
+		
+		next unless $_;
+	
+		print STDERR "\t$_\n";
+	}
+	
+	print STDERR "\n";
 	
 	#
 	# step 2: the parsing is done, now we can search
@@ -66,25 +88,22 @@ for my $i (0..$#files) {
 	#
 	
 	my @text = $doc->findnodes("//text[not(text)]");
-	
-	if ($#text != $#struct) {
-	
-		print STDERR "found " . ($#text+1). " texts and " . ($#struct+1) . " structures definitions\n";
-	}
-	
+		
 	#
 	# process each text
 	#
 	
-	for my $i (0..$#text) {
+	for my $t (0..$#text) {
 
-		my $text = $text[$i];
+		my $text = $text[$t];
 
 		#
 		# identify the text
 		#
+		
+		print STDERR "\n";
 
-		print STDERR "text $i.\t";
+		print STDERR "text $f.$t.\t";
 		
 		my @a = $text->findnodes("attribute::*");
 		
@@ -93,40 +112,42 @@ for my $i (0..$#files) {
 			$_ = $_->nodeName . "=" . $_->nodeValue;
 		}
 		
-		print STDERR join(" ", @a) . "\n";
+		print STDERR join(" ", @a) . "\n\n";
 		
-		my $text_name = getInput("Enter an identifier (e.g. \"Auth. Work\") for this text [default \"ABBR\"]?", 'ABBR');
+		my $text_name = $term->get_reply(
+			prompt  => 'Enter an abbreviation for this text?',
+			default => 'auth. work.');
 		
 		#
 		# Use one of the structures found in the header to guess which
 		# TEI elements denote structural elements.
 		#
+				
+		print STDERR "\n\n";
 		
-		my $select;
+		print STDERR "Looking for predefined structure to start from.\n";
+		print STDERR "You can edit this structure by hand later.\n";
 		
-		if (defined $struct[$i]) {
+		my $presumed = $term->get_reply(
+				prompt   => 'Your choice?',
+				choices  => [ uniq(@struct), 'none of these' ],
+				print_me => 'Available structures:',
+				default  => (defined $struct[$t] ? $struct[$t] : 'none of these'));
+				
+		# @div holds structural units
 		
-			print STDERR "This is our best guess for the structure of the file:\n";
-			print STDERR "\t" . join(".", @{$struct[$i]{unit}}) . "\n";
+		my @div;
+		
+		if ($presumed ne 'none of these') { 
+
+			my @names = split('\.', $presumed);
 			
-			$select = $i if (getInput("Does this look right [Y/n]?", 'y'));
-		}
-		
-		unless (defined $select) {
-		
-			print STDERR "Use one of these structures instead?\n";
-			print STDERR "You can edit the structure by hand on the next screen.\n";
+			for (@names) { 
 			
-			for (0..$#struct) {
-			
-				print STDERR "\t$_ " . join(".", @{$struct[$_]{unit}}) . "\n";
+				push @div, {name => $_, elem => '?'}
 			}
-		
-			$select = getInput("Choose by number or hit return for none of these.", 'none');
 		}
-		
-		print "\n\n";
-		
+				
 		#
 		# count all TEI elements in this <text>
 		#
@@ -164,19 +185,16 @@ for my $i (0..$#files) {
 		# (2) guess which are to be deleted
 		#
 		
-		my @deletion_candidates = qw/note head/;
+		my @omit_candidates = qw/note head gap/;
 
 		# how much space to allow in the table
 
-		my $maxlen = 0;
+		my $maxname = 0;
+		my $maxcount = 0;
 
-		# @delete holds elements to be deleted
+		# %omit holds elements to be removed before parsing
 		
-		my @delete;		
-		
-		# @div holds structural units
-		
-		my @div;
+		my %omit;		
 		
 		# look at all the elements in turn
 
@@ -184,151 +202,130 @@ for my $i (0..$#files) {
 		
 			# adjust the length
 		
-			$maxlen = length($elem) if length($elem) > $maxlen;
+			$maxname  = length($elem) if length($elem) > $maxname;
+			$maxcount = length($count{$elem}) if length($count{$elem}) > $maxcount;
 			
 			# test whether they match a structural unit's name
 			
-			for my $i (0..$#{$struct[$select]{unit}}) {
+			for my $i (0..$#div) {
 			
-				my $name = $struct[$select]{unit}[$i];
+				my $name = $div[$i]{name};
 			
 				if (($elem =~ /$name/i) or
 					(lc($name) eq 'line' and $elem eq 'l')) {
 				
 					$div[$i]{elem} = $elem;
-					$div[$i]{name} = $struct[$select]{unit}[$i];
 				}
 			}
 			
 			# test whether they match deletion candidates
 			
-			for (@deletion_candidates) {
-		
-				if (lc($elem) eq lc($_)) { push @delete, $elem }
-			}
+			$omit{$elem} = (grep { /^$elem$/i } @omit_candidates) ? 1 : 0;			
 		}
 		
 		#
 		# assign structural units to elements
 		#
 		
-		print STDERR "here we will assign TEI elements to units of text structure.\n";
-				
-		while (1) {
-		
-			print STDERR "\n";
-		
-			print STDERR "this is a list of all elements in text $i:\n";
+		print STDERR "\n\n";
 			
-			my @elem = (sort keys %count);
+		print STDERR "these are all the TEI elements in your text:\n";
+		
+		my @elem = (sort keys %count);
 	
-			print STDERR sprintf("\t%-4s%-${maxlen}s %s\n", " ", "element", "count");
+		print STDERR sprintf("\t%-${maxcount}s %-${maxname}s\n", "count", "name");
 	
-			for my $i (0..$#elem) {
-			
-				my $alpha = chr(97+$i);
-			
-				print STDERR sprintf("\t%-4s%-${maxlen}s %i\n", "($alpha)", $elem[$i], $count{$elem[$i]});
-			}
+		for (@elem) {
 		
-			print STDERR "\n";
-		
-			print STDERR "proposed structure and assigned elements:\n";
-			
-			for my $i (0..$#div) {
-						
-				print STDERR sprintf("\t%i. %s -> %s\n", $i+1, $div[$i]{name}, ($div[$i]{elem} || "?"));
-			}
-			
-			print STDERR "Your options:\n";
-			print STDERR "\t[c]hange an assignment\n";
-			print STDERR "\t[a]dd a structural level\n";
-			print STDERR "\t[d]elete a structural level\n";
-		
-			my $opt = getInput('Choose from the above, or just press [return] to finish', 'f');
-				
-			if ($opt =~ /c/i) {
-			
-				print STDERR "\n";
-				
-				my $fix = -1;
-				
-				until ($fix >=0 and $fix <= $#div) {
-				
-					$fix = getInput("Change assignment for which level [1.." . ($#div+1) . "]?");
-					$fix--;
-				}
-							
-				print STDERR "Choose an element to assign to $div[$fix]{name}\n";
-				
-				my $assign = -1;
-				
-				until ($assign <= $#elem and $assign >= 0) {
-				 
-					$assign = getInput('Choose by letter (a-' . chr(97+$#elem) . ') from the list of elements above:');
-					
-					$assign = ord($assign)-97;
-				}
-				
-				$div[$fix]{elem} = $elem[$assign];
-			}
-			elsif ($opt =~ /a/i) {
-			
-				my $add = 0;
-			
-				if ($#div >= 0) {
-				
-					print STDERR "Where do you want the new level?\n";
-					
-					for (0..$#div) {
-					
-						print STDERR "\t[" . ($_+1) . "] Before $div[$_]{name}\n";
-					}
-					
-					print STDERR "\t[" . ($#div+2) . "] At the end\n";
-					
-					$add = getInput("Your choice?", $#div+2);
-					$add--;
-				}
-				
-				my $name = getInput("What is this level called? [DIV" . ($add+1) . "]", "DIV" . ($add+1));
-				
-				$div[$add]{name} = $name;
-			}
-			elsif ($opt =~ /d/i) {
-			
-				print STDERR "Which level do you want to delete?\n";
-					
-					for (0..$#div) {
-					
-						print STDERR "\t[" . ($_+1) . "] $div[$_]{name}\n";
-					}
-					
-					my $del = getInput("Your choice?", $#div+1);
-					$del--;
-					
-					splice(@div, $del, 1);
-			}
-			
-			last if $opt =~ /f/;
+			print STDERR sprintf("\t%-${maxcount}s %-${maxname}s\n", $count{$_}, $_);
 		}
 		
 		print STDERR "\n\n";
 		
-		print STDERR "elements to delete:\n";
+		print STDERR "here we will assign TEI elements to units of text structure.\n";
+				
+		while (1) {
 		
-		for (0..$#delete) {
+			my $message = "Current assignment:\n";
+		
+			for my $i (0..$#div) {
+						
+				$message .= sprintf("\t%i. %s -> %s\n", $i+1, $div[$i]{name}, ($div[$i]{elem} || "?"));
+			}
+			
+			$message .= "Your options:\n";
+			
+			my $default = 'finished';
+			
+			if ($#div < 0) { 
+			
+				$default = 'add a level';
+			}
+			else {
+			
+				for (@div) {
+				
+					if ($$_{elem} eq '?') {
+						
+						$default = 'change an assignment';
+					}
+				}
+			}
+			
+			my $opt = $term->get_reply( 
+				prompt   => 'Your choice?',
+				choices  => ['change an assignment', 'add a level', 'delete a level', 'finished'],
+				default  => $default,
+				print_me => $message);
+								
+			if ($opt =~ /change/i) {
 
-			print STDERR "\t$_. $delete[$_]\n";
+				@div = @{change_assignment(\@div, \@elem)};			
+			}
+			elsif ($opt =~ /add/i) {
+				
+				@div = @{add_level(\@div)};				
+			}
+			elsif ($opt =~ /delete/i) {
+
+				@div = @{del_level(\@div)};
+			}
+			else {
+				last;
+			}
 		}
 		
+		#
+		# choose elements to omit
+		#
+
+		print STDERR "\n\n";
+
+		my @omit = @{omit_dialog(\%omit, \@elem)};
+				
+		# delete them
+				
+		for my $elem_type (@omit) {
+		
+			my @nodes = $text->findnodes("descendant::$elem_type");
+			
+			next unless @nodes;
+						
+			for my $node (@nodes) {
+			
+				$node->unbindNode;
+			}
+		}
+	
 		#
 		# name the output file
 		# 
 
 		print STDERR "\n\n";
 
-		my $filename = getInput("Enter a name for the output file: ", 'output');
+		my $filename = $term->get_reply(
+			prompt  => 'Enter a name for the output file:',
+			default => "file$f-$t");
 
 		$filename .= ".tess" unless ($filename =~ /\.tess$/);
 
@@ -354,14 +351,6 @@ for my $i (0..$#files) {
 		
 		$text =~ s/<q>/“/g;
 		$text =~ s/<\/q>/”/g;
-
-		# delete all elements in the delete list
-		
-		for my $del (@delete) {
-							
-			$text =~ s/<$del\b.*?<\/$del\s*>//g;
-			$text =~ s/<$del\s*\/>//g;			
-		}
 		
 		# delete all closing tags
 		
@@ -376,18 +365,13 @@ for my $i (0..$#files) {
 		
 			my $search;
 		
-			print STDERR "$elem->";
-			
-			
 			if ($elem =~ s/\[(.+)=(.+)\]//) {
-			
-				print STDERR "$elem\n";
 			
 				$search = "<$elem\\b(.*?$1\\s*=\\s*\"$2\".*?)\/?>"
 			}
 			else {
 			
-				$search = "<$elem\b(.*?)>"
+				$search = "<$elem\\b(.*?)>"
 			}
 			
 			$text =~ s/$search/TESDIV$i--$1--/g;
@@ -488,7 +472,7 @@ sub getStruct {
 	
 	my @struct;
 	
-	print STDERR "looking for document structure\n";
+	print STDERR "Reading document header\n";
 	
 	# look for <encodingDesc>
 	
@@ -515,20 +499,152 @@ sub getStruct {
 			}			
 		}
 		
-		print STDERR "\t$i: " . join(".", @unit) . "\n";
-		
 		if (@unit) {
 			
-			push @struct, { 'unit' => \@unit };
-		}
-		else {
-			
-			push @struct, { };
-			print STDERR "**** NO UNITS ****\n" 
+			push @struct, join(".", @unit);
 		}
 		
 		$i++;
 	}
 
 	return \@struct;
+}
+
+sub uniq {
+
+	my @array = @_;
+		
+	my %seen;
+	
+	my @return;
+	
+	for (@array) { 
+	
+		push (@return, $_) unless $seen{$_};
+
+		$seen{$_} = 1;
+	}
+			
+	return @return;
+}
+
+sub change_assignment {
+
+	my ($divref, $elemref) = @_;
+	
+	my @div  = @$divref;
+	my @elem = @$elemref;
+	
+	print STDERR "\n";
+	
+	if ($#div < 0) {
+	
+		print STDERR "Can't change assignment; no levels to assign.\n";
+		return;
+	}
+	
+	my $menu = join("\n", map { "  $_> " . $div[$_-1]{name} } (1..$#div+1));
+	
+	my $fix = $term->get_reply(
+		prompt   => "Your choice? ",
+		print_me => "Change assignment for which division?\n\n" . $menu . "\n",
+		allow    => [1..$#div+1],
+		default  => "1");
+				
+	$fix--;
+	
+	print STDERR "\n";
+		
+	my $assign = $term->get_reply(
+		prompt   => "Your choice? ",
+		print_me => "Choose an element to assign to $div[$fix]{name}\n",
+		choices  => [@elem],
+		default  => $elem[0]);
+		
+	$div[$fix]{elem} = $assign;
+	
+	return \@div;
+}
+
+sub add_level {
+
+	my $ref = shift;
+	my @div = @$ref;
+	
+	print STDERR "\n";
+
+	my $menu = join("\n", 
+		(map { "  $_> before " . $div[$_-1]{name} } (1..$#div+1)),
+		sprintf("  %i> at the end", $#div+2));
+		
+	my $add = $term->get_reply(
+		prompt   => "Your choice? ",
+		print_me => "Where do you want the new level?\n\n" . $menu . "\n",
+		allow    => [1..$#div+2],
+		default  => $#div+2);
+				
+	my $name = $term->get_reply(
+		prompt  => "What is this level called? ",
+		default => sprintf("level%i", $add-1));
+				
+	$add--;
+				
+	splice (@div, $add, $#div+1-$add, {name => $name, elem => "?"}, @div[$add..$#div]);
+	
+	return \@div;
+}
+
+sub del_level {
+
+	my $ref = shift;
+	my @div = @$ref;
+	
+	print STDERR "\n";
+
+	my $menu = join("\n", 
+	
+		map { "  $_> " . $div[$_-1]{name} } (1..$#div+1));
+		
+	my $del = $term->get_reply(
+		prompt   => "Your choice?",
+		print_me => "Delete which level?\n\n" . $menu . "\n",
+		allow    => [1..$#div+1],
+		default  => "$#div");
+				
+	splice (@div, $del-1);
+	
+	return \@div;
+}
+
+sub omit_dialog {
+
+	my ($omitref, $elemref) = @_;
+	my %omit = %$omitref;
+	my @elem = @$elemref;
+	
+	DIALOG: while (1) {
+
+		my $message = "Toggle TEI elements to omit:\n"
+					. " starred elements will not be parsed.\n";
+
+		my @choice = $term->get_reply(
+			prompt   => "Your choice? ",
+			choices  => [(map { ($omit{$_} ? "*" : " ") . $_} @elem ), "finished."],
+			default  => "finished.",
+			multi    => 1,
+			print_me => $message);
+			
+		for my $choice (@choice) {
+	
+			last DIALOG if $choice eq "finished.";
+	
+			substr($choice, 0, 1, "");
+				
+			$omit{$choice} = ! $omit{$choice};		
+		}
+	}
+	
+	my @omit = grep { $omit{$_} } keys %omit;
+	
+	return \@omit;
 }

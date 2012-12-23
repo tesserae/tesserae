@@ -13,16 +13,16 @@ our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni alpha);
 
 my $fs_base = "/Users/chris/Sites/tesserae";
 
-our $fs_cgi = "/Users/chris/Sites/tesserae/cgi-bin";
-our $fs_data = "/Users/chris/Sites/tesserae/data";
-our $fs_html = "/Users/chris/Sites/tesserae/html";
-our $fs_perl = "/Users/chris/Sites/tesserae/perl";
-our $fs_test = "/Users/chris/Sites/tesserae/testing";
-our $fs_text = "/Users/chris/Sites/tesserae/texts";
-our $fs_tmp = "/Users/chris/Sites/tesserae/tmp";
-our $fs_xsl = "/Users/chris/Sites/tesserae/xsl";
+our $fs_cgi = $fs_base . "/cgi-bin";
+our $fs_data = $fs_base . "/data";
+our $fs_html = $fs_base . "/html";
+our $fs_perl = $fs_base . "/perl";
+our $fs_test = $fs_base . "/testing";
+our $fs_text = $fs_base . "/texts";
+our $fs_tmp = $fs_base . "/tmp";
+our $fs_xsl = $fs_base . "/xsl";
 
-my $url_base = "http://ahmik/~chris/tesserae";
+my $url_base = "http://localhost/~chris/tesserae";
 
 our $url_cgi = $url_base . "/cgi-bin";
 our $url_css = $url_base . "/css";
