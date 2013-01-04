@@ -16,56 +16,72 @@ my $i = shift @ARGV || 0;
 
 my $ref = retrieve($file);
 
-if (ref($ref) eq "ARRAY") {
-	
-	my @rec = @$ref;
+if (ref($ref) eq "HASH") { 
 
-	my %field = %{ $rec[$i] };
+	my %index = %$ref;
 	
-	for my $key ( sort keys %field ) {
-
-		my $value;
-		
-		if (ref($field{$key}) eq "ARRAY") {
-			
-			my @array;
-			for (@{$field{$key}}) {
-				
-				push @array, "'$_'";
-			}
-			
-			$value = "[" . join(", ", @array) . "]";
-		}
-		else {
-			
-			$value = "'$field{$key}'";
-		}
-		
-		print sprintf("%-9s\t%s\n", $key, $value);
-	}
+	print expand($index{$i}) if defined $index{$i};
 }
-elsif (ref($ref) eq "HASH") {
+elsif (ref($ref) eq "ARRAY") {
+
+	my @val = @$ref;
+	
+	print expand($val[$i]) if defined $val[$i];
+}
+
+
+sub expand {
+
+	my ($ref, $indent) = @_;
+	
+	$indent = 0 unless defined $indent;
+
+	return 
+		ref($ref) eq "HASH"   ? expand_hash($ref, $indent)   :
+		ref($ref) eq "ARRAY"  ? expand_array($ref, $indent)  :
+		ref($ref) eq "SCALAR" ? expand_scalar($ref, $indent) :
+								$ref;
+}
+
+sub expand_hash {
+
+	my ($ref, $indent) = @_;
+	
+	$indent++;
 	
 	my %index = %$ref;
 	
-	my $key = (sort keys %index)[0];
+	my $return = " "x($indent-1) . "{\n";
 	
-	my $value;
-	
-	if (ref($index{$key}) eq "ARRAY") {
-		
-		my @array;
-		for (@{$index{$key}}) {
+	while (my ($key, $value) = each %index) {
 			
-			push @array, "'$_'";
-		}
-		
-		$value = "[" . join(", ", @array) . "]";
-	}
-	else {
-		
-		$value = "'$index{$key}'";
+		$return .= " "x$indent . sprintf("%-9s => %s\n", $key, expand($value, $indent));
 	}
 	
-	print sprintf("%-9s\t%s\n", $key, $value);
+	$return .= " "x($indent-1) . "}\n";
+}
+
+sub expand_array {
+
+	my ($ref, $indent) = @_;
+	
+	my @array = @$ref;
+	
+	for (@array) {
+	
+		my $val = expand($_, $indent);
+	
+		if ($val =~ /\D/) { $val = "\"$val\"" }
+		
+		$_ = $val;
+	}
+				
+	return "[" . join(", ", @array) . "]";
+}
+
+sub expand_scalar {
+
+	my ($ref, $indent) = @_;
+	
+	return $$ref;
 }

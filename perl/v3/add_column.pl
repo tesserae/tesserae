@@ -183,6 +183,12 @@ for my $file_in (@files) {
 	}
 	
 	#
+	# check prose list
+	#
+	
+	my $prose = $prose or check_prose_list($name);
+	
+	#
 	# fork
 	#
 	
@@ -812,4 +818,26 @@ sub chr_ngrams {
 	}
 	
 	return [keys %ngrams];
+}
+
+sub check_prose_list {
+
+	my $name = shift;
+	
+	my $file_prose_list = catfile('data', 'v3', $lang{$name}, '.prose_list');
+	
+	return 0 unless (-s $file_prose_list);
+	
+	open (FH, '<:utf8', $file_prose_list) or die "can't read $file_prose_list";
+	
+	while (my $line = <FH>) { 
+	
+		chomp $line;
+		
+		next unless $line =~ /\S/;
+		
+		return 1 if $name =~ /$line/;
+	}
+	
+	return 0;
 }

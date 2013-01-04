@@ -20,14 +20,15 @@ sub new {
 	
 	my $quiet = shift || 0;
 	
-	$self->{COUNT} = 0;
+	$self->{COUNT}    = 0;
 	$self->{PROGRESS} = 0;
-	$self->{QUIET} = $quiet;
+	$self->{DONE}     = 0;
+	$self->{QUIET}    = $quiet;
 	
 	bless($self);
 	
 	$self->draw();
-	
+		
 	return $self;
 }
 
@@ -37,10 +38,19 @@ sub advance {
 	
 	my $incr = shift;
 	
-	if (defined $incr)	   { $self->{COUNT} += $incr }
-	else			   	   { $self->{COUNT}++ }
+	$self->{COUNT} += ($incr || 1);
 	
-	$self->draw();
+	if ($self->{COUNT}/$self->{END} > $self->{PROGRESS} + .025) {
+		
+		$self->{PROGRESS} = $self->{COUNT} / $self->{END};
+
+		$self->draw();
+	}
+	
+	if ($self->{COUNT} >= $self->{END}) {
+	
+		$self->finish();
+	}
 }
 
 sub set {
@@ -57,37 +67,25 @@ sub set {
 sub draw {
 
 	my $self = shift;
-	
-	if ($self->{QUIET} == 0) {
-	
-		if ($self->{COUNT}/$self->{END} > $self->{PROGRESS} + .025) {
 		
-			$self->{PROGRESS} = $self->{COUNT} / $self->{END};
-		
-			my $bars = POSIX::floor($self->{PROGRESS} * 40);
-		
-			print STDERR "\r" . "0% |" . ("#" x $bars) . (" " x (40 - $bars)) . "| 100%";
-		}
-	}
-	
-	if ($self->{COUNT} >= $self->{END}) {
-		
-		$self->{PROGRESS} = $self->{COUNT} / $self->{END};
+	unless ($self->{QUIET} or $self->{DONE}) {
 		
 		my $bars = POSIX::floor($self->{PROGRESS} * 40);
-		
-		print STDERR "\r" . "0% |" . ("#" x $bars) . (" " x (40 - $bars)) . "| 100%";
-		
-		$self->finish();
-	}	
+	
+		print STDERR "\r" . "0% |" . ("#" x $bars) . (" " x (40 - $bars)) . "| 100%" ;
+	}
 }
 
 sub finish {
 
-	if ($self->{QUIET} == 0) {
+	my $self = shift;
 
-		print STDERR "\n";
+	unless ($self->{QUIET} or $self->{DONE}) {
+
+		print STDERR "\r" . "0% |" . ("#" x 40) . "| 100%\n";
 	}
+	
+	$self->{DONE} = 1;	
 }
 
 sub progress {
@@ -137,9 +135,10 @@ sub new {
 	
 	my $quiet = shift || 0;
 	
-	$self->{COUNT} = 0;
+	$self->{COUNT}    = 0;
 	$self->{PROGRESS} = 0;
-	$self->{QUIET} = $quiet;
+	$self->{QUIET}    = $quiet;
+	$self->{DONE}     = 0;
 	
 	bless($self);
 	
@@ -170,8 +169,7 @@ sub advance {
 	
 	my $incr = shift;
 	
-	if (defined $incr)	   { $self->{COUNT} += $incr }
-	else			   	   { $self->{COUNT}++ }
+	$self->{COUNT} += ($incr || 1);
 	
 	$self->draw();
 }
@@ -190,6 +188,8 @@ sub set {
 sub draw {
 
 	my $self = shift;
+
+	return if $self->{DONE};
 		
 	if ($self->{COUNT}/$self->{END} > $self->{PROGRESS} + .025) {
 	
@@ -205,25 +205,31 @@ sub draw {
 	}
 	
 	if ($self->{COUNT} >= $self->{END}) {
-		
-		my $oldbars = POSIX::floor($self->{PROGRESS} * 40);
-	
-		$self->{PROGRESS} = $self->{COUNT} / $self->{END};
-	
-		my $bars = POSIX::floor($self->{PROGRESS} * 40);
-									
-		my $add = "<td class=\"pr_unit\">.</td>" x ($bars - $oldbars);
-	
-		print $add;
-		
+				
 		$self->finish();
 	}	
 }
 
 sub finish {
 
+	my $self = shift;
+
+	return if $self->{DONE};
+
+	my $oldbars = POSIX::floor($self->{PROGRESS} * 40);
+
+	$self->{PROGRESS} = $self->{COUNT} / $self->{END};
+
+	my $bars = POSIX::floor($self->{PROGRESS} * 40);
+								
+	my $add = "<td class=\"pr_unit\">.</td>" x ($bars - $oldbars);
+
+	print $add;
+
 	print "</tr></table>\n";
 	print "</div>\n";
+	
+	$self->{DONE} = 1;
 }
 
 sub progress {

@@ -115,7 +115,7 @@ div#footer
 {
 	position: relative;
 	background : #e1e6c6;
-	height: 130px;
+	height: 12em;
 	text-align: left;
 }
 
@@ -124,13 +124,14 @@ div#footer_content
 	position: absolute;
 	left: 25%;
 	width: 50%;
+	padding: 0em 2em 0em 2em;
 }
 
 div#footer_content p
 {
 	position: static;
-	margin: 0px;
-	font-size : 10px;
+	margin: 0px;	
+	font-size : .8em;
 	color : #777;
 	text-align: left;
 }

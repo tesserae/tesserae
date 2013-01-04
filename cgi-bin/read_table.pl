@@ -989,14 +989,32 @@ sub score_default {
 									
 		# add the frequency score for this term
 		
-		$score += 1/$freq_target{$token_target[$token_id_target]{FORM}};
+		my $freq = 1/$freq_target{$token_target[$token_id_target]{FORM}}; 
+				
+		# for 3-grams only, consider how many features the word matches on
+				
+	if ($feature eq '3gr') {
+		
+			$freq *= scalar(keys %{$match_target{$token_id_target}});
+		}
+		
+		$score += $freq;
 	}
 	
 	for my $token_id_source ( keys %match_source ) {
 
 		# add the frequency score for this term
 
-		$score += 1/$freq_source{$token_source[$token_id_source]{FORM}};
+		my $freq = 1/$freq_source{$token_source[$token_id_source]{FORM}};
+		
+		# for 3-grams only, consider how many features the word matches on
+				
+		if ($feature eq '3gr') {
+		
+			$freq *= scalar(keys %{$match_source{$token_id_source}});
+		}
+		
+		$score += $freq;
 	}
 	
 	$score = sprintf("%.3f", log($score/$distance));

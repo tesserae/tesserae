@@ -1,6 +1,6 @@
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/var/www/tesserae/perl';	# PERL_PATH
 
 #
 # print a frequency list
