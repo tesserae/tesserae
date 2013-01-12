@@ -86,7 +86,7 @@ GetOptions(
 	"parallel=i"      => \$max_processes,
 	"quiet"           => \$quiet,
 	"use-lingua-stem" => \$use_lingua_stem,
-   "prose"           => \$prose
+	"prose"           => \$prose
 	);
 
 # get language list
@@ -186,8 +186,8 @@ for my $file_in (@files) {
 	# check prose list
 	#
 	
-	my $prose = $prose or check_prose_list($name);
-	
+	my $prose = $prose || check_prose_list($name);
+		
 	#
 	# fork
 	#
@@ -531,6 +531,13 @@ for my $file_in (@files) {
 	my $path_data = catfile($fs_data, 'v3', $lang, $name);
 	
 	unless (-d $path_data ) { mkpath($path_data) }
+	
+	# say whether we're processing as prose
+	
+	if ($prose) {
+	
+		print STDERR "Using prose mode.\n";
+	}
 
 	my $file_out = catfile($path_data, $name);
 
@@ -560,10 +567,10 @@ for my $file_in (@files) {
 		# calculate frequencies for stop and score
 				
 		print "writing $file_out.freq_stop_$_\n" unless $quiet;
-		nstore freq_stop($index{$_}), "$file_out.freq_stop_$_";		
+		write_freq_stop($index{$_}, "$file_out.freq_stop_$_");
 
 		print "writing $file_out.freq_score_$_\n" unless $quiet;
-		nstore freq_score($_, $index{word}), "$file_out.freq_score_$_";		
+		write_freq_score($_, $index{word}, "$file_out.freq_score_$_");
 	}
 
 	# add this ref to the database of abbreviations
@@ -656,38 +663,63 @@ nstore \%abbr, $file_abbr;
 
 rmtree($temp_dir);
 
-sub freq_stop {
+#
+# subroutines
+#
+
+# this sub writes a sorted list of features and their frequencies
+# suitable for creating a stoplist.  frequencies are for features
+# not words; since (for some feature sets anyway) words may have
+# more than one feature, the count of all features in the text can
+# exceed the count of all words.
+
+sub write_freq_stop {
 	
-	my $index_ref = shift;
+	my ($index_ref, $file) = @_;
 	
 	my %index = %$index_ref;
 	
-	my %freq;
+	my %count;
 	
 	my $total = 0;
 	
 	for (keys %index) {
 		
-		$total += scalar(@{$index{$_}});
+		$count{$_} = scalar(@{$index{$_}});
+		$total   += $count{$_};
 	}
 	
-	for (keys %index) {
+	open (FREQ, ">:utf8", $file) or die "can't write $file: $!";
+	
+	print FREQ "# count: $total\n";
+	
+	for (sort {$count{$b} <=> $count{$a}} keys %count) {
 		
-		$freq{$_} = scalar(@{$index{$_}})/$total;
+		print FREQ sprintf("%s\t%i\n", $_, $count{$_});
 	}
 	
-	return \%freq;
+	close FREQ;
 }
 
-sub freq_score {
+#
+# this sub creates a list of words and their feature-based
+# frequencies suitable for the scoring algorithms.
+#
+# although frequencies are based on the counts of features,
+# they are given for individual inflected words.  There are
+# some problems with this implementation, but this seems to
+# work pretty well compared to the alternatives.
+#
 
-	my ($feature, $index_ref) = @_;
+sub write_freq_score {
+
+	my ($feature, $index_ref, $file) = @_;
 
 	# word-freq is the same as for the stop list
 	
 	if ($feature eq 'word') {
 	
-		return freq_stop($index_ref);
+		return write_freq_stop($index_ref, $file);
 	}
 
 	# otherwise, proceed
@@ -756,9 +788,16 @@ sub freq_score {
 		}
 	}
 	
-	for (values %count_by_feature) { $_ /= $total }
+	open (FREQ, ">:utf8", $file) or die "can't write $file: $!";
 	
-	return \%count_by_feature;
+	print FREQ "# count: $total\n";
+	
+	for (sort {$count_by_feature{$b} <=> $count_by_feature{$a}} keys %count_by_feature) { 
+	
+		print FREQ sprintf("%s\t%i\n", $_, $count_by_feature{$_});
+	}
+	
+	close FREQ;
 }
 
 sub stems {
@@ -823,8 +862,8 @@ sub chr_ngrams {
 sub check_prose_list {
 
 	my $name = shift;
-	
-	my $file_prose_list = catfile('data', 'v3', $lang{$name}, '.prose_list');
+		
+	my $file_prose_list = catfile($fs_text, 'prose_list');
 	
 	return 0 unless (-s $file_prose_list);
 	

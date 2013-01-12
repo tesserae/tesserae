@@ -181,6 +181,21 @@ div#main
 	background: white;
 }
 
+div.fullscreen_content {
+
+	margin: auto;
+	padding: 25px;
+	text-align: justify;
+}
+
+div.fullscreen_nav {
+
+	margin: auto;
+	padding: 25px;
+	text-align: justify;
+}
+
+
 div.figure
 {
 	margin : 25px auto;

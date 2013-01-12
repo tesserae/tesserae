@@ -76,6 +76,7 @@ my %lang = %{retrieve($file_lang)};
 
 my $cgi = CGI->new() || die "$!";
 my $session;
+my $redirect = "$url_cgi/3gr.display.pl";
 
 my $no_cgi = defined($cgi->request_method()) ? 0 : 1;
 
@@ -98,6 +99,7 @@ unless ($no_cgi) {
 	<head>
 		<title>Tesserae results</title>
 		<link rel="stylesheet" type="text/css" href="$stylesheet" />
+		<meta http-equiv="Refresh" content="0; url='$redirect'">
 	</head>
 	<body>
 END
@@ -132,18 +134,6 @@ else {
 	$session->save_param($cgi);
 
 	$quiet  = 1;
-
-	print <<END;
-	
-		<table>
-			<tr><td>target</td><td>$target</td></tr>
-			<tr><td>unit  </td><td>$unit  </td></tr>
-			<tr><td>decay </td><td>$decay </td></tr>
-			<tr><td>keys  </td><td>$keys  </td></tr>
-			<tr><td>top   </td><td>$top   </td></tr>								
-			<tr><td>memory</td><td>$memory</td></tr>
-		</table>
-END
 
 }
 
@@ -202,6 +192,7 @@ my @keys = $keys ? split(/,/, $keys) : keys(%index);
 # max values for each column; used for scaling
 
 my %max;
+@max{@keys} = (0)x($#keys+1);
 
 #
 # get 3-gram counts from the index
@@ -259,7 +250,7 @@ else {
 	$pr = HTMLProgress->new($#matrix);
 }
 
-for (my $unit_id = $#matrix; $unit_id > 0; $unit_id--) {
+for (my $unit_id = $#matrix; $unit_id >= 0; $unit_id--) {
 
 	$pr->advance();
 
@@ -307,7 +298,9 @@ if ($top and $top > 0 and $top < ($#keys-1)) {
 
 for (@matrix) {
 
-	$_ = [@{$_}{@keys}];
+	my @row = map { $_ || 0 } @{$_}{@keys};
+
+	$_ = \@row;
 }
 
 #
@@ -339,13 +332,12 @@ else {
 	$session->param('keys',   \@keys);
 	$session->param('maxval', [@max{@keys}]);
 	
-	my $link = "$url_cgi/3gr.display.pl";
-	
-	my $test = $session->param("target");
+
+	print $session->id();
 
 	print <<END;
 	
-		<a href="$link">Click here.</a>
+		Your search is done.  If you are not redirected automatically, <a href="$redirect">click here.</a>
 	</body>
 </html>
 END

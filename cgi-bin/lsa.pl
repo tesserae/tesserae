@@ -1,8 +1,8 @@
-#! /usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/var/www/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -45,34 +45,38 @@ my $quiet = 0;
 # determine file from session id
 
 my $target = 'lucan.bellum_civile.part.1';
-my $source = 'vergil.aeneid';
-my $vbook  = 1;
-my $tphrase = 0;
+my $source = 'vergil.aeneid.part.1';
+my $unit_id = 0;
 my $threshold = .7;
+my $topics = 15;
 
 #
-# command-line input
+# command-line arguments
 #
 
 GetOptions( 
-	'tphrase=i' => \$tphrase,
-	'vbook=i'   => \$vbook,
+	'target=s'    => \$target,
+	'source=s'    => \$source,
+	'unit_id=i'   => \$unit_id,
+	'topics|n=i'  => \$topics,
 	'threshold=f' => \$threshold,
-	'quiet'     => \$quiet );
+	'quiet'       => \$quiet );
 
 #
 # cgi input
 #
 
 unless ($no_cgi) {
-
+	
 	my %h = ('-charset'=>'utf-8', '-type'=>'text/html');
 	
 	print header(%h);
 
-	$tphrase = $query->param('tphrase')   || $tphrase;
-	$vbook   = $query->param('vbook')     || $vbook;
-	$threshold = defined $query->param('threshold') ? $query->param('threshold') : $threshold;
+	$target    = $query->param('target')   || $target;
+	$source    = $query->param('source')   || $source;
+	$unit_id   = defined $query->param('unit_id') ? $query->param('unit_id') : $unit_id;
+	$topics    = $query->param('topics')   || $topics;
+	$threshold = defined $query->param('threshold') ? $query->param('threshold') : $threshold; 
 
 	$quiet = 1;
 }
@@ -81,6 +85,12 @@ unless ($no_cgi) {
 # create the frameset and redirect to content
 # 
 
+my $params = "target=$target;"
+           . "source=$source;"
+           . "unit_id=$unit_id;"
+           . "threshold=$threshold;"
+           . "topics=$topics";
+         
 print <<END;
 
 <html lang="en">
@@ -97,8 +107,8 @@ print <<END;
 	</head>
 
 	<frameset cols="50%,50%">
-		<frame name="left"  src="$url_cgi/lsa.left.pl?tphrase=$tphrase;vbook=$vbook;threshold=$threshold">
-		<frame name="right" src="$url_cgi/lsa.right.pl?tphrase=$tphrase;vbook=$vbook;threshold=$threshold">
+		<frame name="left"  src="$url_cgi/lsa.target.pl?$params">
+		<frame name="right" src="$url_cgi/lsa.source.pl?$params">
 	</frameset>
 </html>
 

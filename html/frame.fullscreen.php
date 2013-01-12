@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
    "http://www.w3.org/TR/html4/strict.dtd">
 
-<?php include "defs.php" ?>
+<?php include "defs.php"; ?>
 
 <html lang="en">
 	<head>
@@ -12,27 +12,25 @@
 		<link href="<?php echo $url_css . "/style.css" ?>" rel="stylesheet" type="text/css"/>
 		<link href="<?php echo $url_image . "/favicon.ico" ?>" rel="shortcut icon"/>
 		
-		<!--head_insert-->
+		<!--head-->
 
 		<title>Tesserae</title>
 
 	</head>
 	<body>
 
-		<div id="container">
+		<div class="fullscreen_nav">
+			<!--navigation-->		
+		</div>
+			
+		<div class="fullscreen_content">
 
-		<div id="header"> 
-		
-			<div id="title">
-				<h1><b>Tesserae</b></h1>
-				<h2>Intertextual Phrase Matching</h2>
-			</div>
+			<a name="top"></a>
 
-			<div id="nav_main">
-				<ul>
-					<li><a href="<?php echo $url_html; ?>">Search</a></li>
-					<li><a href="<?php echo $url_html . "/help.php"; ?>">Help</a></li>
-					<li><a href="http://tesserae.caset.buffalo.edu/blog">News</a></li>
-					<li><a href="<?php echo $url_html . "/howtocite.php"; ?>">Cite</a></li>
-				</ul>
-			</div>
+			<!--title-->
+
+			<!--content-->
+		</div>
+
+	</body>
+</html>

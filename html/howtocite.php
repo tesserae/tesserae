@@ -1,6 +1,5 @@
-			<?php include "first.php"; ?>
-
-			<?php include "nav_search.php"; ?>
+<?php include "first.php"; ?>
+<?php include "nav_search.php"; ?>
 
 			</div> <!--closes header-->
 

@@ -90,16 +90,18 @@ for my $lang(@lang) {
 	for my $feature (qw/word stem syn 3gr/) {
 	
 		next unless defined $count{$feature};
-		
-		for (values %{$count{$feature}}) {
-		
-			$_ /= $total{$feature};
-		}
 
 		my $file_freq = catfile($fs_data, 'common', $lang . '.' . $feature . '.freq');
 
 		print STDERR "writing $file_freq\n";
-	
-		nstore $count{$feature}, $file_freq;
+
+		open (FREQ, ">:utf8", $file_freq) or die "can't write $file_freq: $!";
+		
+		for (sort {$count{$feature}{$b} <=> $count{$feature}{$a}} keys %{$count{$feature}}) {
+		
+			print FREQ sprintf("%s\t%.6f\n", $_, $count{$feature}{$_}/$total{$feature});
+		}
+
+		close FREQ;
 	}
 }

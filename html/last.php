@@ -1,4 +1,4 @@
-			<div id="footer">
+		<div id="footer">
 			<div class="footer_icon_left">
 					<img src="<?php echo $url_image . "/ublogo.png" ?>" width="200" alt="UB logo"> <br />
 					<img src="<?php echo $url_image . "/neh_logo-light_bg.png" ?>" alt="NEH logo"> <br />
@@ -39,6 +39,6 @@
 				</div>
 			</div>
 		</div> <!-- closes container -->
-        </body>
+	</body>
 </html>
 

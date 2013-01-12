@@ -9,28 +9,28 @@ our @ISA = qw(Exporter);
 
 our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_image $url_tmp $apache_user %is_word %non_word $phrase_delimiter %ancillary);
 
-our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni alpha);
+our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni alpha stoplist_hash stoplist_array);
 
 my $fs_base = "/Users/chris/Sites/tesserae";
 
-our $fs_cgi = $fs_base . "/cgi-bin";
+our $fs_cgi  = $fs_base . "/cgi-bin";
 our $fs_data = $fs_base . "/data";
 our $fs_html = $fs_base . "/html";
 our $fs_perl = $fs_base . "/perl";
 our $fs_test = $fs_base . "/testing";
 our $fs_text = $fs_base . "/texts";
-our $fs_tmp = $fs_base . "/tmp";
-our $fs_xsl = $fs_base . "/xsl";
+our $fs_tmp  = $fs_base . "/tmp";
+our $fs_xsl  = $fs_base . "/xsl";
 
 my $url_base = "http://localhost/~chris/tesserae";
 
-our $url_cgi = $url_base . "/cgi-bin";
-our $url_css = $url_base . "/css";
-our $url_html = $url_base . "/html";
+our $url_cgi   = $url_base . "/cgi-bin";
+our $url_css   = $url_base . "/css";
+our $url_html  = $url_base . "/html";
 our $url_image = $url_base . "/images";
-our $url_text = $url_base . "/texts";
-our $url_tmp = $url_base . "/tmp";
-our $url_xsl = $url_base . "/xsl";
+our $url_text  = $url_base . "/texts";
+our $url_tmp   = $url_base . "/tmp";
+our $url_xsl   = $url_base . "/xsl";
 
 our %top;
 
@@ -298,5 +298,72 @@ sub alpha {
 
 	return $form;
 }
+
+# load a frequency file and save it as a hash
+
+sub stoplist_hash {
+
+	my $file = shift;
+	
+	my %index;
+	
+	open (FREQ, "<:utf8", $file) or die "can't read $file: $!";
+	
+	my $head = <FREQ>;
+	
+	my $total = 1;
+	
+	if ($head =~ /count\D+(\d+)/) {
+	
+		$total = $1;
+	}
+	else {
+	
+		seek(FREQ, 0, 0);
+	}
+	
+	while (my $line = <FREQ>) {
+	
+		next if $line =~ /^#/;
+	
+		my ($key, $count) = split("\t", $line);
+		
+		$index{$key} = $count/$total;
+	}
+	
+	close FREQ;
+	
+	return \%index;
+}
+
+# load a frequency file and just return the forms in order
+
+sub stoplist_array {
+
+	my $file = shift;
+	my $n    = shift;
+	
+	my @stoplist;
+	my $counter = 0;
+	
+	open (FREQ, "<:utf8", $file) or die "can't read $file: $!";
+	
+	while (my $line = <FREQ>) {
+	
+		next if $line =~ /^#/;
+	
+		last if defined $n and $counter >= $n;
+		$counter ++;
+
+		my ($key, $count) = split("\t", $line);
+
+		push @stoplist, $key;
+	}
+	
+	close FREQ;
+	
+	return \@stoplist;
+}
+
 
 1;

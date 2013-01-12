@@ -1,3 +1,5 @@
+<?php include "defs.php"; ?>
+
 	<?php include "first.php"; ?>
 
 	<?php include "nav_about.php"; ?>

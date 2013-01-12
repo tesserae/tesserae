@@ -1,8 +1,8 @@
-#! /usr/bin/perl
+#! /opt/local/bin/perl5.12
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/var/www/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -44,10 +44,10 @@ my $quiet = 0;
 
 # determine file from session id
 
-my $target = 'lucan.bellum_civile.part.1';
-my $source = 'vergil.aeneid';
-my $vbook  = 1;
-my $tphrase = 0;
+my $target    = 'lucan.bellum_civile.part.1';
+my $source    = 'vergil.aeneid.part.1';
+my $unit_id   = 0;
+my $topics    = 15;
 my $threshold = 0.7;
 
 #
@@ -55,10 +55,12 @@ my $threshold = 0.7;
 #
 
 GetOptions( 
-	'tphrase=i' => \$tphrase,
-	'vbook=i'   => \$vbook,
+	'target=s'    => \$target,
+	'source=s'    => \$source,
+	'unit_id=i'   => \$unit_id,
+	'topics|n=i'  => \$topics,
 	'threshold=f' => \$threshold,
-	'quiet'     => \$quiet );
+	'quiet'       => \$quiet );
 
 #
 # cgi input
@@ -70,8 +72,10 @@ unless ($no_cgi) {
 	
 	print header(%h);
 
-	$tphrase = $query->param('tphrase')   || $tphrase;
-	$vbook   = $query->param('vbook')     || $vbook;
+	$target = $query->param('target')   || $target;
+	$source = $query->param('source')   || $source;
+	$unit_id = defined $query->param('unit_id') ? $query->param('unit_id') : $unit_id;
+	$topics  = $query->param('topics')  || $topics;
 	$threshold = defined $query->param('threshold') ? $query->param('threshold') : $threshold; 
 
 	$quiet = 1;
@@ -109,7 +113,7 @@ my @line  = @{retrieve("$file.line") };
 # highlighted phrase
 #
 
-my ($lbound, $rbound) = getBounds($tphrase);
+my ($lbound, $rbound) = getBounds($unit_id);
 
 #
 # display the full text
@@ -132,23 +136,20 @@ for my $line_id (0..$#line) {
 		if ($token[$token_id]{TYPE} eq 'WORD') {
 				
 			my $link = "$url_cgi/lsa.pl?";
-			
-			$link .= "tphrase=$token[$token_id]{PHRASE_ID};";
-			$link .= "vbook=$vbook;";
+
+			$link .= "target=$target;";
+			$link .= "source=$source;";
+			$link .= "unit_id=$token[$token_id]{PHRASE_ID};";
+			$link .= "topics=$topics;";
 			$link .= "threshold=$threshold";
 			
 			my $marked = "";
 			
 			if ($token_id >= $lbound && $token_id <= $rbound) {
 			
-				$marked = "style=\"color:#aa5555\"";
-			}
-			
-			if ($token[$token_id]{PHRASE_ID} == $tphrase) {
-			
 				$marked = "style=\"color:red\"";
 			}
-
+			
 			$table .= "<a href=\"$link\" $marked target=\"_top\">";
 		}
 		
@@ -165,14 +166,80 @@ $table .= "</table>\n";
 
 # load the template
 
-my $frame = `php -f $fs_html/lsa.left.php`;
+my $frame = `php -f $fs_html/frame.fullscreen.php`;
+
+# add some style into the head
+
+my $style = "
+		<style style=\"text/css\">
+			a {
+				text-decoration: none;
+			}
+			a:hover {
+				color: #888;
+			}
+		</style>\n";
+
+$frame =~ s/<!--head-->/$style/;
+
+#
+# create navigation
+#
+
+# read drop down list
+
+open (FH, "<:utf8", catfile($fs_html, "textlist.$lang{$target}.r.php"));
+my $menu;
+while (<FH>) { $menu .= "$_" }
+close FH;
+
+# mark the current text as selected
+
+$menu =~ s/ selected=\"selected\"//g;
+$menu =~ s/value="$target"/value="$target" selected="selected"/;
+
+# put together the form
+
+my $nav = "
+		<form action=\"$url_cgi/lsa.pl\" method=\"POST\" target=\"_top\">
+		<table>
+			<tr>
+				<td><a href=\"$url_html/experimental.php\" target=\"_top\">Back to Tesserae</a></td>
+			</tr>
+			<tr>
+				<td>
+					<input type=\"hidden\" name=\"source\" value=\"$source\" />
+				</td>
+			</tr>
+			<tr>
+				<td>Target:</td>
+				<td>
+					<select name=\"target\">
+						$menu
+					</select>
+				</td>
+				<td>
+					<input type=\"submit\" name=\"submit\" value=\"Change\" />
+				</td>
+			</tr>
+		</table>
+		</form>\n";
+
+$frame =~ s/<!--navigation-->/$nav/;
 
 # insert the table into the template
 
-$frame =~ s/<!--me-->/$target/g;
-$frame =~ s/<!--other-->/Vergil Aeneid Book $vbook/g;
+my $title = <<END;
+	<h2>$target</h2>
+	<p>
+		Click to select a phrase (plus surrounding context).  <br />
+		Matches in $source will be highlighted at right.
+	</p>
+END
 
-$frame =~ s/<!--fulltext-->/$table/;
+$frame =~ s/<!--title-->/$title/;
+
+$frame =~ s/<!--content-->/$table/;
 
 # send to browser
 
@@ -186,7 +253,7 @@ sub getBounds {
 	
 	my $phrase_id = shift;
 	
-	my @bounds = @{retrieve(catfile($fs_data, 'lsa', 'bounds.target'))};
+	my @bounds = @{retrieve(catfile($fs_data, 'lsa', $lang{$target}, $target, 'bounds.target'))};
 
 	return @{$bounds[$phrase_id]};
 }

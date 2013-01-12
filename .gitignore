@@ -18,7 +18,7 @@ data/common/abbr
 data/v3/*
 data/v1/*
 data/bench/rec.cache
-data/lsa/bounds.*
+data/lsa/*
 html/textlist.*
 
 

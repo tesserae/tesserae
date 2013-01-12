@@ -1,6 +1,5 @@
-	<?php include "first.php"; ?>
-
-	<?php include "nav_about.php"; ?>
+<?php include "first.php"; ?>
+<?php include "nav_about.php"; ?>
 	
 			</div>
 	

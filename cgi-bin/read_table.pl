@@ -409,13 +409,13 @@ unless ($quiet) {
 
 my $file_freq_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . ".freq_score_$feature");
 
-my %freq_target = %{retrieve( $file_freq_target)};
+my %freq_target = %{TessSystemVars::stoplist_hash($file_freq_target)};
 
 # token frequencies from the target text
 
 my $file_freq_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . ".freq_score_$feature");
 
-my %freq_source = %{retrieve( $file_freq_source)};
+my %freq_source = %{TessSystemVars::stoplist_hash($file_freq_source)};
 
 #
 # basis for stoplist is feature frequency from one or both texts
@@ -893,43 +893,38 @@ sub load_stoplist {
 		
 		my $file = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
 		
-		%basis = %{retrieve($file)};
+		%basis = %{TessSystemVars::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "source") {
 		
 		my $file = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
 
-		%basis = %{retrieve($file)};		
+		%basis = %{TessSystemVars::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "corpus") {
 
 		my $file = catfile($fs_data, 'common', $lang{$target} . '.' . $feature . '.freq');
 		
-		%basis = %{retrieve($file)};
+		%basis = %{TessSystemVars::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "both") {
 		
 		my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
 		
-		%basis = %{retrieve($file_target)};
+		%basis = %{TessSystemVars::stoplist_hash($file_target)};
 		
 		my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
 		
-		my %basis2 = %{retrieve($file_source)};
+		my %basis2 = %{TessSystemVars::stoplist_hash($file_source)};
 		
 		for (keys %basis2) {
 		
-			if (defined $basis{$_}) {
-			
-				$basis{$_} = ($basis{$_} + $basis2{$_})/2;
-			}
-			else {
-			
-				$basis{$_} = $basis2{$_};
-			}
+			$basis{$_} = 0 unless defined $basis{$_};
+		
+			$basis{$_} = ($basis{$_} + $basis2{$_})/2;
 		}
 	}
 		

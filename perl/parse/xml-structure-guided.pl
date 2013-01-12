@@ -7,9 +7,6 @@ use Term::ReadLine;
 use XML::LibXML;
 use utf8;
 
-use lib '/Users/chris/Sites/tesserae/perl';
-use EasyProgressBar;
-
 binmode STDOUT, ":utf8";
 
 #
@@ -435,30 +432,6 @@ for my $f (0..$#files) {
 		
 		close OFH;
 	}
-}
-
-sub getInput {
-
-	my $prompt = shift || "?";
-
-	my $default = shift || "";
-
-	my $response = "";
-	
-	print STDERR "$prompt ";
-	
-	while ($response !~ /\S/) {
-	
-		$response = <STDIN>;
-		
-		chomp $response;
-		$response =~ s/^\s*//;
-		$response =~ s/\s*$//;
-		
-		if ($response eq "") { $response = $default }
-	}
-	
-	return $response;
 }
 
 sub getStruct {

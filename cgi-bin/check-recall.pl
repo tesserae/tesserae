@@ -478,16 +478,20 @@ sub html_no_table {
 
 sub info {
 		
-	my %sel_feature = (word => "", stem => "", syn=>"");
+	my %sel_feature = (word => "", stem => "", syn=>"", '3gr' => "");
 	my %sel_stbasis = (corpus => "", target => "", source => "", both => "");
 	my %sel_dibasis = (span => "", span_target => "", span_source => "", 
                       freq => "", freq_target => "", freq_source => "");
     my @sel_filter = ("", "");
 
-	$sel_feature{$meta{FEATURE}} = 'selected="selected"';
-	$sel_stbasis{$meta{STBASIS}} = 'selected="selected"';
-	$sel_dibasis{$meta{DIBASIS}} = 'selected="selected"';
+	$sel_feature{($meta{FEATURE}||'stem')}   = 'selected="selected"';
+	$sel_stbasis{($meta{STBASIS}||'corpus')} = 'selected="selected"';
+	$sel_dibasis{($meta{DIBASIS}||'freq')}   = 'selected="selected"';
 	$sel_filter[$meta{FILTER}]   = 'checked="checked"';
+
+	my $cutoff = $meta{CUTOFF} || 0;
+	my $stop   = defined $meta{STOP} ? $meta{STOP} : 10;
+	my $dist   = defined $meta{DIST} ? $meta{DIST} : 999;
 
 	my $html = <<END;
 	
@@ -519,13 +523,14 @@ sub info {
 						<option value="word" $sel_feature{word}>exact form only</option>
 						<option value="stem" $sel_feature{stem}>lemma</option>
 						<option value="syn"  $sel_feature{syn}>lemma + synonyms</option>
+						<option value="3gr"  $sel_feature{'3gr'}>character 3-grams</option>
 					</select>
 				</td>
 			</tr>
 			<tr>
 				<td><span class="h2">Number of stop words:</span></td>
 				<td>
-					<input type="text" name="stopwords" value="$meta{STOP}">
+					<input type="text" name="stopwords" value="$stop">
 				</td>
 			</tr>
 			<tr>
@@ -542,7 +547,7 @@ sub info {
 			<tr>
 				<td><span class="h2">Maximum distance:</span></td>
 				<td>
-					<input type="text" name="dist" maxlength="3" value="$meta{DIST}">
+					<input type="text" name="dist" maxlength="3" value="$dist">
 				</td>
 			</tr>
 			<tr>
@@ -561,7 +566,7 @@ sub info {
 			<tr>
 				<td><span class="h2">Drop scores below:</span></td>
 				<td>
-					<input type="text" name="cutoff" maxlen="3" value="$meta{CUTOFF}">
+					<input type="text" name="cutoff" maxlen="3" value="$cutoff">
 				</td>
 			</tr>
 			<tr>
@@ -571,14 +576,6 @@ sub info {
 					<input type="radio" name="filter" value="0" $sel_filter[0]> OFF
 				</td>
 			</tr>
-			<!--
-			<tr>
-				<td><span class="h2">Threshold for interesting words:</span></td>
-				<td>
-					<input type="text" name="interest" maxlen="8" value="$meta{INTEREST}">
-				</td>
-			</tr>
-			-->
 		</table>
 		
 		<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>
