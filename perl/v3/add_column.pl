@@ -278,7 +278,7 @@ for my $file_in (@files) {
 		# Assumption is that a line looks like:
 		# <001>	this is a verse
 
-		$l =~ /^<(.+)>\s+(.+)/;
+		$l =~ /^\S*<(.+)>\s+(.+)/;
 		
 		my ($locus, $verse) = ($1, $2);
 

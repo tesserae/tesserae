@@ -4,24 +4,32 @@
 # segment large .tess files into multiple parts
 
 use File::Copy;
+use File::Path qw/mkpath rmtree/;
+use File::Spec::Functions;
+use File::Basename;
 
-while (my $file = shift @ARGV)
-{
+while (my $file = shift @ARGV) {
 
-	unless ( -r $file )
-	{
+	unless ( -r $file ) {
+	
 		print STDERR "can't read $file; skipping\n";
 		next;
 	}
 
-	# the base name is everything to the right of the last /
-	# and left of the .tess extension
+	# split the file in to path, name, suffix
 
-	$file =~ /(.*\/)(.*)\.tess/;
+	my ($name, $path, $suffix) = fileparse($file, qr/\.[^.]*/);
 
-	my ($path, $name) = ($1, $2);
+	# create a directory with the same name as the file
 
-	mkdir($path.$name);
+	my $dir = catdir($path, $name);
+
+	rmtree($dir);
+	mkpath($dir);
+
+	#
+	# process the file
+	#
 
 	my $nlines;
 
@@ -32,24 +40,28 @@ while (my $file = shift @ARGV)
 	open (OF, ">&STDERR");
 
 	while (my $line = <IF>) {
-
-		if ( $line =~ /^<(.+?)>/ ) {
+	
+		if ( $line =~ /^\S*<(.+?)>/ ) {
 
 			$n = $1;
 
 			$n =~ s/.*\s+//;
 			$n =~ s/\..*//;
+			
+			$line =~ s/^\S</</;
 		}
 
 		if ($n ne $last_n) {
 
 			close OF;
+			
+			my $file_out = catfile($dir, "$name.part.$n.tess");
 
 			print STDERR "$nlines lines\n" unless $last_n == -1;
 
-			open (OF, ">$path$name/$name.part.$n.tess");
+			open (OF, ">:utf8", $file_out);
 
-			print STDERR "writing $path$name/$name.part.$n.tess\n";
+			print STDERR "writing $file_out\n";
 
 			$nlines = 0;
 		}
