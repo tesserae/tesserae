@@ -144,8 +144,8 @@ for my $unit (qw/line phrase/) {
 		my $file_freq_word = catfile($fs_data, 'v3', $lang, $text, $text . ".freq_score_word");
 		my $file_freq_stem = catfile($fs_data, 'v3', $lang, $text, $text . ".freq_score_stem");
 
-		my %freq_word = %{retrieve( $file_freq_word)};
-		my %freq_stem = %{retrieve( $file_freq_stem)};
+		my %freq_word = %{TessSystemVars::stoplist_hash($file_freq_word)};
+		my %freq_stem = %{TessSystemVars::stoplist_hash($file_freq_stem)};
 		
 		print "indexing " . scalar(@token) . " tokens / " . scalar(@unit) . " ${unit}s...\n";
 				
