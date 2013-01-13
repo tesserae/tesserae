@@ -158,6 +158,8 @@ for my $unit (qw/line phrase/) {
 			
 			# get the list of tokens in this unit
 			
+			next unless defined{$unit[$unit_id]{TOKEN_ID}};
+			
 			my @tokens = @{$unit[$unit_id]{TOKEN_ID}};
 				
 			# check every possible pair
