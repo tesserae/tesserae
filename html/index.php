@@ -18,20 +18,20 @@
 				<table class="input">
 
 					<tr>
-						<td align="center">
+						<td>
 							<span class="h2">Source text</span>
 						</td>	
-						<td align="center">
-							<span class="h2">Target text</span>
-						</td>
-					</tr>
-					<tr>
-						<td align ="center">
+						<td>
 							<select name="source" ID="source">
 								<?php include $fs_html.'/textlist.la.l.php'; ?>
 							</select>
 						</td>
-						<td align ="center">
+					</tr>
+					<tr>
+						<td>
+							<span class="h2">Target text</span>
+						</td>
+						<td>
 							<select name="target" ID="target">
 								<?php include $fs_html.'/textlist.la.r.php'; ?>
 							</select>

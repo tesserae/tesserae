@@ -1,0 +1,675 @@
+<?xml version="1.0" ?>
+<bibliogaphy>
+	
+	<text id="caesar.de_bellum_civile">
+		<author>Caesar</author>
+		<work>De Bellum Civile</work>
+		<eSource>
+			<a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0075">Perseus</a>
+		</eSource>
+		<printSource>
+			<author>C. Julius Caesar</author>
+			<title>C. Iuli Caesaris Commentariorum, pars posterior</title>
+			<editor role="editor">Renatus du Pontet</editor>
+			<imprint>
+				<pubPlace>Oxonii</pubPlace>
+				<publisher>e Typographeo Clarendoniano</publisher>
+				<date>1901</date>
+			</imprint>
+		</printSource>
+	</text>
+	
+	<text id="catullus.carmina">
+		<author>Catullus</author>
+		<work>Carmina</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0003">Perseus</a></eSource>
+		<printSource>
+			<author>C. Valerius Catullus</author>
+			<editor role="editor">E. T. Merrill</editor>
+		</printSource>
+	</text>
+	
+	<text id="cicero.redditus_senatu">
+		<author>Cicero</author>
+		<work>Redditus Senatu</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0014%3atext%3dRed.+Sen.">Perseus</a></eSource>
+		<printSource>
+			<author>M. Tullius Cicero</author>
+			<title>
+				M. Tulli Ciceronis Orationes:
+				Recognovit brevique adnotatione critica instruxit
+				Albertus Curtis Clark
+			</title>
+			<editor role="editor">Albert Clark</editor>
+			<imprint>
+			  <pubPlace>Oxonii</pubPlace>
+			  <publisher>e Typographeo Clarendoniano</publisher>
+			  <date>1909</date>
+			</imprint>
+		</printSource>
+	</text>
+	
+	<text id="claudian.de_bello_gildonico">
+		<author>Claudian</author>
+		<work>De Bello Gildonico</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0698">Perseus</a></eSource>
+		<printSource>
+		  <title>Claudian, Vol 1</title>
+		  <author>Claudianus, Claudius</author>
+		  <editor role="editor">Maurice Platnaeur</editor>
+		  <imprint>
+			 <publisher>William Heinemann; G.P. Putnam's Sons</publisher>
+			 <pubPlace>London; New York</pubPlace>
+			 <date>1922</date>
+		  </imprint>
+		</printSource>
+	</text>
+	
+	<text id="claudian.de_bello_gothico">
+		<author>Claudian</author>
+		<work>De Bello Gothico</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0690">Perseus</a></eSource>
+		<printSource>
+			<title>Claudian, Vol 2</title>
+			<author>Claudianus, Claudius</author>
+			<editor role="editor">Maurice Platnaeur</editor>
+			<imprint>
+			 <publisher>William Heinemann; G.P. Putnam's Sons</publisher>
+			 <pubPlace>London; New York</pubPlace>
+			 <date>1922</date>
+			</imprint>		
+		</printSource>
+	</text>
+	
+	<text id="claudian.de_consulatu_stilichonis">
+		<author>Claudian</author>
+		<work>De Consulatu Stilichonis</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0684">Perseus</a></eSource>
+		<printSource>
+			<title>Claudian, Vol 1-2</title>
+			<author>Claudianus, Claudius</author>
+			<editor role="editor">Maurice Platnaeur</editor>
+			<imprint>
+				<publisher>William Heinemann; G.P. Putnam's Sons</publisher>
+				<pubPlace>London; New York</pubPlace>
+		 		<date>1922</date>
+			</imprint>
+		</printSource>
+	</text>
+	
+	<text id="claudian.de_raptu_proserpinae">
+		<author>Claudian</author>
+		<work>De Raptu Proserpinae</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0685">Perseus</a></eSource>
+		<printSource>
+			<title>Claudian, Vol 2</title>
+			<author>Claudianus, Claudius</author>
+			<editor role="editor">Maurice Platnaeur</editor>
+			<imprint>
+				<publisher>William Heinemann; G.P. Putnam's Sons</publisher>
+				<pubPlace>London; New York</pubPlace>
+				<date>1922</date>
+			</imprint>		
+		</printSource>
+	</text>
+	
+	<text id="claudian.epithalamium_de_nuptiis_honorii_augusti">
+		<author>Claudian</author>
+		<work>Epithalamium De Nuptiis Honorii Augusti</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0691">Perseus</a></eSource>
+		<printSource>
+			<title>Claudian, Vol 1</title>
+			<author>Claudianus, Claudius</author>
+			<editor role="editor">Maurice Platnaeur</editor>
+			<imprint>
+				<publisher>William Heinemann; G.P. Putnam's Sons</publisher>
+				<pubPlace>London; New York</pubPlace>
+				<date>1922</date>
+			</imprint>
+		</printSource>
+	</text>
+	
+	<text id="claudian.in_consulatum_olybrii_et_probini">
+		<author>Claudian</author>
+		<work>In Consulatum Olybrii Et Probini</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="claudian.in_eutropium">
+		<author>Claudian</author>
+		<work>In Eutropium</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0689">Perseus</a></eSource>
+		<printSource>
+			<title>Claudian, Vol 1</title>
+			<author>Claudianus, Claudius</author>
+			<editor role="editor">Maurice Platnaeur</editor>
+			<imprint>
+				<publisher>William Heinemann; G.P. Putnam's Sons</publisher>
+				<pubPlace>London; New York</pubPlace>
+				<date>1922</date>
+			</imprint>
+		</printSource>
+	</text>
+	
+	<text id="claudian.in_rufinum">
+		<author>Claudian</author>
+		<work>In Rufinum</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0697">Perseus</a></eSource>
+		<printSource>
+			<title>Claudian, Vol 1</title>
+			<author>Claudianus, Claudius</author>
+			<editor role="editor">Maurice Platnaeur</editor>
+			<imprint>
+				<publisher>William Heinemann; G.P. Putnam's Sons</publisher>
+				<pubPlace>London; New York</pubPlace>
+				<date>1922</date>
+			</imprint>
+		</printSource>
+	</text>
+	
+	<text id="claudian.panegyricus_de_quarto_consulatu_honorii_augusti">
+		<author>Claudian</author>
+		<work>Panegyricus De Quarto Consulatu Honorii Augusti</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0695">Perseus</a></eSource>
+		<printSource>
+			<title>Claudian, Vol 1</title>
+			<author>Claudianus, Claudius</author>
+			<editor role="editor">Maurice Platnaeur</editor>
+			<imprint>
+				<publisher>William Heinemann; G.P. Putnam's Sons</publisher>
+				<pubPlace>London; New York</pubPlace>
+				<date>1922</date>
+			</imprint>
+		</printSource>
+	</text>
+	
+	<text id="claudian.panegyricus_de_sexto_consulatu_honorii_augusti">
+		<author>Claudian</author>
+		<work>Panegyricus De Sexto Consulatu Honorii Augusti</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0687">Perseus</a></eSource>
+		<printSource>
+			<title>Claudian, Vol 2</title>
+			<author>Claudianus, Claudius</author>
+			<editor role="editor">Maurice Platnaeur</editor>
+			<imprint>
+				<publisher>William Heinemann; G.P. Putnam's Sons</publisher>
+				<pubPlace>London; New York</pubPlace>
+				<date>1922</date>
+			</imprint>
+		</printSource>
+	</text>
+	
+	<text id="claudian.panegyricus_de_tertio_consulatu_honorii_augusti">
+		<author>Claudian</author>
+		<work>Panegyricus De Tertio Consulatu Honorii Augusti</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0696">Perseus</a></eSource>
+		<printSource>
+			<title>Claudian, Vol 1</title>
+			<author>Claudianus, Claudius</author>
+			<editor role="editor">Maurice Platnaeur</editor>
+			<imprint>
+				<publisher>William Heinemann; G.P. Putnam's Sons</publisher>
+				<pubPlace>London; New York</pubPlace>
+				<date>1922</date>
+			</imprint>
+		</printSource>
+	</text>
+	
+	<text id="claudian.panegyricus_dictus_manlio_theodoro_consuli">
+		<author>Claudian</author>
+		<work>Panegyricus Dictus Manlio Theodoro Consuli</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0692">Perseus</a></eSource>
+		<printSource>
+			<title>Claudian, Vol 1</title>
+			<author>Claudianus, Claudius</author>
+			<editor role="editor">Maurice Platnaeur</editor>
+			<imprint>
+				<publisher>William Heinemann; G.P. Putnam's Sons</publisher>
+				<pubPlace>London; New York</pubPlace>
+				<date>1922</date>
+			</imprint>
+		</printSource>
+	</text>
+	
+	<text id="corippus.johannis">
+		<author>Corippus</author>
+		<work>Johannis</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="horace.ars_poetica">
+		<author>Horace</author>
+		<work>Ars Poetica</work>
+		<eSource><a href="http://thelatinlibrary.com">Latin Library</a></eSource>
+		<printSource><a href="http://thelatinlibrary.com/cred.html">see notes</a></printSource>
+	</text>
+	
+	<text id="horace.carmen_saeculare">
+		<author>Horace</author>
+		<work>Carmen Saeculare</work>
+		<eSource><a href="http://thelatinlibrary.com">Latin Library</a></eSource>
+		<printSource><a href="http://thelatinlibrary.com/cred.html">see notes</a></printSource>
+	</text>
+	
+	<text id="horace.epistles">
+		<author>Horace</author>
+		<work>Epistles</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0539">Perseus</a></eSource>
+		<printSource>H. Rushton Fairclough, <em>Horace: Satires, Epistles and Ars Poetica</em>. Harvard University Press, 1929.</printSource>
+	</text>
+	
+	<text id="horace.epodes">
+		<author>Horace</author>
+		<work>Epodes</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0538">Perseus</a></eSource>
+		<printSource>F. Vollmer, <em>Q. Horati Flacci Carmina</em>. Leipzig: Teubner, 1912.</printSource>
+	</text>
+	
+	<text id="horace.odes">
+		<author>Horace</author>
+		<work>Odes</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0024">Perseus</a></eSource>
+		<printSource>Paul Shorey and Gordon J. Laing, <em>Horace: Odes and Epodes</em>. Chicago: Benj. H. Sanborn &amp; Co., 1919.</printSource>
+	</text>
+	
+	<text id="horace.satires">
+		<author>Horace</author>
+		<work>Satires</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0062">Perseus</a></eSource>
+		<printSource>C. Smart, <em>The Works of Horace</em>. Philadelphia: Joseph Whetham, 1836.</printSource>
+	</text>
+	
+	<text id="ilias_latina">
+		<author>Ilias Latina</author>
+		<work></work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="juvenal">
+		<author>Juvenal</author>
+		<work></work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="juvencus.historia_evangelica">
+		<author>Juvencus</author>
+		<work>Historia Evangelica</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="lucan.bellum_civile">
+		<author>Lucan</author>
+		<work>Bellum Civile</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="lucretius.de_rerum_natura">
+		<author>Lucretius</author>
+		<work>De Rerum Natura</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0130">Perseus</a></eSource>
+		<printSource>uncredited</printSource>
+	</text>
+	
+	<text id="martial.epigrams">
+		<author>Martial</author>
+		<work>Epigrams</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0506">Perseus</a></eSource>
+		<printSource>Wilhelm Heraeus, <em>M. Valerii Martialis Epigrammaton libri</em>. Leipzig: Borovskij, 1925.</printSource>
+	</text>
+	
+	<text id="ovid.amores">
+		<author>Ovid</author>
+		<work>Amores</work>
+		<eSource><a href="http://www.perseus.tufts.edu">Perseus</a></eSource>
+		<printSource>R. Ehwald, <em>Amores, Epistulae, Medicamina faciei femineae, Ars amatoria, Remedia amoris</em> (Teubner 1907)</printSource>
+	</text>
+	
+	<text id="ovid.ars_amatoria">
+		<author>Ovid</author>
+		<work>Ars Amatoria</work>
+		<eSource><a href="http://www.perseus.tufts.edu">Perseus</a></eSource>
+		<printSource>R. Ehwald, <em>Amores, Epistulae, Medicamina faciei femineae, Ars amatoria, Remedia amoris</em> (Teubner 1907)</printSource>
+	</text>
+	
+	<text id="ovid.ex_ponto">
+		<author>Ovid</author>
+		<work>Ex Ponto</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0493">Perseus</a></eSource>
+		<printSource>Arthur Leslie Wheeler, <em>P. Ovidius Naso: Ex Ponto.</em> Cambridge, MA: Harvard University Press, 1939.</printSource>
+	</text>
+	
+	<text id="ovid.fasti">
+		<author>Ovid</author>
+		<work>Fasti</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0547">Perseus</a></eSource>
+		<printSource>Sir James George Frazer, <em>Ovid&rsquo;s Fasti</em>. Harvard University Press, 1933.</printSource>
+	</text>
+	
+	<text id="ovid.heroides">
+		<author>Ovid</author>
+		<work>Heroides</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0068%3atext%3dEp.">Perseus</a></eSource>
+		<printSource>R. Ehwald, <em>Amores, Epistulae, Medicamina faciei femineae, Ars amatoria, Remedia amoris</em>. Teubner, 1907.</printSource>
+	</text>
+	
+	<text id="ovid.medicamina_faciei_femineae">
+		<author>Ovid</author>
+		<work>Medicamina Faciei Femineae</work>
+		<eSource><a href="http://www.perseus.tufts.edu">Perseus</a></eSource>
+		<printSource>R. Ehwald, <em>Amores, Epistulae, Medicamina faciei femineae, Ars amatoria, Remedia amoris</em>. Teubner, 1907.</printSource>
+	</text>
+	
+	<text id="ovid.metamorphoses">
+		<author>Ovid</author>
+		<work>Metamorphoses</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0029">Perseus</a></eSource>
+		<printSource>Hugo Magnus, <em>Ovid: Metamorphoses</em>. Gotha (Germany): Friedr. Andr. Perthes, 1892.</printSource>
+	</text>
+	
+	<text id="ovid.remedia_amoris">
+		<author>Ovid</author>
+		<work>Remedia Amoris</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0068%3atext%3dRem.">Perseus</a></eSource>
+		<printSource>R. Ehwald, <em>Amores, Epistulae, Medicamina faciei femineae, Ars amatoria, Remedia amoris</em>. Teubner, 1907.</printSource>
+	</text>
+	
+	<text id="ovid.tristia">
+		<author>Ovid</author>
+		<work>Tristia</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0492">Perseus</a></eSource>
+		<printSource>Arthur Leslie Wheeler, <em>P. Ovidius Naso: Tristia</em>.  Cambridge, MA: Harvard University Press, 1939.</printSource>
+	</text>
+	
+	<text id="paul.carmina">
+		<author>Paul</author>
+		<work>Carmina</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="petronius.satyricon">
+		<author>Petronius</author>
+		<work>Satyricon</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="plautus.amphitruo">
+		<author>Plautus</author>
+		<work>Amphitruo</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0030">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.asinaria">
+		<author>Plautus</author>
+		<work>Asinaria</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0031">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.aulularia">
+		<author>Plautus</author>
+		<work>Aulularia</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0032">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.bacchides">
+		<author>Plautus</author>
+		<work>Bacchides</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0033">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.captivi">
+		<author>Plautus</author>
+		<work>Captivi</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0034">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.casina">
+		<author>Plautus</author>
+		<work>Casina</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0035">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.cistellaria">
+		<author>Plautus</author>
+		<work>Cistellaria</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0036">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.curculio">
+		<author>Plautus</author>
+		<work>Curculio</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0037">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.epidicus">
+		<author>Plautus</author>
+		<work>Epidicus</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0038">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.menaechmi">
+		<author>Plautus</author>
+		<work>Menaechmi</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0039">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.mercator">
+		<author>Plautus</author>
+		<work>Mercator</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0040">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.miles_gloriosus">
+		<author>Plautus</author>
+		<work>Miles Gloriosus</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0041">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.mostellaria">
+		<author>Plautus</author>
+		<work>Mostellaria</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0042">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.persa">
+		<author>Plautus</author>
+		<work>Persa</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0043">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.poenulus">
+		<author>Plautus</author>
+		<work>Poenulus</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0045">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.pseudolus">
+		<author>Plautus</author>
+		<work>Pseudolus</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="plautus.rudens">
+		<author>Plautus</author>
+		<work>Rudens</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0046">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.stichus">
+		<author>Plautus</author>
+		<work>Stichus</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0047">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.trinummus">
+		<author>Plautus</author>
+		<work>Trinummus</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0048">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="plautus.truculentus">
+		<author>Plautus</author>
+		<work>Truculentus</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0049">Perseus</a></eSource>
+		<printSource>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</printSource>
+	</text>
+	
+	<text id="propertius.elegies">
+		<author>Propertius</author>
+		<work>Elegies</work>
+		<eSource><a href="http://thelatinlibrary.com">Latin Library</a></eSource>
+		<printSource>L. Mueller, <em>Sex. Propertii Elegiae</em> (Leipzig: Teubner, 1898)</printSource>
+	</text>
+	
+	<text id="prudentius.apotheosis">
+		<author>Prudentius</author>
+		<work>Apotheosis</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="prudentius.contra_symmachum">
+		<author>Prudentius</author>
+		<work>Contra Symmachum</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="prudentius.dittochaeon">
+		<author>Prudentius</author>
+		<work>Dittochaeon</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="prudentius.epilogus">
+		<author>Prudentius</author>
+		<work>Epilogus</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="prudentius.hamartigenia">
+		<author>Prudentius</author>
+		<work>Hamartigenia</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="prudentius.psychomachia">
+		<author>Prudentius</author>
+		<work>Psychomachia</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="rutilius.de_reditu">
+		<author>Rutilius</author>
+		<work>De Reditu</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="silius_italicus.punica">
+		<author>Silius Italicus</author>
+		<work>Punica</work>
+		<eSource><a href="http://thelatinlibrary.com">Latin Library</a></eSource>
+		<printSource><a href="http://thelatinlibrary.com/cred.html">see notes</a></printSource>
+	</text>
+	
+	<text id="statius.achilleid">
+		<author>Statius</author>
+		<work>Achilleid</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0500">Perseus</a></eSource>
+		<printSource>John Henry Mozley, <em>Statius: Vol II</em>. New York: G.P. Putnam&rsquo;s Sons. 1928.</printSource>
+	</text>
+	
+	<text id="statius.silvae">
+		<author>Statius</author>
+		<work>Silvae</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0499">Perseus</a></eSource>
+		<printSource>John Henry Mozley, <em>Statius: Vol I</em>. New York: G.P. Putnam&rsquo;s Sons. 1928.</printSource>
+	</text>
+	
+	<text id="statius.thebaid">
+		<author>Statius</author>
+		<work>Thebaid</work>
+		<eSource><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0498">Latin Library</a></eSource>
+		<printSource>John Henry Mozley, <em>Statius: Vol I&ndash;II</em>. New York: G.P. Putnam&rsquo;s Sons. 1928.</printSource>
+	</text>
+	
+	<text id="tacitus.agricola">
+		<author>Tacitus</author>
+		<work>Agricola</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="tacitus.annales">
+		<author>Tacitus</author>
+		<work>Annales</work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="tibullus">
+		<author>Tibullus</author>
+		<work></work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="valerius_flaccus">
+		<author>Valerius Flaccus</author>
+		<work></work>
+		<eSource></eSource>
+		<printSource></printSource>
+	</text>
+	
+	<text id="vergil.aeneid">
+		<author>Vergil</author>
+		<work>Aeneid</work>
+		<eSource><a href="http://www.perseus.tufts.edu">Perseus</a></eSource>
+		<printSource>J. B. Greenough, <em>Bucolics, Aeneid, and Georgics Of Vergil</em> (Ginn &amp; Co. 1900)</printSource>
+	</text>
+	
+	<text id="vergil.eclogues">
+		<author>Vergil</author>
+		<work>Eclogues</work>
+		<eSource><a href="http://thelatinlibrary.com">Latin Library</a></eSource>
+		<printSource>J. B. Greenough, <em>Bucolics, Aeneid, and Georgics Of Vergil</em> (Ginn &amp; Co. 1900)</printSource>
+	</text>
+	
+	<text id="vergil.georgics">
+		<author>Vergil</author>
+		<work>Georgics</work>
+		<eSource><a href="http://thelatinlibrary.com">Latin Library</a></eSource>
+		<printSource>J. B. Greenough, <em>Bucolics, Aeneid, and Georgics Of Vergil</em> (Ginn &amp; Co. 1900)</printSource>
+	</text>
+</bibliography>

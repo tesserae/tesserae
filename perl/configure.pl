@@ -64,8 +64,8 @@ closedir (DH);
 
 my @php_files = (
 
-	catfile($fs_html, "first.php"),
-   catfile($fs_html, "frame.fulltext.php")
+	catfile($fs_html, "defs.php"),
+    catfile($fs_html, "frame.fulltext.php")
 	);
 
 #

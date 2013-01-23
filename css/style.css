@@ -6,7 +6,6 @@ body
 	padding : 0px;
 	font-family : arial, helvetica, sans-serif;
 	font-size : 12px;
-	text-align : center;
 }
 
 div#container
@@ -21,18 +20,13 @@ div#header
 {
 	position: relative;
 	background: #e1e6c6;
+	height: 12em;
 }
 
-div#banner_logo
+div#header_image
 {
 	position: absolute;
-	top: 10px;
-	left: 5px;
-}
-
-
-div#title
-{
+	margin: 1.5em 2em;
 }
 
 div#nav_main
@@ -70,13 +64,16 @@ div#nav_main a:hover
 
 div#nav_sub
 {
-	clear: both;
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
 	padding: auto;
 	height : 29px;
 	line-height : 29px;
 	background : 	#828F49;
 	text-transform : uppercase;
 	font-family : "times new roman", serif;
+	text-align: center;
 }
 
 div#nav_sub ul
@@ -210,16 +207,6 @@ div.figure_caption
 	color : #880;
 }
 
-div.blog
-{
-	border : 1px solid gray;
-}
-
-div.blog h1
-{
-	font-size: 120%;
-}
-
 table.data
 {
 	margin : 25px auto;
@@ -238,9 +225,6 @@ table.data caption
 	color : #880;
 }
 
-table.fulltext
-{
-}
 
 h1
 {
@@ -265,11 +249,6 @@ span.h2
 	text-transform : uppercase;
 	font-size : 12px;
 	color : #660;	
-}
-
-h2.lowercase
-{
-	text-transform : capitalize;
 }
 
 h3

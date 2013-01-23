@@ -23,16 +23,16 @@
 
 		<div id="header"> 
 		
-			<div id="title">
-				<h1><b>Tesserae</b></h1>
-				<h2>Intertextual Phrase Matching</h2>
-			</div>
-
+			<div id="header_image">
+				<a href="http://tesserae.caset.buffalo.edu/">
+					<img src="<?php echo $url_image . "/Tesserae.png" ?>" alt="Tesserae" width="300">
+				</a>
+			</div>		
 			<div id="nav_main">
 				<ul>
 					<li><a href="<?php echo $url_html; ?>">Search</a></li>
 					<li><a href="<?php echo $url_html . "/help.php"; ?>">Help</a></li>
-					<li><a href="http://tesserae.caset.buffalo.edu/blog">News</a></li>
-					<li><a href="<?php echo $url_html . "/howtocite.php"; ?>">Cite</a></li>
+					<li><a href="<?php echo $url_html . "/about.php"; ?>">About</a></li>
+					<li><a href="http://tesserae.caset.buffalo.edu/blog">Blog</a></li>
 				</ul>
 			</div>
