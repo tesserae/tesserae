@@ -96,10 +96,12 @@ for my $lang(@lang) {
 		print STDERR "writing $file_freq\n";
 
 		open (FREQ, ">:utf8", $file_freq) or die "can't write $file_freq: $!";
+
+		print FREQ "# count: $total{$feature}\n";
 		
 		for (sort {$count{$feature}{$b} <=> $count{$feature}{$a}} keys %{$count{$feature}}) {
 		
-			print FREQ sprintf("%s\t%.6f\n", $_, $count{$feature}{$_}/$total{$feature});
+			print FREQ "$_\t$count{$feature}\n";
 		}
 
 		close FREQ;

@@ -95,6 +95,11 @@ div#nav_sub li a
 	text-decoration: none;
 }
 
+div#pager
+{
+	text-align: center;
+}
+
 div#pager span
 {
 	padding: 5px;
@@ -205,6 +210,16 @@ div.figure_caption
 	font-size : 95%;
 	text-transform : uppercase;
 	color : #880;
+}
+
+div.pr_container {
+
+	text-align: center;
+}
+
+div.waiting {
+
+	text-align: center;
 }
 
 table.data
@@ -412,11 +427,6 @@ table.output th.phrase {
 
 table.output th {
 	background-color: #e1e6c6;
-}
-
-div.pr_container {
-
-	text-align: center;
 }
 
 table.pr_bar {

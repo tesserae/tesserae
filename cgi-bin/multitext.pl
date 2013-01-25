@@ -127,6 +127,7 @@ unless ($no_cgi) {
 		<meta http-equiv="Refresh" content="0; url='$redirect'">
 	</head>
 	<body>
+		<div class="waiting">
 		<h2>Multi-text search in progress</h2>	
 	
 		<p>Please be patient while your results are checked against the rest of the corpus.<br />This can take a while.</p>
@@ -265,7 +266,7 @@ print <<END unless ($no_cgi);
 			Your results are done!  If you are not redirected automatically, 
 			<a href="$url_cgi/read_multi.pl?session=$session">Click here</a> to proceed.
 	</p>
-
+	</div>
 </body>
 </html>
 

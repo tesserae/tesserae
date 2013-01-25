@@ -376,6 +376,7 @@ else {
 	<meta http-equiv="Refresh" content="0; url='$redirect{$frontend}'">
 	</head>
 	<body>
+		<div class="waiting">
 		<p>
 			Searching...
 		</p>
@@ -745,6 +746,7 @@ print <<END unless ($no_cgi);
       Your search is done.  If you are not redirected automatically, 
       <a href="$redirect{$frontend}">click here</a>.
 	</p>
+	</div>
 </body>
 </html>
 
