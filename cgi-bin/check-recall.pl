@@ -23,11 +23,6 @@ use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use TessSystemVars;
 use EasyProgressBar;
 
-# optional modules
-
-use if $ancillary{"Lingua::Stem"}, "Lingua::Stem";
-my $stemmer;
-
 my $usage = "usage: perl check-recall [--cache CACHE] TESRESULTS\n";
 
 my $session;
