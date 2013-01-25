@@ -101,7 +101,7 @@ for my $lang(@lang) {
 		
 		for (sort {$count{$feature}{$b} <=> $count{$feature}{$a}} keys %{$count{$feature}}) {
 		
-			print FREQ "$_\t$count{$feature}\n";
+			print FREQ "$_\t$count{$feature}{$_}\n";
 		}
 
 		close FREQ;
