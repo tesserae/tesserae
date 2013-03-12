@@ -6,21 +6,17 @@ read_bin.pl - Sort and format the results of a Tesserae search.
 
 =head1 SYNOPSIS
 
-B<read_bin.pl> [B<--quiet>] [B<--sort> I<key>] [B<--reverse>] [B<--export> I<mode>] [B<--batch> I<page_size>] [B<--page> I<page_no>] <I<FILE> | B<--session> I<session_id>>
+B<read_bin.pl> [OPTIONS] <I<name> | B<--session> I<session_id>>
 
 =head1 DESCRIPTION
 
-This script reads the binary results file produced by I<read_table.pl> and presents the results to the user.  It's usually run behind the scenes to create the paged HTML tables seen from the web interface, but it can also be run from the command-line, and can format results as CSV or XML as well as HTML.
+This script reads the directory of binary files produced by I<read_table.pl> and presents the results to the user.  It's usually run behind the scenes to create the paged HTML tables seen from the web interface, but it can also be run from the command-line, and can format results as plain text or XML as well as HTML.
 
-It takes a I<FILE> to read as its argument, or alternatively the I<session_id> of a previous web session.  Output is dumped to STDOUT.
+It takes as its argument the I<name> of the results saved by I<read_table.pl>--that is "tesresults," or whatever was specified using the B<--binary> flag.  Alternatively you may specify the I<session_id> of a previous web session.  Output is dumped to STDOUT.
 
 Options:
 
 =over
-
-=item --quiet
-
-Don't write progress info to STDERR.
 
 =item B<--sort> target|source|score
 
@@ -38,19 +34,31 @@ For paged results, I<page_size> gives the number of results per page. The defaul
 
 For paged results, I<page_no> gives the page to display.  The default is 1.
 
-=item B<--export> html|csv|xml
+=item B<--export> html|tab|csv|xml
 
-How to format the results.  The default is B<html>.  NB: CSV results are not paged, but will be sorted according to the values of B<--sort> and B<--rev>.  XML results are neither paged nor sorted (actually, they're always sorted by target).
+How to format the results.  The default is B<html>.  I<tab> and I<csv> are similar: both produce plain text output, with one parallel to a line, and fields either separated by either tabs or commas.  Tab- and comma-separated results are not paged, but will be sorted according to the values of B<--sort> and B<--rev>. XML results are neither paged nor sorted (actually, they're always sorted by target).
+
+If you want to import the results into Microsoft Excel, I<tab> seems to work best.
 
 =item B<--session> I<session_id>
 
-When this option is given, the results are read not from a file specified as a command line argument, but rather from the previously created session file in C<tmp/> having id I<session_id>.  This is useful if the results you want to read were generated from the web interface.
+When this option is given, the results are read not from a local, named session, but rather from a previously-created session file in C<tmp/> having id I<session_id>.  This is useful if the results you want to read were generated from the web interface.
+
+=item B<--quiet>
+
+Don't write progress info to STDERR.
+
+=item B<--help>
+
+Print this message and exit.
 
 =back
 
 =head1 EXAMPLE
 
-% cgi-bin/read_table.pl --export csv results.bin > results.csv
+Presuming that you had previously run read_table.pl using the default name "tesresults" for your output:
+
+% cgi-bin/read_bin.pl --export tab tesresults > results.txt
 
 =head1 SEE ALSO
 
@@ -77,7 +85,7 @@ Alternatively, the contents of this file may be used under the terms of either t
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -90,6 +98,7 @@ use warnings;
 
 use CGI qw(:standard);
 
+use Pod::Usage;
 use Getopt::Long;
 use POSIX;
 use Storable qw(nstore retrieve);
@@ -141,6 +150,10 @@ my $session;
 
 my $export = 'html';
 
+# help flag
+
+my $help;
+
 #
 # command-line arguments
 #
@@ -152,7 +165,17 @@ GetOptions(
 	'batch=i'   => \$batch,
 	'session=s' => \$session,
 	'export=s'  => \$export,
-	'quiet'     => \$quiet );
+	'quiet'     => \$quiet,
+	'help'      => \$help );
+
+#
+# if help requested, print usage
+#
+
+if ($help) {
+
+	pod2usage( -verbose => 2 );
+}
 
 #
 # cgi input

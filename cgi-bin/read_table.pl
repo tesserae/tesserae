@@ -6,21 +6,22 @@ read_table.pl - Perform a Tesserae search.
 
 =head1 SYNOPSIS
 
-B<read_table.pl> B<--target> I<target_text> B<--source_text> I<source> [B<--unit> I<unit>] [B<--feature> I<feature>] [B<--stop> I<stoplist_size>] [B<--stbasis> I<stoplist_basis>] [B<--distance> I<max_dist>] [B<--dibasis> I<distance_basis>] [B<--cutoff> I<score_cutoff>] [B<--interest> I<max_freq>] [B<--binary> I<file>] [B<--quiet>]
+B<read_table.pl> B<--target> I<target_text> B<--source> I<source_text> [OPTIONS]
 
 =head1 DESCRIPTION
 
-This script compares two texts in the Tesserae corpus and returns a list of "parallels", pairs of textual units which share common features.  These parallels are kept in a hash which is saved as a Storable binary.  This results file can be read and formatted in a user-friendly way with the companion script I<read_bin.pl>.
+This script compares two texts in the Tesserae corpus and returns a list of "parallels", pairs of textual units which share common features.  These parallels are organized in a set of hashes which are saved as a binaries using Storable.  These files, kept together in a directory named for the session, can be read and formatted in a user-friendly way with the companion script I<read_bin.pl>.
 
-This script is primarily called as a cgi executable from the web interface.  It creates a new session id for the results and saves them to the Tesserae I<tmp/> directory.  It then redirects the browser to I<read_bin.pl> which mediates viewing the results.
+This script is primarily called as a cgi executable from the web interface.  Called as a cgi, it creates a new session id for the results and saves them to the Tesserae I<tmp/> directory.  It then redirects the browser to I<read_bin.pl> which mediates viewing the results.
 
-It can also be run from the command line.  In this case, the results are written to a user specified file.
+It can also be run from the command line.  In this case, the results are written to a new directory given a user-specified session name (or "tesresults" by default).
 
 The names of the source and target texts to be searched must be specified.  B<Target> means the alluding (more recent) text.  B<Source> is the alluded-to (earlier) text.
 
-The name of a text is identical to its filename without the C<.tess> extension.  For example, our benchmark test is to search for allusions to Vergil's Aeneid in Book 1 of Lucan's Pharsalia.  The file containing the Aeneid is I<texts/la/vergil.aeneid.tess> and that containing just the first book of Pharsalia is I<texts/la/lucan.pharsalia/lucan.pharsalia.part.1.tess>.  Thus, a default search, taking Lucan as the alluder and Vergil as the alluded-to, is run like this:
+The name of a text is identical to its filename without the C<.tess> extension.  For example, our benchmark test is to search for allusions to Vergil's Aeneid in Book 1 of Lucan's Bellum Civile.  The file containing the Aeneid is I<texts/la/vergil.aeneid.tess> and that containing just the first book of Pharsalia is I<texts/la/lucan.bellum_civile/lucan.bellum_civile.part.1.tess>.  Thus, a default search, taking Lucan as the alluder and Vergil as the alluded-to, is run like this:
 
-% cgi-bin/read_table.pl --source vergil.aeneid --target lucan.pharsalia.part.1
+% cgi-bin/read_table.pl --source vergil.aeneid \	
+                        --target lucan.bellum_civile.part.1
 
 =head1 OPTIONS 
 
@@ -32,11 +33,11 @@ I<unit> specifies the textual units to be compared.  Choices currently are B<lin
 
 =item B<--feature> word|stem|syn 
 
-This specifies the features set to match against.  B<word> only allows matches on forms that are identical. B<stem> (the default), allows matches on any inflected form of the same stem. B<syn> matches not only forms of the same headword but also other headwords taken to be related in meaning.  B<stem> and B<syn> only work if the appropriate dictionaries are installed; neither will work on English texts, and B<syn> won't work on Greek.
+This specifies the features set to match against.  B<word> only allows matches on forms that are identical. B<stem> (the default), allows matches on any inflected form of the same stem. B<syn> matches not only forms of the same headword but also other headwords taken to be related in meaning.  B<stem> and B<syn> only work if the appropriate dictionaries are installed; B<syn> won't work on Greek or English.
 
 =item B<--stop> I<stoplist_size>
 
-I<stoplist_size> is the number of stop words (stems, etc.) to use.  Matches on any of these are excluded from results.  The stop list is calculated by ordering all the features (see above) in the stoplist basis (see below) by frequency and taking the top I<N>, where I<N>=I<stoplist_size>.  The default is 10, I think.
+I<stoplist_size> is the number of stop words (stems, etc.) to use.  Matches on any of these are excluded from results.  The stop list is calculated by ordering all the features (see above) in the stoplist basis (see below) by frequency and taking the top I<N>, where I<N>=I<stoplist_size>.  The default is 10.
 
 =item B<--stbasis> corpus|target|source|both
 
@@ -44,27 +45,27 @@ Stoplist basis is a string indicating the source for the ranked list of features
 
 =item B<--dist> I<max_dist>
 
-This sets the maximum distance between matching words.  For two units (one in the source and one in the target) to be considered a match, each must have at least two words common to the other (regardless of the feature on which they matched).  It's generally true that in good allusions these words are close together in both units.  Setting the maximum distance to I<N> means that matches where either unit's matching words are more than I<N> tokens apart will be excluded. The default distance is 999, which is presumably equivalent to setting no limit.
+This sets the maximum distance between matching words.  For two units (one in the source and one in the target) to be considered a match, each must have at least two words common to the other (regardless of the feature on which they matched).  It's generally true that in good allusions these words are close together in both units.  Setting the maximum distance to I<N> means that matches where either unit's matching words are more than I<N> words apart will be excluded. The default distance is 999, which is presumably equivalent to setting no limit. Note that adjacent words are considered to have a distance of 1, words separated by an intervening word have a distance of 2, and so on.
 
 =item B<--dibasis> span|span-target|span-source|freq|freq-target|freq-source
 
-Distance basis is a string indicating the way to calculate the distance between matching words in a parallel (matching pair of units).  The default is B<span>, which adds together the distance in tokens between the two farthest-apart words in each phrase.  Related to this are B<span-target> which uses the distance between the two farthest-apart words in the target unit only, and B<span-source> which uses the two farthest-apart words in the source unit.  An alternative basis is B<freq>, which uses the distance between the two words with the lowest frequencies (in their own text only), adding the frequency-based distances of the target and source units together.  As for B<span>, you can select the frequency-based distance in only one text with B<freq-target> or B<freq-source>.
+Distance basis is a string indicating the way to calculate the distance between matching words in a parallel (matching pair of units).  B<span> adds together the distance in words between the two farthest-apart words in each phrase.  Related to this are B<span-target> which uses the distance between the two farthest-apart words in the target unit only, and B<span-source> which uses the two farthest-apart words in the source unit.  A (probably) better basis is B<freq>, which uses the distance between the two words with the lowest frequencies (in their own text only), adding the frequency-based distances of the target and source units together.  As for B<span>, you can select the frequency-based distance in only one text with B<freq-target> or B<freq-source>.  The default is B<freq>.
 
 =item B<--cutoff> I<score_cutoff>
 
 Each match found by Tesserae is given a score.  Setting a cutoff will cause any match with a score less than this to be dropped from the results.  Default is 0 (presumably equivalent to no cutoff).
 
-=item B<--interest> I<max_freq>
+=item B<--binary> I<name>
 
-This is a threshold defining the maximum frequency of "interesting" words.  This is still experimental; in a default installation it's not used.
-
-=item B<--binary> I<file>
-
-This is the name of the output file.  The Storable binary containing your results as a big hash will be saved here.  The default is I<results.bin>.
+This is the name to be given to the session. Tesserae will create a new directory with this name and save there the Storable binaries containing your results.  The default is I<tesresults>.
 
 =item B<--quiet>
 
 Don't write progress info to STDERR.
+
+=item B<--help>
+
+Print this message and exit.
 
 =back
 
@@ -72,7 +73,9 @@ The values of all these options should be printed to STDERR when you run the scr
 
 =head1 KNOWN BUGS
 
-The distance between two words includes punctuation and space tokens as well as word tokens, so that I<max_dist> is probably about twice what you think it should be.
+Right now the script also prints benchmark information to STDOUT.  This consists of a couple of messages about how many seconds different parts of the script take.  You can't turn it off, but you could always redirect it to /dev/null.
+
+Also, I'm not sure what will happen if you select a feature that hasn't been installed.
 
 =head1 SEE ALSO
 
@@ -99,7 +102,7 @@ Alternatively, the contents of this file may be used under the terms of either t
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 
 #
 # read_table.pl
@@ -114,6 +117,7 @@ use warnings;
 
 use CGI qw/:standard/;
 
+use Pod::Usage;
 use Getopt::Long;
 use Storable qw(nstore retrieve);
 use File::Spec::Functions;
@@ -122,33 +126,6 @@ use File::Path qw(mkpath rmtree);
 use TessSystemVars;
 use EasyProgressBar;
 
-#
-# usage
-#
-
-my $usage = <<END;
-
-   usage: read_table.pl --source SOURCE --target TARGET [options]
-
-   options:
-	   --feature   word|stem|syn
-                       the feature set to match on. default is "stem".
-	   --unit      line|phrase
-                       textual units to match. default is "line".
-	   --stopwords 0..250
-                       the number of stopwords. default is 10.
-	   --distance  0..999
-                       max distance between match words. default is 999.
-	   --stbasis   corpus|target|source|both
-	               basis for choosing stop words. default is "corpus".
-	   --dibasis   span|freq
-                       basis for calculating distance between matching
-                       words. default is "span".
-       --bin FILENAME
-                       specify output file name. default is "tesresults.bin"	
-	   --quiet     do not print progress info to stderr.
-
-END
 
 #
 # set some parameters
@@ -228,6 +205,10 @@ my $multi_cutoff = 0;
 
 my @include;
 
+# help flag
+
+my $help;
+
 # which script should mediate the display of results
 
 my $frontend = 'default';
@@ -246,7 +227,17 @@ GetOptions(
 			'cutoff=f'     => \$cutoff,
 			'filter'       => \$filter,
 			'interest=f'   => \$interest,
-			'quiet'        => \$quiet );
+			'quiet'        => \$quiet,
+			'help'         => \$help);
+
+#
+# print usage info if help flag set
+#
+
+if ($help) {
+
+	pod2usage(-verbose => 2);
+}
 
 # html header
 #
@@ -333,8 +324,7 @@ if ($no_cgi) {
 
 	unless (defined ($source and $target)) {
 
-		print STDERR $usage;
-		exit;
+		pod2usage( -verbose => 1);
 	}
 }
 else {
