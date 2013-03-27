@@ -30,14 +30,14 @@
 					<tr>
 						<td>Horace</td>
 						<td>Ars Poetica</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td><a href="http://thelatinlibrary.com/cred.html">see notes</a></td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0064">Perseus</a></td>
+						<td>C. Smart, <em>The Works of Horace</em>. Philadelphia: Joseph Whetham, 1836.</td>
 					</tr>
 					<tr>
 						<td>&mdash;</td>
 						<td>Carmen Saeculare</td>
 						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td><a href="http://thelatinlibrary.com/cred.html">see notes</a></td>
+						<td>Paul Shorey, <em>Horace: Odes and Epodes</em>. Boston: Benj. H. Sanborn &amp; Co.</td>, 1898.</td>
 					</tr>
 					<tr>
 						<td>&mdash;</td>
@@ -66,8 +66,11 @@
 					<tr>
 						<td>Juvenal</td>
 						<td>Satires</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td>Bucheler&rsquo;s text of 1893</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2007.01.0093">Perseus</a></td>
+						<td>
+							G. G. Ramsay, <em>Juvenal and Persius: With An English Translation</em>
+							New York: G. P. Putnam&rsquo;s Sons, 1918.
+						</td>
 					</tr>
 					<tr>
 						<td>Lucan</td>
@@ -153,8 +156,8 @@
 					<tr>
 						<td>Propertius</td>
 						<td>Elegies</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td>L. Mueller,	 <em>Sex. Propertii Elegiae</em>	 (Leipzig: Teubner, 1898)</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0494">Perseus</a></td>
+						<td>L. Mueller,	<em>Sex. Propertii Elegiae</em>. Leipzig: Teubner, 1898.</td>
 					</tr>
 					<tr>
 						<td>Plautus</td>
@@ -279,8 +282,12 @@
 					<tr>
 						<td>Silius Italicus</td>
 						<td>Punica</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td><a href="http://thelatinlibrary.com/cred.html">see notes</a></td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0674">Perseus</a></td>
+						<td>
+							Walter Coventry Summers and John Percival Postgate,
+							<em>Corpus Poetarum Latinorum, Vol. 2</em>.
+							London: Sumptibus G. Bell et Filiorum, 1905
+						</td>
 					</tr>
 					<tr>
 						<td>Statius</td>
@@ -297,32 +304,32 @@
 					<tr>
 						<td>Statius</td>
 						<td>Thebaid</td>
-						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0498">Latin Library</a></td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0498">Perseus</a></td>
 						<td>John Henry Mozley, <em>Statius: Vol I&ndash;II</em>. New York: G.P. Putnam&rsquo;s Sons. 1928. </td>
 					</tr>
 					<tr>
 						<td>Tibullus</td>
 						<td>Carmina</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td>J.P. Postgate, <em>Tibulli aliorumque Carminum libri Tres</em> (Oxford 1915)</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0507">Perseus</a></td>
+						<td>J.P. Postgate, <em>Tibulli aliorumque Carminum libri Tres</em>. Oxford University Press, 1915.</td>
 					</tr>
 					<tr>
 						<td>Vergil</td>
 						<td>Aeneid</td>
 						<td><a href="http://www.perseus.tufts.edu">Perseus</a></td>
-						<td>J. B. Greenough, <em>Bucolics, Aeneid, and Georgics Of Vergil</em> (Ginn &amp; Co. 1900)</td>
+						<td>J. B. Greenough, <em>Bucolics, Aeneid, and Georgics Of Vergil</em>. Boston: Ginn &amp; Co. 1900</td>
 					</tr>
 					<tr>
 						<td>&mdash;</td>
 						<td>Eclogues</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td>J. B. Greenough, <em>Bucolics, Aeneid, and Georgics Of Vergil</em> (Ginn &amp; Co. 1900)</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0056">Perseus</a></td>
+						<td>J. B. Greenough, <em>Bucolics, Aeneid, and Georgics Of Vergil</em>. Boston: Ginn &amp; Co. 1900</td>
 					</tr>
 					<tr>
 						<td>&mdash;</td>
 						<td>Georgics</td>
-						<td><a href="http://thelatinlibrary.com">Latin Library</a></td>
-						<td>J. B. Greenough, <em>Bucolics, Aeneid, and Georgics Of Vergil</em> (Ginn &amp; Co. 1900)</td>
+						<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0059">Perseus</a></td>
+						<td>J. B. Greenough, <em>Bucolics, Aeneid, and Georgics Of Vergil</em>. Boston: Ginn &amp; Co. 1900</td>
 					</tr>
 				</table>
 			</div>
