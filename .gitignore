@@ -1,7 +1,11 @@
+# config file #
+###############
+tesserae.conf
+
 # session files #
 #################
 tmp/*
-tesresults.*
+tesresults/*
 
 # private scripts #
 ###################
