@@ -8,10 +8,87 @@
 use strict;
 use warnings;
 
-use lib '/Users/chris/Sites/tesserae/perl'; # TESS_PATH
-use TessSystemVars;
+#
+# Read configuration file
+#
 
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{perl};
+
+use Tesserae;
 use EasyProgressBar;
+
+# load additional modules necessary for this script
 
 use Storable qw(nstore retrieve);
 
@@ -19,7 +96,11 @@ use Storable qw(nstore retrieve);
 # get the list of texts from Tesserae
 #
 
-opendir (DH, "$fs_data/v3/la/word") || die "can't open tess data directory: $!";
+my $lang = 'la';
+
+my $dir = catdir($fs{data}, 'v3', $lang, 'word');
+
+opendir (DH, $dir) || die "can't read directory $dir: $!";
 
 my @file = grep { /\.index_phrase_ext/ } readdir(DH);
 
@@ -60,11 +141,13 @@ print STDERR "reading text indices\n";
 
 my $pr = ProgressBar->new(scalar(@file));
 
-for my $file (@file) {
+for my $name (@file) {
 		
 		$pr->advance();
 		
-		my %index = %{ retrieve("$fs_data/v3/la/word/$file") };
+		my $file = catfile($fs{data}, 'v3', $lang, 'word', $name);
+		
+		my %index = %{ retrieve($file) };
 		
 		for my $word (keys %index) {
 
@@ -88,7 +171,7 @@ for my $file (@file) {
 		
 		$file =~ s/\.index_phrase_ext/\.phrase/;
 		
-		my @phrase = @{ retrieve("$fs_data/v3/la/word/$file") };
+		my @phrase = @{ retrieve($file) };
 		
 		$total_phrases += scalar(@phrase);
 }
@@ -123,5 +206,5 @@ for (keys %phrase_count) {
 # save
 #
 
-nstore \%document_count, "data/la.idf_text";
-nstore \%phrase_count, "data/la.idf_phrase";
+nstore \%document_count, catfile($fs{data}, "$lang.idf_text");
+nstore \%phrase_count, catfile($fs{data}, "$lang.idf_phrase");

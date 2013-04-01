@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/scripts';	# PERL_PATH
 
 #
 # bigram-freq.pl 
@@ -20,7 +20,7 @@ use POSIX;
 use Storable qw(nstore retrieve);
 use File::Spec::Functions;
 
-use TessSystemVars;
+use Tesserae;
 use EasyProgressBar;
 
 # allow unicode output

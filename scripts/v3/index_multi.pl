@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/scripts';	# PERL_PATH
 
 #
 # title 
@@ -18,7 +18,7 @@ use POSIX;
 use Storable qw(nstore retrieve);
 use File::Spec::Functions;
 
-use TessSystemVars;
+use Tesserae;
 use EasyProgressBar;
 
 # optional modules
@@ -144,8 +144,8 @@ for my $unit (qw/line phrase/) {
 		my $file_freq_word = catfile($fs_data, 'v3', $lang, $text, $text . ".freq_score_word");
 		my $file_freq_stem = catfile($fs_data, 'v3', $lang, $text, $text . ".freq_score_stem");
 
-		my %freq_word = %{TessSystemVars::stoplist_hash($file_freq_word)};
-		my %freq_stem = %{TessSystemVars::stoplist_hash($file_freq_stem)};
+		my %freq_word = %{Tesserae::stoplist_hash($file_freq_word)};
+		my %freq_stem = %{Tesserae::stoplist_hash($file_freq_stem)};
 		
 		print "indexing " . scalar(@token) . " tokens / " . scalar(@unit) . " ${unit}s...\n";
 				

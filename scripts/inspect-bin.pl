@@ -1,5 +1,3 @@
-#! /opt/local/bin/perl5.12
-
 # this is to examine a data structure saved with Storable
 #
 # it assumes the storable file contains an array of records

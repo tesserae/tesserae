@@ -1,36 +1,15 @@
-use warnings;
-use strict;
+package Tesserae;
 
-package TessSystemVars;
-
+use FindBin qw($Bin);
+use File::Spec::Functions;
+	
 require Exporter;
 
 our @ISA = qw(Exporter);
 
-our @EXPORT = qw(%top $fs_html $fs_cgi $fs_perl $fs_xsl $fs_test $fs_text $fs_tmp $fs_data $url_html $url_cgi $url_css $url_xsl $url_text $url_image $url_tmp $apache_user %is_word %non_word $phrase_delimiter %ancillary);
+our @EXPORT = qw(%top $apache_user %is_word %non_word $phrase_delimiter %ancillary);
 
 our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni alpha stoplist_hash stoplist_array);
-
-my $fs_base = "/Users/chris/Sites/tesserae";
-
-our $fs_cgi  = $fs_base . "/cgi-bin";
-our $fs_data = $fs_base . "/data";
-our $fs_html = $fs_base . "/html";
-our $fs_perl = $fs_base . "/perl";
-our $fs_test = $fs_base . "/testing";
-our $fs_text = $fs_base . "/texts";
-our $fs_tmp  = $fs_base . "/tmp";
-our $fs_xsl  = $fs_base . "/xsl";
-
-my $url_base = "http://localhost/~chris/tesserae";
-
-our $url_cgi   = $url_base . "/cgi-bin";
-our $url_css   = $url_base . "/css";
-our $url_html  = $url_base . "/html";
-our $url_image = $url_base . "/images";
-our $url_text  = $url_base . "/texts";
-our $url_tmp   = $url_base . "/tmp";
-our $url_xsl   = $url_base . "/xsl";
 
 our %top;
 
@@ -67,15 +46,6 @@ our %is_word = (
 	'en'  => qr('?[$wchar_latin]+(?:['-][$wchar_latin]*)?) 
 	);
 		   
-#
-# are certain modules available?
-#
-
-our %ancillary = ( 
-
-	'Lingua::Stem' => 1, 
-	'Parallel::ForkManager' => 1
-	);
 
 ########################################
 # subroutines
@@ -363,6 +333,19 @@ sub stoplist_array {
 	close FREQ;
 	
 	return \@stoplist;
+}
+
+
+# check to see whether optional 
+# ancillary modules are installed
+
+sub check_mod {
+
+	my $m = shift;
+			
+	eval "require $m";
+		
+	return $@ ? 0 : 1;	
 }
 
 

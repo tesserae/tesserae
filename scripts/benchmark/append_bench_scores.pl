@@ -1,5 +1,3 @@
-#! /opt/local/bin/perl5.12
-
 # check-recall.pl
 #
 # this checks Tesserae output against a benchmark set
@@ -8,19 +6,98 @@
 # its purpose is to tell you what portion of the benchmark
 # allusions are present in your tesserae results.
 
-
 use strict;
 use warnings;
 
-use CGI qw(:standard);
+#
+# Read configuration file
+#
 
-use Storable;
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
 use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{perl};
+
+use Tesserae;
+use EasyProgressBar;
+
+# load additional modules necessary for this script
+
+use CGI qw(:standard);
+use Storable;
 use Getopt::Long;
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
-use TessSystemVars;
-use EasyProgressBar;
+#
+# initialize some variables
+#
 
 my $usage = "usage: perl check-recall [--cache CACHE] TESRESULTS\n";
 
@@ -42,16 +119,18 @@ my $rev = 1;
 my @w = (7);
 my $quiet = 1;
 
+my $base_l = 'lucan.bellum_civile.part.1';
+my $base_v = 'vergil.aeneid';
+
 my %file = (
 	
-	lucan_token         => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.token",
-	lucan_phrase        => "$fs_data/v3/la/lucan.pharsalia.part.1/lucan.pharsalia.part.1.phrase",
+	lucan_token         => catfile($fs{data}, 'v3', 'la', $base_l, "$base_l.token"),
+	lucan_phrase        => catfile($fs{data}, 'v3', 'la', $base_l, "$base_l.phrase"),
 	
-	vergil_token        => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.token",
-	vergil_phrase       => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.phrase",
+	vergil_token        => catfile($fs{data}, 'v3', 'la', $base_v, "$base_v.token"),
+	vergil_phrase       => catfile($fs{data}, 'v3', 'la', $base_v, "$base_v.phrase"),
 	
-	cache     => "$fs_data/bench/rec.cache"
-);
+	cache     => catfile($fs{data}, 'bench', 'rec.cache'));
 
 
 # is the program being run from the web or
@@ -97,7 +176,7 @@ unless ($no_cgi) {
 
 if (defined $session) {
 
-	$file{tess} = catfile($fs_tmp, "tesresults-" . $session . ".bin");
+	$file{tess} = catfile($fs{tmp}, "tesresults-" . $session . ".bin");
 }
 else {
 	
@@ -264,7 +343,8 @@ sub html_table {
 	
 	if ($rev) { @order = reverse @order }
 	
-	my $frame = `php -f $fs_html/check_recall.php`;
+	my $frame_php = catfile($fs{html}, 'check_recall.php');
+	my $frame = `php -f $frame_php`;
 	
 	my $table_data;
 	
@@ -376,8 +456,10 @@ sub html_table {
 }
 
 sub html_no_table {
+	
+	my $frame_php = catfile($fs{html}, 'check_recall.php');
 				
-	my $frame = `php -f $fs_html/check_recall.php`;
+	my $frame = `php -f $frame_php`;
 	
 	$frame =~ s/<!--info-->/&info/e; 
 
@@ -401,7 +483,7 @@ sub info {
 
 	my $html = <<END;
 	
-	<form action="$url_cgi/read_table.pl" method="post" ID="Form1">
+	<form action="$url{cgi}/read_table.pl" method="post" ID="Form1">
 
 		<h1>Lucan-Vergil Recall Test</h1>
 
@@ -516,7 +598,7 @@ sub re_sort {
 	
 	my $html = <<END;
 	
-	<form action="$url_cgi/check-recall.pl" method="post" id="Form2">
+	<form action="$url{cgi}/check-recall.pl" method="post" id="Form2">
 		
 		<table>
 			<tr>

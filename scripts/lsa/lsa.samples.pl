@@ -1,14 +1,91 @@
 use strict;
 use warnings;
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
-use TessSystemVars;
+#
+# Read configuration file
+#
+
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{perl};
+
+use Tesserae;
 use EasyProgressBar;
+
+# load additional modules necessary for this script
 
 use Getopt::Long;
 use Storable qw(nstore retrieve);
 use File::Basename;
-use File::Spec::Functions;
 use File::Path qw(mkpath rmtree);
 
 # approximate size of samples in characters
@@ -24,7 +101,7 @@ GetOptions(
 
 # language database
 
-my $file_lang = catfile($fs_data, 'common', 'lang');
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
 # stem dictionary
@@ -75,7 +152,7 @@ for my $file_in (@files) {
 	
 	if ($lang ne $prev_lang) {
 	
-		my $file_stem = catfile($fs_data, 'common', "$lang.stem.cache");
+		my $file_stem = catfile($fs{data}, 'common', "$lang.stem.cache");
 		%stem = %{retrieve($file_stem)};
 		
 		$prev_lang = $lang;
@@ -83,7 +160,7 @@ for my $file_in (@files) {
 	
 	# load text from v3 database
 	
-	my $base = catfile($fs_data, 'v3', $lang, $name, $name);
+	my $base = catfile($fs{data}, 'v3', $lang, $name, $name);
 
 	@token = @{retrieve("$base.token")};
 	@phrase = @{retrieve("$base.phrase")}; 
@@ -102,7 +179,7 @@ for my $file_in (@files) {
 	
 		# create/clean output directory
 
-		my $opdir = catfile($fs_data, 'lsa', $lang, $name, $mode);
+		my $opdir = catfile($fs{data}, 'lsa', $lang, $name, $mode);
 		
 		rmtree($opdir);
 		mkpath($opdir);
@@ -129,7 +206,7 @@ for my $file_in (@files) {
 			close FH;
 		}
 		
-		my $file_bounds = catfile($fs_data, 'lsa', $lang{$name}, $name, "bounds.$mode");
+		my $file_bounds = catfile($fs{data}, 'lsa', $lang{$name}, $name, "bounds.$mode");
 		
 		nstore \@bounds, $file_bounds;
 	}

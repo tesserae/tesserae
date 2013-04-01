@@ -1,9 +1,3 @@
-#! /opt/local/bin/perl5.12
-
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
-
 #
 # prepare.pl
 #
@@ -13,33 +7,108 @@ use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use strict;
 use warnings;
 
-use Storable qw(retrieve nstore);
+#
+# Read configuration file
+#
 
-use TessSystemVars qw(:DEFAULT lcase tcase);
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{perl};
+
+use Tesserae;
+use EasyProgressBar;
 
 use Word;
 use Phrase;
 use Parallel;
 
+# load additional modules necessary for this script
+
+use Storable qw(retrieve nstore);
+use File::Basename;
+
 # load the list of canonical reference abbreviations
 
 my %abbr;
-my $file_abbr = "$fs_data/common/abbr";
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 
 if (-s $file_abbr )	{ %abbr = %{retrieve($file_abbr)} }
 
 # load the list of language designations
 
 my %lang;
-my $file_lang = "$fs_data/common/lang";
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 
 if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
-
-# regular expression describing chars that aren't part of any word
-
-my %non_word = (
-	'la' => qr([^a-zA-Z]+), 
-	'grc' => qr([^a-z\*\(\)\\\/\=\|\+']+) );
 
 #
 # I've taken out the bit that queried archimedes for stems.
@@ -94,11 +163,8 @@ while (my $file_in = shift @ARGV)
 
 	# path to parsed output
 
-	my $name = $file_in;
-
-	$name =~ s/.*\///;
-	$name =~ s/\.tess//;
-
+	my ($name, $path, $suffix) = fileparse($file_in, qr/\.[^.]*/);
+	
 	# determine language from user input, cached from last
 	# time, guess from path to file, or just give up
 
@@ -121,8 +187,8 @@ while (my $file_in = shift @ARGV)
 
 	# path to dictionaries
 
-	my $file_stems = "$fs_data/common/$lang.stem.cache";
-	my $file_semantics = "$fs_data/common/$lang.semantic.cache";
+	my $file_stems = catfile($fs{data}, 'common', "$lang.stem.cache");
+	my $file_semantics = catfile($fs{data}, 'common', "$lang.semantic.cache");
 
 	#
 	# parse the text into words and phrases
@@ -401,7 +467,7 @@ while (my $file_in = shift @ARGV)
 
 	# write the parsed file
 
-	my $file_out = "$fs_data/v2/parsed/$name.parsed";
+	my $file_out = catfile($fs{data}, 'v2', 'parsed', "$name.parsed");
 
 	print STDERR "writing $file_out\n";
 	nstore \@phrase_array, $file_out;

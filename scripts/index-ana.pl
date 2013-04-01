@@ -1,9 +1,3 @@
-#! /opt/local/bin/perl5.12
-
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
-
 #
 # index-ana.pl 
 #             
@@ -12,19 +6,100 @@ use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use strict;
 use warnings;
 
-use CGI qw(:standard);
+#
+# Read configuration file
+#
 
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{perl};
+
+use Tesserae;
+use EasyProgressBar;
+
+# load additional modules necessary for this script
+
+use CGI qw(:standard);
 use Getopt::Long;
 use POSIX;
 use Storable qw(nstore retrieve);
-use File::Spec::Functions;
-
-use TessSystemVars;
-use EasyProgressBar;
 
 # optional modules
 
-use if $ancillary{"Parallel::ForkManager"}, "Parallel::ForkManager";
+my $override_parallel = Tesserae::check_mod("Parallel::ForkManager");
+
+#
+# set some parameters
+#
 
 # allow unicode output
 
@@ -47,9 +122,16 @@ GetOptions(
 	"quiet"           => \$quiet,
 	);
 
+if ($override_parallel && $max_processes) { 
+
+	print STDERR "Parallel processing requires Parallel::ForkManager from CPAN.\n";
+	print STDERR "Proceeding with parallel=0.\n";
+	$max_processes = 0;
+}
+
 # language info
 	
-my $file_lang = catfile($fs_data, 'common', 'lang');
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
 # get the list of texts to index
@@ -89,8 +171,8 @@ for my $text (@corpus) {
 	
 	# load the text from the database
 	
-	my $file_token = catfile($fs_data, 'v3', $lang, $text, $text . ".token");
-	my $file_line  = catfile($fs_data, 'v3', $lang, $text, $text . ".line");
+	my $file_token = catfile($fs{data}, 'v3', $lang, $text, $text . ".token");
+	my $file_line  = catfile($fs{data}, 'v3', $lang, $text, $text . ".line");
 
 	my @token = @{retrieve($file_token)};
 	my @line  = @{retrieve($file_line)};
@@ -139,8 +221,8 @@ for my $text (@corpus) {
 		push @{$index_line{ana($line_string)}}, {text => $text, id => $line_id, line => $line_string}; 
 	}
 		
-	my $file_index_token = catfile($fs_data, 'v3', $lang, $text, $text . ".ana_token");
-	my $file_index_line  = catfile($fs_data, 'v3', $lang, $text, $text . ".ana_line");
+	my $file_index_token = catfile($fs{data}, 'v3', $lang, $text, $text . ".ana_token");
+	my $file_index_line  = catfile($fs{data}, 'v3', $lang, $text, $text . ".ana_line");
 
 	print STDERR "saving $file_index_token\n";
 	nstore \%index_token, $file_index_token;
@@ -163,7 +245,7 @@ sub get_textlist {
 	
 	my $lang = shift;
 
-	my $directory = catdir($fs_data, 'v3', $lang);
+	my $directory = catdir($fs{data}, 'v3', $lang);
 
 	opendir(DH, $directory);
 	

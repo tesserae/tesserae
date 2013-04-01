@@ -1,6 +1,6 @@
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/scripts';	# PERL_PATH
 
 #
 # print a frequency list
@@ -16,7 +16,7 @@ use Storable qw(nstore retrieve);
 use File::Spec::Functions;
 use File::Path qw(mkpath rmtree);
 
-use TessSystemVars;
+use Tesserae;
 use EasyProgressBar;
 
 my $corpus  = 0;

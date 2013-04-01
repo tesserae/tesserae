@@ -6,17 +6,93 @@
 # latin headwords in the tesserae corpus, following the
 # example of roelant's stem.cache
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
-
 use strict;
 use warnings;
 
-# uses XML::LibXML, which didn't come standard on my Mac
+#
+# Read configuration file
+#
+
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{perl};
+
+use Tesserae;
+use EasyProgressBar;
+
+# load additional modules necessary for this script
 
 use XML::LibXML;
 use Storable qw(nstore retrieve);
-
-use TessSystemVars;
 
 # the bit below was copied from the XML::LibXML example
 
@@ -24,7 +100,7 @@ use TessSystemVars;
 
 my $parser = new XML::LibXML;
 
-my $filename = shift @ARGV || "$fs_data/common/lewis-short.xml";
+my $filename = shift @ARGV || catfile($fs{data}, 'common', 'lewis-short.xml');
 
 print STDERR "parsing $filename\n";
 
@@ -111,11 +187,11 @@ print STDERR "\n";
 
 # save results
 
-my $file_cache = shift @ARGV || "$fs_data/common/la.semantic.cache";
+my $file_cache = shift @ARGV || catfile($fs{data}, 'common', 'la.semantic.cache');
 print "saving $file_cache\n";
 nstore \%def, $file_cache;
 
-my $file_text = shift @ARGV || "$fs_data/common/lewis.text.cache";
+my $file_text = shift @ARGV || catfile($fs{data}, 'common', 'lewis.text.cache');
 print "saving $file_text\n";
 nstore \%text, $file_text;
 

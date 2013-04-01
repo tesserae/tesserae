@@ -209,7 +209,8 @@ for my $f (0..$#files) {
 				my $name = $div[$i]{name};
 			
 				if (($elem =~ /$name/i) or
-					(lc($name) eq 'line' and $elem eq 'l')) {
+					(lc($name) eq 'line' and $elem eq 'l') or
+					(lc($name) eq 'line' and $elem eq 'lb')) {
 				
 					$div[$i]{elem} = $elem;
 				}
@@ -346,11 +347,12 @@ for my $f (0..$#files) {
 		
 		# transliterate greek
 		
-		$text =~ s/<foreign\s+lang="greek".*?>(.*?)<\/foreign>/beta_to_uni(\1)/gx;
+		$text =~ s/<foreign\s+lang="greek".*?>(.*?)<\/foreign>/beta_to_uni($1)/eg;
+		$text =~ s/<quote\s+lang="greek".*?>(.*?)<\/quote>/beta_to_uni($1)/eg;
 
 		# convert quote tags to quotation marks
 		
-		$text =~ s/<q>/“/g;
+		$text =~ s/<q\b.*?>/“/g;
 		$text =~ s/<\/q>/”/g;
 		
 		# delete all closing tags
@@ -412,7 +414,7 @@ for my $f (0..$#files) {
 					$n = $1;
 				}
 				
-				$div[$level]{count} = defined $n ? $n : $div[$level]{count}++;
+				$div[$level]{count} = defined $n ? $n : incr($div[$level]{count});
 				
 				if ($level < $#div) {
 				
@@ -520,13 +522,24 @@ sub change_assignment {
 		return;
 	}
 	
+	my $default = 1;
+	
+	for my $i (0..$#div) {
+	
+		if ($div[$i]{elem} eq '?') {
+		
+			$default = $i+1;
+			last;
+		}
+	}
+	
 	my $menu = join("\n", map { "  $_> " . $div[$_-1]{name} } (1..$#div+1));
 	
 	my $fix = $term->get_reply(
 		prompt   => "Your choice? ",
 		print_me => "Change assignment for which division?\n\n" . $menu . "\n",
 		allow    => [1..$#div+1],
-		default  => "1");
+		default  => $default);
 				
 	$fix--;
 	
@@ -565,7 +578,7 @@ sub add_level {
 		default => sprintf("level%i", $add-1));
 				
 	$add--;
-				
+					
 	splice (@div, $add, $#div+1-$add, {name => $name, elem => "?"}, @div[$add..$#div]);
 	
 	return \@div;
@@ -671,4 +684,35 @@ sub beta_to_uni {
 	}
 
 	return wantarray ? @text : $text[0];
+}
+
+#
+# incr: intelligently increment a line number
+#
+#       if n is numeric, add one
+#       if n has mixed alpha-numeric parts, 
+#         try to figure out what's going on
+#
+#       NB this is only run where no number 
+#         has explicitly been given for the 
+#         current line; so the editor thought
+#         the number was easily deduced from
+#         the previous one.
+
+sub incr {
+
+	my $n = shift;
+		
+	if ($n =~ /(\D*)(\d+)(\D*)?$/i) {
+	
+		my $pref = defined $1 ? $1 : "";
+		my $n    = $2;
+		my $suff = defined $3 ? $3 : "";
+	
+		return $pref . ($2 + 1);
+	}
+	else {
+	
+		return $n . "-1";
+	}
 }

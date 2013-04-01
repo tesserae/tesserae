@@ -1,131 +1,207 @@
-#! /opt/local/bin/perl5.12
+use strict;
+use warnings;
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
-use TessSystemVars;
-use Files;
+#
+# Read configuration file
+#
+
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+						
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{script};
+
+use Tesserae;
+use EasyProgressBar;
+
+# load additional modules necessary for this script
+
+use File::Basename;
+use Getopt::Long;
+
+# initialize variables
 
 $|++;
 
 my @file;
-my $dry_run = 0;
 my $clean = 0;
-my $in_file = "";
+my $clean_cache = 0;
+my $dry_run = 0;
+my $file_batch = "";
+my $help = 0;
+
+my $fs_v2 = catfile($fs{data}, 'v2');
 
 my $usage = <<END;
-usage: v2.batch-prepare-texts.pl [-hdcc] [-f FILE]
-    -h   help: this message
-    -d   dry-run: don\'t make any changes
-    -c   clean: delete any old processed files first
-    -cc  clean cache: same as -c but also delete stem cache
-    -f   read from FILE: FILE should be a list of .tess file labels (not full pathnames; texts are assumed to be in $fs_text).  One label per line.  Use -f - to read from stdin.
-    
-    The default behavior is to process all .tess files in $fs_text while attempting to preserve existing preprocessed data (e.g.  $fs_data/v2/ and its subdirectories).
+usage: v2.batch-prepare-texts.pl [options] [--batch FILE]
+
+options:
+
+	--batch FILE   read list of texts to process from FILE instead of
+                     command-line arguments.
+    --clean        delete any old processed files first
+    --dry-run      don't make any changes
+    --help         this message
+	
+    The default behavior is to process all .tess files in $fs{text}
+    while attempting to preserve existing preprocessed data 
+    (i.e. $fs_v2 and its subdirectories).
 END
 
-while (my $test = shift @ARGV)
-{
-	if ($test =~ /^-/) 
-	{
-		if ($test =~ /d/) 
-		{
-			$dry_run = 1;
-		}
+GetOptions(	'batch=s' => \$file_batch,
+			'clean'   => \$clean,
+			'cache'   => \$clean_cache,
+			'dry-run' => \$dry_run,
+			'help'    => \$help);
 
-		if ($test =~ /c/) 
-		{
-			$clean = 1;
+if ($help) {
 
-			if ($test =~ /cc/)
-			{
-				$clean_cache=1;
-			} 
-		}
-		
-		if ($test =~ /f/) 
-		{
-			$in_file = shift @ARGV;
-		}
-
-		if ($test =~ /h/) 
-		{
-			die $usage;
-		}
-	}
+	print $usage;
+	exit;
 }
 
 my @temp;
 
-if ($in_file eq "")
+if ($file_batch eq "")
 {
-	opendir (DH, $fs_text);
+	opendir (DH, catdir($fs{text}, 'la'));
 
-	@temp = (grep {/\.tess$/ && -f} map { "$fs_text/$_" } readdir DH);
+	@temp = (grep {/\.tess$/ && -f} map { catfile($fs{text}, $_)} readdir DH);
 
 	closedir DH;
 }
-elsif ($in_file eq "-")
-{
-	@temp = (<>);
-}
 else
 {
-	open FH, "<$in_file" or die "Can't open $in_file: $!";
+	open FH, "<$file_batch" or die "Can't open $file_batch: $!";
 	@temp = (<FH>);
 	close FH;
 }
 
-for my $file (@temp) 
+for my $file_in (@temp) 
 {
-	chomp $file;
+	chomp $file_in;
 	
-	$file =~ s/.+\///;
-
-	$file =~ s/\s+$//;
-
-	$file =~ s/\.tess$//;
+	my ($name, $path, $suffix) = fileparse($file_in, qr/\.[^.]*/);
 	
-	if (-r "$fs_text/$file.tess")
+	my $file_text = catfile($fs{text}, "$name.tess");
+	
+	if (-r $file_text)
 	{
-		push @file, $file;
+		push @file, $name;
 	}
 	else
 	{
-		print STDERR "$fs_text/$file.tess does not exist or is not readable by ";
+		print STDERR "$file_text does not exist or is not readable by ";
 		print STDERR (getpwuid($>))[$0] . "\n";
 	}
 }
 
-if ($clean == 1)
+if ($clean)
 {
 	print STDERR "Cleaning...\n";
 
-	do_cmd("rm $fs_html/textlist.v2.php");	
-	do_cmd("rm $fs_data/v2/parsed/*");
-	do_cmd("rm $fs_data/v2/preprocessed/*");
+	do_cmd('rm ' . catfile($fs{html}, 'textlist.v2.php'));
+	do_cmd('rm ' . catfile($fs{data}, 'v2', 'parsed', '*'));
+	do_cmd('rm ' . catfile($fs{data}, 'v2', 'preprocessed', '*'));
 
 }
 
-unless ((-r "$fs_data/v2/stem.cache") and ($clean_cache != 1))
+my $file_stem_cache = catfile($fs{data}, 'v2', 'stem.cache');
+
+unless (-s $file_stem_cache and $clean_cache == 0)
 { 
-	do_cmd ("touch $fs_data/v2/stem.cache");
+	do_cmd ("touch $file_stem_cache");
 }
-unless ((-r "$fs_data/v2/tesserae.datafiles.config") and ($clean != 1))
+
+my $file_v2_config = catfile($fs{data}, 'v2', 'tesserae.datafiles.config');
+
+unless ((-r $file_v2_config) and ($clean != 1))
 { 
-	do_cmd ("touch $fs_data/v2/tesserae.datafiles.config");
+	do_cmd ("touch $file_v2_config");
 }
 
 
 print STDERR "Parsing " . ($#file+1) . " files...\n";
 
-for my $file (@file)
+for my $name (@file)
 {
-	if ((-r "$fs_data/v2/parsed/$file.parsed") and ($clean != 1))
+	my $file_parsed = catfile($fs{data}, 'v2', 'parsed', "$name.parsed");
+
+	if ((-r $file_parsed) and ($clean != 1))
 	{
-		print STDERR "$fs_data/v2/parsed/$file.parsed already exists; skipping.\n";
+		print STDERR "$file_parsed already exists; skipping.\n";
 	}
 	else
 	{
-		do_cmd("perl $fs_perl/prepare.pl $fs_text/$file.tess");
+		do_cmd(join(" ", 'perl', catfile($fs{script}, 'prepare.pl'), 
+								 catfile($fs{text}, "$name.tess")));
 	}
 }
 
@@ -140,34 +216,24 @@ for (my $a = 0; $a <= $#file; $a++)
 	
 		$counter++;
 
-		my $preexisting = Files::preprocessed_file($file[$a], $file[$b]);
-		if ( defined($preexisting) )
-		{ 
-		
-			print STDERR "comparison $file[$a] / $file[$b] already has an index entry\n";
+		my $file_preprocessed = catfile($fs{data}, 'v2', 'preprocessed',
+							 join("~", sort @file[$a,$b]) . '.preprocessed');
 
-			if ( -r "$fs_data/v2/preprocessed/$preexisting" )
-			{
-				print STDERR "and parallel cache $fs_data/v2/preprocessed/$preexisting exists...skipping\n";
-				next;
-			}
-
-			print STDERR "but parallel cache $fs_data/v2/preprocessed/$preexisting does not exist...proceeding\n";
-		}	
-		else
+		if ( -r "$file_preprocessed" )
 		{
-			do_cmd("echo '$file[$a]\t$file[$b]\t$file[$a].tess\t$file[$b].tess\t$file[$a]\~$file[$b]' >> $fs_data/v2/tesserae.datafiles.config");
+			print STDERR "$file_preprocessed exists...skipping\n";
+			next;
 		}
 	
-		do_cmd("perl $fs_perl/preprocess.pl $file[$a] $file[$b]");
+		do_cmd(join(' ', 'perl', catfile($fs{script}, 'preprocess.pl'), @file[$a,$b]));
 	}
 }
 
 print STDERR "Adding files to HTML drop-down menu...\n";
 
-for my $file (sort @file)
+for my $name (sort @file)
 {
-	my $title = $file;
+	my $title = $name;
 	$title =~ s/_/ /g;
 	$title =~ s/\./ - /;
 
@@ -178,15 +244,17 @@ for my $file (sort @file)
 		$title =~ s/\b$lc/$uc/;
 	}
 
-        my $execstring = "grep '$file' $fs_text/textlist.vs.php"; 
+	my $file_textlist = catfile($fs{text}, 'textlist.v2.php');
+
+    my $execstring = "grep '$name' $file_textlist"; 
 
 	if ((`$execstring` eq "") and ($clean != 1))
 	{
-		print STDERR "$file already has an entry; skipping\n";
+		print STDERR "$name already has an entry; skipping\n";
                 next;
 	}
 	
-	do_cmd(qq{echo '<option value="$file">$title</option>' >> $fs_html/textlist.v2.php'});
+	do_cmd(qq{echo '<option value="$name">$title</option>' >> $file_textlist'});
 }
 
 

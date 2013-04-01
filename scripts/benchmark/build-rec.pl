@@ -16,17 +16,100 @@
 #
 # rev. 2012-06-12 from check-phrase.pl
 # rev. 2012-10-18
+# rev. 2013-03-31
 
 use strict;
 use warnings;
 
+#
+# Read configuration file
+#
+
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{perl};
+
+use Tesserae;
+use EasyProgressBar;
+
+# load additional modules necessary for this script
+
 use Data::Dumper;
 use Storable qw(nstore retrieve);
-
 use Getopt::Long;
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
-use TessSystemVars;
+#
+# set some parameters
+#
 
 # lowest similarity accaptable without remark
 
@@ -35,19 +118,21 @@ my $check_alts_threshold = .3;
 
 # location of the data
 
+my $base_l = 'lucan.bellum_civile.part.1';
+my $base_v = 'vergil.aeneid';
+
 my %file = (
 	
-	lucan_token         => "$fs_data/v3/la/lucan.bellum_civile.part.1/lucan.bellum_civile.part.1.token",
-	lucan_line          => "$fs_data/v3/la/lucan.bellum_civile.part.1/lucan.bellum_civile.part.1.line",			
-	lucan_phrase        => "$fs_data/v3/la/lucan.bellum_civile.part.1/lucan.bellum_civile.part.1.phrase",
+	lucan_token         => catfile($fs{data}, 'v3', 'la', $base_l, "$base_l.token"),
+	lucan_line          => catfile($fs{data}, 'v3', 'la', $base_l, "$base_l.line"),
+	lucan_phrase        => catfile($fs{data}, 'v3', 'la', $base_l, "$base_l.phrase"),
 	
-	vergil_token        => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.token",
-	vergil_line         => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.line",			
-	vergil_phrase       => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.phrase",
+	vergil_token        => catfile($fs{data}, 'v3', 'la', $base_v, "$base_v.token"),
+	vergil_line         => catfile($fs{data}, 'v3', 'la', $base_v, "$base_v.line"),	
+	vergil_phrase       => catfile($fs{data}, 'v3', 'la', $base_v, "$base_v.phrase"),
 	
-	benchmark => "$fs_data/bench/bench4.txt",
-	cache     => "$fs_data/bench/rec.cache"
-);
+	benchmark => catfile($fs{data}, 'bench', 'bench4.txt'),
+	cache     => catfile($fs{data}, 'bench', 'rec.cache'));
 
 # check for command-line overrides
 

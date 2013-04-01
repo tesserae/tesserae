@@ -1,20 +1,93 @@
-#! /opt/local/bin/perl5.12
-
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
-
 # textlist.pl
 #
 # add texts to the drop-down menus
 
 use strict;
 use warnings; 
-                                       
-use File::Spec::Functions;
-use Storable qw(nstore retrieve);
+                          
+#
+# Read configuration file
+#
 
-use TessSystemVars;
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{perl};
+
+use Tesserae;
+use EasyProgressBar;
+
+# load additional modules necessary for this script
+
+use Storable qw(nstore retrieve);
 
 #
 # these lines set language-specific variables
@@ -22,12 +95,12 @@ use TessSystemVars;
 #
 
 my %abbr;
-my $file_abbr = catfile($fs_data, 'common', 'abbr');
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 	
 if ( -s $file_abbr )	{  %abbr = %{retrieve($file_abbr)} }
 
 my %lang;
-my $file_lang = catfile($fs_data, 'common', 'lang');
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 
 if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
 
@@ -52,7 +125,7 @@ while (my $file_in = shift @ARGV) {
 
 			opendir (DH, $file_in);
 
-			push @ARGV, (grep {/\.part\./ && -f} map { "$file_in/$_" } readdir DH);
+			push @ARGV, (grep {/\.part\./ && -f} map { catfile($file_in, $_) } readdir DH);
 
 			closedir (DH);
 		}
@@ -63,11 +136,8 @@ while (my $file_in = shift @ARGV) {
 	# the header for the column will be the filename 
 	# minus the path and .tess extension
 
-	my $name = $file_in;
-
-	$name =~ s/.*\///;
-	$name =~ s/\.tess$//;
-
+	my ($name, $path, $suffix) = fileparse($file_in, qr/\.[^.]*/);
+	
 	# get the language for this doc from lang file
 	
 	$lang = $lang{$name};
@@ -98,7 +168,7 @@ my $multi_counter = 1;
 
 for my $lang (keys %text) {
                    
-   my $base = catfile($fs_html, "textlist.$lang");
+   my $base = catfile($fs{html}, "textlist.$lang");
 	
 	open (FHL, ">", "$base.l.php");
 	open (FHR, ">", "$base.r.php");

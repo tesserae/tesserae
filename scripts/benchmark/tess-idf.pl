@@ -8,13 +8,89 @@
 use strict;
 use warnings;
 
-use lib '/Users/chris/Sites/tesserae/perl'; # TESS_PATH
+#
+# Read configuration file
+#
 
-use TessSystemVars;
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{perl};
+
+use Tesserae;
 use EasyProgressBar;
 
+# load additional modules necessary for this script
+
 use Storable qw(nstore retrieve);
-use File::Spec::Functions;
 
 #
 # get the list of texts from Tesserae
@@ -23,7 +99,6 @@ use File::Spec::Functions;
 my $lang = "la";
 
 my @texts = @{get_textlist($lang)};
-
 
 #
 # do a word count for every phrase and every text
@@ -53,7 +128,7 @@ for my $text (@texts) {
 	
 	my %seen;
 	
-	my $file_token = catfile($fs_data, 'v3', $lang, $text, "$text.token");
+	my $file_token = catfile($fs{data}, 'v3', $lang, $text, "$text.token");
 	
 	my @token  = @{retrieve($file_token)};
 	
@@ -121,7 +196,7 @@ sub get_textlist {
 	
 	my $lang = shift;
 	
-	my $directory = catdir($fs_data, 'v3', $lang);
+	my $directory = catdir($fs{data}, 'v3', $lang);
 
 	opendir(DH, $directory);
 	

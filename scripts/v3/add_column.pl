@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/scripts';	# PERL_PATH
 
 # add_column.pl
 #
@@ -11,7 +11,7 @@ use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use strict;
 use warnings; 
 
-use TessSystemVars;
+use Tesserae;
 use EasyProgressBar;
 
 use utf8;
@@ -348,14 +348,14 @@ for my $file_in (@files) {
 
 				if ($lang eq "grc") {
 
-					$display = TessSystemVars::beta_to_uni($display);
+					$display = Tesserae::beta_to_uni($display);
 				}
 
 				# the searchable form 
 				# -- flatten orthographic variation
 
-				my $form = TessSystemVars::lcase($lang, $token);
-				$form = TessSystemVars::standardize($lang, $form);
+				my $form = Tesserae::lcase($lang, $token);
+				$form = Tesserae::standardize($lang, $form);
 
 				# add the token to the master list
 
@@ -404,7 +404,7 @@ for my $file_in (@files) {
 				
 				# by chr 3-grams
 				
-				my $alpha = TessSystemVars::alpha($lang, $form);
+				my $alpha = Tesserae::alpha($lang, $form);
 								
 				for my $ngram (@{chr_ngrams(3, $alpha)}) {
 								
@@ -742,7 +742,7 @@ sub write_freq_score {
 		
 		if    ($feature eq 'stem') { @indexable = @{stems($word)} }
 		elsif ($feature eq 'syn' ) { @indexable = @{syns($word)}  }
-		elsif ($feature eq '3gr' ) { @indexable = @{chr_ngrams(3, TessSystemVars::alpha($lang, $word))}  }
+		elsif ($feature eq '3gr' ) { @indexable = @{chr_ngrams(3, Tesserae::alpha($lang, $word))}  }
 		else                       { return {} }
 		
 		for my $key (@indexable) {
@@ -768,7 +768,7 @@ sub write_freq_score {
 		
 		if    ($feature eq 'stem') { @indexable = @{stems($word1)} }
 		elsif ($feature eq 'syn' ) { @indexable = @{syns($word1)}  }
-		elsif ($feature eq '3gr' ) { @indexable = @{chr_ngrams(3, TessSystemVars::alpha($lang, $word1))}  }
+		elsif ($feature eq '3gr' ) { @indexable = @{chr_ngrams(3, Tesserae::alpha($lang, $word1))}  }
 						
 		# for each of its indexable features
 		

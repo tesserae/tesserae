@@ -2,19 +2,101 @@
 #
 # Chris Forstall
 # simplified from rydberg-cox.pl 2012-06-18
+# revised 2013-03-29
 
 use strict;
 use warnings;
 
-use Getopt::Long;
-use Storable qw(nstore retrieve);
+#
+# Read configuration file
+#
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
-use TessSystemVars;
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{perl};
+
+use Tesserae;
 use EasyProgressBar;
 
-# define the max number of headwords for a key
-# to be included
+# load additional modules necessary for this script
+
+use Storable qw(nstore retrieve);
+use Getopt::Long;
+
+#
+# initialize some parameters
+#
+
+# the max number of headwords for a key to be included
 
 my $max_heads = 50;
 
@@ -28,20 +110,20 @@ my $quiet = 0;
 
 # the dictionary to parse
 
-my $file_dict_import  = "$fs_data/common/DICTPAGE.RAW";
+my $file_dict_import = catfile($fs{data}, 'common', 'DICTPAGE.RAW');
 
 # the cache file to write
 
-my $file_syn = "$fs_data/common/la.syn.cache";
-my $file_semantic = "$fs_data/common/whit.cache";
+my $file_syn      = catfile($fs{data}, 'common', 'la.syn.cache');
+my $file_semantic = catfile($fs{data}, 'common', 'whit.cache');
 
 # set parameters from cmd line options if given 
 
-GetOptions ('max_heads=i' => \$max_heads, 
-				'min_similarity=f' => \$min_similarity, 
-				'syn=s' => \$file_syn,
-				'whitaker=s' => \$file_semantic,
-				'quiet' => $quiet);
+GetOptions ('max_heads=i'      => \$max_heads, 
+			'min_similarity=f' => \$min_similarity, 
+			'syn=s'            => \$file_syn,
+			'whitaker=s'       => \$file_semantic,
+			'quiet'            => $quiet);
 				
 #
 # global variables

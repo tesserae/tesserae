@@ -1,223 +1,348 @@
-use Config;
-use Cwd;
-use File::Copy;
+use strict;
+use warnings;
 
-use FindBin qw($Bin);
+use Cwd qw/abs_path/;
 use File::Spec::Functions;
 
+use Term::UI;
+use Term::ReadLine;
+
+use FindBin qw($Bin);
 use lib $Bin;
-use TessSystemVars;
 
-# this array will hold a list of perl files to check
+#
+# set up terminal interface
+#
 
-my @perl_files;
+my $term = Term::ReadLine->new('myterm');
 
-# directories to search
+#
+# descriptions of the various directories
+#
 
-my @perl_search = (
-	$fs_cgi, 
-	$fs_perl,
-	$fs_test
-	);
+my %desc = (
 
-while (my $dir = shift @perl_search) {
+	base    => 'tesserae root',
+	cgi     => 'cgi executables',
+	css     => 'css stylesheets',
+	data    => 'internal data',
+	html    => 'web documents',
+	image   => 'images',
+	perl    => 'ancillary scripts',
+	text    => 'texts',
+	tmp     => 'session data',
+	xsl     => 'xsl stylesheets');
 
-	if (-d $dir) {
+#
+# filesystem paths
+#
+
+#  assume tess root is parent of dir containing this script
+
+my $fs_base = abs_path(catdir($Bin, '..'));
+
+# locations as in the git repo
+
+my %fs = (
+
+	cgi  => 'cgi-bin',
+	data => 'data',
+	html => 'html',
+	perl => 'scripts',
+	text => 'texts',
+	tmp  => 'tmp',
+	xsl  => 'xsl');
+
+# make sure they're still where expected;
+# if not, ask for new locations
+
+print STDERR "Checking default paths...\n";
+
+for (keys %fs) {
+
+	$fs{$_} = check_fs($_);
+}
+
+print STDERR "\n";
+
+#
+# paths to important directories
+# for the web browswer
+#
+
+# default is the public Tesserae at UB
+
+my $url_base = 'http://tesserae.caset.buffalo.edu';
+
+my %url = (
+
+	cgi   => $url_base . '/cgi-bin',
+	css   => $url_base . '/css',
+	html  => $url_base . '',
+	image => $url_base . '/images',
+	text  => $url_base . '/texts',
+	xsl   => $url_base . '/xsl');
+
+# Ask user to confirm or change default paths
+
+print STDERR "Setting URLs for web interface\n";
+print STDERR "  (If you're not using this, accept the defaults)...\n";
+
+check_urls();
+
+print STDERR "\n";
+
+
+#
+# write config file
+#
+
+print STDERR "writing tesserae.conf\n";
+
+write_config();
+
+#
+# subroutines
+#
+
+sub check_fs {
+
+	my $key = shift;
+
+	# append the directory name to the assumed base tess dir
+
+	my $path = catdir($fs_base, $fs{$key});
 	
-		opendir (DH, $dir);
+	$path = abs_path($path);
+	
+	while (! -d $path) {
+	
+		my $message = 
+	
+			"Can't find default path for $desc{$key}:\n"
+			. "  $path doesn't exist or is not a directory\n"
+			. "Have you moved this directory?\n";
+
+		my $prompt = "Enter the new path, or nothing to quit: ";
 		
-		for (readdir DH) {
+		my $reply = $term->get_reply(
 
-			if ( /\.pl|m$/ && -f catfile($dir, $_) ) {
-
-				push @perl_files, catfile($dir, $_);
-			}
-
-			elsif ( /^[^\.]/   && -d catdir($dir, $_) ) { 
+			prompt   => $prompt,
+			print_me => $message) || "";
 				
-				push @perl_search, catdir($dir, $_);
+		$reply =~ /(\S+)/;
+		
+		if ($path = $1) {
+		
+			$path = abs_path($path);
+		}
+		else {
+		
+			print STDERR "Terminating.\n";
+			print STDERR "NB: Tesserae is not configured properly!\n";
+			exit;
+		}
+	}
+	
+	print STDERR "  Setting path for $desc{$key} to $path\n";
+	
+	return $path;
+}
+
+sub check_urls {
+
+	my $l = maxlen(@desc{keys %url});
+	
+	DIALOG_MAIN: for (;;) {
+	
+		my $status = "Current URL assignments:\n";
+		
+		for (sort keys %url) {
+			
+			$status .= sprintf("   %-${l}s: %s\n", $desc{$_}, $url{$_});
+		}
+
+		my @choices = (
+			
+			'Change webroot for all URLs',
+			'Change a single URL',
+			'Done');
+	
+		my $prompt = 'Your choice? ';
+		
+		my $reply = $term->get_reply(
+		
+			prompt   => $prompt, 
+			choices  => \@choices,
+			print_me => $status);
+			
+		for ($reply) {
+		
+			if (/done/i) {
+
+				last DIALOG_MAIN;
 			}
-		}	
-		
-		closedir DH;
-	}
-}
-
-
-#
-# This array will hold a list of xsl files
-#
-
-my @xsl_files;
-
-# get them from the xsl directory
-
-opendir (DH, $fs_xsl);
-
-push @xsl_files, (grep {/\.xsl/ && -f} map { catfile($fs_xsl, $_) } readdir DH);
-
-closedir (DH);
-
-#
-# Finally, a list of php files to change
-#
-
-my @php_files = (
-
-	catfile($fs_html, "defs.php"),
-    catfile($fs_html, "frame.fulltext.php")
-	);
-
-#
-# make installation specific changes.
-#
-
-# first perl files.
-#
-# what they need is a single line at the beginning telling them where
-# local modules will be stored
-#
-
-for my $file (@perl_files) {
-
-	print STDERR "configuring $file\n";
-
-	open IPF, "<$file";
-	open OPF, ">$file.configured";
+			if (/root/i) {
 			
-	while (my $line = <IPF>) {
-		
-		if ($line =~ /^#!/) {
-		
-			$line = "#! $Config{perlpath}\n";
-		}
-	
-		if ($line =~ /^use lib .+#\s*PERL_PATH/) {
-		
-			$line = "use lib '$fs_perl';	# PERL_PATH\n";
-		}
-		
-		print OPF $line;
-	}
-	
-	close IPF;
-	close OPF;
-	
-	move( "$file.configured", $file) or die "move $file.configured $file failed: $!";
-}
-
-#
-# make the cgi-bin files executable
-#
-
-my $exec_mode = oct("755");
-
-for my $file (grep {/$fs_cgi/} @perl_files) {
-
-	chmod $exec_mode, $file;
-}
-
-#
-# now the xsl stylesheets
-#
-# these store a bunch of pathnames as variables
-# each one on a line marked by a comment
-#
-
-for my $file (@xsl_files) {
-
-	print STDERR "configuring $file\n";
-
-	open IPF, "<", $file;
-	open OPF, ">", "$file.configured";
+				# ask for new web root
 			
-	while (my $line = <IPF>) {
-		
-		if ($line =~ /<!--\s+URL_CGI/) {
+				my $reply = $term->get_reply(
+				
+					prompt  => 'new webroot: ',
+					default => $url_base);
 
-			$line = "<xsl:variable name=\"url_cgi\" select=\"'$url_cgi'\"/>";
-			$line .= '<!-- URL_CGI -->' . "\n";
-		}
-		if ($line =~ /<!--\s+URL_CSS/) {
-		
-			$line = "<xsl:variable name=\"url_css\" select=\"'$url_css'\"/>";
-			$line .= '<!-- URL_CSS -->' . "\n";
-		}
-		if ($line =~ /<!--\s+URL_HTML/) {
-		
-			$line = "<xsl:variable name=\"url_html\" select=\"'$url_html'\"/>";
-			$line .= '<!-- URL_HTML -->' . "\n";
-		}
-		if ($line =~ /<!--\s+URL_IMAGE/) {
-		
-			$line = "<xsl:variable name=\"url_image\" select=\"'$url_image'\"/>";
-			$line .= '<!-- URL_IMAGE -->' . "\n";
-		}
-		if ($line =~ /<!--\s+URL_TEXT/) {
-		
-			$line = "<xsl:variable name=\"url_text\" select=\"'$url_text'\"/>";
-			$line .= '<!-- URL_TEXT -->' . "\n";
-		}
-		
-		print OPF $line;
-	}
+				# add http:// if not present
+
+				if ($reply !~ /^http:\//) {
+				
+					$reply = 'http://' . $reply;
+				}
+				
+				# strip final / and double //
+				
+				$reply =~ s/([^:])\/+/$1\//g;
+				$reply =~ s/\/$//;
+
+				# substitute in all urls that contain the webroot
+
+				for (values %url) {
+				
+					s/^$url_base/$reply/;
+				}
+				
+				# remember that this is what should be replaced next time
+				
+				$url_base = $reply;
+				
+				next DIALOG_MAIN;
+			}
+			if (/single/i) {
+			
+				# give all the urls as the choices
+							
+				my $l = maxlen(keys %url);
+								
+				my @choices;
 	
-	close IPF;
-	close OPF;
-	
-	move( "$file.configured", $file) or die "move $file.configured $file failed: $!";
+				for (sort keys %url) {
+				
+					push @choices, sprintf("%-${l}s = %s", $_, $url{$_});
+				}
+				
+				# plus the option to exit without changing anything
+				
+				push @choices, 'none';
+			
+				my $reply = $term->get_reply(
+				
+					prompt  => 'change which URL? ',
+					choices => \@choices);
+					
+				my $change = 'none';
+				
+				for (sort keys %url) {
+				
+					if ($reply =~ /$_/i) { $change = $_ }
+				}
+				
+				if ($change ne 'none') {
+				
+					# ask for a new url
+				
+					my $reply = $term->get_reply(
+					
+						prompt  => "new URL for $desc{$change}? ",
+						default => $url{$change});
+					
+					# try to guess whether this is relative to
+					# existing web root or an absolute address
+					
+					unless ($reply =~ /^http:\/\//) {
+					
+						my $base = (split('/', $reply))[0] || "";
+						
+						if ($base =~ /\./) {
+						
+							$reply = 'http://' . $reply;
+						}
+						else {
+						
+							$reply = join('/', $url_base, $reply);
+						}
+					}
+					
+					print STDERR "reply=$reply\n";
+					
+					# strip final / and double //
+					
+					$reply =~ s/([^:])\/+/$1\//g;
+					$reply =~ s/\/$//;
+					
+					print STDERR "reply=$reply\n";
+					
+					$url{$change} = $reply;
+				}
+				
+				next DIALOG_MAIN;
+			}
+		}
+	}	
 }
 
 
-# finally the php files.
 #
-# they too store path names as variables
+# write the configuration file
+#
 
-for my $file (@php_files) {
+sub write_config {
 
-	print STDERR "configuring $file\n";
-
-	open IPF, "<$file";
-	open OPF, ">$file.configured";
-
-	while (my $line = <IPF>) {
-
-		if ($line =~ /<!--\s+URL_CGI/) {
-
-			$line = "<?php \$url_cgi=\"$url_cgi\" ?>";
-			$line .= '<!-- URL_CGI -->' . "\n";
-		}
-		if ($line =~ /<!--\s+URL_CSS/) {
-
-			$line = "<?php \$url_css=\"$url_css\" ?>";
-			$line .= '<!-- URL_CSS -->' . "\n";
-		}
-		if ($line =~ /<!--\s+URL_HTML/) {
-
-			$line = "<?php \$url_html=\"$url_html\" ?>";
-			$line .= '<!-- URL_HTML -->' . "\n";
-		}
-		if ($line =~ /<!--\s+URL_IMAGE/) {
-
-			$line = "<?php \$url_image=\"$url_image\" ?>";
-			$line .= '<!-- URL_IMAGE -->' . "\n";
-		}
-		if ($line =~ /<!--\s+URL_TEXT/) {
-
-			$line = "<?php \$url_text=\"$url_text\" ?>";
-			$line .= '<!-- URL_TEXT -->' . "\n";
-		}
-		if ($line =~ /<!--\s+FS_HTML/) {
-
-			$line = "<?php \$fs_html=\"$fs_html\" ?>";
-			$line .= '<!-- FS_HTML -->' . "\n";
-		}
-
-		print OPF $line;
+	my $file = catfile($Bin, 'tesserae.conf');
+	
+	open (FH, ">:utf8", $file) or die "can't write $file: $!";
+	
+	print FH "# tesserae.conf\n";
+	print FH "#\n";
+	print FH "# Configuration file for Tesserae\n";
+	print FH "# generated automatically by configure.pl\n";
+				
+	print FH "\n";
+	print FH "# filesystem paths\n";
+	
+	my $l = maxlen(keys %fs) + 3;
+	
+	for (sort keys %fs) {
+	
+		print FH sprintf("%-${l}s = %s\n", "fs_$_", $fs{$_});
 	}
 
-	close IPF;
-	close OPF;
+	print FH "\n";
+	print FH "# web interface URLs\n";
+	
+	$l = maxlen(keys %url) + 4;
+	
+	for (sort keys %url) {
+	
+		print FH sprintf("%-${l}s = %s\n", "url_$_", $url{$_});
+	}
+	
+	close FH;
+}
 
-	move( "$file.configured", $file) or die "move $file.configured $file failed: $!";
+# figure out the max length of a bunch of strings
+
+sub maxlen {
+
+	my @s = @_;
+	
+	my $maxlen = 0;
+	
+	for (@s) {
+	
+		if (defined $_ and length($_) > $maxlen) {
+		
+			$maxlen = length($_);
+		}
+	}
+	
+	return $maxlen;
 }

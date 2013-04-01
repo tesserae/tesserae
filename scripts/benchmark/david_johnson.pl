@@ -8,16 +8,97 @@
 # Chris Forstall
 # 2012-08-26
 
-
 use strict;
 use warnings;
+
+#
+# Read configuration file
+#
+
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{perl};
+
+use Tesserae;
+use EasyProgressBar;
+
+# load additional modules necessary for this script
 
 use Getopt::Std;
 use Storable;
 
-use lib '/Users/chris/Sites/tesserae/perl'; # TESS_PATH
-use TessSystemVars;
-use EasyProgressBar;
+#
+# initialize some parameters
+#
 
 my $use_lingua_stem = 0;
 my $stemmer;
@@ -26,21 +107,25 @@ my $delim = "\t";
 # data locations
 
 my %file = (	
-	stems         => "$fs_data/common/la.stem.cache",
-	syns          => "$fs_data/common/la.syn.cache",
-	semantic      => "$fs_data/common/whit.cache",
+	stems         => catfile($fs{data}, 'common', 'la.stem.cache'),
+	syns          => catfile($fs{data}, 'common', 'la.syn.cache'),
+	semantic      => catfile($fs{data}, 'common', 'whit.cache'),
 	
-	freq_stem_AEN => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.freq_score_stem",
-	freq_word_AEN => "$fs_data/v3/la/vergil.aeneid/vergil.aeneid.freq_score_word",
-	freq_stem_BC  => "$fs_data/v3/la/lucan.bellum_civile.part.1/lucan.bellum_civile.part.1.freq_score_stem",
-	freq_word_BC  => "$fs_data/v3/la/lucan.bellum_civile.part.1/lucan.bellum_civile.part.1.freq_score_word",
-	freq_stem_ALL => "$fs_data/common/la.stem.freq",
-	freq_word_ALL => "$fs_data/common/la.word.freq",
+	freq_stem_AEN => catfile($fs{data}, 'v3', 'la', 'vergil.aeneid', 
+										'vergil.aeneid.freq_score_stem'),
+	freq_word_AEN => catfile($fs{data}, 'v3', 'la', 'vergil.aeneid', 
+										'vergil.aeneid.freq_score_word'),
+	freq_stem_BC  => catfile($fs{data}, 'v3', 'la', 'lucan.bellum_civile.part.1', 
+										'lucan.bellum_civile.part.1.freq_score_stem'),
+	freq_word_BC  => catfile($fs{data}, 'v3', 'la', 'lucan.bellum_civile.part.1', 
+										'lucan.bellum_civile.part.1.freq_score_word'),
+	freq_stem_ALL => catfile($fs{data}, 'common', 'la.stem.freq'),
+	freq_word_ALL => catfile($fs{data}, 'common', 'la.word.freq'),
 	
-	idf_phrase    => "data/la.idf_phrase",
-	idf_text      => "data/la.idf_text",
+	idf_phrase    => catfile($fs{data}, 'la.idf_phrase'),
+	idf_text      => catfile($fs{data}, 'la.idf_text'),
 	
-	rec => "$fs_data/bench/rec.cache"
+	rec => catfile($fs{data}, 'bench', 'rec.cache')
 );
 
 # the stem dictionary

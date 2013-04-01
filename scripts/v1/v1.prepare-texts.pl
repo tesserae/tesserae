@@ -3,12 +3,95 @@
 use strict;
 use warnings;
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
-use TessSystemVars;
+#
+# Read configuration file
+#
+
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{perl};
+
+use Tesserae;
+use EasyProgressBar;
+
+# load additional modules necessary for this script
 
 use Storable;
 use Storable qw(nstore store_fd nstore_fd freeze thaw dclone);
+use File::Basename;
 
+#
+# parse each file given at cmd line
+#
 
 for my $file_in (@ARGV) {		# files to parse are cmd line arguments
 
@@ -16,11 +99,9 @@ for my $file_in (@ARGV) {		# files to parse are cmd line arguments
    # getting input
    ##################################
 
-   my $short_name = $file_in;
-   $short_name =~ s/^.*\///;		# remove path
-   $short_name =~ s/\.tess//;		# and extension
+   my ($short_name, $path, $suffix) = fileparse($file_in, qr/\.[^.]*/);
 
-   my $file_out = "$fs_data/v1/$short_name";
+   my $file_out = catfile($fs{data}, 'v1', $short_name);
 
    print STDERR 'getting ' . $file_in . '...';
 
@@ -129,8 +210,9 @@ for my $file_in (@ARGV) {		# files to parse are cmd line arguments
 		$title =~ s/\b$lc/$uc/;
 	}
 	
+	my $file_textlist = catfile($fs{html}, 'textlist.v1.php');
 
-	my $exec_string = qq{echo '<option value="$short_name">$title</option>' >> $fs_html/textlist.v1.php};
+	my $exec_string = qq{echo '<option value="$short_name">$title</option>' >> $file_textlist};
 
 	print STDERR "$exec_string\n";
 

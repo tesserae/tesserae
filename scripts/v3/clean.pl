@@ -2,7 +2,7 @@
 
 # the line below is designed to be modified by configure.pl
 
-use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
+use lib '/Users/chris/Sites/tesserae/scripts';	# PERL_PATH
 
 # clean.pl
 #
@@ -11,7 +11,7 @@ use lib '/Users/chris/Sites/tesserae/perl';	# PERL_PATH
 use strict;
 use warnings; 
 
-use TessSystemVars;
+use Tesserae;
 
 use File::Path qw(mkpath rmtree);
 use File::Spec::Functions;
