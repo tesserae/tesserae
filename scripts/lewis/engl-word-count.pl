@@ -82,7 +82,7 @@ BEGIN {
 
 # load Tesserae-specific modules
 
-use lib $fs{perl};
+use lib $fs{script};
 
 use Tesserae;
 use EasyProgressBar;

@@ -1,6 +1,8 @@
 # config file #
 ###############
 tesserae.conf
+html/defs.php
+xsl/defs.xsl
 
 # session files #
 #################

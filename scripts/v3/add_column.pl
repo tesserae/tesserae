@@ -1,31 +1,190 @@
-#! /opt/local/bin/perl5.12
-
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Sites/tesserae/scripts';	# PERL_PATH
+#! /usr/bin/perl
 
 # add_column.pl
 #
 # add a new text to the database
 
+=head1 NAME
+
+add_column.pl	- add texts to the tesserae database
+
+=head1 SYNOPSIS
+
+perl add_column.pl [options] TEXT [, TEXT2, [DIR], ...] 
+
+=head1 DESCRIPTION
+
+Reads in one or more .tess documents and creates the indices used by read_table.pl
+to perform Tesserae searches.
+
+This script is usually run on an entire directory of texts at once, when you're
+first setting Tesserae up.  E.g. (from the Tesserae root dir),
+
+   perl scripts/v3/add_column.pl texts/la/*
+
+If the script is passed a directory instead of a file, it will search inside for
+.tess files; this is designed for works which have been partitioned into separate
+files, e.g. by internal "book".  These .part. files are stored inside a directory
+named for the original work.
+
+If you have a file in the I<texts/> directory called I<prose_list>, this will be
+read and any texts whose names are found in the prose list will be added to the
+database in "prose mode".  Because the "line" unit of text doesn't make much sense
+for prose works, in prose mode the line database is just a copy of the phrase one.
+
+=head1 OPTIONS AND ARGUMENTS
+
+=over
+
+=item B<--lang>
+
+Specify the language code for all texts.  By default tries to guess from the
+path, which usually includes this code.  Tells Tesserae where to look for 
+stem dictionaries, etc.
+
+=item B<--parllel N>
+
+Allow up to N processes to run in parallel.  Requires Parallel::ForkManager.
+
+=item B<--use-lingua-stem>
+
+Use the Lingua::Stem module to do stemming instead of internal dictionaries.
+This is the only way to index English works by stem; I don't think it works
+for Latin and almost certainly not for Greek.  The language code will be 
+passed to Lingua::Stem, which must have a stemmer for that code.
+
+=item B<--prose>
+
+Force all texts to be added in prose mode.
+
+=item B<--help>
+
+Print usage and exit.
+
+=back
+
+=head1 KNOWN BUGS
+
+=head1 SEE ALSO
+
+=head1 COPYRIGHT
+
+University at Buffalo Public License Version 1.0.
+The contents of this file are subject to the University at Buffalo Public License Version 1.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://tesserae.caset.buffalo.edu/license.txt.
+
+Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
+
+The Original Code is add_column.pl.
+
+The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
+
+Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
+
+Contributor(s): Chris Forstall <forstall@buffalo.edu>, James Gawley, Neil Coffee
+
+Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
+
+=cut
+
 use strict;
-use warnings; 
+use warnings;
+
+#
+# Read configuration file
+#
+
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{script};
 
 use Tesserae;
 use EasyProgressBar;
 
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
 use utf8;
 use File::Path qw(mkpath rmtree);
-use File::Spec::Functions;
 use File::Basename;
-use Cwd;
 use Storable qw(nstore retrieve);
-use Getopt::Long;
 
 # optional modules
 
-use if $ancillary{"Lingua::Stem"}, "Lingua::Stem";
-use if $ancillary{"Parallel::ForkManager"}, "Parallel::ForkManager";
+my $override_stemmer  = Tesserae::check_mod("Lingua::Stem");
+my $override_parallel = Tesserae::check_mod("Parallel::ForkManager");
 
 #
 # splitting phrases
@@ -38,7 +197,7 @@ use if $ancillary{"Parallel::ForkManager"}, "Parallel::ForkManager";
 my $split_punct = qr/(.*"?$phrase_delimiter"?)(\s*)(.*)/;
 
 # 
-# some parameters
+# initialize some parameters
 # 
 
 my %abbr;
@@ -75,19 +234,31 @@ my $lang;
 my %stem;
 my %syn;
 
+# don't print messages to STDERR 
+my $quiet = 0;
+
+# print usage and exit
+my $help = 0;
+
 #
 # command line options
 #
-
-my $quiet = 0;
 
 GetOptions( 
 	"lang=s"          => \$lang,
 	"parallel=i"      => \$max_processes,
 	"quiet"           => \$quiet,
 	"use-lingua-stem" => \$use_lingua_stem,
-	"prose"           => \$prose
+	"prose"           => \$prose,
+	"help"            => \$help
 	);
+
+# print usage if the user needs help
+	
+if ($help) {
+
+	pod2usage(1);
+}
 
 # get language list
 
@@ -95,7 +266,7 @@ if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
 
 # check to make sure stemmer module is available
 
-if ($use_lingua_stem and not $ancillary{"Lingua::Stem"}) {
+if ($use_lingua_stem and not $override_stemmer) {
 
 	print STDERR 
 		"Lingua::Stem was not installed when you configured Tesserae.  "
@@ -109,6 +280,14 @@ if ($use_lingua_stem and not $ancillary{"Lingua::Stem"}) {
 # initialize parallel processing
 #
 
+if ($max_processes and not $override_parallel) {
+
+	print STDERR "Parallel processing requires Parallel::ForkManager from CPAN.\n";
+	print STDERR "Proceeding with parallel=0.\n";
+	$max_processes = 0;
+
+}
+
 if ($max_processes) {
 
 	$pm = Parallel::ForkManager->new($max_processes);
@@ -119,7 +298,7 @@ if ($max_processes) {
 # generated by child processes
 #
 
-my $temp_dir = catdir($fs_data, 'common', 'temp-lang');
+my $temp_dir = catdir($fs{data}, 'common', 'temp-lang');
 if (-d $temp_dir) {
 
 	print STDERR "$temp_dir exists!  Is someone else running add_column?\n";
@@ -178,7 +357,8 @@ for my $file_in (@files) {
 	}
 	else {
 
-		print STDERR "Can't guess the language of $file_in! Try reprocessing with --lang LANG\n" unless $quiet;
+		print STDERR "Can't guess the language of $file_in! "
+					. "Try reprocessing with --lang LANG\n" unless $quiet;
 		next;
 	}
 	
@@ -213,8 +393,8 @@ for my $file_in (@files) {
 	# check for the dictionaries
 	#
 		
-	my $file_stem = catfile($fs_data, 'common', "$lang.stem.cache");
-	my $file_syn  = catfile($fs_data, 'common', "$lang.syn.cache");
+	my $file_stem = catfile($fs{data}, 'common', "$lang.stem.cache");
+	my $file_syn  = catfile($fs{data}, 'common', "$lang.syn.cache");
 	
 	my %omit;
 	
@@ -235,13 +415,15 @@ for my $file_in (@files) {
 		}
 		else {
 			
-			print STDERR "Can't find syn dictionary!  Syn indexing disabled.\n" unless $quiet;
+			print STDERR "Can't find syn dictionary! "
+						. "Syn indexing disabled.\n" unless $quiet;
 			$omit{syn} = 1;
 		}
 	}
 	else {
 		
-		print STDERR "Can't find stem dictionary! Stem and syn indexing disabled.\n" unless $quiet;
+		print STDERR "Can't find stem dictionary! "
+					 . "Stem and syn indexing disabled.\n" unless $quiet;
 		$omit{stem} = 1;
 	}
 	
@@ -528,7 +710,7 @@ for my $file_in (@files) {
 	
 	# make sure the directory exists
 	
-	my $path_data = catfile($fs_data, 'v3', $lang, $name);
+	my $path_data = catfile($fs{data}, 'v3', $lang, $name);
 	
 	unless (-d $path_data ) { mkpath($path_data) }
 	
@@ -863,7 +1045,7 @@ sub check_prose_list {
 
 	my $name = shift;
 		
-	my $file_prose_list = catfile($fs_text, 'prose_list');
+	my $file_prose_list = catfile($fs{text}, 'prose_list');
 	
 	return 0 unless (-s $file_prose_list);
 	

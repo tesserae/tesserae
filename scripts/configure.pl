@@ -22,16 +22,16 @@ my $term = Term::ReadLine->new('myterm');
 
 my %desc = (
 
-	base    => 'tesserae root',
-	cgi     => 'cgi executables',
-	css     => 'css stylesheets',
-	data    => 'internal data',
-	html    => 'web documents',
-	image   => 'images',
-	perl    => 'ancillary scripts',
-	text    => 'texts',
-	tmp     => 'session data',
-	xsl     => 'xsl stylesheets');
+	base   => 'tesserae root',
+	cgi    => 'cgi executables',
+	css    => 'css stylesheets',
+	data   => 'internal data',
+	html   => 'web documents',
+	image  => 'images',
+	script => 'ancillary scripts',
+	text   => 'texts',
+	tmp    => 'session data',
+	xsl    => 'xsl stylesheets');
 
 #
 # filesystem paths
@@ -45,13 +45,13 @@ my $fs_base = abs_path(catdir($Bin, '..'));
 
 my %fs = (
 
-	cgi  => 'cgi-bin',
-	data => 'data',
-	html => 'html',
-	perl => 'scripts',
-	text => 'texts',
-	tmp  => 'tmp',
-	xsl  => 'xsl');
+	cgi    => 'cgi-bin',
+	data   => 'data',
+	html   => 'html',
+	script => 'scripts',
+	text   => 'texts',
+	tmp    => 'tmp',
+	xsl    => 'xsl');
 
 # make sure they're still where expected;
 # if not, ask for new locations
@@ -151,24 +151,27 @@ sub check_fs {
 
 sub check_urls {
 
-	my $l = maxlen(@desc{keys %url});
+	my $l = maxlen(@desc{keys %url}) + 1;
 	
 	DIALOG_MAIN: for (;;) {
 	
-		my $status = "Current URL assignments:\n";
+		my $status = "Confirm URL assignments:\n";
+		
+		my @choices;
 		
 		for (sort keys %url) {
 			
-			$status .= sprintf("   %-${l}s: %s\n", $desc{$_}, $url{$_});
+			push @choices, sprintf("%-${l}s %s", $desc{$_} . ':', $url{$_});
 		}
 
-		my @choices = (
+		$choices[-1] .= "\n";
+
+		push @choices, (
 			
 			'Change webroot for all URLs',
-			'Change a single URL',
 			'Done');
 	
-		my $prompt = 'Your choice? ';
+		my $prompt = 'Any changes? ';
 		
 		my $reply = $term->get_reply(
 		
@@ -216,74 +219,46 @@ sub check_urls {
 				
 				next DIALOG_MAIN;
 			}
-			if (/single/i) {
-			
-				# give all the urls as the choices
-							
-				my $l = maxlen(keys %url);
-								
-				my @choices;
-	
-				for (sort keys %url) {
 				
-					push @choices, sprintf("%-${l}s = %s", $_, $url{$_});
-				}
+			my $change = "";		
 				
-				# plus the option to exit without changing anything
+			for (sort keys %url) {
 				
-				push @choices, 'none';
+				if ($reply =~ /$desc{$_}/i) { $change = $_ }
+			}
+				
+			if ($change) {
+				
+				# ask for a new url
 			
 				my $reply = $term->get_reply(
 				
-					prompt  => 'change which URL? ',
-					choices => \@choices);
+					prompt  => "new URL for $desc{$change}? ",
+					default => $url{$change});
 					
-				my $change = 'none';
-				
-				for (sort keys %url) {
-				
-					if ($reply =~ /$_/i) { $change = $_ }
-				}
-				
-				if ($change ne 'none') {
-				
-					# ask for a new url
-				
-					my $reply = $term->get_reply(
+				# try to guess whether this is relative to
+				# existing web root or an absolute address
 					
-						prompt  => "new URL for $desc{$change}? ",
-						default => $url{$change});
+				unless ($reply =~ /^http:\/\//) {
+				
+					my $base = (split('/', $reply))[0] || "";
 					
-					# try to guess whether this is relative to
-					# existing web root or an absolute address
+					if ($base =~ /\./) {
 					
-					unless ($reply =~ /^http:\/\//) {
-					
-						my $base = (split('/', $reply))[0] || "";
-						
-						if ($base =~ /\./) {
-						
-							$reply = 'http://' . $reply;
-						}
-						else {
-						
-							$reply = join('/', $url_base, $reply);
-						}
+						$reply = 'http://' . $reply;
 					}
+					else {
 					
-					print STDERR "reply=$reply\n";
-					
-					# strip final / and double //
-					
-					$reply =~ s/([^:])\/+/$1\//g;
-					$reply =~ s/\/$//;
-					
-					print STDERR "reply=$reply\n";
-					
-					$url{$change} = $reply;
+						$reply = join('/', $url_base, $reply);
+					}
 				}
-				
-				next DIALOG_MAIN;
+										
+				# strip final / and double //
+					
+				$reply =~ s/([^:])\/+/$1\//g;
+				$reply =~ s/\/$//;
+										
+				$url{$change} = $reply;
 			}
 		}
 	}	

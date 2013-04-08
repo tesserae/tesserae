@@ -1,34 +1,189 @@
-#! /opt/local/bin/perl5.12
-
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Sites/tesserae/scripts';	# PERL_PATH
+#! /usr/bin/perl
 
 #
-# title 
+# index_multi.pl
 #
+
+=head1 NAME
+
+index_multi.pl - index texts for multi-text searching
+
+=head1 SYNOPSIS
+
+perl index_multi.pl [options] TEXT [TEXT2 [...]]
+
+=head1 DESCRIPTION
+
+Create the indices used to perform multi-text searching.  Right now, multi-text searches
+are based on stem-bigrams, pairs of stems that occur anywhere in the same textual unit 
+(line/phrase).  The index is created from existing stem indices, so this must be run 
+after add_column.pl.
+
+Default use is something like this:
+
+	perl scripts/v3/index_multi.pl texts/la/*
+	
+The arguments are .tess files just as for add_column.pl, but index_multi.pl does not 
+actually read these files; it looks them up in the stem index instead. Does not read
+directories the way add_column.pl does, so if you run a whole language subdir as in 
+the above example, only full texts will be indexed.  The way we interpret multi-text
+results right now, treating every book of a work as a separate hit wouldn't make sense.
+
+=head1 OPTIONS AND ARGUMENTS
+
+=over
+
+=item B<--lang LANG>
+
+Force all texts to be treated as belonging to language LANG.
+
+=item B<--use-lingua-stem>
+
+Use Lingua::Stem instead of build-in stem dictionaries.  Untested in this script!
+
+=item B<--parallel N>
+
+Allow up to N processes to run in parallel.  Requires Parallel::ForkManager.
+
+=item B<--quiet>
+
+Don't print messages to STDERR.
+
+=item B<--help>
+
+Print usage and exit.
+
+=back
+
+=head1 KNOWN BUGS
+
+=head1 SEE ALSO
+
+=head1 COPYRIGHT
+
+University at Buffalo Public License Version 1.0.
+The contents of this file are subject to the University at Buffalo Public License Version 1.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://tesserae.caset.buffalo.edu/license.txt.
+
+Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
+
+The Original Code is name.pl.
+
+The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
+
+Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
+
+Contributor(s):
+
+Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
+
+=cut
 
 use strict;
 use warnings;
 
-use CGI qw(:standard);
+#
+# Read configuration file
+#
 
-use Getopt::Long;
-use POSIX;
-use Storable qw(nstore retrieve);
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
 use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{script};
 
 use Tesserae;
 use EasyProgressBar;
 
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
+use CGI qw(:standard);
+use POSIX;
+use Storable qw(nstore retrieve);
+
 # optional modules
 
-use if $ancillary{"Lingua::Stem"}, "Lingua::Stem";
-use if $ancillary{"Parallel::ForkManager"}, "Parallel::ForkManager";
+my $override_stemmer  = Tesserae::check_mod("Lingua::Stem");
+my $override_parallel = Tesserae::check_mod("Parallel::ForkManager");
 
 # allow unicode output
 
 binmode STDOUT, ":utf8";
+
+# initialize some variables
+
+my $help = 0;
 
 # number of parallel processes to run
 
@@ -52,11 +207,50 @@ my $quiet = 0;
 #
 
 GetOptions(
-	"lang=s"          => \$lang,
-	"parallel=i"      => \$max_processes,
-	"quiet"           => \$quiet,
-	"use-lingua-stem" => \$use_lingua_stem
-	);
+	'lang=s'          => \$lang,
+	'parallel=i'      => \$max_processes,
+	'quiet'           => \$quiet,
+	'use-lingua-stem' => \$use_lingua_stem,
+	'help'            => \$help);
+
+#
+# print usage if the user needs help
+#
+# you could also use perldoc name.pl
+	
+if ($help) {
+
+	pod2usage(1);
+}
+
+# check to make sure stemmer module is available
+
+if ($use_lingua_stem and not $override_stemmer) {
+
+	print STDERR 
+		"Lingua::Stem was not installed when you configured Tesserae.  "
+	   . "If you have installed it since then, please re-configure.  "
+	   . "Falling back on stem dictionary method for now.\n";
+	   
+	$use_lingua_stem = 0;
+}
+
+#
+# initialize parallel processing
+#
+
+if ($max_processes and not $override_parallel) {
+
+	print STDERR "Parallel processing requires Parallel::ForkManager from CPAN.\n";
+	print STDERR "Proceeding with parallel=0.\n";
+	$max_processes = 0;
+
+}
+
+if ($max_processes) {
+
+	$pm = Parallel::ForkManager->new($max_processes);
+}
 
 #		
 # get dictionaries
@@ -65,8 +259,8 @@ GetOptions(
 my %stem;
 my %syn;
 
-my $file_stem = catfile($fs_data, 'common', $lang . '.stem.cache');
-my $file_syn  = catfile($fs_data, 'common', $lang . '.syn.cache');
+my $file_stem = catfile($fs{data}, 'common', $lang . '.stem.cache');
+my $file_syn  = catfile($fs{data}, 'common', $lang . '.syn.cache');
 
 my %omit;
 
@@ -133,16 +327,16 @@ for my $unit (qw/line phrase/) {
 		
 		# load the text from the database
 		
-		my $file_token = catfile($fs_data, 'v3', $lang, $text, $text . ".token");
-		my $file_unit  = catfile($fs_data, 'v3', $lang, $text, $text . "." . $unit);
+		my $file_token = catfile($fs{data}, 'v3', $lang, $text, $text . ".token");
+		my $file_unit  = catfile($fs{data}, 'v3', $lang, $text, $text . "." . $unit);
 
 		my @token = @{retrieve($file_token)};
 		my @unit  = @{retrieve($file_unit)};
 		
 		# get text- and feature-specific frequencies for scoring
 
-		my $file_freq_word = catfile($fs_data, 'v3', $lang, $text, $text . ".freq_score_word");
-		my $file_freq_stem = catfile($fs_data, 'v3', $lang, $text, $text . ".freq_score_stem");
+		my $file_freq_word = catfile($fs{data}, 'v3', $lang, $text, $text . ".freq_score_word");
+		my $file_freq_stem = catfile($fs{data}, 'v3', $lang, $text, $text . ".freq_score_stem");
 
 		my %freq_word = %{Tesserae::stoplist_hash($file_freq_word)};
 		my %freq_stem = %{Tesserae::stoplist_hash($file_freq_stem)};
@@ -226,8 +420,8 @@ for my $unit (qw/line phrase/) {
 			}
 		}
 		
-		my $file_index_word = catfile($fs_data, 'v3', $lang, $text, $text . ".multi_${unit}_word");
-		my $file_index_stem = catfile($fs_data, 'v3', $lang, $text, $text . ".multi_${unit}_stem");
+		my $file_index_word = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_${unit}_word");
+		my $file_index_stem = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_${unit}_stem");
 
 		print STDERR "saving $file_index_word\n";
 		nstore \%index_word, $file_index_word;
@@ -258,7 +452,7 @@ sub get_textlist {
 	
 	my $lang = shift;
 
-	my $directory = catdir($fs_data, 'v3', $lang);
+	my $directory = catdir($fs{data}, 'v3', $lang);
 
 	opendir(DH, $directory);
 	

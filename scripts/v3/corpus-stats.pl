@@ -1,3 +1,5 @@
+#! /usr/bin/perl
+
 #
 # corpus-stats.pl
 #
@@ -5,15 +7,163 @@
 # in order to calculate stop words
 # and frequency-based scores
 
+=head1 NAME
+
+corpus-stats.pl	- calculate corpus-wide statistics
+
+=head1 SYNOPSIS
+
+perl corpus-stats.pl [options] LANG [LANG2 [...]]
+
+=head1 DESCRIPTION
+
+Calculates corpus-wide frequencies for all features.
+
+=head1 OPTIONS AND ARGUMENTS
+
+=over
+
+=item B<--help>
+
+Print usage and exit.
+
+=back
+
+=head1 KNOWN BUGS
+
+=head1 SEE ALSO
+
+I<add_column.pl> - add texts to the database
+
+=head1 COPYRIGHT
+
+University at Buffalo Public License Version 1.0.
+The contents of this file are subject to the University at Buffalo Public License Version 1.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://tesserae.caset.buffalo.edu/license.txt.
+
+Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
+
+The Original Code is corpus-stats.pl.
+
+The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
+
+Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
+
+Contributor(s): Chris Forstall
+
+Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
+
+=cut
+
 use strict;
 use warnings;
 
-use lib '/Users/chris/Sites/tesserae/scripts';	# PERL_PATH
+#
+# Read configuration file
+#
+
+# variables set from config
+
+my %fs;
+my %url;
+my $lib;
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $config = catfile($lib, 'tesserae.conf');
+		
+	until (-s $config) {
+					
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			$config = catfile($lib, 'tesserae.conf');
+			
+			next;
+		}
+		
+		die "can't find tesserae.conf!\n";
+	}
+	
+	# read configuration
+		
+	my %par;
+	
+	open (FH, $config) or die "can't open $config: $!";
+	
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+	
+	close FH;
+	
+	# extract fs and url paths
+		
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $fs{script};
 
 use Tesserae;
+use EasyProgressBar;
 
-use File::Spec::Functions;
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
 use Storable qw(nstore retrieve);
+
+# initialize some variables
+
+my $help = 0;
+
+# get user options
+
+GetOptions(
+	'help'  => \$help);
+
+#
+# print usage if the user needs help
+#
+# you could also use perldoc name.pl
+	
+if ($help) {
+
+	pod2usage(1);
+}
 
 #
 # specify language to parse at cmd line
@@ -23,9 +173,11 @@ my @lang;
 
 for (@ARGV) {
 
-	if (/^[a-zA-Z]{1,4}$/)	{ 
+	$_ = lc($_);
+
+	if (/^[a-z]{1,4}$/)	{ 
 	
-		next unless -d catdir($fs_data, 'v3', $_);
+		next unless -d catdir($fs{data}, 'v3', $_);
 		push @lang, $_;
 	}
 }
@@ -45,7 +197,7 @@ for my $lang(@lang) {
 
 	my @texts;
 	
-	my $dir = catdir($fs_data, 'v3', $lang);
+	my $dir = catdir($fs{data}, 'v3', $lang);
 
 	opendir (DH, $dir);
 
@@ -66,7 +218,7 @@ for my $lang(@lang) {
 		
 		for my $feature (qw/word stem syn 3gr/) {
 		
-			my $file_index = catfile($fs_data, 'v3', $lang, $text, "$text.index_$feature");
+			my $file_index = catfile($fs{data}, 'v3', $lang, $text, "$text.index_$feature");
 
 			next unless -s $file_index;
 
@@ -91,7 +243,7 @@ for my $lang(@lang) {
 	
 		next unless defined $count{$feature};
 
-		my $file_freq = catfile($fs_data, 'common', $lang . '.' . $feature . '.freq');
+		my $file_freq = catfile($fs{data}, 'common', $lang . '.' . $feature . '.freq');
 
 		print STDERR "writing $file_freq\n";
 

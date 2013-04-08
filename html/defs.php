@@ -1,6 +1,8 @@
-<?php $url_html  = "http://localhost/~chris/tesserae/html"    ?><!-- URL_HTML  -->
-<?php $url_css   = "http://localhost/~chris/tesserae/css"     ?><!-- URL_CSS   -->
-<?php $url_cgi   = "http://localhost/~chris/tesserae/cgi-bin" ?><!-- URL_CGI   -->
-<?php $url_image = "http://localhost/~chris/tesserae/images"  ?><!-- URL_IMAGE -->
-<?php $url_text  = "http://localhost/~chris/tesserae/texts"   ?><!-- URL_TEXT  -->
-<?php $fs_html   = "/Users/chris/Sites/tesserae/html"         ?><!-- FS_HTML   -->
+		
+<?php $url_html  = "http://tesserae.caset.buffalo.edu" ?>
+<?php $url_css   = "http://tesserae.caset.buffalo.edu/css" ?>
+<?php $url_cgi   = "http://tesserae.caset.buffalo.edu/cgi-bin" ?>
+<?php $url_image = "http://tesserae.caset.buffalo.edu/images" ?>
+<?php $url_text  = "http://tesserae.caset.buffalo.edu/texts" ?>
+<?php $fs_html   = "/Users/chris/ctesserae/html" ?>
+

@@ -63,6 +63,9 @@ Alternatively, the contents of this file may be used under the terms of either t
 
 =cut
 
+use strict;
+use warnings;
+
 #
 # Read configuration file
 #
@@ -167,5 +170,5 @@ GetOptions(
 	
 if ($help) {
 
-	pod2usage(2);
+	pod2usage(1);
 }

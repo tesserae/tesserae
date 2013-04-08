@@ -336,8 +336,10 @@ sub stoplist_array {
 }
 
 
-# check to see whether optional 
-# ancillary modules are installed
+# loads a module if it's available
+# 
+# returns 1 on failure
+#         0 on success
 
 sub check_mod {
 
@@ -345,7 +347,7 @@ sub check_mod {
 			
 	eval "require $m";
 		
-	return $@ ? 0 : 1;	
+	return $@ ? 1 : 0;	
 }
 
 
