@@ -86,16 +86,32 @@ BEGIN {
 	
 	my $oldlib = $lib;
 	
-	my $config = catfile($lib, 'tesserae.conf');
+	my $config;
+	my $pointer;
+			
+	while (1) {
+
+		$config  = catfile($lib, 'tesserae.conf');
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-s $pointer) {
 		
-	until (-s $config) {
-					
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$config = <FH>;
+			
+			chomp $config;
+			
+			last;
+		}
+		
+		last if (-s $config);
+							
 		$lib = abs_path(catdir($lib, '..'));
 		
 		if (-d $lib and $lib ne $oldlib) {
 		
 			$oldlib = $lib;			
-			$config = catfile($lib, 'tesserae.conf');
 			
 			next;
 		}
@@ -103,8 +119,7 @@ BEGIN {
 		die "can't find tesserae.conf!\n";
 	}
 	
-	# read configuration
-		
+	# read configuration		
 	my %par;
 	
 	open (FH, $config) or die "can't open $config: $!";
