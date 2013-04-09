@@ -102,6 +102,14 @@ print STDERR "writing tesserae.conf\n";
 write_config();
 
 #
+# write pointer to config for cgi-bin
+#
+
+my $pointer = catfile($fs{cgi}, '.tesserae.conf');
+
+write_pointer($pointer);
+
+#
 # subroutines
 #
 
@@ -299,6 +307,21 @@ sub write_config {
 	
 		print FH sprintf("%-${l}s = %s\n", "url_$_", $url{$_});
 	}
+	
+	close FH;
+}
+
+# write a pointer to the config file
+
+sub write_pointer {
+
+	my $file = shift;
+	
+	open (FH, ">", $file) or die "can't write $file: $!";
+	
+	print STDERR "writing $file\n";
+	
+	print FH catfile($fs{script}, 'tesserae.conf') . "\n";
 	
 	close FH;
 }
