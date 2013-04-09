@@ -98,84 +98,68 @@ use EasyProgressBar;
 
 # load additional modules necessary for this script
 
-use File::Copy;
+# languages to install by default
 
-# copy tesserae.conf and Tesserae.pm
-# to cgi-bin directory
+my @inst_lang = qw/la/;
 
-for my $file (qw/tesserae.conf Tesserae.pm EasyProgressBar.pm/) {
+#
+# build dictionaries
+#
 
-	my $here  = catfile($Bin,     $file);
-	my $there = catfile($fs{cgi}, $file);
+print STDERR "building dictionaries\n";
 
-	copy($here, $there) or die "can't copy $here to $there: $!";
-	
-	print STDERR "copying $here to $there\n";
+for (qw/build-stem-cache.pl patch-stem-cache.pl build-syn-cache.pl/) {
+
+	my $script = catfile($fs{perl}, $_);
+
+	do_cmd("perl $script");
 }
 
-# create var definition files for php and xsl
+print STDERR "done\n\n";
 
-create_php_defs(catfile($fs{html}, 'defs.php'));
-create_xsl_defs(catfile($fs{xsl},  'defs.xsl'));
+#
+# add texts
+#
+
+print STDERR "adding texts\n";
+
+for my $lang (@inst_lang) {
+
+	my $script = catfile($fs{perl}, 'v3', 'add_column.pl');
+	my $texts  = catfile($fs{text}, $lang, '*');
+	
+	do_cmd("perl $script $texts");
+}
+
+print STDERR "done\n\n";
+
+#
+# calculate corpus stats
+#
+
+print "calculating corpus-wide frequencies\n";
+
+my $script = catfile($fs{perl}, 'v3', 'corpus-stats.pl');
+
+my $langs = join(" ", @inst_lang);
+
+do_cmd("perl $script $langs");
+
+print STDERR "done\n\n";
+
 
 #
 # subroutines
 #
 
-#
-# Create defs.xsl,
-#    containing system vars used by xsl files
-#
+sub do_cmd {
 
-sub create_xsl_defs {
-
-	my $file = shift;
-
-	open (FH, ">:utf8", $file) or die "can't create file $file: $!";
+	my $command = shift;
 	
-	print STDERR "writing $file\n";
+	print STDERR "$command\n";
 	
-	print FH <<END;
+	print STDERR `$command`;
 	
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-
-	<xsl:variable name="url_cgi"   select="'$url{cgi}'" />
-	<xsl:variable name="url_css"   select="'$url{css}'" />
-	<xsl:variable name="url_html"  select="'$url{html}'" />
-	<xsl:variable name="url_image" select="'$url{image}'" />
-	<xsl:variable name="url_text"  select="'$url{text}'" />
-	
-</xsl:stylesheet>
-END
-
-	close FH;
 	return;
 }
 
-#
-# Create defs.php, 
-#   containing system vars used by php files
-#
-
-sub create_php_defs {
-
-	my $file = shift;
-
-	open (FH, ">:utf8", $file) or die "can't create file $file: $!";
-
-	print STDERR "writing $file\n";
-	
-	print FH <<END;
-		
-<?php \$url_html  = "$url{html}" ?>
-<?php \$url_css   = "$url{css}" ?>
-<?php \$url_cgi   = "$url{cgi}" ?>
-<?php \$url_image = "$url{image}" ?>
-<?php \$url_text  = "$url{text}" ?>
-<?php \$fs_html   = "$fs{html}" ?>
-
-END
-	
-	close FH;
-	return;
-}

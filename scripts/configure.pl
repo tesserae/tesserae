@@ -110,6 +110,13 @@ my $pointer = catfile($fs{cgi}, '.tesserae.conf');
 write_pointer($pointer);
 
 #
+# create var definition files for php and xsl
+#
+
+create_php_defs(catfile($fs{html}, 'defs.php'));
+create_xsl_defs(catfile($fs{xsl},  'defs.xsl'));
+
+#
 # subroutines
 #
 
@@ -325,6 +332,65 @@ sub write_pointer {
 	
 	close FH;
 }
+
+#
+# Create defs.xsl,
+#    containing system vars used by xsl files
+#
+
+sub create_xsl_defs {
+
+	my $file = shift;
+
+	open (FH, ">:utf8", $file) or die "can't create file $file: $!";
+	
+	print STDERR "writing $file\n";
+	
+	print FH <<END;
+	
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
+	<xsl:variable name="url_cgi"   select="'$url{cgi}'" />
+	<xsl:variable name="url_css"   select="'$url{css}'" />
+	<xsl:variable name="url_html"  select="'$url{html}'" />
+	<xsl:variable name="url_image" select="'$url{image}'" />
+	<xsl:variable name="url_text"  select="'$url{text}'" />
+	
+</xsl:stylesheet>
+END
+
+	close FH;
+	return;
+}
+
+#
+# Create defs.php, 
+#   containing system vars used by php files
+#
+
+sub create_php_defs {
+
+	my $file = shift;
+
+	open (FH, ">:utf8", $file) or die "can't create file $file: $!";
+
+	print STDERR "writing $file\n";
+	
+	print FH <<END;
+		
+<?php \$url_html  = "$url{html}" ?>
+<?php \$url_css   = "$url{css}" ?>
+<?php \$url_cgi   = "$url{cgi}" ?>
+<?php \$url_image = "$url{image}" ?>
+<?php \$url_text  = "$url{text}" ?>
+<?php \$fs_html   = "$fs{html}" ?>
+
+END
+	
+	close FH;
+	return;
+}
+
 
 # figure out the max length of a bunch of strings
 
