@@ -476,4 +476,66 @@ sub check_prose_list {
 }
 
 
+#
+# retrieve the full list of texts for a language corpus
+#
+
+sub get_textlist {
+	
+	my ($lang, %opt) = @_;
+	
+	my $directory = catdir($fs{data}, 'v3', $lang);
+
+	opendir(DH, $directory);
+	
+	my @textlist = grep {/^[^.]/} readdir(DH);
+	
+	closedir(DH);
+	
+	if ($opt{-no_part}) {
+	
+		@textlist = grep { $_ !~ /\.part\./ } @textlist;
+	}
+		
+	if ($opt{-sort}) {
+	
+		@textlist = sort {text_sort($a, $b)} @textlist;
+	}
+		
+	return \@textlist;
+}
+
+# sort texts and put parts in numerical order
+
+sub text_sort {
+
+	my ($l, $r) = @_;
+
+	unless ($l =~ /(.+)\.part\.(.*?)\.*/) {
+	
+		return ($l cmp $r);
+	}
+	
+	my ($lbase, $lpart) = ($1, $2);
+	
+	unless ($r =~ /(.+)\.part\.(.*?)\.*/) {
+	
+		return ($l cmp $r);
+	}
+	
+	my ($rbase, $rpart) = ($1, $2);	
+	
+	unless ($lbase eq $rbase) {
+	
+		return ($l cmp $r)
+	}
+
+	if ($lpart =~ /\D/ or $rpart =~ /\D/) {
+	
+		return ($l cmp $r)
+	}
+	
+	return ($lpart <=> $rpart);
+}
+
 1;

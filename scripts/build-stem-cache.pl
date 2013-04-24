@@ -72,6 +72,11 @@ use lib $lib;
 use Tesserae;
 use EasyProgressBar;
 
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
 # load additional modules necessary for this script
 
 use Storable qw(nstore retrieve);
@@ -80,72 +85,86 @@ use Storable qw(nstore retrieve);
 # initialize some parameters
 #
 
-my $lang = (shift @ARGV) || 'la';
+my @lang = @ARGV ? @ARGV : qw/la/;
 
-my $file_csv   = catfile($fs{data}, 'common', "$lang.lexicon.csv");
-my $file_cache = catfile($fs{data}, 'common', "$lang.stem.cache");
+my $quiet = 0;
 
-my %stem;
+# command-line options
 
-print STDERR "reading csv file: $file_csv\n";
+GetOptions(
+	'quiet'  => \$quiet);
 
-open (FH, "<", $file_csv) || die "can't open csv: $!";
+#
+# process each language
+#
 
-my $pr = ProgressBar->new(-s $file_csv);
+for my $lang (@lang) {
 
-while (my $line = <FH>) {
+	my $file_csv   = catfile($fs{data}, 'common', "$lang.lexicon.csv");
+	my $file_cache = catfile($fs{data}, 'common', "$lang.stem.cache");
 	
-	$pr->advance(length($line));
-
-	# skip lines whose tokens are in quotation marks
-	# these employ characters with accent marks
-
-	next if $line =~ /^"/;
+	my %stem;
 	
-	# remove newline
-
-	chomp $line;
+	print STDERR "reading csv file: $file_csv\n" unless $quiet;
 	
-	# split on commas
+	open (FH, "<", $file_csv) || die "can't open csv: $!";
 	
-	my @field = split /,/, $line;
+	my $pr = ProgressBar->new(-s $file_csv, $quiet);
 	
-	my ($token, $grammar, $headword) = @field[0..2];
-	
-	# standardize the forms
-	
-	$token = Tesserae::standardize($lang, $token);
-	
-	$headword = Tesserae::standardize($lang, $headword);
-	
-	# add to dictionary
-	
-	push @{$stem{$token}}, $headword;
-}
-
-close FH;
-
-print STDERR "rationalizing headwords...\n";
-
-$pr = ProgressBar->new(scalar(keys %stem));
-
-for my $headword (keys %stem) {
-
-	$pr->advance();
-
-	my %uniq;
-	
-	for (@{$stem{$headword}}) {
-
-		$uniq{$_} = 1;
-	}
+	while (my $line = <FH>) {
 		
-	$stem{$headword} = [(keys %uniq)];
+		$pr->advance(length($line));
 	
+		# skip lines whose tokens are in quotation marks
+		# these employ characters with accent marks
+	
+		next if $lang eq 'la' and $line =~ /^"/;
+		
+		# remove newline
+	
+		chomp $line;
+		
+		# split on commas
+		
+		my @field = split /,/, $line;
+		
+		my ($token, $grammar, $headword) = @field[0..2];
+		
+		# standardize the forms
+		
+		$token = Tesserae::standardize($lang, $token);
+		
+		$headword = Tesserae::standardize($lang, $headword);
+		
+		# add to dictionary
+		
+		push @{$stem{$token}}, $headword;
+	}
+	
+	close FH;
+	
+	print STDERR "rationalizing headwords...\n" unless $quiet;
+	
+	$pr = ProgressBar->new(scalar(keys %stem), $quiet);
+	
+	for my $headword (keys %stem) {
+	
+		$pr->advance();
+	
+		my %uniq;
+		
+		for (@{$stem{$headword}}) {
+	
+			$uniq{$_} = 1;
+		}
+			
+		$stem{$headword} = [(keys %uniq)];
+		
+	}
+	
+	print STDERR "saving: $file_cache" unless $quiet;
+	
+	nstore \%stem, $file_cache;
+	
+	print STDERR "\n" unless $quiet;
 }
-
-print STDERR "saving: $file_cache";
-
-nstore \%stem, $file_cache;
-
-print STDERR "\n";
