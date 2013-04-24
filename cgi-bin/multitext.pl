@@ -1,9 +1,5 @@
 #! /opt/local/bin/perl5.12
 
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-
 #
 # multitext.pl
 #
@@ -15,21 +11,80 @@ use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 use strict;
 use warnings;
 
-use CGI qw(:standard);
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
 
 use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
+use CGI qw(:standard);
 use POSIX;
 use Storable qw(nstore retrieve);
-use File::Spec::Functions;
 use File::Path qw(mkpath rmtree);
 use File::Basename;
 
-use TessSystemVars;
-use EasyProgressBar;
-
 # optional modules
 
-use if $ancillary{"Parallel::ForkManager"}, "Parallel::ForkManager";
+my $override_parallel = Tesserae::check_mod("Parallel::ForkManager");
 
 # set autoflush
 
@@ -116,7 +171,7 @@ unless ($no_cgi) {
 
 	print header();
 	
-	my $redirect = "$url_cgi/read_multi.pl?session=$session";
+	my $redirect = "$url{cgi}/read_multi.pl?session=$session";
 	
 	print <<END;
 	
@@ -140,7 +195,7 @@ my $file;
 
 if (defined $session) {
 
-	$file = catdir($fs_tmp, "tesresults-" . $session);
+	$file = catdir($fs{tmp}, "tesresults-" . $session);
 }
 else {
 	
@@ -204,12 +259,12 @@ my $comments = $meta{COMMENT};
 
 # abbreviations of canonical citation refs
 
-my $file_abbr = catfile($fs_data, 'common', 'abbr');
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
 # language of input texts
 
-my $file_lang = catfile($fs_data, 'common', 'lang');
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
 # read source text
@@ -219,7 +274,7 @@ unless ($quiet) {
 	print STDERR "reading source data\n";
 }
 
-my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source);
+my $file_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source);
 
 my @token_source   = @{ retrieve("$file_source.token")          };
 my @unit_source    = @{ retrieve("$file_source.${unit}")        };
@@ -232,7 +287,7 @@ unless ($quiet) {
 	print STDERR "reading target data\n";
 }
 
-my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target);
+my $file_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target);
 
 my @token_target   = @{ retrieve("$file_target.token")          };
 my @unit_target    = @{ retrieve("$file_target.${unit}")        };
@@ -283,7 +338,7 @@ sub get_textlist {
 	
 	for ($target, $source) { s/[\._]part[\._].*// }
 
-	my $directory = catdir($fs_data, 'v3', $lang{$target});
+	my $directory = catdir($fs{data}, 'v3', $lang{$target});
 
 	opendir(DH, $directory);
 	
@@ -293,7 +348,7 @@ sub get_textlist {
 	
 	if (@include) {
 	
-		@all_texts = @{TessSystemVars::intersection(\@include, \@all_texts)};
+		@all_texts = @{Tesserae::intersection(\@include, \@all_texts)};
 	}
 	
 	my @textlist;
@@ -354,7 +409,7 @@ sub search_multi {
 			my $target_pairs = unique_keypairs($match_target{$unit_id_target}{$unit_id_source});
 			my $source_pairs = unique_keypairs($match_source{$unit_id_target}{$unit_id_source});
 			
-			my @pairs = @{TessSystemVars::intersection($target_pairs, $source_pairs)};
+			my @pairs = @{Tesserae::intersection($target_pairs, $source_pairs)};
 			
 			# add this parallel to the index under each pair
 			
@@ -402,7 +457,7 @@ sub search_multi {
 			print sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other);
 		}
 
-		my $file = catfile($fs_data, 'v3', $lang{$target}, $other, $other);
+		my $file = catfile($fs{data}, 'v3', $lang{$target}, $other, $other);
 		
 		my %index_other = %{ retrieve("$file.multi_${unit}_${feature}") };
 		my @unit_other  = @{ retrieve("$file.$unit") };

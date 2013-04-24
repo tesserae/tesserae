@@ -83,29 +83,77 @@ Alternatively, the contents of this file may be used under the terms of either t
 
 =cut
 
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-
-#
-# read_table.pl
-#
-# select two texts for comparison using the big table
-#
-
 use strict;
 use warnings;
 
-use CGI qw(:standard);
+#
+# Read configuration file
+#
 
-use Pod::Usage;
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
+
 use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
+use CGI qw(:standard);
 use POSIX;
 use Storable qw(nstore retrieve);
-use File::Spec::Functions;
-
-use TessSystemVars;
-use EasyProgressBar;
 
 # allow unicode output
 
@@ -207,7 +255,7 @@ my $file;
 
 if (defined $session) {
 
-	$file = catdir($fs_tmp, "tesresults-" . $session);
+	$file = catdir($fs{tmp}, "tesresults-" . $session);
 }
 else {
 	
@@ -302,12 +350,12 @@ if ($batch eq 'all') {
 
 # abbreviations of canonical citation refs
 
-my $file_abbr = "$fs_data/common/abbr";
+my $file_abbr = "$fs{data}/common/abbr";
 my %abbr = %{ retrieve($file_abbr) };
 
 # language of input texts
 
-my $file_lang = "$fs_data/common/lang";
+my $file_lang = "$fs{data}/common/lang";
 my %lang = %{retrieve($file_lang)};
 
 # read source text
@@ -317,11 +365,11 @@ unless ($quiet) {
 	print STDERR "reading source data\n";
 }
 
-my $path_source = "$fs_data/v3/$lang{$source}/$source";
+my $path_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source);
 
-my @token_source   = @{ retrieve( "$path_source/$source.token"    ) };
-my @unit_source    = @{ retrieve( "$path_source/$source.${unit}" ) };
-my %index_source   = %{ retrieve( "$path_source/$source.index_$feature" ) };
+my @token_source   = @{ retrieve( "$path_source.token"    ) };
+my @unit_source    = @{ retrieve( "$path_source.${unit}" ) };
+my %index_source   = %{ retrieve( "$path_source.index_$feature" ) };
 
 # read target text
 
@@ -330,11 +378,11 @@ unless ($quiet) {
 	print STDERR "reading target data\n";
 }
 
-my $path_target = "$fs_data/v3/$lang{$target}/$target";
+my $path_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target);
 
-my @token_target   = @{ retrieve( "$path_target/$target.token"    ) };
-my @unit_target    = @{ retrieve( "$path_target/$target.${unit}" ) };
-my %index_target   = %{ retrieve( "$path_target/$target.index_$feature" ) };
+my @token_target   = @{ retrieve( "$path_target.token"    ) };
+my @unit_target    = @{ retrieve( "$path_target.${unit}" ) };
+my %index_target   = %{ retrieve( "$path_target.index_$feature" ) };
 
 
 #
@@ -347,7 +395,9 @@ my $min_similarity = "NA";
 
 if ( $feature eq "syn" ) { 
 
-	($max_heads, $min_similarity) = @{ retrieve("$fs_data/common/$lang{$target}.syn.cache.param") };
+	my $file_param = catfile($fs{data}, 'common', "$lang{$target}.syn.cache.param");
+
+	($max_heads, $min_similarity) = @{ retrieve($file_param) };
 }
 
 #
@@ -405,13 +455,13 @@ sub nav_page {
 		if ($page > 1) {
 		
 			$back_arrow .= "<span>";
-			$back_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=1;batch=$batch\"> [first] </a>\n";
+			$back_arrow .= "<a href=\"$url{cgi}/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=1;batch=$batch\"> [first] </a>\n";
 			$back_arrow .= "</span>";
 
 			my $p = $page-1;
 
 			$back_arrow .= "<span>";				
-			$back_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> [previous] </a>\n";
+			$back_arrow .= "<a href=\"$url{cgi}/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> [previous] </a>\n";
 			$back_arrow .= "</span>";
 		
 		
@@ -423,11 +473,11 @@ sub nav_page {
 			my $p = $page+1;
 		
 			$forward_arrow .= "<span>";
-			$forward_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> [next] </a>\n";
+			$forward_arrow .= "<a href=\"$url{cgi}/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> [next] </a>\n";
 			$forward_arrow .= "</span>";
 
 			$forward_arrow .= "<span>";
-			$forward_arrow .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$pages;batch=$batch\"> [last] </a>\n";		       
+			$forward_arrow .= "<a href=\"$url{cgi}/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$pages;batch=$batch\"> [last] </a>\n";		       
 			$forward_arrow .= "</span>";
 		
 			@right = ($page+1..($page < $pages-4 ? $page+4 : $pages));
@@ -445,7 +495,7 @@ sub nav_page {
 			}
 			else {
 			
-				$html .= "<a href=\"$url_cgi/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> $p </a>";
+				$html .= "<a href=\"$url{cgi}/read_bin.pl?session=$session;sort=$sort;rev=$rev;page=$p;batch=$batch\"> $p </a>";
 			}	
 			
 			$html .= "</span>";
@@ -473,7 +523,7 @@ sub re_sort {
 
 	my $html=<<END;
 	
-	<form action="$url_cgi/read_bin.pl" method="post" id="Form1">
+	<form action="$url{cgi}/read_bin.pl" method="post" id="Form1">
 		
 		<table>
 			<tr>
@@ -543,7 +593,7 @@ sub print_html {
 	
 	if ($last > $total_matches) { $last = $total_matches }
 	
-	my $html = `php -f $fs_html/results.php`;
+	my $html = `php -f $fs{html}/results.php`;
 	
 	my ($top, $bottom) = split /<!--results-->/, $html;
 	
@@ -606,7 +656,7 @@ sub print_html {
 		
 		print "          <td>\n";
 		print "            <a href=\"javascript:;\""
-		    . " onclick=\"window.open(link='$url_cgi/context2.pl?target=$target;unit=$unit;id=$unit_id_target', "
+		    . " onclick=\"window.open(link='$url{cgi}/context2.pl?target=$target;unit=$unit;id=$unit_id_target', "
 		    . " 'context', 'width=520,height=240')\">";
 		print "$abbr{$target} $unit_target[$unit_id_target]{LOCUS}";
 		print "            </a>\n";
@@ -636,7 +686,7 @@ sub print_html {
 		
 		print "          <td>\n";
 		print "            <a href=\"javascript:;\""
-		    . " onclick=\"window.open(link='$url_cgi/context2.pl?target=$source;unit=$unit;id=$unit_id_source', "
+		    . " onclick=\"window.open(link='$url{cgi}/context2.pl?target=$source;unit=$unit;id=$unit_id_source', "
 		    . " 'context', 'width=520,height=240')\">";
 		print "$abbr{$source} $unit_source[$unit_id_source]{LOCUS}";
 		print "            </a>\n";
@@ -661,7 +711,7 @@ sub print_html {
 		
 		# keywords       
 		
-		if ($lang{$target} eq "grc") { $keys = TessSystemVars::beta_to_uni($keys) }
+		if ($lang{$target} eq "grc") { $keys = Tesserae::beta_to_uni($keys) }
 		
 		print "    <td>$keys</td>\n";
 
@@ -725,7 +775,7 @@ END
 		qw(
 			"RESULT"
 			"TARGET_LOC"
-		   "TARGET_TXT"
+			"TARGET_TXT"
 			"SOURCE_LOC"
 			"SOURCE_TXT"
 			"SHARED"

@@ -1,9 +1,5 @@
 #! /opt/local/bin/perl5.12
 
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-
-use TessSystemVars;
-
 use CGI qw/:standard/;
 
 my $query = new CGI || die "$!";

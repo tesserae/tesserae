@@ -1,21 +1,21 @@
-# config file #
-###############
+# config files 
+
 tesserae.conf
 .tesserae.conf
 html/defs.php
 xsl/defs.xsl
 
-# session files #
-#################
+# session files 
+
 tmp/*
 tesresults/*
 
-# private scripts #
-###################
+# private scripts
+
 testing/*
 
-# generated binaries #
-######################
+# generated binaries
+
 data/common/la.*.cache
 data/common/la.syn.cache.param
 data/common/*.freq
@@ -29,8 +29,8 @@ data/lsa/*
 html/textlist.*
 
 
-# OS generated files #
-######################
+# OS generated files
+
 .DS_Store
 .DS_Store?
 ._*

@@ -1,10 +1,72 @@
 #! /opt/local/bin/perl5.12
 
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-use TessSystemVars;
-
 use strict;
 use warnings;
+
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
 
 use Storable;
 use CGI qw/:standard/;

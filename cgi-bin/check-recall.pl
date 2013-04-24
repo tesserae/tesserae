@@ -12,16 +12,75 @@
 use strict;
 use warnings;
 
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
 use CGI qw(:standard);
 
 use Storable;
-use File::Spec::Functions;
 use File::Basename;
-use Getopt::Long;
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-use TessSystemVars;
-use EasyProgressBar;
 
 # optional modules
 
@@ -44,12 +103,12 @@ my %name = ( source => 'vergil.aeneid', target => 'lucan.bellum_civile.part.1');
 
 my %file;
 
-$file{cache} = catfile($fs_data, 'bench', 'rec.cache');
+$file{cache} = catfile($fs{data}, 'bench', 'rec.cache');
 
 for (qw/target source/) {
 
-	$file{"token_$_"} = catfile($fs_data, 'v3', 'la', $name{$_}, $name{$_} . ".token");
-	$file{"unit_$_"}  = catfile($fs_data, 'v3', 'la', $name{$_}, $name{$_} . ".phrase");
+	$file{"token_$_"} = catfile($fs{data}, 'v3', 'la', $name{$_}, $name{$_} . ".token");
+	$file{"unit_$_"}  = catfile($fs{data}, 'v3', 'la', $name{$_}, $name{$_} . ".phrase");
 }
 
 # is the program being run from the web or
@@ -106,7 +165,7 @@ unless ($no_cgi) {
 
 if (defined $session) {
 
-	$file{tess} = catfile($fs_tmp, "tesresults-" . $session);
+	$file{tess} = catfile($fs{tmp}, "tesresults-" . $session);
 }
 else {
 	
@@ -160,15 +219,15 @@ for (qw/target source/) {
 # abbreviations of canonical citation refs
 #
 
-my $file_abbr = catfile($fs_data, 'common', 'abbr');
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
 #
 # dictionaries - loaded only if necessary
 #
 
-my $file_stem = catfile($fs_data, 'common', 'la.stem.cache');
-my $file_syn  = catfile($fs_data, 'common', 'la.syn.cache');
+my $file_stem = catfile($fs{data}, 'common', 'la.stem.cache');
+my $file_syn  = catfile($fs{data}, 'common', 'la.syn.cache');
 
 my %stem;
 my %syn;
@@ -275,7 +334,7 @@ sub load_multi {
 	
 	if ($session =~ /[0-9a-f]{8}/) {
 	
-		$multi_dir = catdir($fs_tmp, "tesresults-$session", "multi");
+		$multi_dir = catdir($fs{tmp}, "tesresults-$session", "multi");
 	}
 	else {
 	
@@ -363,7 +422,7 @@ sub html_table {
 	
 	if ($rev) { @order = reverse @order }
 	
-	my $frame = `php -f $fs_html/check_recall.php`;
+	my $frame = `php -f $fs{html}/check_recall.php`;
 	
 	my $table_data;
 	
@@ -466,7 +525,7 @@ sub html_table {
 
 sub html_no_table {
 				
-	my $frame = `php -f $fs_html/check_recall.php`;
+	my $frame = `php -f $fs{html}/check_recall.php`;
 	
 	$frame =~ s/<!--info-->/&info/e; 
 
@@ -494,7 +553,7 @@ sub info {
 
 	my $html = <<END;
 	
-	<form action="$url_cgi/read_table.pl" method="post" ID="Form1">
+	<form action="$url{cgi}/read_table.pl" method="post" ID="Form1">
 
 		<h1>Lucan-Vergil Recall Test</h1>
 
@@ -602,7 +661,7 @@ sub re_sort {
 	
 	my $html = <<END;
 	
-	<form action="$url_cgi/check-recall.pl" method="post" id="Form2">
+	<form action="$url{cgi}/check-recall.pl" method="post" id="Form2">
 		
 		<table>
 			<tr>

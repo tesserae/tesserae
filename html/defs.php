@@ -1,8 +1,8 @@
 		
-<?php $url_html  = "http://tesserae.caset.buffalo.edu" ?>
-<?php $url_css   = "http://tesserae.caset.buffalo.edu/css" ?>
-<?php $url_cgi   = "http://tesserae.caset.buffalo.edu/cgi-bin" ?>
-<?php $url_image = "http://tesserae.caset.buffalo.edu/images" ?>
-<?php $url_text  = "http://tesserae.caset.buffalo.edu/texts" ?>
-<?php $fs_html   = "/Users/chris/ctesserae/html" ?>
+<?php $url_html  = "http://ahmik/~chris/devel/html" ?>
+<?php $url_css   = "http://ahmik/~chris/devel/css" ?>
+<?php $url_cgi   = "http://ahmik/~chris/devel/cgi-bin" ?>
+<?php $url_image = "http://ahmik/~chris/devel/images" ?>
+<?php $url_text  = "http://ahmik/~chris/devel/texts" ?>
+<?php $fs_html   = "/Users/chris/Sites/devel/html" ?>
 

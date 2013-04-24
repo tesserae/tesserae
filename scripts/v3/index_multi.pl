@@ -85,11 +85,15 @@ use warnings;
 # Read configuration file
 #
 
-# variables set from config
+# modules necessary to read config file
 
-my %fs;
-my %url;
-my $lib;
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+#
+# Read configuration file
+#
 
 # modules necessary to read config file
 
@@ -99,6 +103,8 @@ use FindBin qw/$Bin/;
 
 # read config before executing anything else
 
+my $lib;
+
 BEGIN {
 
 	# look for configuration file
@@ -107,27 +113,23 @@ BEGIN {
 	
 	my $oldlib = $lib;
 	
-	my $config;
 	my $pointer;
 			
 	while (1) {
 
-		$config  = catfile($lib, 'tesserae.conf');
 		$pointer = catfile($lib, '.tesserae.conf');
 	
-		if (-s $pointer) {
+		if (-r $pointer) {
 		
 			open (FH, $pointer) or die "can't open $pointer: $!";
 			
-			$config = <FH>;
+			$lib = <FH>;
 			
-			chomp $config;
+			chomp $lib;
 			
 			last;
 		}
-		
-		last if (-s $config);
-							
+									
 		$lib = abs_path(catdir($lib, '..'));
 		
 		if (-d $lib and $lib ne $oldlib) {
@@ -137,42 +139,13 @@ BEGIN {
 			next;
 		}
 		
-		die "can't find tesserae.conf!\n";
-	}
-	
-	# read configuration		
-	my %par;
-	
-	open (FH, $config) or die "can't open $config: $!";
-	
-	while (my $line = <FH>) {
-	
-		chomp $line;
-	
-		$line =~ s/#.*//;
-		
-		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
-		
-		my ($name, $value) = ($1, $2);
-			
-		$par{$name} = $value;
-	}
-	
-	close FH;
-	
-	# extract fs and url paths
-		
-	for my $p (keys %par) {
-
-		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
-		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
-	}
+		die "can't find .tesserae.conf!\n";
+	}	
 }
 
 # load Tesserae-specific modules
 
-use lib $fs{script};
-
+use lib $lib;
 use Tesserae;
 use EasyProgressBar;
 
@@ -253,6 +226,8 @@ if ($use_lingua_stem and not $override_stemmer) {
 #
 # initialize parallel processing
 #
+
+my $pm;
 
 if ($max_processes and not $override_parallel) {
 

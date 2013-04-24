@@ -1,5 +1,6 @@
 package Tesserae;
 
+use Cwd qw/abs_path/;
 use FindBin qw($Bin);
 use File::Spec::Functions;
 	
@@ -7,9 +8,22 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our @EXPORT = qw(%top $apache_user %is_word %non_word $phrase_delimiter %ancillary);
+our @EXPORT = qw(%top $apache_user %is_word %non_word $phrase_delimiter %ancillary %fs %url);
 
-our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni alpha stoplist_hash stoplist_array);
+our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni alpha stoplist_hash stoplist_array check_prose_list);
+
+#
+# read config file
+#
+
+my ($fs_ref, $url_ref) = read_config(catfile($Bin, 'tesserae.conf'));
+
+our %fs  = %$fs_ref;
+our %url = %$url_ref;
+
+#
+# this is legacy stuff for v2
+#
 
 our %top;
 
@@ -50,6 +64,77 @@ our %is_word = (
 ########################################
 # subroutines
 ########################################
+
+sub read_config {
+
+	# look for configuration file
+	
+	my $lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+		
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+	
+	my %par;
+	my %fs;
+	my %url;
+
+	my $config = catfile($lib, 'tesserae.conf');
+
+	open (FH, "<", $config) or die "can't open $config: $!";
+
+	while (my $line = <FH>) {
+	
+		chomp $line;
+	
+		$line =~ s/#.*//;
+		
+		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		
+		my ($name, $value) = ($1, $2);
+			
+		$par{$name} = $value;
+	}
+
+	close FH;
+
+	# extract fs and url paths
+	
+	for my $p (keys %par) {
+
+		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
+		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
+	}
+
+	return (\%fs, \%url);
+}
 
 sub uniq {
 
@@ -117,22 +202,44 @@ sub standardize {
 		if ($lang eq 'la') {
 		
 			tr/jv/iu/;	  # replace j and v with i and u throughout
-			s/[^a-z]//g;  # remove everything but letters
+			s/\W//g;  # remove non-word characters
+		}
+		
+		# greek - unicode
+		
+		elsif ($lang eq 'grc') {
+		
+			# change grave accent (context-specific) to acute (dictionary form)
+			
+			s/\x{0300}/\x{0301}/g;
+			
+			# remove non-word chars
+			
+			s/\W//g;
 		}
 		
 		# greek - beta code
 		
-		elsif ($lang eq 'grc') {
+		elsif ($lang eq 'betacode') {
 		
 			s/\\/\//;	  # change grave accent (context-specific) to acute (dictionary form)
 			s/0-9\.#//g;  # remove numbers
 		}
 		
-		# english, and everything else
+		# english
+		
+		elsif($lang eq 'en') {
+		
+			s/[^a-z]//g; # remove everything but letters
+		}
+		
+		# everything else
 		
 		else {
+		
+			# remove non-word chars
 			
-			s/[^a-z]//g;  # remove everything but letters
+			s/\W//g;  
 		}
 	}
 	
@@ -147,21 +254,14 @@ sub lcase
 
 	for (@string) {
 	
-		# latin
-	
-		if ($lang eq 'la') {
-
-			tr/A-Z/a-z/;
-		}
-
 		# greek - beta code
 	
-		elsif ($lang eq 'grc') {
+		if ($lang eq 'betacode') {
 
 			s/^\*([\(\)\/\\\|\=\+]*)([a-z])/$2$1/;
 		}
 		
-		# english and everything else
+		# everything else
 
  		else {
 
@@ -181,22 +281,15 @@ sub tcase {
 	for (@string) {
 
 		$_ = lcase($lang, $_);
-
-		# Latin
-
-		if ($lang eq 'la') {
-		
-			$_ = ucfirst($_);
-		}
 		
 		# Greek - Beta Code
 	
-		elsif ($lang eq 'grc') {
+		if ($lang eq 'betacode') {
 		
 			s/^([a-z])([\(\)\/\\\|\=\+]*)/\*$2$1/;
 		}
 		
-		# English and everything else
+		# everything else
 		
 		else {
 		
@@ -346,8 +439,40 @@ sub check_mod {
 	my $m = shift;
 			
 	eval "require $m";
+	
+	my $failed = 0;
 		
-	return $@ ? 1 : 0;	
+	if ($@) {
+	
+		print STDERR "Error loading $m:\n$!\n";
+		$failed = 1;
+	}
+	
+	return $failed;
+}
+
+# check the list to see whether a text is marked as prose
+
+sub check_prose_list {
+
+	my $name = shift;
+		
+	my $file_prose_list = catfile($fs{text}, 'prose_list');
+	
+	return 0 unless (-s $file_prose_list);
+	
+	open (FH, '<:utf8', $file_prose_list) or die "can't read $file_prose_list";
+	
+	while (my $line = <FH>) { 
+	
+		chomp $line;
+		
+		next unless $line =~ /\S/;
+		
+		return 1 if $name =~ /$line/;
+	}
+	
+	return 0;
 }
 
 

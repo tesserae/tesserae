@@ -93,12 +93,6 @@ use warnings;
 # Read configuration file
 #
 
-# variables set from config
-
-my %fs;
-my %url;
-my $lib;
-
 # modules necessary to read config file
 
 use Cwd qw/abs_path/;
@@ -106,6 +100,8 @@ use File::Spec::Functions;
 use FindBin qw/$Bin/;
 
 # read config before executing anything else
+
+my $lib;
 
 BEGIN {
 
@@ -115,27 +111,23 @@ BEGIN {
 	
 	my $oldlib = $lib;
 	
-	my $config;
 	my $pointer;
 			
 	while (1) {
 
-		$config  = catfile($lib, 'tesserae.conf');
 		$pointer = catfile($lib, '.tesserae.conf');
 	
-		if (-s $pointer) {
+		if (-r $pointer) {
 		
 			open (FH, $pointer) or die "can't open $pointer: $!";
 			
-			$config = <FH>;
+			$lib = <FH>;
 			
-			chomp $config;
+			chomp $lib;
 			
 			last;
 		}
-		
-		last if (-s $config);
-							
+									
 		$lib = abs_path(catdir($lib, '..'));
 		
 		if (-d $lib and $lib ne $oldlib) {
@@ -145,42 +137,13 @@ BEGIN {
 			next;
 		}
 		
-		die "can't find tesserae.conf!\n";
-	}
-	
-	# read configuration		
-	my %par;
-	
-	open (FH, $config) or die "can't open $config: $!";
-	
-	while (my $line = <FH>) {
-	
-		chomp $line;
-	
-		$line =~ s/#.*//;
-		
-		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
-		
-		my ($name, $value) = ($1, $2);
-			
-		$par{$name} = $value;
-	}
-	
-	close FH;
-	
-	# extract fs and url paths
-		
-	for my $p (keys %par) {
-
-		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
-		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
-	}
+		die "can't find .tesserae.conf!\n";
+	}	
 }
 
 # load Tesserae-specific modules
 
-use lib $fs{script};
-
+use lib $lib;
 use Tesserae;
 use EasyProgressBar;
 
@@ -216,12 +179,12 @@ my $split_punct = qr/(.*"?$phrase_delimiter"?)(\s*)(.*)/;
 # 
 
 my %abbr;
-my $file_abbr = catfile($fs_data,'common', 'abbr');
+my $file_abbr = catfile($fs{data},'common', 'abbr');
 	
 if ( -s $file_abbr )	{  %abbr = %{retrieve($file_abbr)} }
 
 my %lang;
-my $file_lang = catfile($fs_data, 'common', 'lang');
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 
 # these are for optional use of Lingua::Stem
 
@@ -281,7 +244,7 @@ if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
 
 # check to make sure stemmer module is available
 
-if ($use_lingua_stem and not $override_stemmer) {
+if ($use_lingua_stem and $override_stemmer) {
 
 	print STDERR 
 		"Lingua::Stem was not installed when you configured Tesserae.  "
@@ -295,7 +258,7 @@ if ($use_lingua_stem and not $override_stemmer) {
 # initialize parallel processing
 #
 
-if ($max_processes and not $override_parallel) {
+if ($max_processes and $override_parallel) {
 
 	print STDERR "Parallel processing requires Parallel::ForkManager from CPAN.\n";
 	print STDERR "Proceeding with parallel=0.\n";
@@ -366,7 +329,7 @@ for my $file_in (@files) {
 
 		$lang = $lang{$name};
 	}
-	elsif (Cwd::abs_path($file_in) =~ m/$fs_text\/([a-z]{1,4})\//) {
+	elsif (Cwd::abs_path($file_in) =~ m/$fs{text}\/([a-z]{1,4})\//) {
 
 		$lang = $1;
 	}
@@ -381,7 +344,7 @@ for my $file_in (@files) {
 	# check prose list
 	#
 	
-	my $prose = $prose || check_prose_list($name);
+	my $prose = $prose || Tesserae::check_prose_list($name);
 		
 	#
 	# fork
@@ -440,6 +403,7 @@ for my $file_in (@files) {
 		print STDERR "Can't find stem dictionary! "
 					 . "Stem and syn indexing disabled.\n" unless $quiet;
 		$omit{stem} = 1;
+		$omit{syn}  = 1;
 	}
 	
 	#
@@ -551,8 +515,7 @@ for my $file_in (@files) {
 				# the searchable form 
 				# -- flatten orthographic variation
 
-				my $form = Tesserae::lcase($lang, $token);
-				$form = Tesserae::standardize($lang, $form);
+				my $form = Tesserae::standardize($lang, $token);
 
 				# add the token to the master list
 
@@ -583,20 +546,22 @@ for my $file_in (@files) {
 				
 				# by stem
 				
-				next if $omit{stems};
+				unless ($omit{stem}) {
 				
-				for my $stem (@{stems($form)}) {
-				
-					push @{$index{stem}{$stem}}, $#token;
+					for my $stem (@{stems($form)}) {
+					
+						push @{$index{stem}{$stem}}, $#token;
+					}
 				}
 				
 				# by syn
 				
-				next if $omit{syns};
+				unless ($omit{syn}) {
 								
-				for my $syn (@{syns($form)}) {
-				
-					push @{$index{syn}{$syn}}, $#token;
+					for my $syn (@{syns($form)}) {
+					
+						push @{$index{syn}{$syn}}, $#token;
+					}
 				}
 				
 				# by chr 3-grams
@@ -1056,24 +1021,3 @@ sub chr_ngrams {
 	return [keys %ngrams];
 }
 
-sub check_prose_list {
-
-	my $name = shift;
-		
-	my $file_prose_list = catfile($fs{text}, 'prose_list');
-	
-	return 0 unless (-s $file_prose_list);
-	
-	open (FH, '<:utf8', $file_prose_list) or die "can't read $file_prose_list";
-	
-	while (my $line = <FH>) { 
-	
-		chomp $line;
-		
-		next unless $line =~ /\S/;
-		
-		return 1 if $name =~ /$line/;
-	}
-	
-	return 0;
-}
