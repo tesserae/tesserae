@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl5.12
+#!/usr/bin/env perl
 
 # the line below is designed to be modified by configure.pl
 
