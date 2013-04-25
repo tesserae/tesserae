@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#!/usr/bin/env perl
 
 #
 # corpus-stats.pl
@@ -173,16 +173,8 @@ for my $lang(@lang) {
 	
 	# get a list of all the word counts
 
-	my @texts;
+	my @texts = @{Tesserae::get_textlist($lang, -no_part => 1)};
 	
-	my $dir = catdir($fs{data}, 'v3', $lang);
-
-	opendir (DH, $dir);
-
-	push @texts, (grep {!/\.part\./ && !/^\./} readdir DH);
-
-	closedir (DH);
-
 	#
 	# combine the counts for each file to get a corpus count
 	#

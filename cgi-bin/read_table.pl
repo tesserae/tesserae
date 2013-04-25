@@ -432,6 +432,19 @@ END
 
 }
 
+#
+# force unit=phrase if either work is prose
+#
+# Note: This is a hack!  Fix later!!
+
+if (Tesserae::check_prose_list($target) or Tesserae::check_prose_list($source)) {
+
+	$unit = 'phrase';
+}
+
+
+# print all params for debugging
+
 unless ($quiet) {
 
 	print STDERR "target=$target\n";

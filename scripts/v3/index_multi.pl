@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#!/usr/bin/env perl
 
 #
 # index_multi.pl
@@ -159,6 +159,7 @@ use Pod::Usage;
 use CGI qw(:standard);
 use POSIX;
 use Storable qw(nstore retrieve);
+use File::Copy;
 
 # optional modules
 
@@ -213,7 +214,7 @@ if ($help) {
 
 # check to make sure stemmer module is available
 
-if ($use_lingua_stem and not $override_stemmer) {
+if ($use_lingua_stem and $override_stemmer) {
 
 	print STDERR 
 		"Lingua::Stem was not installed when you configured Tesserae.  "
@@ -229,7 +230,7 @@ if ($use_lingua_stem and not $override_stemmer) {
 
 my $pm;
 
-if ($max_processes and not $override_parallel) {
+if ($max_processes and $override_parallel) {
 
 	print STDERR "Parallel processing requires Parallel::ForkManager from CPAN.\n";
 	print STDERR "Proceeding with parallel=0.\n";
@@ -284,36 +285,57 @@ else {
 
 # get the list of texts to index
 
-my @corpus = @{get_textlist($lang)};
+my @corpus = @{Tesserae::get_textlist($lang, -no_part => 1)};
 
 # the giant index
 
 print STDERR "indexing " . scalar(@corpus) . " texts...\n";
+	
+# initialize process manager
 
-for my $unit (qw/line phrase/) {
-	
-	# initialize process manager
-	
-	my $prmanager;
+my $prmanager;
+
+if ($max_processes) {
+
+	$prmanager = Parallel::ForkManager->new($max_processes);
+}
+			
+for my $text (@corpus) {
+
+	# fork
 	
 	if ($max_processes) {
-
-		$prmanager = Parallel::ForkManager->new($max_processes);
-	}
-			
-	for my $text (@corpus) {
 	
-		# fork
+		$prmanager->start and next;
+	}
+
+	for my $unit (qw/phrase line/) {
+	
+		print STDERR "unit: $unit\ntext: $text\n";
+
+		# if the work is prose, the line index can be copied from phrase
+
+		if ($unit eq 'line' and Tesserae::check_prose_list($text)) {
 		
-		if ($max_processes) {
-		
-			$prmanager->start and next;
+			print STDERR "prose mode:\n";
+			
+			for (qw/word stem/) {
+			
+				my $index_phrase = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_phrase_$_");
+				my $index_line   = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_line_$_");
+				
+				print STDERR "  copying $index_phrase to $index_line\n";
+
+				copy($index_phrase, $index_line);
+			}
+			
+			next;
 		}
+		
+		# otherwise, calculate
 
 		my %index_word;
 		my %index_stem;
-
-		print STDERR "unit: $unit\ntext: $text\n";
 		
 		# load the text from the database
 		
@@ -420,38 +442,13 @@ for my $unit (qw/line phrase/) {
 
 			print STDERR "saving $file_index_stem\n";
 			nstore \%index_stem, $file_index_stem;	
-		}
-		
-		# wrap up child process
-		
-		if ($max_processes) {
-
-			$prmanager->finish;
-		}
+		}		
 	}	
 	
-	# clean up child processes before next loop
-	
-	if ($max_processes) {
-	
-		$prmanager->wait_all_children;
-	}
+	$prmanager->finish if $max_processes;
 }
 
-sub get_textlist {
-	
-	my $lang = shift;
-
-	my $directory = catdir($fs{data}, 'v3', $lang);
-
-	opendir(DH, $directory);
-	
-	my @textlist = grep {/^[^.]/ && ! /\.part\./} readdir(DH);
-	
-	closedir(DH);
-		
-	return \@textlist;
-}
+$prmanager->wait_all_children if $max_processes;
 
 sub stems {
 
