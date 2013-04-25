@@ -3,7 +3,9 @@ package Tesserae;
 use Cwd qw/abs_path/;
 use FindBin qw($Bin);
 use File::Spec::Functions;
-	
+
+use utf8;
+
 require Exporter;
 
 our @ISA = qw(Exporter);
@@ -45,7 +47,7 @@ our $phrase_delimiter = '[\.\?\!\;\:]';
 
 # what's a word in various languages
 
-my $wchar_greek = 'a-z\*\(\)\\\/\=\|\+\'';
+my $wchar_greek = '\w\'';
 my $wchar_latin = 'a-zA-Z';
 
 our %non_word = (
@@ -204,7 +206,7 @@ sub standardize {
 			tr/jv/iu/;	  # replace j and v with i and u throughout
 			s/\W//g;  # remove non-word characters
 		}
-		
+				
 		# greek - unicode
 		
 		elsif ($lang eq 'grc') {
@@ -352,12 +354,12 @@ sub alpha {
 
 	my ($lang, $form) = @_;
 
-	$form =~ s/[^a-z]//;
-
-	if ($lang eq 'grc') {
+	if ($lang eq 'betacode') {
 	
 		$form = beta_to_uni($form);
 	}
+
+	$form =~ s/[^[:alpha:]]//;
 
 	return $form;
 }

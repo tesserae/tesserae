@@ -80,6 +80,7 @@ use Pod::Usage;
 # load additional modules necessary for this script
 
 use Storable qw(nstore retrieve);
+use Encode;
 
 #
 # initialize some parameters
@@ -107,18 +108,18 @@ for my $lang (@lang) {
 	
 	print STDERR "reading csv file: $file_csv\n" unless $quiet;
 	
-	open (FH, "<", $file_csv) || die "can't open csv: $!";
+	open (FH, "<:utf8", $file_csv) || die "can't open csv: $!";
 	
 	my $pr = ProgressBar->new(-s $file_csv, $quiet);
 	
 	while (my $line = <FH>) {
 		
-		$pr->advance(length($line));
+		$pr->advance(length(Encode::encode('utf8', $line)));
 	
-		# skip lines whose tokens are in quotation marks
-		# these employ characters with accent marks
-	
-		next if $lang eq 'la' and $line =~ /^"/;
+		# NOTE:
+		# what's the significance of quotation marks?
+		
+		$line =~ s/"//g;
 		
 		# remove newline
 	

@@ -10,6 +10,8 @@ use Term::ReadLine;
 use FindBin qw($Bin);
 use lib $Bin;
 
+my $quiet = 0;
+
 #
 # set up terminal interface
 #
@@ -105,9 +107,8 @@ write_config();
 # write pointer to config for cgi-bin
 #
 
-my $pointer = catfile($fs{cgi}, '.tesserae.conf');
-
-write_pointer($pointer);
+write_pointer($fs{cgi});
+write_pointer($fs{script});
 
 #
 # create var definition files for php and xsl
@@ -322,13 +323,15 @@ sub write_config {
 
 sub write_pointer {
 
-	my $file = shift;
+	my $dir = shift;
+	
+	my $file = catfile($dir, '.tesserae.conf');
 	
 	open (FH, ">", $file) or die "can't write $file: $!";
 	
-	print STDERR "writing $file\n";
+	print STDERR "writing $file\n" unless $quiet;
 	
-	print FH catfile($fs{script}, 'tesserae.conf') . "\n";
+	print FH $fs{script} . "\n";
 	
 	close FH;
 }

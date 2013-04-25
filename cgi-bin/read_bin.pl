@@ -710,9 +710,7 @@ sub print_html {
 		print "    </td>\n";
 		
 		# keywords       
-		
-		if ($lang{$target} eq "grc") { $keys = Tesserae::beta_to_uni($keys) }
-		
+				
 		print "    <td>$keys</td>\n";
 
 		# score

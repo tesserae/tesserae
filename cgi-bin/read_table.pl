@@ -172,6 +172,8 @@ use CGI qw/:standard/;
 use Storable qw(nstore retrieve);
 use File::Path qw(mkpath rmtree);
 
+binmode STDERR, 'utf8';
+
 #
 # set some parameters
 #

@@ -24,11 +24,11 @@ Deletes some or all elements of the internal database used by Tesserae.
 
 Language code(s) to clean.  If none specified, apply to all languages.
 
-=item B<--texts>
+=item B<--text>
 
 Clean texts database.  Deletes all feature indices for all installed texts.
 
-=item B<--dictionaries>
+=item B<--dict>
 
 Clean cached stem and synonym dictionaries.
 
@@ -174,8 +174,8 @@ unless (@lang) {
 
 # these will be modified to remove deleted texts
 
-my %abbr = %{ retrieve(catfile($fs_data, 'common', 'abbr')) };
-my %lang = %{ retrieve(catfile($fs_data, 'common', 'lang')) };
+my %abbr = %{ retrieve(catfile($fs{data}, 'common', 'abbr')) };
+my %lang = %{ retrieve(catfile($fs{data}, 'common', 'lang')) };
 
 # clear preprocessed texts from the database
 
