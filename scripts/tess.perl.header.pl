@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#!/usr/bin/env perl
 
 #
 # This is a template for how Tesserae scripts should begin.
