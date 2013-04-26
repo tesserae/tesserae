@@ -178,7 +178,7 @@ unless ($no_cgi) {
 <html>
 	<head>
 		<title>Multi-text search in progress...</title>
-		<link rel="stylesheet" type="text/css" href="$url_css/style.css" />
+		<link rel="stylesheet" type="text/css" href="$url{css}/style.css" />
 		<meta http-equiv="Refresh" content="0; url='$redirect'">
 	</head>
 	<body>
@@ -319,7 +319,7 @@ print <<END unless ($no_cgi);
 
    	<p>
 			Your results are done!  If you are not redirected automatically, 
-			<a href="$url_cgi/read_multi.pl?session=$session">Click here</a> to proceed.
+			<a href="$url{cgi}/read_multi.pl?session=$session">Click here</a> to proceed.
 	</p>
 	</div>
 </body>
