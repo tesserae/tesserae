@@ -1,109 +1,176 @@
-#!/usr/bin/python
-
-#
-# perform the training stage of lsa search
-#
+#!/usr/bin/env python
+'''perform the training stage of lsa search'''
 
 import string
 import os
+import os.path
 import sys
+import argparse
 from gensim import corpora, models, similarities
 
-# language of the source file
-
-lang = 'la'
-
-# number of stop words
-
-n_stop = 250
-
-# paths to local installation
-
-fs_data = '/Users/chris/Sites/tesserae/data'
-fs_text = '/Users/chris/Sites/tesserae/texts'
-
-#
-# read files given as cmd line args
-#
-
-sources = []
-
-for file in sys.argv:
-
-	# strip path and extension to get file name
+def read_pointer():
+	'''look for .tesserae.conf; return lib path'''
 	
-	if file.endswith('.tess'):
-		sources.append(os.path.basename(file)[0:-5])
-	else:
-		if os.path.isdir(file):
-			for file_part in os.listdir(file):
-				if file_part.endswith('.tess'):
-					sources.append(file_part[0:-5])
-		continue
+	dir = os.path.dirname(sys.argv[0])
+	lib = None
+	pointer = os.path.join(dir, '.tesserae.conf')
 
-for source in sources:
-
-	file_stoplist = os.path.join(fs_data, 'common', lang + '.stem.freq')
-	dir_source   = os.path.join(fs_data, 'lsa', lang, source)
-
-	# read in sample files
-
-	print "reading " + source
-	
-	documents = []
-	
-	listing = os.listdir(os.path.join(dir_source, 'source'))
-	listing = [sample for sample in listing if not sample.startswith('.')]
-	
-	for sample in sorted(listing):
-	   f = open(os.path.join(dir_source, 'source', sample))
-	   documents.append(f.read())
-	
-	# load stop list, hapax legomena
-	
-	print " - loading stop list of " + str(n_stop) + " words"
-	
-	f = open(file_stoplist)
-	
-	stoplist  = []
-	
-	for i, rec in enumerate(f.read().splitlines()):
-	
-		form, count = rec.split()
-	
-		if i < n_stop: 
-			stoplist.append(form)
+	while not os.access(pointer, os.R_OK):
+		
+		if dir == os.path.sep:
+			raise LookupError('file not found: {0}'.format(pointer))
+			return lib
 			
-		elif count == 1:
-			stoplist.append(form)
+		dir = os.path.dirname(dir)
+		pointer = os.path.join(dir, '.tesserae.conf')
+		
+	f = open(pointer, 'r');
 	
-	# remove stop words and tokenize
+	lib = f.readline().strip()
 	
-	print " - removing stop words and hapax legomena"
+	return lib
+
+def read_config(lib):
+	'''read the config file in dir "lib"'''
 	
-	texts = [[word for word in document.lower().split() if word not in stoplist]
-			  for document in documents]
+	config = os.path.join(lib, 'tesserae.conf')
 	
-	# build gensim dictionary
+	fs  = dict()
+	url = dict()
 	
-	print " - building dictionary"
+	f = open(config, 'r')
 	
-	dictionary = corpora.Dictionary(texts)
+	for line in f:
 	
-	print " - exporting dictionary"
+		if '=' in line:
 	
-	file_dict = os.path.join(dir_source, 'dictionary')
-	dictionary.save(file_dict)
+			k, v = line.split('=')
+		
+			k = k.strip()
+			v = v.strip()
+		
+			if k.startswith('fs_'):
+				fs[k.split('_')[1]] = v
+			elif k.startswith('url_'):
+				url[k.split('_')[1]] = v
+
+	return(fs, url)
 	
-	# build gensim corpus
 	
-	print " - converting to bag-of-words corpus"
+def main():
+				
+	#
+	# check for options
+	#
 	
-	corpus = [dictionary.doc2bow(text) for text in texts]
+	parser = argparse.ArgumentParser(
+				description='Create LSA training samples from a corpus')
+	parser.add_argument('files', metavar='FILES', type=str, nargs='+')
+	parser.add_argument('--lang', metavar='LANG', type=str, default='la',
+				help='language')
+	parser.add_argument('-n', '--stop', metavar='N', type=int, default=250,
+				help='number of stop words')
+	parser.add_argument('-q', '--quiet', action='store_const', const=1,
+				help='print less info')
+
+	opt = parser.parse_args()
 	
-	# save corpus
+	# paths to local installation
+
+	fs, url = read_config(read_pointer())
 	
-	print " - exporting corpus"
+	#
+	# read files given as cmd line args
+	#
 	
-	file_corpus = os.path.join(dir_source, 'corpus.mm')
-	corpora.MmCorpus.serialize(file_corpus, corpus)
+	sources = []
+	
+	for file in opt.files:
+	
+		# strip path and extension to get file name
+		
+		if file.endswith('.tess'):
+			sources.append(os.path.basename(file)[0:-5])
+		else:
+			if os.path.isdir(file):
+				for file_part in os.listdir(file):
+					if file_part.endswith('.tess'):
+						sources.append(file_part[0:-5])
+			continue
+	
+	for source in sources:
+	
+		file_stoplist = os.path.join(fs['data'], 'common', opt.lang + '.stem.freq')
+		dir_source   = os.path.join(fs['data'], 'lsa', opt.lang, source)
+	
+		# read in sample files
+	
+		print "reading " + source
+		
+		documents = []
+		
+		listing = os.listdir(os.path.join(dir_source, 'source'))
+		listing = [sample for sample in listing if not sample.startswith('.')]
+		
+		for sample in sorted(listing):
+		   f = open(os.path.join(dir_source, 'source', sample))
+		   documents.append(f.read())
+		
+		# load stop list, hapax legomena
+		
+		print " - loading stop list of {0} words".format(opt.stop)
+		
+		f = open(file_stoplist)
+		
+		stoplist  = []
+		
+		for i, rec in enumerate(f.read().splitlines()):
+		
+			if rec.startswith('#'):
+				continue
+		
+			form, count = rec.split()
+		
+			if i < opt.stop: 
+				stoplist.append(form)
+				
+			elif count == 1:
+				stoplist.append(form)
+		
+		# remove stop words and tokenize
+		
+		print " - removing stop words and hapax legomena"
+		
+		texts = [[word for word in document.lower().split() if word not in stoplist]
+				  for document in documents]
+		
+		# build gensim dictionary
+		
+		print " - building dictionary"
+		
+		dictionary = corpora.Dictionary(texts)
+		
+		print " - exporting dictionary"
+		
+		file_dict = os.path.join(dir_source, 'dictionary')
+		dictionary.save(file_dict)
+		
+		# build gensim corpus
+		
+		print " - converting to bag-of-words corpus"
+		
+		corpus = [dictionary.doc2bow(text) for text in texts]
+		
+		# save corpus
+		
+		print " - exporting corpus"
+		
+		file_corpus = os.path.join(dir_source, 'corpus.mm')
+		corpora.MmCorpus.serialize(file_corpus, corpus)
+
+#
+# call function main as default action
+#
+
+if __name__ == '__main__':
+    main()
