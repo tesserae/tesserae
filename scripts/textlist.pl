@@ -81,120 +81,146 @@ if ( -s $file_abbr )	{  %abbr = %{retrieve($file_abbr)} }
 my %lang;
 my $file_lang = catfile($fs{data}, 'common', 'lang');
 
-if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
-
-my $lang;
-my %text;
-my %part;
+if (-s $file_lang )		{ %lang = %{retrieve($file_lang)} }
 
 #
 # get files to be processed from cmd line args
+#  - sort into two bins: complete texts and partial
 #
 
-while (my $file_in = shift @ARGV) {
+while (my $lang = shift @ARGV) {
 
-	#
-	# large files split into parts are kept in their
-	# own subdirectories; if an arg has no .tess extension
-	# it may be such a directory
+	my @text = @{Tesserae::get_textlist($lang, -sort => 1)};
 
-	if ($file_in !~ /\.tess/) {	
-
-		if (-d $file_in) {
-
-			opendir (DH, $file_in);
-
-			push @ARGV, (grep {/\.part\./ && -f} map { catfile($file_in, $_) } readdir DH);
-
-			closedir (DH);
-		}
-
-		next;
-	}
-
-	# the header for the column will be the filename 
-	# minus the path and .tess extension
-
-	my ($name, $path, $suffix) = fileparse($file_in, qr/\.[^.]*/);
+	my @full;
+	my %part;
 	
-	# get the language for this doc from lang file
+	for my $file_name (@text) {
 	
-	$lang = $lang{$name};
-	
-	unless (defined $lang) { 
-
-		 warn "$name doesn't seem to be in the database\nhave you run add_column.pl?";
-		 next;
-	}
-
-	if ($name =~ /(.+)\.part\.(\d+)/)
-	{
-		push @{$part{$1}}, $2;
-	}
-	else
-	{
-		push @{$text{$lang}}, $name;
-	}
-
-	if ( ! defined $lang{$name} ) 
-	{ 
-		$lang{$name} = $lang;
-		nstore \%lang, $file_lang;
-	}
-}                                                         
-
-my $multi_counter = 1;
-
-for my $lang (keys %text) {
-                   
-   my $base = catfile($fs{html}, "textlist.$lang");
-	
-	open (FHL, ">", "$base.l.php");
-	open (FHR, ">", "$base.r.php");
-	open (FHM, ">", "$base.multi.php");     
-	
-	print FHM "<table>\n<tr>\n";
-
-	for my $name ( sort @{$text{$lang}} ) {
-	
-		print STDERR "adding $name\n";
-
-		my $display = $name;
-
-		$display =~ s/\./ - /g;
-		$display =~ s/\_/ /g;
-
-		$display =~ s/\b([a-z])/uc($1)/eg;
-
-		print FHL "<option value=\"$name\">$display</option>\n";
-
-		print FHM "</tr>\n<tr>\n" if ($multi_counter % 2);
-		$multi_counter ++;
-
-		print FHM "\t<td><input type=\"checkbox\" name=\"include\" value=\"$name\">$display</input></td>\n";                            
+		if ($file_name =~ /(.*)\.part\.(.*)/) {
 		
-		if ( defined $part{$name} ) {
-
-			print FHR "<optgroup label=\"$display\">\n";
+			my ($work_name, $part_name) = ($1, $2);
 			
-#			print FHR "   <option value=\"$name\">$display - Full Text</option>\n";
-		
-			for my $part ( sort { $a <=> $b } @{$part{$name}}) {
-				
-				print FHR "   <option value=\"$name.part.$part\">$display - Book $part</option>\n";
+			if ($part_name =~ /\.(.*)/) {
+			
+				$part_name = $1;
 			}
+			else {
 			
-			print FHR "</optgroup>\n";
+				$part_name = "Book " . $part_name;
+			}
+		
+			push @{$part{$work_name}}, {
+				file => $file_name,
+				part => $part_name};
 		}
 		else {
 		
-			print FHR "<option value=\"$name\">$display</option>\n";
+			push @full, $file_name;
+		}
+	} 
+
+	#
+	# write three textlists: source, target, multi
+	#                                                     
+
+                   
+	my $base = catfile($fs{html}, "textlist.$lang");
+	
+	dropdown("$base.l.php", \@full);
+	dropdown("$base.r.php", \@full, \%part);
+	checkboxes("$base.multi.php", \@full);
+
+}
+
+#
+# convert file name to nice display name
+#
+
+sub display {
+
+	my $name = shift;
+	
+	my $display = $name;
+
+	$display =~ s/\./ - /g;
+	$display =~ s/\_/ /g;
+
+	$display =~ s/\b([a-z])/uc($1)/eg;
+
+	return $display;
+}
+
+#
+# populate dropdown
+#
+
+sub dropdown {
+
+	my ($file, $full, $part) = @_;
+	my @full = @$full;
+	my %part = $part ? %$part : ();
+	
+	open (FH, ">:utf8", $file) or die "can't write to $file: $!";
+	
+	for my $name (@full) {
+
+		if (defined $part{$name}) {
+		
+			print FH sprintf("<optgroup label=\"%s\">\n", display($name));
+	
+			for (@{$part{$name}}) {
+				
+				my $file_name = $_->{file};
+				my $part_name = $_->{part};
+				
+				print FH sprintf("   <option value=\"%s\">%s - %s</option>\n",
+						$file_name,
+				        display($name),
+				        display($part_name));
+			}
+			
+			print FH "</optgroup>\n";
+		}
+		else {
+		
+			print FH sprintf("<option value=\"%s\">%s</option>\n",
+				$name,
+				display($name));
 		}
 	}
+	
+	close FH;
+}
 
-	print FHM "</tr>\n</table>\n";
+sub checkboxes {
 
-	close FHL;                    
-	close FHR;                    
-	close FHM;
+	my ($file, $full) = @_;
+	
+	my @full = @$full;
+	
+	open (FH, ">:utf8", $file) or die "can't write to $file: $!";
+
+	print FH "<table>\n";
+	
+	push @full, ""if (scalar(@full) % 2);
+	my $half = scalar(@full)/2;
+	
+	for (my $i = 0; $i < $half; $i++) {
+	
+		print FH sprintf("<tr><td>%s</td><td>%s</td></tr>\n",
+			chk($full[$i]),
+			$i + $half <= $#full ? chk($full[$i + $half]) : "");
+	}
+	
+	print FH "</table>\n";
+
+}
+
+sub chk {
+	
+	my $name = shift;
+		
+	return sprintf('<input type="checkbox" name="include" value="%s">%s</input>',
+		$name, display($name));
 }

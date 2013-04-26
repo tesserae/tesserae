@@ -513,14 +513,14 @@ sub text_sort {
 
 	my ($l, $r) = @_;
 
-	unless ($l =~ /(.+)\.part\.(.*?)\.*/) {
+	unless ($l =~ /(.+)\.part\.(.+)/) {
 	
 		return ($l cmp $r);
 	}
 	
 	my ($lbase, $lpart) = ($1, $2);
 	
-	unless ($r =~ /(.+)\.part\.(.*?)\.*/) {
+	unless ($r =~ /(.+)\.part\.(.+)/) {
 	
 		return ($l cmp $r);
 	}
@@ -531,10 +531,12 @@ sub text_sort {
 	
 		return ($l cmp $r)
 	}
-
-	if ($lpart =~ /\D/ or $rpart =~ /\D/) {
 	
-		return ($l cmp $r)
+	for ($lpart, $rpart) {
+	
+		s/\..*//;
+	
+		return ($lpart cmp $rpart) if /\D/;
 	}
 	
 	return ($lpart <=> $rpart);
