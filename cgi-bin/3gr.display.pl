@@ -1,11 +1,7 @@
-#! /opt/local/bin/perl5.12
-
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
+#!/usr/bin/env perl
 
 #
-# 3gr.test.pl
+# 3gr.display.pl
 #
 # visualize 3-gram frequencies
 #
@@ -13,16 +9,76 @@ use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 use strict;
 use warnings;
 
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
 use CGI::Session;
 use CGI qw/:standard/;
 
-use Getopt::Long;
 use Storable qw(nstore retrieve);
-use File::Spec::Functions;
 use File::Path qw(mkpath rmtree);
-
-use TessSystemVars;
-use EasyProgressBar;
 
 #
 # initialize set some parameters
@@ -66,12 +122,12 @@ my $scale = 30;
 
 # abbreviations of canonical citation refs
 
-my $file_abbr = catfile($fs_data, 'common', 'abbr');
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{retrieve($file_abbr)};
 
 # language database
 
-my $file_lang = catfile($fs_data, 'common', 'lang');
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
 #
@@ -162,16 +218,16 @@ sub print_top {
 		<meta name="author" content="Neil Coffee, Jean-Pierre Koenig, Shakthi Poornima, Chris Forstall, Roelant Ossewaarde">
 		<meta name="keywords" content="intertext, text analysis, classics, university at buffalo, latin">
 		<meta name="description" content="Intertext analyzer for Latin texts">
-		<link href="$url_css/style.css" rel="stylesheet" type="text/css"/>
-		<link href="$url_image/favicon.ico" rel="shortcut icon"/>
+		<link href="$url{css}/style.css" rel="stylesheet" type="text/css"/>
+		<link href="$url{image}/favicon.ico" rel="shortcut icon"/>
 
 		<title>Tesserae</title>
 
 	</head>
 
 	<frameset cols="50%,50%">
-		<frame name="left"  src="$url_cgi/3gr.display.pl?mode=left;$assign">
-		<frame name="right" src="$url_cgi/3gr.display.pl?mode=right;$assign">
+		<frame name="left"  src="$url{cgi}/3gr.display.pl?mode=left;$assign">
+		<frame name="right" src="$url{cgi}/3gr.display.pl?mode=right;$assign">
 	</frameset>
 </html>
 
@@ -216,7 +272,8 @@ sub print_left {
 	# load the template
 	#
 
-	my $template = `php -f $fs_html/frame.fullscreen.php`;
+	my $file_php = catfile($fs{html}, 'frame.fullscreen.php');
+	my $template = `php -f $file_php`;
 
 	# add special style 
 	
@@ -241,12 +298,12 @@ sub print_left {
 
 	my $nav = "
 			<p>
-				<a href=\"$url_html/experimental.php\" target=\"_top\">Back to Tesserae</a>.
+				<a href=\"$url{html}/experimental.php\" target=\"_top\">Back to Tesserae</a>.
 			</p>
 			
 			<h2>Options:<h2>
 			
-			<form action=$url_cgi/3gr.display.pl target=\"_top\" method=POST>
+			<form action=$url{cgi}/3gr.display.pl target=\"_top\" method=POST>
 				<table>
 					<tr><td>red  </td><td>$menu_r</td><td></td></tr>
 					<tr><td>green</td><td>$menu_g</td><td><input type=\"submit\" value=\"Change\"></td></tr>
@@ -274,7 +331,7 @@ sub print_left {
 
 		my $rgb = sprintf("%02x%02x%02x", @rgb);
 		
-		my $link = "$url_cgi/3gr.display.pl?mode=right;$assign#$line_id";
+		my $link = "$url{cgi}/3gr.display.pl?mode=right;$assign#$line_id";
 		
 		$blocks .= "<a href=\"$link\" target=\"right\"><span style=\"background-color:\#$rgb\"></span></a>";
 	}
@@ -304,7 +361,7 @@ END
 
 sub print_right {
 
-	my $file = catfile($fs_data, 'v3', $lang{$target}, $target, $target);
+	my $file = catfile($fs{data}, 'v3', $lang{$target}, $target, $target);
 	
 	my @token = @{retrieve("$file.token")};
 	my @line  = @{retrieve("$file.line")};
@@ -406,7 +463,8 @@ sub print_right {
 	# load the template
 	#
 
-	my $template = `php -f $fs_html/frame.fullscreen.php`;
+	my $file_php = catfile($fs{html}, 'frame.fullscreen.php');
+	my $template = `php -f $file_php`;
 		
 	# title
 	

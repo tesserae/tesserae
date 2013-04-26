@@ -49,6 +49,7 @@
 								<option value="word">exact form only</option>
 								<option value="stem" selected="selected">lemma</option>
 								<option value="syn" disabled="disabled">lemma + synonyms</option>
+								<option value="3gr">character tri-grams</option>
 							</select>
 						</td>
 					</tr>

@@ -1,28 +1,82 @@
-#! /opt/local/bin/perl5.12
-
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
+#!/usr/bin/env perl
 
 #
-# read_table.pl
 #
-# select two texts for comparison using the big table
 #
 
 use strict;
 use warnings;
 
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
 use CGI qw(:standard);
 use LWP::UserAgent;
 
-use Getopt::Long;
 use POSIX;
 use Storable qw(nstore retrieve);
-use File::Spec::Functions;
-
-use TessSystemVars;
-use EasyProgressBar;
 
 # allow unicode output
 
@@ -98,12 +152,12 @@ print STDERR "lsa returned " . scalar(keys %lsa) . " phrases above threshold $th
 
 # abbreviations of canonical citation refs
 
-my $file_abbr = "$fs_data/common/abbr";
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
 # language of input texts
 
-my $file_lang = "$fs_data/common/lang";
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
 #
@@ -115,7 +169,7 @@ if ($no_cgi) {
 	print STDERR "loading $source\n" unless ($quiet);
 }
 
-my $file = catfile($fs_data, 'v3', $lang{$source}, $source, $source);
+my $file = catfile($fs{data}, 'v3', $lang{$source}, $source, $source);
 
 my @token = @{retrieve("$file.token")};
 my @line  = @{retrieve("$file.line")};	
@@ -164,7 +218,8 @@ $table .= "</table>\n";
 
 # load the template
 
-my $frame = `php -f $fs_html/frame.fullscreen.php`;
+my $file_frame = catfile($fs{html}, 'frame.fullscreen.php');
+my $frame = `php -f $file_frame`;
 
 # add some style into the head
 
@@ -186,7 +241,7 @@ $frame =~ s/<!--head-->/$style/;
 
 # read drop down list
 
-open (FH, "<:utf8", catfile($fs_html, "textlist.$lang{$source}.r.php"));
+open (FH, "<:utf8", catfile($fs{html}, "textlist.$lang{$source}.r.php"));
 my $menu_source;
 
 while (<FH>) { 
@@ -215,10 +270,10 @@ for (my $n = 5; $n <= 50; $n += 5) {
 # put together the form
 
 my $nav = "
-		<form action=\"$url_cgi/lsa.pl\" method=\"POST\" target=\"_top\">
+		<form action=\"$url{cgi}/lsa.pl\" method=\"POST\" target=\"_top\">
 		<table>
 			<tr>
-				<td><a href=\"$url_html/experimental.php\" target=\"_top\">Back to Tesserae</a></td>
+				<td><a href=\"$url{html}/experimental.php\" target=\"_top\">Back to Tesserae</a></td>
 			</tr>
 			<tr>
 				<td>
@@ -274,7 +329,7 @@ sub getLSA {
 	
 	my $browser  = LWP::UserAgent->new;
 	my $response = $browser->post(
-		"$url_cgi/lsa.search.py",
+		"$url{cgi}/lsa.search.py",
 		[
 			'target'  => $target,
 			'source'  => $source,

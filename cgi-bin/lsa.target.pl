@@ -1,27 +1,77 @@
-#! /opt/local/bin/perl5.12
-
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-
-#
-# read_table.pl
-#
-# select two texts for comparison using the big table
-#
+#!/usr/bin/env perl
 
 use strict;
 use warnings;
 
-use CGI qw(:standard);
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
 
 use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
+use CGI qw(:standard);
+
 use POSIX;
 use Storable qw(nstore retrieve);
-use File::Spec::Functions;
-
-use TessSystemVars;
-use EasyProgressBar;
 
 # allow unicode output
 
@@ -87,12 +137,12 @@ unless ($no_cgi) {
 
 # abbreviations of canonical citation refs
 
-my $file_abbr = "$fs_data/common/abbr";
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
 # language of input texts
 
-my $file_lang = "$fs_data/common/lang";
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
 #
@@ -104,7 +154,7 @@ if ($no_cgi) {
 	print STDERR "loading $target\n" unless ($quiet);
 }
 
-my $file = catfile($fs_data, 'v3', $lang{$target}, $target, $target);
+my $file = catfile($fs{data}, 'v3', $lang{$target}, $target, $target);
 
 my @token = @{retrieve("$file.token")};
 my @line  = @{retrieve("$file.line") };	
@@ -135,7 +185,7 @@ for my $line_id (0..$#line) {
 				
 		if ($token[$token_id]{TYPE} eq 'WORD') {
 				
-			my $link = "$url_cgi/lsa.pl?";
+			my $link = "$url{cgi}/lsa.pl?";
 
 			$link .= "target=$target;";
 			$link .= "source=$source;";

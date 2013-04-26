@@ -1,8 +1,4 @@
-#! /opt/local/bin/perl5.12
-
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
+#!/usr/bin/env perl
 
 #
 # read_table.pl
@@ -13,15 +9,74 @@ use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 use strict;
 use warnings;
 
-use CGI qw(:standard);
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
 
 use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
+use CGI qw(:standard);
 use POSIX;
 use Storable qw(nstore retrieve);
-use File::Spec::Functions;
-
-use TessSystemVars;
-use EasyProgressBar;
 
 # allow unicode output
 
@@ -74,7 +129,7 @@ my $file;
 
 if (defined $session) {
 
-	$file = catdir($fs_tmp, "tesresults-" . $session);
+	$file = catdir($fs{tmp}, "tesresults-" . $session);
 }
 else {
 	
@@ -163,12 +218,12 @@ my $comments = $meta{COMMENT};
 
 # abbreviations of canonical citation refs
 
-my $file_abbr = "$fs_data/common/abbr";
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
 # language of input texts
 
-my $file_lang = "$fs_data/common/lang";
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
 #
@@ -188,7 +243,7 @@ for my $text (qw/target source/) {
 		print STDERR "reading $text data\n" unless ($quiet);
 	}
 
-	$file = catfile($fs_data, 'v3', $lang{$name{$text}}, $name{$text}, $name{$text});
+	$file = catfile($fs{data}, 'v3', $lang{$name{$text}}, $name{$text}, $name{$text});
 
 	@{$token{$text}}   = @{ retrieve( "$file.token") };
 	@{$line{$text}}    = @{ retrieve( "$file.line") };
@@ -211,7 +266,7 @@ my $min_similarity = "NA";
 
 if ( $feature eq "syn" ) {
 	
-	my $file_param = catfile($fs_data, "common", "$lang{$name{target}}.syn.cache.param");
+	my $file_param = catfile($fs{data}, "common", "$lang{$name{target}}.syn.cache.param");
 
 	($max_heads, $min_similarity) = @{ retrieve($file_param) };
 }
@@ -317,7 +372,7 @@ $table .= "</table>\n";
 
 # load the template
 
-my $frame = `php -f $fs_html/frame.fulltext.php`;
+my $frame = `php -f $fs{html}/frame.fulltext.php`;
 
 # insert the table into the template
 

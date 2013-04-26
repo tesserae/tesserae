@@ -1,14 +1,77 @@
-#! /opt/local/bin/perl5.12
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-use TessSystemVars;
+#!/usr/bin/env perl
 
 use strict;
 use warnings;
 
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
 use Storable;
 use CGI qw/:standard/;
-use Getopt::Long;
+
+# set parameters
 
 my ($target, $unit, $id);
 my $no_cgi = 0;
@@ -42,13 +105,13 @@ END
 # load resources
 #
 
-my %abbr = %{retrieve("$fs_data/common/abbr")};
-my %lang = %{retrieve("$fs_data/common/lang")};
+my %abbr = %{retrieve(catfile($fs{data}, 'common', 'abbr'))};
+my %lang = %{retrieve(catfile($fs{data}, 'common', 'lang'))};
 
-my @token  = @{ retrieve( "$fs_data/v3/$lang{$target}/$target/$target.token" )};
-my @line   = @{ retrieve( "$fs_data/v3/$lang{$target}/$target/$target.line" ) };
+my @token  = @{ retrieve( catfile($fs{data}, 'v3', $lang{$target}, $target, "$target.token"))};
+my @line   = @{ retrieve( catfile($fs{data}, 'v3', $lang{$target}, $target, "$target.line" ))};
 my @phrase = $unit ne 'phrase' ? () :
-             @{ retrieve( "$fs_data/v3/$lang{$target}/$target/$target.phrase" ) };
+             @{ retrieve( catfile($fs{data}, 'v3', $lang{$target}, $target, "$target.phrase"))};
 
 #
 # generate context

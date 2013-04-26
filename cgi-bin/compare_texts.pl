@@ -1,13 +1,76 @@
-#! /opt/local/bin/perl5.12
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-use TessSystemVars;
+#!/usr/bin/env perl
 
 use strict;
 use warnings;
+
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
 use Word;
 use Phrase;
 use Parallel;
+
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
 use Data::Dumper;
 use CGI qw/:standard/;
 use Storable;
@@ -17,7 +80,7 @@ use Storable;
 # 
 ##################################
 
-opendir (my $dh, $fs_tmp);
+opendir (my $dh, $fs{tmp});
 my @session_files = ( grep { /tesresults-[0-9a-f]{8}.xml/ } readdir($dh) );
 closedir($dh);
 
@@ -28,7 +91,7 @@ $session =~ s/\.xml//;
 
 $session = sprintf("%08x", hex($session)+1);
 
-my $session_file = "$fs_tmp/tesresults-$session.xml";
+my $session_file = "$fs{tmp}/tesresults-$session.xml";
 
 open (XML, '>' . $session_file)
 	|| die "can't open " . $session_file . ':' . $!;
@@ -53,7 +116,7 @@ my @stoplist = @{$top{$lang . "_" . $feature}}[0..9];
 
 my $commonwords = join (" ", @stoplist);
 
-my $file_abbr = "$fs_data/common/abbr";
+my $file_abbr = "$fs{data}/common/abbr";
 my %abbr = %{retrieve($file_abbr)};
 
 my $verbose = 0; # 0 == only 5/10; 1 == 0 - 10; 2 == -1 - 10
@@ -70,7 +133,7 @@ if ($source eq "") {
 }
 else {
 	print "Content-type: text/html\n\n";
-	open STDERR, '>'. $fs_tmp . 'debugging';
+	open STDERR, '>'. $fs{tmp} . 'debugging';
 	$debug=1;
 }
 
@@ -97,7 +160,7 @@ my @text;
 
 for ($source, $target)
 {
-	my $path = "$fs_text/$lang/" .
+	my $path = "$fs{text}/$lang/" .
 	 ( /(.*)\.part\./ ? "$1/" : "" );
 
 	print STDERR "path=$path\n";
@@ -106,7 +169,7 @@ for ($source, $target)
 
 }
 
-$text[2] = "$fs_data/v2/preprocessed/" . join('~', sort($source, $target)) . ".preprocessed";
+$text[2] = "$fs{data}/v2/preprocessed/" . join('~', sort($source, $target)) . ".preprocessed";
 	
 if ($debug >= 1) {		
 	print STDERR "source label: $source\n";
@@ -158,8 +221,8 @@ print XML "<results source=\"$source\" target=\"$target\" unit=\"phrase\" featur
 print XML "<comments>$comments</comments>\n";
 print XML "<commonwords>$commonwords</commonwords>\n";
 
-my $stylesheet = "$url_css/style.css";
-my $redirect = "$url_cgi/get-data.pl?session=$session;sort=target";
+my $stylesheet = "$url{css}/style.css";
+my $redirect = "$url{cgi}/get-data.pl?session=$session;sort=target";
 
 unless ($no_html == 1)
 {
@@ -384,12 +447,12 @@ foreach (@parallels) {
 					print XML "\" score=\"$score\">\n";
 					print XML "<phrase text=\"source\" work=\"$work_a\" ";
 					print XML "line=\"".$verse_a."\" ";
-					print XML "link=\"$url_cgi/context.pl?source=$source;line=$verse_a\">"
+					print XML "link=\"$url{cgi}/context.pl?source=$source;line=$verse_a\">"
 								.$parallel->phrase_a()->short_print2()."</phrase>\n";
 
 					print XML "<phrase text=\"target\" work=\"$work_b\" ";
 					print XML "line=\"".$verse_b."\" ";
-					print XML "link=\"$url_cgi/context.pl?source=$target;line=$verse_b\">"
+					print XML "link=\"$url{cgi}/context.pl?source=$target;line=$verse_b\">"
 								.$parallel->phrase_b()->short_print2()."</phrase>\n";
 					print XML "</tessdata>\n";
 				}

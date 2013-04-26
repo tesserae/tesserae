@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl5.12
+#!/usr/bin/env perl
 
 # the line below is designed to be modified by configure.pl
 
@@ -13,16 +13,75 @@ use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
 use strict;
 use warnings;
 
-use CGI::Session;
-use CGI qw/:standard/;
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
 
 use Getopt::Long;
-use Storable qw(nstore retrieve);
-use File::Spec::Functions;
-use File::Path qw(mkpath rmtree);
+use Pod::Usage;
 
-use TessSystemVars;
-use EasyProgressBar;
+# load additional modules necessary for this script
+
+use CGI::Session;
+use CGI qw/:standard/;
+use Storable qw(nstore retrieve);
+use File::Path qw(mkpath rmtree);
 
 #
 # initialize set some parameters
@@ -62,12 +121,12 @@ my $pr;
 
 # abbreviations of canonical citation refs
 
-my $file_abbr = catfile($fs_data, 'common', 'abbr');
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{retrieve($file_abbr)};
 
 # language database
 
-my $file_lang = catfile($fs_data, 'common', 'lang');
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
 #
@@ -76,7 +135,7 @@ my %lang = %{retrieve($file_lang)};
 
 my $cgi = CGI->new() || die "$!";
 my $session;
-my $redirect = "$url_cgi/3gr.display.pl";
+my $redirect = "$url{cgi}/3gr.display.pl";
 
 my $no_cgi = defined($cgi->request_method()) ? 0 : 1;
 
@@ -91,7 +150,7 @@ unless ($no_cgi) {
 
 	print header(-cookie=>$cookie, -encoding=>"utf8");
 	
-	my $stylesheet = "$url_css/style.css";
+	my $stylesheet = "$url{css}/style.css";
 
 	print <<END;
 
@@ -152,7 +211,7 @@ unless (defined $lang{$target}) {
 	die "target $target has no entry in the language database";
 }
 
-my $file = catfile($fs_data, 'v3', $lang{$target}, $target, $target);
+my $file = catfile($fs{data}, 'v3', $lang{$target}, $target, $target);
 
 for ('token', 'index_3gr', $unit) {
 

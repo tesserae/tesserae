@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl5.12
+#!/usr/bin/env perl
 
 =head1 NAME
 
@@ -100,36 +100,87 @@ Alternatively, the contents of this file may be used under the terms of either t
 
 =cut
 
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-
-#
-# read_table.pl
-#
-# select two texts for comparison using the big table
-#
-
-my $t0 = time;
-
 use strict;
 use warnings;
 
-use CGI qw/:standard/;
+#
+# Read configuration file
+#
 
-use Pod::Usage;
-use Getopt::Long;
-use Storable qw(nstore retrieve);
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
 use File::Spec::Functions;
-use File::Path qw(mkpath rmtree);
+use FindBin qw/$Bin/;
 
-use TessSystemVars;
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
 use EasyProgressBar;
 
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
+use CGI qw/:standard/;
+use Storable qw(nstore retrieve);
+use File::Path qw(mkpath rmtree);
+
+binmode STDERR, 'utf8';
 
 #
 # set some parameters
 #
+
+# time for benchmark
+
+my $t0 = time;
 
 # source means the alluded-to, older text
 
@@ -209,6 +260,10 @@ my @include;
 
 my $help;
 
+# print benchmark times?
+
+my $bench = 0;
+
 # which script should mediate the display of results
 
 my $frontend = 'default';
@@ -227,6 +282,7 @@ GetOptions(
 			'cutoff=f'     => \$cutoff,
 			'filter'       => \$filter,
 			'interest=f'   => \$interest,
+			'benchmark'    => \$bench,
 			'quiet'        => \$quiet,
 			'help'         => \$help);
 
@@ -248,7 +304,7 @@ unless ($no_cgi) {
 
 	print header();
 
-	my $stylesheet = "$url_css/style.css";
+	my $stylesheet = "$url{css}/style.css";
 
 	print <<END;
 
@@ -265,9 +321,9 @@ END
 	# open the temp directory
 	# and get the list of existing session files
 
-	opendir(my $dh, $fs_tmp) || die "can't opendir $fs_tmp: $!";
+	opendir(my $dh, $fs{tmp}) || die "can't opendir $fs{tmp}: $!";
 
-	my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}/ && -d catfile($fs_tmp, $_) } readdir($dh);
+	my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}/ && -d catfile($fs{tmp}, $_) } readdir($dh);
 
 	closedir $dh;
 
@@ -296,7 +352,7 @@ END
 
 	# open the new session file for output
 
-	$file_results = catfile($fs_tmp, "tesresults-$session");
+	$file_results = catfile($fs{tmp}, "tesresults-$session");
 }
 
 
@@ -304,7 +360,7 @@ END
 # abbreviations of canonical citation refs
 #
 
-my $file_abbr = catfile($fs_data, 'common', 'abbr');
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
 # $lang sets the language of input texts
@@ -314,7 +370,7 @@ my %abbr = %{ retrieve($file_abbr) };
 #   for the source and target independently
 # - choices are "grc" and "la"
 
-my $file_lang = catfile($fs_data, 'common', 'lang');
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
 # if web input doesn't seem to be there, 
@@ -354,10 +410,10 @@ else {
 	# how to redirect browser to results
 
 	%redirect = ( 
-		default  => "$url_cgi/read_bin.pl?session=$session",
-		recall   => "$url_cgi/check-recall.pl?session=$session",
-		fulltext => "$url_cgi/fulltext.pl?session=$session",
-		multi    => "$url_cgi/multitext.pl?session=$session;mcutoff=$multi_cutoff"
+		default  => "$url{cgi}/read_bin.pl?session=$session",
+		recall   => "$url{cgi}/check-recall.pl?session=$session",
+		fulltext => "$url{cgi}/fulltext.pl?session=$session",
+		multi    => "$url{cgi}/multitext.pl?session=$session;mcutoff=$multi_cutoff"
 		         . join("", map {";include=$_"} @include)
 	);
 
@@ -375,6 +431,19 @@ END
 
 
 }
+
+#
+# force unit=phrase if either work is prose
+#
+# Note: This is a hack!  Fix later!!
+
+if (Tesserae::check_prose_list($target) or Tesserae::check_prose_list($source)) {
+
+	$unit = 'phrase';
+}
+
+
+# print all params for debugging
 
 unless ($quiet) {
 
@@ -398,15 +467,15 @@ unless ($quiet) {
 
 # token frequencies from the target text
 
-my $file_freq_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . ".freq_score_$feature");
+my $file_freq_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target . ".freq_score_$feature");
 
-my %freq_target = %{TessSystemVars::stoplist_hash($file_freq_target)};
+my %freq_target = %{Tesserae::stoplist_hash($file_freq_target)};
 
 # token frequencies from the target text
 
-my $file_freq_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . ".freq_score_$feature");
+my $file_freq_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source . ".freq_score_$feature");
 
-my %freq_source = %{TessSystemVars::stoplist_hash($file_freq_source)};
+my %freq_source = %{Tesserae::stoplist_hash($file_freq_source)};
 
 #
 # basis for stoplist is feature frequency from one or both texts
@@ -426,7 +495,7 @@ my $min_similarity = "NA";
 
 if ( $feature eq "syn" ) { 
 
-	($max_heads, $min_similarity) = @{ retrieve(catfile($fs_data, "common", "$lang{$target}.syn.cache.param")) };
+	($max_heads, $min_similarity) = @{ retrieve(catfile($fs{data}, "common", "$lang{$target}.syn.cache.param")) };
 }
 
 
@@ -440,7 +509,7 @@ unless ($quiet) {
 	print STDERR "reading source data\n";
 }
 
-my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source);
+my $file_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source);
 
 my @token_source   = @{ retrieve("$file_source.token") };
 my @unit_source    = @{ retrieve("$file_source.$unit") };
@@ -451,7 +520,7 @@ unless ($quiet) {
 	print STDERR "reading target data\n";
 }
 
-my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target);
+my $file_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target);
 
 my @token_target   = @{ retrieve("$file_target.token") };
 my @unit_target    = @{ retrieve("$file_target.$unit") };
@@ -524,7 +593,7 @@ for my $key (keys %index_source) {
 	}
 }
 
-print "search>>" . (time-$t1) . "\n" if $no_cgi;
+print "search>>" . (time-$t1) . "\n" if $no_cgi and $bench;
 
 #
 #
@@ -683,7 +752,7 @@ my %feature_notes = (
 	
 	);
 
-print "score>>" . (time-$t1) . "\n" if $no_cgi;
+print "score>>" . (time-$t1) . "\n" if $no_cgi and $bench;
 
 #
 # write binary results
@@ -725,10 +794,10 @@ mkpath($file_results);
 	
 nstore \%match_target, catfile($file_results, "match.target");
 nstore \%match_source, catfile($file_results, "match.source");
-nstore \%match_score,  catfile($file_results, "match.score");
-nstore \%match_meta,   catfile($file_results, "match.meta");
+nstore \%match_score,  catfile($file_results, "match.score" );
+nstore \%match_meta,   catfile($file_results, "match.meta"  );
 
-print "store>>" . (time-$t1) . "\n" if $no_cgi;
+print "store>>" . (time-$t1) . "\n" if $no_cgi and $bench;
 
 print <<END unless ($no_cgi);
 
@@ -743,7 +812,7 @@ print <<END unless ($no_cgi);
 END
 
 
-print "total>>" . (time-$t0)  . "\n" if $no_cgi;
+print "total>>" . (time-$t0)  . "\n" if $no_cgi and $bench;
 
 #
 # subroutines
@@ -883,34 +952,34 @@ sub load_stoplist {
 	
 	if ($stoplist_basis eq "target") {
 		
-		my $file = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
+		my $file = catfile($fs{data}, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
 		
-		%basis = %{TessSystemVars::stoplist_hash($file)};
+		%basis = %{Tesserae::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "source") {
 		
-		my $file = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
+		my $file = catfile($fs{data}, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
 
-		%basis = %{TessSystemVars::stoplist_hash($file)};
+		%basis = %{Tesserae::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "corpus") {
 
-		my $file = catfile($fs_data, 'common', $lang{$target} . '.' . $feature . '.freq');
+		my $file = catfile($fs{data}, 'common', $lang{$target} . '.' . $feature . '.freq');
 		
-		%basis = %{TessSystemVars::stoplist_hash($file)};
+		%basis = %{Tesserae::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "both") {
 		
-		my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
+		my $file_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
 		
-		%basis = %{TessSystemVars::stoplist_hash($file_target)};
+		%basis = %{Tesserae::stoplist_hash($file_target)};
 		
-		my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
+		my $file_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
 		
-		my %basis2 = %{TessSystemVars::stoplist_hash($file_source)};
+		my %basis2 = %{Tesserae::stoplist_hash($file_source)};
 		
 		for (keys %basis2) {
 		
@@ -955,10 +1024,10 @@ sub exact_match {
 		push @stokens, $token_source[$_]{FORM};
 	}
 	
-	@ttokens = @{TessSystemVars::uniq(\@ttokens)};
-	@stokens = @{TessSystemVars::uniq(\@ttokens)};
+	@ttokens = @{Tesserae::uniq(\@ttokens)};
+	@stokens = @{Tesserae::uniq(\@ttokens)};
 	
-	my @exact_match = @{TessSystemVars::intersection(\@ttokens, \@stokens)};
+	my @exact_match = @{Tesserae::intersection(\@ttokens, \@stokens)};
 	
 	return scalar(@exact_match);
 }

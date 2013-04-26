@@ -1,20 +1,30 @@
-# session files #
-#################
-tmp/*
-tesresults.*
+# config files 
 
-# private scripts #
-###################
+tesserae.conf
+.tesserae.conf
+html/defs.php
+xsl/defs.xsl
+
+# session files 
+
+tmp/*
+tesresults/*
+
+# private scripts
+
 testing/*
 
-# generated binaries #
-######################
+# generated binaries
+
 data/common/la.*.cache
+data/common/grc.*.cache
 data/common/la.syn.cache.param
 data/common/*.freq
 data/common/whit.cache
 data/common/lang
 data/common/abbr
+data/common/*.idf_phrase
+data/common/*.idf_text
 data/v3/*
 data/v1/*
 data/bench/rec.cache
@@ -22,8 +32,8 @@ data/lsa/*
 html/textlist.*
 
 
-# OS generated files #
-######################
+# OS generated files
+
 .DS_Store
 .DS_Store?
 ._*
