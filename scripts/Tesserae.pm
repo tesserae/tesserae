@@ -1,8 +1,7 @@
 package Tesserae;
 
-use Cwd qw/abs_path/;
-use FindBin qw($Bin);
 use File::Spec::Functions;
+use File::Basename;
 
 use utf8;
 
@@ -18,7 +17,9 @@ our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni alpha stoplist_has
 # read config file
 #
 
-my ($fs_ref, $url_ref) = read_config(catfile($Bin, 'tesserae.conf'));
+my $lib = (fileparse($INC{'Tesserae.pm'}, '.pm'))[1];
+
+my ($fs_ref, $url_ref) = read_config(catfile($lib, 'tesserae.conf'));
 
 our %fs  = %$fs_ref;
 our %url = %$url_ref;
@@ -69,46 +70,11 @@ our %is_word = (
 
 sub read_config {
 
-	# look for configuration file
-	
-	my $lib = $Bin;
-	
-	my $oldlib = $lib;
-	
-	my $pointer;
-			
-	while (1) {
-
-		$pointer = catfile($lib, '.tesserae.conf');
-		
-		if (-r $pointer) {
-		
-			open (FH, $pointer) or die "can't open $pointer: $!";
-			
-			$lib = <FH>;
-			
-			chomp $lib;
-			
-			last;
-		}
-									
-		$lib = abs_path(catdir($lib, '..'));
-		
-		if (-d $lib and $lib ne $oldlib) {
-		
-			$oldlib = $lib;			
-			
-			next;
-		}
-		
-		die "can't find .tesserae.conf!\n";
-	}	
+	my $config = shift;
 	
 	my %par;
-	my %fs;
-	my %url;
-
-	my $config = catfile($lib, 'tesserae.conf');
+	
+	my $section;
 
 	open (FH, "<", $config) or die "can't open $config: $!";
 
@@ -118,24 +84,27 @@ sub read_config {
 	
 		$line =~ s/#.*//;
 		
-		next unless $line =~ /(\S+)\s*=\s*(\S+)/;
+		next unless $line =~ /\S/;
 		
-		my ($name, $value) = ($1, $2);
-			
-		$par{$name} = $value;
+		if ($line =~ /\[(.+)\]/) { 
+		
+			$section = $1
+		}		
+		elsif ($line =~ /(\S+)\s*=\s*(\S+)/) {
+				
+			my ($name, $value) = ($1, $2);
+						
+			$par{$section}{$name} = $value;			
+		}
+		elsif ($line =~ /(\S+)/) {
+		
+			push @{$par{$section}}, $1;
+		}
 	}
 
 	close FH;
-
-	# extract fs and url paths
-	
-	for my $p (keys %par) {
-
-		if    ($p =~ /^fs_(\S+)/)		{ $fs{$1}  = $par{$p} }
-		elsif ($p =~ /^url_(\S+)/)		{ $url{$1} = $par{$p} }
-	}
-
-	return (\%fs, \%url);
+		
+	return ($par{path_fs}, $par{path_url});
 }
 
 sub uniq {

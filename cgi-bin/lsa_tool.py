@@ -1,8 +1,38 @@
 #!/usr/bin/env python
 
+def read_pointer():
+	'''look for .tesserae.conf; return lib path'''
+	
+	dir = os.path.dirname(sys.argv[0])
+	lib = None
+	pointer = os.path.join(dir, '.tesserae.conf')
+
+	while not os.access(pointer, os.R_OK):
+		
+		if dir == os.path.sep:
+			raise LookupError('file not found: {0}'.format(pointer))
+			return lib
+			
+		dir = os.path.dirname(dir)
+		pointer = os.path.join(dir, '.tesserae.conf')
+		
+	f = open(pointer, 'r');
+	
+	lib = f.readline().strip()
+	
+	return lib
+
 import string
 import os
 import cgi, cgitb
+
+# importing the 'tesserae' module will read local config
+# and add necessary local python libraries
+#   -- without this gensim won't be found on sophia
+
+sys.path.append(read_pointer())
+from tesserae import fs, url
+
 from gensim import corpora, models, similarities
 
 form = cgi.FieldStorage() 

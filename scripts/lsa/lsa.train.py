@@ -1,13 +1,6 @@
 #!/usr/bin/env python
 '''perform the training stage of lsa search'''
 
-import string
-import os
-import os.path
-import sys
-import argparse
-from gensim import corpora, models, similarities
-
 def read_pointer():
 	'''look for .tesserae.conf; return lib path'''
 	
@@ -30,33 +23,6 @@ def read_pointer():
 	
 	return lib
 
-def read_config(lib):
-	'''read the config file in dir "lib"'''
-	
-	config = os.path.join(lib, 'tesserae.conf')
-	
-	fs  = dict()
-	url = dict()
-	
-	f = open(config, 'r')
-	
-	for line in f:
-	
-		if '=' in line:
-	
-			k, v = line.split('=')
-		
-			k = k.strip()
-			v = v.strip()
-		
-			if k.startswith('fs_'):
-				fs[k.split('_')[1]] = v
-			elif k.startswith('url_'):
-				url[k.split('_')[1]] = v
-
-	return(fs, url)
-	
-	
 def main():
 				
 	#
@@ -74,10 +40,6 @@ def main():
 				help='print less info')
 
 	opt = parser.parse_args()
-	
-	# paths to local installation
-
-	fs, url = read_config(read_pointer())
 	
 	#
 	# read files given as cmd line args
@@ -169,8 +131,19 @@ def main():
 		corpora.MmCorpus.serialize(file_corpus, corpus)
 
 #
-# call function main as default action
+# stuff to execute
 #
+
+import string
+import os
+import os.path
+import sys
+import argparse
+
+sys.path.append(read_pointer())
+from tesserae import fs, url
+
+from gensim import corpora, models, similarities
 
 if __name__ == '__main__':
     main()

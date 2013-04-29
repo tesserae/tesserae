@@ -5,6 +5,9 @@ tesserae.conf
 html/defs.php
 xsl/defs.xsl
 
+# compiled python modules
+*.pyc
+
 # session files 
 
 tmp/*
@@ -25,6 +28,7 @@ data/common/lang
 data/common/abbr
 data/common/*.idf_phrase
 data/common/*.idf_text
+data/common/temp-lang
 data/v3/*
 data/v1/*
 data/bench/rec.cache
