@@ -1,0 +1,818 @@
+TARGET_BOOK	TARGET_LINE	TARGET_TEXT	SOURCE_BOOK	SOURCE_LINE	SOURCE_TEXT	AUTH
+2	5	sollicitis...mortalibus	12	85		Fantham
+2	6	noscant venturas ut...clades	4	33		Fantham
+2	11	inmoto	1	257	immoto...fata	Viansino
+2	11	inmoto	7	314	immota...fatis	Viansino
+2	11	inmoto	7	11	inaccessos	Fantham
+2	13	fertque refertque	4	448		Viansino
+2	13	fertque refertque	12	866		Viansino
+2	14		10	501		Viansino
+2	14	futuri...fati	2	246		Viansino
+2	16	ergo ubi concipiunt	3	238		Fantham
+2	16	ergo ubi concipiunt	4	474		Fantham
+2	23	conclamata	6	218		Fantham
+2	24	exigit ad saevos famularum brachhia planctus	12	604		Fantham
+2	25	sed cum...premit	11	70	cui neque fulgor adhuc necdum sua forma recessit, non iam mater alit	Fantham
+2	28		11	477		Viansino
+2	28		1	479		Viansino
+2	30		1	479		Fantham
+2	30		11	477		Fantham
+2	32	votisque vocari, adsuetas...aures	2	486	plangoribus aedes / femineis ululant	Fantham
+2	32		1	290		Viansino
+2	44	saeva	2	612	saevissima	Viansino
+2	70	limosa...ulva	2	135	limosque lacu per noctem obscurus in ulva, delitui.	Fantham
+2	82	debet...legibus aevi	12	819	fati...lege	Fantham
+2	93	Libycas ibi colligit iras	12	49		Fantham
+2	106	primo in liminae vitae	6	427	infantumque...in limine primo / quos dulcis vitae exsortis...	Fantham
+2	113	spes una salutis	2	354	una salus victis, nullam sperare salutem	Fantham
+2	121	aut te, praesage malorum, Antoni	10	843	praesaga mali mens	Fantham
+2	123	ora ferens miles festae rorantia mensae	8	645	rorabant sanguine vepres, 	Fantham
+2	126	te quoque	7	1		Viansino
+2	128		2	501		Viansino
+2	134	cecidere cadavera	6	481	caduci	Viansino
+2	163	pendere... / postibus Antaei	8	196	foribusque affixa superbis / ora virum tristi pendebant pallida tabo	Fantham
+2	172	perque omnes truncos	2	557	iacet ingens litore truncus	Fantham
+2	174	tristes / inferias...forsan nolentibus umbris	5	75		Fantham
+2	196	flos Hesperiae... / concidit	8	500	iuventus / flos veterum virtusque virum	Fantham
+2	196	flos Hesperiae... / concidit	7	162	pueri et primaveo flore iuventus. Hesperia	Fantham
+2	196	flos Hesperiae... / concidit	1	580	est locus, Hesperiam Graii cognomine dicunt	Fantham
+2	201	inter	2	494	trucidant / inmissi Danai	Fantham
+2	204	dubiaque labant cervice	9	434	inque humeros cervix conlapsa recumbit / purpureus veluti cum flos...languescit moriens	Fantham
+2	207	intrepidus...sedit securus ab alto / spectator	8	485		Fantham
+2	210	Tyrrhenus...gurges	7	242	Tyrrhenus...Thybris	Fantham
+2	213	aquae...amnis	7	464		Viansino
+2	216	Tiberina in flumina	10	833	Tiberini ad fluminis undam	Fantham
+2	216	Tiberina in flumina	11	449	Tiberino a flumine	Fantham
+2	220	sanguine caeruleum torrenti dividit aequor	2	526		Fantham
+2	224	ibitur, hic stabit...exitus	10	476	stat sua cuique dies	Fantham
+2	233	praeteritique memor flebat metuensque futuri	5	716	metuensque perilci	Fantham
+2	233	praeteritique memor flebat metuensque futuri	1	23	id metuens veterisque memor Saturnia belli	Fantham
+2	234	at non magnanimi percussit pectora Bruti	1	260	magnanimum	Fantham
+2	234	at non magnanimi percussit pectora Bruti	5	170		Fantham
+2	234	at non magnanimi percussit pectora Bruti	5	407		Fantham
+2	234	at non magnanimi percussit pectora Bruti	9	204		Fantham
+2	236	nocte sopora	6	390	somne noctisque soporae	Fantham
+2	236	nocte sopora	3	587	nocte intempesta	Fantham
+2	239	invenit insomni volventem publica cura / fata virum casusque urbis	8	19	magno curarum...aestu	Fantham
+2	239	invenit insomni volventem publica cura / fata virum casusque urbis	9	167	noctem...insomnem	Fantham
+2	241	his vocibus	1	64		Fantham
+2	241	his vocibus	4	304		Fantham
+2	241	his vocibus	7	420		Fantham
+2	241	his vocibus	9	83		Fantham
+2	241	orsus	1	352		Fantham
+2	241	orsus	2	2		Fantham
+2	241	orsus	6	125		Fantham
+2	243	quam turbine nullo / excutiet...labantem	4	22	animamque labantem 	Fantham
+2	247	dux Bruto Cato solus erit 	6	841	quis te, magne Cato	Fantham
+2	262	caeca telorum in nube	12	444	caeco pulvere campus / miscetur 	Fantham
+2	263	in cassum eat	3	345	in cassum	Fantham
+2	263	in cassum eat	7	421	tot in cassum fusos patiere labores	Fantham
+2	263	in cassum eat	8	378	in cassumve tuos exercere labores	Fantham
+2	264	devotio	10	830		Viansino
+2	264	quis nolet	10	829	hoc tamen infelix miseram solabere mortem: / Aenae magni dextra cadis	Fantham
+2	267	sicut caelestria semper / inconcussa suo vovuntur sidera lapsu	4	524		Fantham
+2	268		4	524		Viansino
+2	285	arcano sacras reddit Cato pectore voces	4	422		Fantham
+2	287		5	709	quo fata trahunt retrahuntque sequamur	Viansino
+2	290	cum ruat arduus aether	10	102		Fantham
+2	299		4	384		Viansino
+2	299	iubet ipse dolor, iuvat	4	498		Fantham
+2	299	iubet ipse dolor, iuvat	4	660	sic, sic iuvat ire sub umbras	Fantham
+2	299	iubet ipse dolor, iuvat	2	27	iuvat ire	Fantham
+2	299	ignibus atris / ...atras..faces	4	384	atris ignibus	Fantham
+2	299	ignibus atris / ...atras..faces	11	186	ignibus atris	Fantham
+2	302	quam te conplectar, Roma, tuumque / nomen, Libertas, et inanem persequar umbram	9	218		Fantham
+2	306	caelique deis Erebique 	6	247	Hecaten caelique Erebique potentem	Fantham
+2	306	caelique deis Erebique 	7	140	caeloque Ereboque parentes	Fantham
+2	307	hoc caput in cunctas damnatum exponere poenas	6	824		Fantham
+2	312	hic redimant sanguis populos	2	115	sanguine quaerendi reditus animaque litandum / Argolica	Fantham
+2	312	hic redimant sanguis populos	6	121		Fantham
+2	316	frustra	2	348	fortissima frustra/pectora	Viansino
+2	317	hic dabit, hic pacem iugulus finemque laborum	1	241	quem das finem, rex magne, laborum	Fantham
+2	317	hic dabit, hic pacem iugulus finemque laborum	3	493		Fantham
+2	323	Sic fatur et /.../ excitat	7	420	hic se cum vocibus offert	Fantham
+2	323	Sic fatur et /.../ excitat	7	435	sic orsa vicissim / ore refert	Fantham
+2	323	Sic fatur et /.../ excitat	7	436	talibus dictis exarsit in iras	Fantham
+2	323	Sic fatur et /.../ excitat	7	436	talibus dictis exarsit in iras	Fantham
+2	326	interea Phoebo gelidas pellente tenebras	7	461	saevit amor ferri et scelerata insania belli / ira super	Fantham
+2	326	interea Phoebo gelidas pellente tenebras	5	42		Fantham
+2	326	interea Phoebo gelidas pellente tenebras	9	459		Fantham
+2	328	inrupit	4	645	inrumpit	Fantham
+2	329	melioris...mariti	4	328	suboles	Fantham
+2	337	sic maesta profatur	1	561	Dido vultum demissa profatur	Fantham
+2	337	sic maesta profatur	4	364	sic accensa profatur	Fantham
+2	338	dum sanguis inerat, dum vis materna	10	487	sanguis animusque sequuntur	Fantham
+2	355	infulaque	4	458	candida vellera	Fantham
+2	355	infulaque	10	538		Fantham
+2	357	picto vestes discriminat auro	4	264	tenui telas discreverat auro	Fantham
+2	357	picto vestes discriminat auro	9	26	dives pictai vestis et auri	Fantham
+2	357	picto vestes discriminat auro	11	72	vestes...auroque ostroque rigentes	Fantham
+2	372	ille nec horrificam...dimovit... / caesariem	3	255	horrifico	Fantham
+2	372	ille nec horrificam...dimovit... / caesariem	3	571	horrificis	Fantham
+2	372	ille nec horrificam...dimovit... / caesariem	12	851	horrificum	Fantham
+2	380	haec...inmota... / secta fuit	10	502	nescia mens homnium...servare modum.	Fantham
+2	381	servare modum	10	502		Viansino
+2	389	cultor	2	426	iustissimus unus et servantissimus aequi	Viansino
+2	393	moenia Dardanii tenuit Campana coloni	10	145		Fantham
+2	394	placuit...hinc summa moventum	10	70	summam belli	Fantham
+2	394	placuit...hinc summa moventum	12	572	belli summa 	Fantham
+2	396		12	702		Viansino
+2	397	nulloque a vertice	12	702		Fantham
+2	397		3	522		Viansino
+2	407	Hadriacas qui verberat Aufidus undas	11	405	Hadriacas retro fugit Aufidus undas	Fantham
+2	410	hunc fabula primum	10	189		Fantham
+2	411		10	190		Viansino
+2	421	dexteriora	8	860		Fantham
+2	423		7	470		Viansino
+2	423	nocturnaeque editor aurae	7	728		Fantham
+2	423	nocturnaeque editor aurae	7	738	quae rigat aequora Sarnus	Fantham
+2	431	piniferis amplexus rupibus	4	249		Fantham
+2	431	piniferis amplexus rupibus	10	708		Fantham
+2	432	indigenas	12	823		Viansino
+2	433	Scyllaeis	1	200		Fantham
+2	433	Scyllaeis	3	420		Fantham
+2	434	templa Lacinia 	3	552	attollitque se diva Lacinia contra	Fantham
+2	435		3	414		Viansino
+2	438	extremi colles Siculo cessere Peloro	3	411		Fantham
+2	438	extremi colles Siculo cessere Peloro	3	410	ast ubi digressum Siculae te admoverit orae / ventus, at angusti rarescunt claustra Pelori	Fantham
+2	438	extremi colles Siculo cessere Peloro	3	420	dextrum Scylla latus laevum implicita Charybdis / obsidet	Fantham
+2	442	consertaque bellis / bella great	10	361	haeret pede pes denusque viro vir 	Fantham
+2	455	horrisonis	6	573		Fantham
+2	455	horrisonis	9	55		Fantham
+2	456	tellus...laxata	1	81	conversa cuspide montem / impulit in latus	Fantham
+2	460	vindicant	4	228		Fantham
+2	462	fuga nudata	5	586		Viansino
+2	484	undaeque inmergite pontem	3	605		Fantham
+2	484	undaeque inmergite pontem	6	174		Fantham
+2	487	hoc... / haereat, hac hostis lentus terat otia	1	16		Fantham
+2	487	hoc... / haereat, hac hostis lentus terat otia	5	637		Fantham
+2	487	hoc... / haereat, hac hostis lentus terat otia	7	122		Fantham
+2	488	terat otia	4	271	qua spe Libycis teris otia terris?	Viansino
+2	490		7	599		Viansino
+2	490	nec plura locutus	11	461		Fantham
+2	491	nequiquam	2	510		Fantham
+2	491	nequiquam	7	652		Fantham
+2	491	nequiquam	9	364		Fantham
+2	491	nequiquam	11	536		Fantham
+2	500	haec ubi dicta	2	790	haec ubi dicta dedit	Fantham
+2	500	haec ubi dicta	6	628	haec ubi dicta dedit	Fantham
+2	500	levis totas accepit habenas / in campum sonipes	1	63		Fantham
+2	500	levis totas accepit habenas / in campum sonipes	5	818		Fantham
+2	500	levis totas accepit habenas / in campum sonipes	12	499		Fantham
+2	500	levis totas accepit habenas / in campum sonipes	4	135		Fantham
+2	500	levis totas accepit habenas / in campum sonipes	11	600		Fantham
+2	500	levis totas accepit habenas / in campum sonipes	11	638		Fantham
+2	501	crebroque simillima nimbo / ...tela	2	794		Fantham
+2	501	crebroque simillima nimbo / ...tela	6	522		Fantham
+2	501	crebroque simillima nimbo / ...tela	10	391		Fantham
+2	501	simillima	2	794		Viansino
+2	512		10	439		Fantham
+2	512		10	523		Fantham
+2	512		10	550		Fantham
+2	512		10	575		Fantham
+2	512		10	732		Fantham
+2	521	premit ille...interritus iras	5	427		Fantham
+2	521	premit ille...interritus iras	5	863		Fantham
+2	521	premit ille...interritus iras	11	711		Fantham
+2	521	premit ille...interritus iras	11	837		Fantham
+2	521	premit ille...interritus iras	1	209	premit altum corde dolorem	Fantham
+2	521	premit ille...interritus iras	1	37	haec secum	Fantham
+2	523	in medios belli non ire furores / iam dudum moriture paras?	4	308		Fantham
+2	523	in medios belli non ire furores / iam dudum moriture paras?	4	415		Fantham
+2	523	in medios belli non ire furores / iam dudum moriture paras?	4	475		Fantham
+2	523	in medios belli non ire furores / iam dudum moriture paras?	2	511		Fantham
+2	523	in medios belli non ire furores / iam dudum moriture paras?	9	400		Fantham
+2	523	in medios belli non ire furores / iam dudum moriture paras?	10	881		Fantham
+2	524	rue certus et omnes / lucis rumpe moras	4	564	certa mori	Fantham
+2	524	rue certus et omnes / lucis rumpe moras	4	631	invisam quaerens quam primum abrumpere lucem	Fantham
+2	524	rue certus et omnes / lucis rumpe moras	4	569		Fantham
+2	524	rue certus et omnes / lucis rumpe moras	9	13		Fantham
+2	525		4	483		Viansino
+2	526	nescius interea capti ducis	5	1		Fantham
+2	526	nescius interea capti ducis	10	665		Fantham
+2	526	nescius interea capti ducis	11	896		Fantham
+2	526	nescius interea capti ducis	12	614		Fantham
+2	531	manus	10	294		Viansino
+2	536	iam tetigit sanguis...enses	7	541	ubi sanguine bellum / imbuit	Fantham
+2	536	iam tetigit sanguis...enses	7	554	quae fors prima dedit sanguis novus imbuit arma	Fantham
+2	538	iam iam me praeside Roma / supplicium poenamque petat!	2	530		Fantham
+2	538	iam iam me praeside Roma / supplicium poenamque petat!	6	602		Fantham
+2	538	iam iam me praeside Roma / supplicium poenamque petat!	8	708		Fantham
+2	538	iam iam me praeside Roma / supplicium poenamque petat!	12	676		Fantham
+2	538	iam iam me praeside Roma / supplicium poenamque petat!	12	754		Fantham
+2	538	iam iam me praeside Roma / supplicium poenamque petat!	12	875		Fantham
+2	538	iam iam me praeside Roma / supplicium poenamque petat!	12	940		Fantham
+2	543	exertique manus uaesana	9	340		Fantham
+2	543	exertique manus uaesana	10	583		Fantham
+2	543	exertique manus uaesana	10	724		Fantham
+2	544	miseranda	3	138	fata	Viansino
+2	550	si qua fides	2	142		Viansino
+2	550	quamquam si qua fides, his te quoque iungere... / invideo	6	459		Fantham
+2	550	quamquam si qua fides, his te quoque iungere... / invideo	3	434		Fantham
+2	557	frigidus sanguis	5	395		Viansino
+2	557	fervidus haec iterum circa praecordia sanguis / incaluit	10	452		Fantham
+2	565	hinc consul uterque / hinc acies statura ducum est	12	565		Fantham
+2	572	quaesitis	11	387		Viansino
+2	579	angusta...in sede	8	366	angusti...fastigia tecti	Fantham
+2	601		12	103		Viansino
+2	601		12	7		Viansino
+2	602	silvarum secreta	1	422	strata viarum	Fantham
+2	602	silvarum secreta	6	10		Fantham
+2	602	silvarum secreta	8	463		Fantham
+2	603	in adversis explorat cornus truncis	12	104	irasci in cornua temptat / arboris obnixus trunco	Fantham
+2	605	excussi	12	7	excutiens cervice toros	Viansino
+2	607	sic viribus impar / tradidit Hesperiam	10	458	ausum / viribus imparibus	Fantham
+2	610	urbs est Dictaeis olim possessa colonis	1	13	urbs antiqua fuit, Tyrii tenuere coloni	Fantham
+2	610	urbs est Dictaeis olim possessa colonis	1	159	est in secessu longo locus	Fantham
+2	610	urbs est Dictaeis olim possessa colonis	7	59	laurus erat tecti medio in penetralibus altis	Fantham
+2	610	urbs est Dictaeis olim possessa colonis	8	597	est ingens gelidum lucus prope Caeritis amnem	Fantham
+2	610	urbs est Dictaeis olim possessa colonis	3	171		Fantham
+2	614	linguam / Hadriacas flexis claudit quae cornibus undas	1	159		Fantham
+2	614	linguam / Hadriacas flexis claudit quae cornibus undas	1	162	hinc atque hinc vastae rupes geminaeque minantur in caelum / ...scopuli	Fantham
+2	614	linguam / Hadriacas flexis claudit quae cornibus undas	1	159	insula portum / efficit obiectu laterum	Fantham
+2	614	linguam / Hadriacas flexis claudit quae cornibus undas	1	168		Fantham
+2	616		1	159		Viansino
+2	616	nec tamen... / portus erat, si non...insula... / exciperet	2	55	si...non...fuisset...impulerat	Fantham
+2	616	nec tamen... / portus erat, si non...insula... / exciperet	4	603	verum anceps pugnae fuerat fortuna 	Fantham
+2	617	violentos...Coros	5	126		Fantham
+2	618	lassasque refunderet undas	7	590	inlisa refunditur alga	Fantham
+2	619	hinc illinc montes scopulosae rupis... / oppusuit natura mari	1	162	hinc atque hinc vastae rupes, geminique...scopuli	Fantham
+2	633	Euphraten Nilumque	7	715		Fantham
+2	633	Euphraten Nilumque	7	728		Fantham
+2	633	Euphraten Nilumque	7	726		Fantham
+2	642		5	381		Viansino
+2	648	sic fatur et omnes / iussa gerunt, solvuntque cavas...puppes	6	1		Fantham
+2	648	sic fatur et omnes / iussa gerunt, solvuntque cavas...puppes	10	621		Fantham
+2	658	instat atrox	9	420		Fantham
+2	658	instat atrox	1	662		Fantham
+2	663	omnia pontus / haurit saxa vorax	1	107		Fantham
+2	665	maris Aeolii	10	128		Fantham
+2	665	maris Aeolii	8	691		Fantham
+2	665	maris Aeolii	12	701		Fantham
+2	666		12	701		Viansino
+2	671	roboraque inmensis late religare catenis	9	352	equos	Fantham
+2	671	roboraque inmensis late religare catenis	7	106	classem	Fantham
+2	681	curis animum mordacibus angit	9	89		Fantham
+2	682		7	551		Viansino
+2	683	Noto plenae tensisque rudentibus actae / ..rates	3	141		Fantham
+2	687	ut tempora tandem / furtivae placuere fugae	4	289	classem aptent taciti sociosque ad litora cognat	Fantham
+2	688	ne litora clamor / nauticus exagitet	3	128		Fantham
+2	688	ne litora clamor / nauticus exagitet	5	141		Fantham
+2	691	iam coeperat ultima Virgo / Phoebum laturas ortu praecedere Chelas	2	801		Fantham
+2	693	non anchora voces / movit, dum spissis avellitur uncus harenis	1	169	unco non alligat ancora morsu	Fantham
+2	719		3	521	iamque rubescebat stellis aurora fugatis	Viansino
+2	719		2	801		Viansino
+2	719		4	584		Viansino
+2	724	refugit / Lucifer ipse diem	2	801	iamque iugis...surgebat Lucifer... / ducebatque diem	Fantham
+2	725		5	8	at pelagus tenuere naves	Viansino
+2	728	cum coniuge pulsus / et natis totosque trahens in bella penates / vadis...populus comitantibus exul	3	11	feror exul in altum / cum sociis natoque penatibus et magnis dis	Fantham
+2	728	cum coniuge pulsus / et natis totosque trahens in bella penates / vadis...populus comitantibus exul	3	521	iamque rubescebat stellis aurora fugatis	Fantham
+2	731	quaeritur indignae sedes longinqua ruinae	1	205	sedes...quietae	Fantham
+2	731	quaeritur indignae sedes longinqua ruinae	1	557		Fantham
+2	731	quaeritur indignae sedes longinqua ruinae	3	88		Fantham
+2	731		2	798		Viansino
+2	731		3	11		Viansino
+3	1		3	10		Viansino
+3	1		5	1		Viansino
+3	7	dubios	3	522		Viansino
+3	11		5	1		Viansino
+3	34	refugit	2	793		Viansino
+3	37	maior	2	353	moriamur et in media arma ruamus	Viansino
+3	39	sensus	6	444		Viansino
+3	60		3	414		Viansino
+3	61	medias...terras	7	1		Viansino
+3	9	suae	1	7		Viansino
+3	118		3	56		Viansino
+3	124		5	78		Viansino
+3	144	compulit	1	37		Viansino
+3	168		8	222		Viansino
+3	173		7	744		Viansino
+3	176		3	694		Viansino
+3	199		6	309		Viansino
+3	199		10	265		Viansino
+3	199		11	580		Viansino
+3	241	pro	6	767		Viansino
+3	253		6	795		Viansino
+3	284		7	674		Viansino
+3	289		8	723		Viansino
+3	305		7	153	propinquum	Viansino
+3	306		7	154		Viansino
+3	314	vulnera	2	529		Viansino
+3	313	vulnera	7	533		Viansino
+3	313	vulnera	10	140		Viansino
+3	313	vulnera	11	792		Viansino
+3	331	velis	11	153	velles te credere Marti	Viansino
+3	338		7	745		Viansino
+3	386		7	159	pinnis atque aggere cingit	Viansino
+3	399		1	441		Viansino
+3	402		8	314		Viansino
+3	406		10	792	si qua fidem est operi latura vetustas	Viansino
+3	406		1	181		Viansino
+3	417		8	349		Viansino
+3	417		8	597	(hoc nemus...(quis deus incertum est) habitat deus)	Viansino
+3	418	cavas...cavernas	2	52		Viansino
+3	418	cavas...cavernas	3	674		Viansino
+3	418	cavas...cavernas	8	42		Viansino
+3	433	primus	6	183		Viansino
+3	440		6	179		Viansino
+3	440		11	133		Viansino
+3	463		9	410		Viansino
+3	467		11	696		Viansino
+3	468		10	340	protinus hasta fugit servatque cruenta tenorem	Viansino
+3	470		12	685		Viansino
+3	470		5	35		Viansino
+3	481		9	512		Viansino
+3	482		5	458		Viansino
+3	500		10	169		Viansino
+3	521		7	25		Viansino
+3	527	tremuere	5	198		Viansino
+3	540		8	7		Viansino
+3	542		3	208		Viansino
+3	542		4	583		Viansino
+3	553	pugnamque lacessere	5	429		Viansino
+3	571		10	586		Viansino
+3	573		12	691	sanguine terra madet	Viansino
+3	573		2	277	concretos sanguine crines	Viansino
+3	576	semianimes	10	396		Viansino
+3	576	semianimes	11	636		Viansino
+3	576	semianimes	12	356		Viansino
+3	578	luctantem animam	4	695		Viansino
+3	585		7	670		Viansino
+3	586	aplustre	9	418		Viansino
+3	586	aplustre	11	612		Viansino
+3	586	aplustre	7	734		Viansino
+3	589		12	51		Viansino
+3	591		10	487		Viansino
+3	593	qua	5	805		Viansino
+3	603		10	390		Viansino
+3	603	gemini fratres	7	670		Viansino
+3	605	discrevit	10	393	discrimina	Viansino
+3	612		10	395		Viansino
+3	615	instaurat proelia	2	669		Viansino
+3	658		5	449		Viansino
+3	671		1	150	furor arma ministrat	Viansino
+3	671		2	445		Viansino
+3	693		9	720	pugnae	Viansino
+3	699		1	169		Viansino
+3	705		5	136		Viansino
+3	710	habenae	9	587		Viansino
+3	711		9	588		Viansino
+3	724		10	778	egregium Antorem latus inter et ilia figit	Viansino
+3	737		9	434	cervix collapsa recumbit.../...veluti cum flos... languescit moriens	Viansino
+3	739		4	684		Viansino
+3	747	superstes	11	160	superstes / restarem ut genitor	Viansino
+3	748	capulum	2	550		Viansino
+3	750		11	160		Viansino
+4	40		10	432	nec turba moveri / tela manusque sinit	Viansino
+4	60		6	454	aut videt aut vidisse putat per nubila lunam	Viansino
+4	65	concrescere	6	255		Viansino
+4	68	incendere	10	895		Viansino
+4	68	incendere	11	147		Viansino
+4	88		3	197	vasto	Viansino
+4	90		7	749	convectare iuvat praedas et vivere rapto	Viansino
+4	96		8	197		Viansino
+4	99	vasta voragine	6	296		Viansino
+4	157		11	522		Viansino
+4	158	cava	8	599	colles / cavi	Viansino
+4	160	anfractu	11	522		Viansino
+4	180		11	191		Viansino
+4	183	vaesane	10	465		Viansino
+4	197		7	109		Viansino
+4	199		12	118	aras / gramineas	Viansino
+4	236		12	282		Viansino
+4	237		1	141		Viansino
+4	252		10	433		Viansino
+4	255	agnoscis	12	26		Viansino
+4	267	viam	6	96		Viansino
+4	276	invisa luce	4	631		Viansino
+4	316		5	854		Viansino
+4	344		10	829		Viansino
+4	361		4	653		Viansino
+4	375	terra pelagoque	3	528		Viansino
+4	388		11	899		Viansino
+4	417		6	502		Viansino
+4	437	formidine	12	749		Viansino
+4	448	fraudes innectere	6	609		Viansino
+4	455	locus horridus	1	159		Viansino
+4	455		1	162		Viansino
+4	476		2	348		Viansino
+4	476		2	521		Viansino
+4	476		2	533		Viansino
+4	476		2	542		Viansino
+4	469	magnum, memorabile	4	94		Viansino
+4	516	proieci	6	436	animas	Viansino
+4	581		7	383		Viansino
+4	589		8	190		Viansino
+4	623	gelidus...sudor	3	175		Viansino
+4	632	nodos	8	26		Viansino
+4	727		4	412	improbe amor, quid non mortalia pectora cogis	Viansino
+4	746	patuere doli	1	130	latuere	Viansino
+4	752		4	183		Viansino
+4	753		3	84		Viansino
+4	756	rauca gemunt	5	866		Viansino
+4	756	rauca gemunt	9	125		Viansino
+4	780		10	432	extremi addensant acies	Viansino
+4	824		6	621	vendidit hic auro patriam	Viansino
+5	17	indole dignum	10	826		Viansino
+5	26	fortuna ferat	11	344		Viansino
+5	40	pars	2	5		Viansino
+5	74		4	302		Viansino
+5	93		6	726		Viansino
+5	101		9	715		Viansino
+5	105		6	376		Viansino
+5	120		6	101		Viansino
+5	144		10	538	infula	Viansino
+5	146		2	297	adytis...penetralibus	Viansino
+5	153	vox	6	43		Viansino
+5	155	limina	3	91		Viansino
+5	158	dare poenas	4	386	improbe	Viansino
+5	169		6	78		Viansino
+5	171		6	48		Viansino
+5	174		6	79		Viansino
+5	174		6	100		Viansino
+5	176	frenos	6	1		Viansino
+5	183		3	445		Viansino
+5	183		6	74		Viansino
+5	193	domita	6	80		Viansino
+5	207	redeuntia	6	181		Viansino
+5	214		4	643		Viansino
+5	214		6	47		Viansino
+5	217	tumidas...pontus	6	48		Viansino
+5	218	rauca gemit	9	124	sonans	Viansino
+5	245		11	338	frigida bello / dextera	Viansino
+5	250	culmine	7	512		Viansino
+5	297	sic eat	6	878		Viansino
+5	304	medios...furores	1	348		Viansino
+5	322		4	13	degeneres animos timor arguit	Viansino
+5	325		11	176		Viansino
+5	361	caput, colla	11	829		Viansino
+5	362	stabunt...robore	2	639		Viansino
+5	428		5	830		Viansino
+5	431		3	207	vela cadunt	Viansino
+5	446		7	9	splendet tremulo sub lumine pontus	Viansino
+5	451		10	676		Viansino
+5	480		4	225		Viansino
+5	483	summam...manum	7	572	extrema	Viansino
+5	497		1	94		Viansino
+5	497		4	589		Viansino
+5	504		9	224		Viansino
+5	506	silebant, silentia	2	255	amica silentia lunae	Viansino
+5	509		9	222	(statione relicta) ipse comes Niso graditur	Viansino
+5	511		9	224		Viansino
+5	513	litora legi	3	292		Viansino
+5	514	rupibus exesis	8	418		Viansino
+5	519		8	359		Viansino
+5	523		8	410		Viansino
+5	536		8	364	contemnere opes	Viansino
+5	557		1	204		Viansino
+5	557		3	114		Viansino
+5	557		4	345		Viansino
+5	557		7	241		Viansino
+5	560		3	61	dare classibus Austros	Viansino
+5	562		3	194		Viansino
+5	562		2	697		Viansino
+5	564		3	195	inhorruit umbra tenebris	Viansino
+5	568		5	17		Viansino
+5	574	desperare	5	23	vertamus iter	Viansino
+5	575	sola	2	354	una salus victis nullam sperare salutem	Viansino
+5	578		1	94		Viansino
+5	579		5	17		Viansino
+5	588		5	28	flecte viam velis	Viansino
+5	590		3	192		Viansino
+5	590		5	8		Viansino
+5	592		5	22		Viansino
+5	594		1	87		Viansino
+5	596		1	122	laxis	Viansino
+5	598		1	85		Viansino
+5	604		1	106		Viansino
+5	609		1	81		Viansino
+5	614	sonat	11	365	Borae cum spiritus alto / insonat Aegaeo	Viansino
+5	625		1	113		Viansino
+5	632	superum convexa	6	75		Viansino
+5	632	superum convexa	10	251		Viansino
+5	633		1	90	intonuere poli	Viansino
+5	637		1	129		Viansino
+5	640		3	564		Viansino
+5	640		1	106		Viansino
+5	641		1	106	unda dehiscens	Viansino
+5	642		3	564		Viansino
+5	645		1	93		Viansino
+5	654		4	379	superis labor est	Viansino
+5	654	quantusne	1	92		Viansino
+5	656		1	94		Viansino
+5	660	sat magna	4	653		Viansino
+5	669		1	94		Viansino
+5	699	dominus rerum	1	282		Viansino
+5	700	talia iactantis	1	102		Viansino
+5	711		4	254		Viansino
+5	711		6	310		Viansino
+5	727		4	412		Viansino
+5	728		2	726		Viansino
+5	729		7	1		Viansino
+5	735		8	370		Viansino
+5	735	gravidum	6	520	gravatum	Viansino
+5	767		2	44	sic notus Ulixes?	Viansino
+5	777		4	433		Viansino
+5	808		6	52		Viansino
+5	811		4	66		Viansino
+6	121	furta	11	515		Viansino
+6	133		9	803		Viansino
+6	151		12	708		Viansino
+6	154	non pudet	9	787	non...miseretque pudetque	Viansino
+6	155	ira;furor	9	795		Viansino
+6	165		2	355		Viansino
+6	166		6	165		Viansino
+6	174	conto detrudit	9	51		Viansino
+6	176		10	415		Viansino
+6	182		9	551		Viansino
+6	184		9	807		Viansino
+6	185		9	783	vestris...undique saeptus aggeribus	Viansino
+6	192		9	806		Viansino
+6	196		9	704		Viansino
+6	198	falarica	9	705		Viansino
+6	205		10	887	immanem aerato circumfert pectore silvam	Viansino
+6	206		9	814	fessos...artus	Viansino
+6	210		10	716		Viansino
+6	232		9	807	iniectis undique telis	Viansino
+6	239	fulmineum	9	812	Mnestheus	Viansino
+6	251		9	817	accepit venientem ac mollibus extulit undis / et laetum sociis...remisit	Viansino
+6	265		7	528		Viansino
+6	272		2	305		Viansino
+6	274		2	496		Viansino
+6	296	glomerato pulvere	9	33		Viansino
+6	312		9	757		Viansino
+6	355		2	197		Viansino
+6	355		11	404		Viansino
+6	380		6	324		Viansino
+6	382		5	373		Viansino
+6	414	praesaga...mens	10	843		Viansino
+6	417		4	13	degeneres animos timor arguit	Viansino
+6	425		3	359		Viansino
+6	453		4	487		Viansino
+6	455		4	515		Viansino
+6	473		4	489		Viansino
+6	495		2	690		Viansino
+6	548	sanie, tabo	8	487		Viansino
+6	553	siccis	9	63		Viansino
+6	563	laeva	4	704		Viansino
+6	589		6	103		Viansino
+6	593		6	123		Viansino
+6	601		11	197		Viansino
+6	625	maestum...squalenti	2	616		Viansino
+6	625	maestum...squalenti	12	416		Viansino
+6	637	traeicto gutture	10	348		Viansino
+6	642		6	237		Viansino
+6	658		6	156		Viansino
+6	664	villosa	8	266		Viansino
+6	695		6	264		Viansino
+6	704	portitor	6	298		Viansino
+6	705	lassate	6	304		Viansino
+6	706	si	4	317		Viansino
+6	733		6	257		Viansino
+6	743		8	246		Viansino
+6	776		2	270		Viansino
+6	785		6	824		Viansino
+6	786		6	758	illustres animas	Viansino
+6	786		6	818		Viansino
+6	793		8	668		Viansino
+6	795		6	824		Viansino
+6	812		6	614		Viansino
+6	815	incertus	6	890		Viansino
+6	817		1	384		Viansino
+7	16	impulit arma	8	3		Viansino
+7	26	crastina	10	244	crastina lux	Viansino
+7	26	crastina	10	745		Viansino
+7	47	signa petit	2	249	miseri quibus ultimus esset ille dies	Viansino
+7	58	vertere cuncta	2	652		Viansino
+7	64	saevus	6	819		Viansino
+7	80	sit iuris 	12	771		Viansino
+7	84	deorum dolos	4	95		Viansino
+7	86	fata...menti	2	54		Viansino
+7	88	tempus eget	2	522		Viansino
+7	93	labor belli	11	126		Viansino
+7	111	caeco in Marte	2	335		Viansino
+7	114		8	536		Viansino
+7	116		6	87		Viansino
+7	125		7	594	rerumque reliquit habenas	Viansino
+7	129		4	644		Viansino
+7	131	condere fatum	10	35		Viansino
+7	131		7	145		Viansino
+7	139		7	626		Viansino
+7	148	recoxit	7	636		Viansino
+7	172	monstris deum	3	59		Viansino
+7	186	trepidasse metu	2	685		Viansino
+7	186	trepidasse metu	6	491		Viansino
+7	194		1	242		Viansino
+7	195		2	324		Viansino
+7	197	praesaga	10	177	praesagi fulminis	Viansino
+7	247		7	293	fatis contraria nostris / fata Phrygum	Viansino
+7	253	in manibus	10	280		Viansino
+7	254	dies...promissam	9	107		Viansino
+7	270		9	226		Viansino
+7	272	dissona...barbaries	8	685		Viansino
+7	296	vocibus his	9	83		Viansino
+7	309	manu	12	602		Viansino
+7	320		6	405		Viansino
+7	320		9	294		Viansino
+7	320		10	824		Viansino
+7	341	omen erat	7	174		Viansino
+7	342	praevectus equo	7	166		Viansino
+7	348	medio	5	109		Viansino
+7	348	circoque in medio campo	12	8		Viansino
+7	358		6	824		Viansino
+7	360		12	565	Iuppiter hac stat	Viansino
+7	370	hortari in proelia	11	520		Viansino
+7	390		6	745	temporis orbe	Viansino
+7	391		6	733		Viansino
+7	392		6	773		Viansino
+7	408		7	717		Viansino
+7	412	tractu	3	138		Viansino
+7	413	insanam	9	34	vaesana	Viansino
+7	422	geminum = uterque	7	100		Viansino
+7	438		8	342		Viansino
+7	467	constrinxit	3	3	gelidusque coit formidine sanguis	Viansino
+7	485		11	651		Viansino
+7	492		10	431		Viansino
+7	512		1	150		Viansino
+7	516		12	856		Viansino
+7	517	mortes	3	348		Viansino
+7	528		12	337		Viansino
+7	538		12	36	campique ingentes ossibus albent	Viansino
+7	552		9	525		Viansino
+7	552		12	500		Viansino
+7	557		9	718		Viansino
+7	560		12	357		Viansino
+7	568		8	703		Viansino
+7	568		12	331		Viansino
+7	569		12	331		Viansino
+7	570		12	287		Viansino
+7	571	caedes oriuntur	2	411		Viansino
+7	571	caedes oriuntur	11	885		Viansino
+7	574		6	302		Viansino
+7	577		1	478	versa...hasta	Viansino
+7	603		10	488	corruit in vulnus	Viansino
+7	605		11	669	moriensque suo se in vulnere versat	Viansino
+7	610		2	535		Viansino
+7	610		10	900		Viansino
+7	616	vita fugit	11	831		Viansino
+7	616	vertere	8	437	Gorgona desecto vertentem lumina collo	Viansino
+7	617		12	500		Viansino
+7	621	ore adverso	9	442		Viansino
+7	622	anima	9	349		Viansino
+7	658		6	377		Viansino
+7	662	est mihi	3	33		Viansino
+7	662	est mihi	7	628		Viansino
+7	722	patriae viscera	6	833		Viansino
+7	730	viles animas	11	372		Viansino
+7	765		4	563		Viansino
+7	769		7	351		Viansino
+7	777		4	469		Viansino
+7	837		12	339		Viansino
+7	860	religare ab	7	106		Viansino
+7	865	surgentem de	10	187		Viansino
+7	866		7	227		Viansino
+8	5		2	728		Viansino
+8	57	canitem...atro	2	273	aterque cruento / pulvere	Viansino
+8	68	revocato sanguine	1	335	a sanguine	Viansino
+8	84		7	413	fortuna fuit	Viansino
+8	104		6	501		Viansino
+8	118		3	104		Viansino
+8	132		4	347		Viansino
+8	133		8	65		Viansino
+8	138	totum	11	694		Viansino
+8	139	heu nimium felix	4	657		Viansino
+8	141	certum	3	686		Viansino
+8	142	accipe	3	486		Viansino
+8	143		2	431		Viansino
+8	155		8	394		Viansino
+8	171		3	515		Viansino
+8	172		3	515		Viansino
+8	195		3	285		Viansino
+8	199		5	159		Viansino
+8	199		5	144		Viansino
+8	202	ostendit terras	6	869		Viansino
+8	210		9	393		Viansino
+8	261		3	457		Viansino
+8	280	mentis...pondera	12	727		Viansino
+8	295	sonipes	4	135		Viansino
+8	307		7	293		Viansino
+8	326		9	391		Viansino
+8	471		3	568	fessos ventus cum sole reliquit	Viansino
+8	536		2	130		Viansino
+8	568		2	54		Viansino
+8	583		10	845	ad caelum tendit palmas	Viansino
+8	599		3	658		Viansino
+8	638	complet	7	395		Viansino
+8	639		4	680		Viansino
+8	648	matrum sola	9	217		Viansino
+8	648	matrum sola	9	480		Viansino
+8	654		12	603		Viansino
+8	680		1	589		Viansino
+8	698		2	554		Viansino
+8	717		6	166		Viansino
+8	729		6	224		Viansino
+8	734		11	188		Viansino
+8	735	ambiat	11	189	decurrere rogos	Viansino
+8	736		6	222	ingenti...feretro	Viansino
+8	740		6	222		Viansino
+8	759		10	409		Viansino
+8	773		6	333	mortis honore carentis	Viansino
+8	776		1	176		Viansino
+8	786		6	226		Viansino
+8	788		6	226		Viansino
+8	797	refuso...oceano	7	225		Viansino
+8	832		8	698		Viansino
+8	835	tu quoque	7	1		Viansino
+9	7	ignea	6	76		Viansino
+9	42		5	840		Viansino
+9	43	ausonio	6	337		Viansino
+9	73		6	270		Viansino
+9	101		9	493		Viansino
+9	110	decrevit	4	475	mori	Viansino
+9	125		9	280	contra quem talia fatur	Viansino
+9	175		4	494		Viansino
+9	175		4	507		Viansino
+9	175		4	648		Viansino
+9	176		1	653		Viansino
+9	252	comitante	2	40	passim	Viansino
+9	285		1	430		Viansino
+9	285		6	707		Viansino
+9	285		12	587		Viansino
+9	297	muros, moenia	2	234		Viansino
+9	297	muros, moenia	9	196		Viansino
+9	320		5	696		Viansino
+9	339	elisus	3	567		Viansino
+9	349		6	171		Viansino
+9	357	insopiti	4	484		Viansino
+9	360		6	203		Viansino
+9	391		2	317	pulchrumque mori	Viansino
+9	468	exesis	8	418		Viansino
+9	523		3	515		Viansino
+9	604	nunc, olim	4	627		Viansino
+9	608	largus	11	338		Viansino
+9	645		7	327		Viansino
+9	663		8	695		Viansino
+9	717		2	471		Viansino
+9	798		7	462		Viansino
+9	818		6	278		Viansino
+9	818		6	404		Viansino
+9	848		1	132		Viansino
+9	918		12	419		Viansino
+9	956		8	329		Viansino
+9	956		8	332		Viansino
+9	956		12	823		Viansino
+9	962		1	100		Viansino
+9	969		8	348	silvestris horrida dumis	Viansino
+9	970		2	299		Viansino
+9	973	sine nomine	6	776		Viansino
+9	979		7	116		Viansino
+9	979		8	337		Viansino
+9	979		8	345		Viansino
+9	983	si quid	9	446	si quid mea carmina possunt	Viansino
+9	988		8	271		Viansino
+9	989	turicremos	4	453		Viansino
+9	990		5	743		Viansino
+9	1067		2	354	salus victis	Viansino
+9	1092	cineras, manibus	4	34		Viansino
+10	19		6	404		Viansino
+10	21		11	484		Viansino
+10	22		1	602		Viansino
+10	30		2	653		Viansino
+10	59		2	573		Viansino
+10	63	sistro	8	696		Viansino
+10	63	si fas	8	688	nefas	Viansino
+10	66		8	688		Viansino
+10	66		6	696		Viansino
+10	80		4	271	Libycis teris otia terris	Viansino
+10	82	formae confisa	8	393		Viansino
+10	85		6	125		Viansino
+10	87	sceptris...paternis	10	852		Viansino
+10	104	duras aures	4	428		Viansino
+10	109	tumultu	1	725		Viansino
+10	112		1	726		Viansino
+10	122		4	261		Viansino
+10	125		11	771		Viansino
+10	127		1	703		Viansino
+10	127		1	705		Viansino
+10	141	candida pectora	9	432		Viansino
+10	153		6	844		Viansino
+10	159		1	701		Viansino
+10	165		1	417		Viansino
+10	169		8	364		Viansino
+10	172		3	630		Viansino
+10	175		10	539		Viansino
+10	181		6	119	si potuit...et mihi genus	Viansino
+10	188		4	67		Viansino
+10	189	amor vei: veritatis amantissimus	2	10	tantus amor cognoscere	Viansino
+10	194		2	157		Viansino
+10	211		10	273		Viansino
+10	246		10	377		Viansino
+10	321		1	55		Viansino
+10	376		6	622		Viansino
+10	382		1	550		Viansino
+10	458		2	567		Viansino
+10	459		11	882	tuta deorum	Viansino
+10	461	in omnia	2	675		Viansino
+10	462		2	585		Viansino
+10	511	proteos	2	262		Viansino
+10	537	praetexunt	6	5		Viansino
