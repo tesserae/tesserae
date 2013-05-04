@@ -4,6 +4,7 @@ use File::Spec::Functions;
 use File::Basename;
 
 use utf8;
+use Unicode::Normalize;
 
 require Exporter;
 
@@ -166,6 +167,7 @@ sub standardize {
 	
 	for (@string) {
 		
+		$_ = NFKD($_);
 		$_ = lcase($lang, $_);
 		
 		# latin

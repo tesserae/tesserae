@@ -7,6 +7,12 @@ use File::Copy;
 use File::Path qw/mkpath rmtree/;
 use File::Spec::Functions;
 use File::Basename;
+use Getopt::Long;
+use utf8;
+
+my $div;
+
+GetOptions('div=s' => \$div);
 
 while (my $file = shift @ARGV) {
 
@@ -36,8 +42,8 @@ while (my $file = shift @ARGV) {
 	my $n = -1;
 	my $last_n = -1;
 
-	open (IF, "<$file");
-	open (OF, ">&STDERR");
+	open (IF, "<:utf8", $file);
+	binmode ":utf8", STDOUT;
 
 	while (my $line = <IF>) {
 	
@@ -52,21 +58,20 @@ while (my $file = shift @ARGV) {
 		}
 
 		if ($n ne $last_n) {
-
-			close OF;
 			
 			my $file_out = catfile($dir, "$name.part.$n.tess");
 
 			print STDERR "$nlines lines\n" unless $last_n == -1;
 
 			open (OF, ">:utf8", $file_out);
+			select OF;
 
 			print STDERR "writing $file_out\n";
 
 			$nlines = 0;
 		}
 
-		print OF "$line";
+		print $line;
 
 		$nlines++;
 
