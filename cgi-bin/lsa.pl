@@ -160,8 +160,8 @@ print <<END;
 	</head>
 
 	<frameset cols="50%,50%">
-		<frame name="left"  src="$url_cgi/lsa.target.pl?$params">
-		<frame name="right" src="$url_cgi/lsa.source.pl?$params">
+		<frame name="left"  src="$url{cgi}/lsa.target.pl?$params">
+		<frame name="right" src="$url{cgi}/lsa.source.pl?$params">
 	</frameset>
 </html>
 

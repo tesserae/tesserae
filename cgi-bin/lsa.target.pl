@@ -216,7 +216,7 @@ $table .= "</table>\n";
 
 # load the template
 
-my $frame = `php -f $fs_html/frame.fullscreen.php`;
+my $frame = `php -f $fs{html}/frame.fullscreen.php`;
 
 # add some style into the head
 
@@ -238,7 +238,7 @@ $frame =~ s/<!--head-->/$style/;
 
 # read drop down list
 
-open (FH, "<:utf8", catfile($fs_html, "textlist.$lang{$target}.r.php"));
+open (FH, "<:utf8", catfile($fs{html}, "textlist.$lang{$target}.r.php"));
 my $menu;
 while (<FH>) { $menu .= "$_" }
 close FH;
@@ -251,10 +251,10 @@ $menu =~ s/value="$target"/value="$target" selected="selected"/;
 # put together the form
 
 my $nav = "
-		<form action=\"$url_cgi/lsa.pl\" method=\"POST\" target=\"_top\">
+		<form action=\"$url{cgi}/lsa.pl\" method=\"POST\" target=\"_top\">
 		<table>
 			<tr>
-				<td><a href=\"$url_html/experimental.php\" target=\"_top\">Back to Tesserae</a></td>
+				<td><a href=\"$url{html}/experimental.php\" target=\"_top\">Back to Tesserae</a></td>
 			</tr>
 			<tr>
 				<td>
@@ -303,7 +303,7 @@ sub getBounds {
 	
 	my $phrase_id = shift;
 	
-	my @bounds = @{retrieve(catfile($fs_data, 'lsa', $lang{$target}, $target, 'bounds.target'))};
+	my @bounds = @{retrieve(catfile($fs{data}, 'lsa', $lang{$target}, $target, 'bounds.target'))};
 
 	return @{$bounds[$phrase_id]};
 }
