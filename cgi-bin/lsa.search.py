@@ -31,6 +31,7 @@ def main():
 	
 	target = 'lucan.bellum_civile.part.1'
 	source = 'vergil.aeneid.part.1'
+	lang   = 'la'
 	
 	unit_id  = 0
 	topics   = 15
@@ -75,11 +76,12 @@ def main():
 		target  = args.target
 		unit_id = args.unit_id
 		topics  = args.topics
+		lang    = args.lang
 	
 	# set paths
 	
-	dir_source = os.path.join(fs['data'], 'lsa', args.lang, source)
-	dir_target = os.path.join(fs['data'], 'lsa', args.lang, target)
+	dir_source = os.path.join(fs['data'], 'lsa', lang, source)
+	dir_target = os.path.join(fs['data'], 'lsa', lang, target)
 
 	#
 	# load data from training program

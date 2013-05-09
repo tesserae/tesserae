@@ -110,12 +110,12 @@ my $topics = 15;
 #
 
 GetOptions( 
-	'target=s'    => \$target,
-	'source=s'    => \$source,
-	'unit_id=i'   => \$unit_id,
-	'topics|n=i'  => \$topics,
-	'threshold=f' => \$threshold,
-	'quiet'       => \$quiet );
+	'target|t=s'   => \$target,
+	'source|s=s'   => \$source,
+	'unit_id|i=i'  => \$unit_id,
+	'topics|n=i'   => \$topics,
+	'threshold=f'  => \$threshold,
+	'quiet|q'      => \$quiet );
 
 #
 # cgi input
