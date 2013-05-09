@@ -285,7 +285,7 @@ else {
 
 # get the list of texts to index
 
-my @corpus = @{Tesserae::get_textlist($lang, -no_part => 1)};
+my @corpus = @{Tesserae::get_textlist($lang, -no_part => 1, -prose => 0)};
 
 # the giant index
 

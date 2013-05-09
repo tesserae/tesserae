@@ -413,8 +413,7 @@ else {
 		default  => "$url{cgi}/read_bin.pl?session=$session",
 		recall   => "$url{cgi}/check-recall.pl?session=$session",
 		fulltext => "$url{cgi}/fulltext.pl?session=$session",
-		multi    => "$url{cgi}/multitext.pl?session=$session;mcutoff=$multi_cutoff"
-		         . join("", map {";include=$_"} @include)
+		multi    => "$url{cgi}/multitext.pl?session=$session;mcutoff=$multi_cutoff;list=1"
 	);
 
 	
@@ -797,6 +796,11 @@ nstore \%match_source, catfile($file_results, "match.source");
 nstore \%match_score,  catfile($file_results, "match.score" );
 nstore \%match_meta,   catfile($file_results, "match.meta"  );
 
+if (@include) {
+
+	write_multi_list($file_results, \@include);
+}
+
 print "store>>" . (time-$t1) . "\n" if $no_cgi and $bench;
 
 print <<END unless ($no_cgi);
@@ -1134,4 +1138,24 @@ sub score_team {
 	}
 	
 	return $score;
+}
+
+# save the list of multi-text searches to session file
+
+sub write_multi_list {
+	
+	my ($session, $incl) = @_;
+	
+	my @include = @$incl;
+	
+	my $file_list = catfile($session, '.multi.list');
+	
+	open (FH, ">:utf8", $file_list) or die "can't write $file_list: $!";
+	
+	for (@include) {
+	
+		print FH $_ . "\n";
+	}
+	
+	close FH;
 }

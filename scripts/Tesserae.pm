@@ -474,6 +474,11 @@ sub get_textlist {
 	
 		@textlist = sort {text_sort($a, $b)} @textlist;
 	}
+	
+	if (defined $opt{-prose}) {
+		
+		@textlist = grep { Tesserae::check_prose_list($_) == $opt{-prose} } @textlist;
+	}
 		
 	return \@textlist;
 }

@@ -142,6 +142,10 @@ my @include = ();
 
 my $max_processes = 0;
 
+# a file containing the list of texts to search
+
+my $list = 0;
+
 #
 # command-line arguments
 #
@@ -153,6 +157,7 @@ GetOptions(
 	'session=s'  => \$session,
 	'exclude=s'  => \@exclude,
 	'include=s'  => \@include,
+	'list'       => \$list,
 	'cutoff=i'   => \$multi_cutoff,
 	'parallel=i' => \$max_processes,
 	'quiet'      => \$quiet );
@@ -165,9 +170,10 @@ unless ($no_cgi) {
 	
 	my $query   = new CGI || die "$!";
 
-	$session    = $query->param('session') || die "no session specified from web interface";
+	$session      = $query->param('session') || die "no session specified from web interface";
 	$multi_cutoff = $query->param('mcutoff'); 
-	@include = $query->param('include');
+	@include      = $query->param('include');
+	$list         = $query->param('list');
 
 	print header();
 	
@@ -252,6 +258,11 @@ my $total_matches = $meta{TOTAL};
 
 my $comments = $meta{COMMENT};
 
+#
+# add source and target to exclude list
+# 
+
+push @exclude, ($target, $source);
 
 #
 # load texts
@@ -295,7 +306,7 @@ my %index_target   = %{ retrieve("$file_target.index_$feature") };
 
 # get the list of all the other texts in the corpus
 
-my @textlist = @{get_textlist($target, $source)};
+my @textlist = @{textlist($target, $source, \@include, \@exclude, $list)};
 
 # create a directory for multi search data
 
@@ -332,38 +343,52 @@ END
 # subroutines
 #
 
-sub get_textlist {
+sub textlist {
 	
-	my ($target, $source) = @_[0,1];
+	my ($target, $source, $include, $exclude, $list) = @_;
 	
 	for ($target, $source) { s/[\._]part[\._].*// }
 
-	my $directory = catdir($fs{data}, 'v3', $lang{$target});
-
-	opendir(DH, $directory);
-	
-	my @all_texts = grep {/^[^.]/ && ! /[\._]part[\._]/} readdir(DH);
-	
-	closedir(DH);
-	
-	if (@include) {
-	
-		@all_texts = @{Tesserae::intersection(\@include, \@all_texts)};
-	}
+	my $all_texts = Tesserae::get_textlist($lang{$target}, -no_part=>1);
 	
 	my @textlist;
 	
-	for my $text (@all_texts) {
-
-      next if $text eq $target;
-      next if $text eq $source;
-
-      next if grep { $_ eq $text } @exclude;
-
-      push @textlist, $text;
-   	}
+	if ($list) {
+	
+		@textlist = @{Tesserae::intersection($all_texts, parse_list($file))};
+	}
+	elsif (@$include) {
+	
+		@textlist = @{Tesserae::intersection($all_texts, $include)};
+	}
+	else {
+	
+		@textlist = @$all_texts;
+	}
+		
+	@textlist = grep {my $test = $_; ! grep {$_ eq $test} @exclude} @textlist;
 	
 	return \@textlist;
+}
+
+sub parse_list {
+
+	my $file = shift;
+	my $file_list = catdir($file, '.multi.list');
+	
+	open (FH, "<:utf8", $file_list) or die "can't open list $file_list: $!";
+	
+	my @all_texts;
+	
+	while (my $line = <FH>) {
+	
+		if ($line =~ /(\S+)/) {
+		
+			push @all_texts, $1;
+		}
+	}
+	
+ 	return \@all_texts;
 }
 
 sub search_multi {
