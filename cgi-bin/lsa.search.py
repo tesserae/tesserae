@@ -35,10 +35,6 @@ def main():
 	unit_id  = 0
 	topics   = 15
 	
-	# paths to local installation
-
-	fs, url = read_config(read_pointer())
-
 	#
 	# look for user options
 	#
