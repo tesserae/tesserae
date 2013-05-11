@@ -290,7 +290,7 @@ mkpath($temp_dir);
 # get files to be processed from cmd line args
 #
 
-my @files = @ARGV;
+my @files = map { glob } @ARGV;
 
 for my $file_in (@files) {
 	
