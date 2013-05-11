@@ -2,7 +2,7 @@ package Tesserae;
 
 use File::Spec::Functions;
 use File::Basename;
-
+use Storable;
 use utf8;
 use Unicode::Normalize;
 
@@ -12,7 +12,7 @@ our @ISA = qw(Exporter);
 
 our @EXPORT = qw(%top $apache_user %is_word %non_word $phrase_delimiter %ancillary %fs %url);
 
-our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni alpha stoplist_hash stoplist_array check_prose_list);
+our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni alpha stoplist_hash stoplist_array check_prose_list lang);
 
 #
 # read config file
@@ -24,6 +24,10 @@ my ($fs_ref, $url_ref) = read_config(catfile($lib, 'tesserae.conf'));
 
 our %fs  = %$fs_ref;
 our %url = %$url_ref;
+
+# cache for language lookup
+
+my %lang;
 
 #
 # this is legacy stuff for v2
@@ -516,6 +520,22 @@ sub text_sort {
 	}
 	
 	return ($lpart <=> $rpart);
+}
+
+# check a text's language
+
+sub lang {
+	
+	my $text = shift;
+	
+	my $file_lang = catfile($fs{data}, 'common', 'lang');
+
+	if (! %lang and -s $file_lang) {
+		
+		%lang = %{retrieve($file_lang)};
+	}
+	
+	return $lang{$text};
 }
 
 1;

@@ -60,4 +60,5 @@ import re
 
 fs, url, lib = read_config(os.path.join(os.path.dirname(__file__), 'tesserae.conf'))
 
-sys.path.append(lib)
+for l in lib:
+	sys.path.append(l)

@@ -285,7 +285,8 @@ else {
 
 # get the list of texts to index
 
-my @corpus = @{Tesserae::get_textlist($lang, -no_part => 1, -prose => 0)};
+my @corpus = @{Tesserae::get_textlist($lang, -no_part => 1)};
+@corpus = grep { ! /vulgate/ } @corpus;
 
 # the giant index
 

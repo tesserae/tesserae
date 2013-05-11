@@ -262,7 +262,7 @@ my $comments = $meta{COMMENT};
 # add source and target to exclude list
 # 
 
-push @exclude, ($target, $source);
+push @exclude, map { s/\.part\..*// } ($target, $source);
 
 #
 # load texts
