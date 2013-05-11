@@ -135,14 +135,22 @@
 					</tr>
 					<tr>
 						<td><span class="h2">Texts to search:</span></td>
-						<td><input type="checkbox" id="select_all" onclick="return SelectAll()" value=1>Select All</input></td>
+						<td>
+							<input type="checkbox" id="select_all"   onclick="return SelectAll()">All</input>
+							<input type="checkbox" id="select_prose" onclick="return SelectCat(this)" class="prose">Prose</input>
+							<input type="checkbox" id="select_verse" onclick="return SelectCat(this)" class="verse">Verse</input>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<select name="include" ID="include" multiple="true">
+								<?php include $fs_html.'/textlist.la.l.php'; ?>
+							</select>
+						</td>
 					</tr>
 				</table>                       
 				
-				<h2></h2>
-					<?php include $fs_html . '/textlist.la.multi.php' ?>
-				</tr>
-
 				<p>
 					<input type="hidden" name="frontend" value="multi" />
 					<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit" />
@@ -153,13 +161,32 @@
 		<script language="javascript">
 		
 			function SelectAll() {                             
-				var master = document.getElementById('select_all');
-  			   var chkbox = document.getElementsByName('include');
+				var dominus = document.getElementById('select_all');
+  			   var servus  = document.getElementById('include');
 				                                            
-				for (var i = 0; i < chkbox.length; i++) {
+				for (var i = 0; i < servus.length; i++) {
 				 
-				  chkbox[i].checked = master.checked;
+				  servus[i].selected = dominus.checked;
 				}
+				
+				var prose = document.getElementById('select_prose');
+				var verse = document.getElementById('select_verse');
+				
+				prose.checked = false;
+				verse.checked = false;
+			}
+			function SelectCat(dominus) {                             
+  			   var servus = document.getElementById('include');
+				                                            
+				for (var i = 0; i < servus.length; i++) {
+					
+					if (servus[i].getAttribute("class") == dominus.getAttribute("class")) {
+				  		servus[i].selected = dominus.checked;
+					}
+				}
+				
+				var all = document.getElementById('select_all'); 
+				all.checked = false;
 			}
 		</script>
 

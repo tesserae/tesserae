@@ -165,6 +165,8 @@ sub dropdown {
 	
 	for my $name (@full) {
 
+		my $category  = Tesserae::check_prose_list($name) ? 'prose' : 'verse';
+
 		if (defined $part{$name}) {
 		
 			print FH sprintf("<optgroup label=\"%s\">\n", display($name));
@@ -174,18 +176,20 @@ sub dropdown {
 				my $file_name = $_->{file};
 				my $part_name = $_->{part};
 				
-				print FH sprintf("   <option value=\"%s\">%s - %s</option>\n",
+				print FH sprintf("   <option value=\"%s\" class=\"%s\">%s - %s</option>\n",
 						$file_name,
-				        display($name),
-				        display($part_name));
+						$category,
+				      display($name),
+				      display($part_name));
 			}
 			
 			print FH "</optgroup>\n";
 		}
 		else {
 		
-			print FH sprintf("<option value=\"%s\">%s</option>\n",
+			print FH sprintf("<option value=\"%s\" class=\"%s\">%s</option>\n",
 				$name,
+				$category,
 				display($name));
 		}
 	}
