@@ -813,7 +813,6 @@ closedir(DH);
 
 # save
 
-nstore \%lang, $file_lang;
 nstore \%abbr, $file_abbr;
 
 # clean up temp dir
