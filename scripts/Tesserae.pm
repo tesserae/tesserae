@@ -2,7 +2,7 @@ package Tesserae;
 
 use File::Spec::Functions;
 use File::Basename;
-use Storable;
+use Storable qw(nstore retrieve);
 use utf8;
 use Unicode::Normalize;
 
@@ -526,13 +526,19 @@ sub text_sort {
 
 sub lang {
 	
-	my $text = shift;
+	my ($text, $lang) = @_;
 	
 	my $file_lang = catfile($fs{data}, 'common', 'lang');
 
 	if (! %lang and -s $file_lang) {
 		
 		%lang = %{retrieve($file_lang)};
+	}
+	
+	if ($lang) {
+	
+		$lang{$text} = $lang;
+		nstore \%lang, $file_lang;
 	}
 	
 	return $lang{$text};

@@ -183,9 +183,6 @@ my $file_abbr = catfile($fs{data},'common', 'abbr');
 	
 if ( -s $file_abbr )	{  %abbr = %{retrieve($file_abbr)} }
 
-my %lang;
-my $file_lang = catfile($fs{data}, 'common', 'lang');
-
 # these are for optional use of Lingua::Stem
 
 my $use_lingua_stem = 0;
@@ -237,10 +234,6 @@ if ($help) {
 
 	pod2usage(1);
 }
-
-# get language list
-
-if (-s $file_lang )	{ %lang = %{retrieve($file_lang)} }
 
 # check to make sure stemmer module is available
 
@@ -325,9 +318,9 @@ for my $file_in (@files) {
 
 	if ( defined $lang and $lang ne "") {
 	}
-	elsif ( defined $lang{$name} ) {
+	elsif ( defined Tesserae::lang($name) ) {
 
-		$lang = $lang{$name};
+		$lang = Tesserae::lang($name);
 	}
 	elsif (Cwd::abs_path($file_in) =~ m/$fs{text}\/([a-z]{1,4})\//) {
 
@@ -788,7 +781,9 @@ for (@names) {
 	
 	s/\.lang$//;
 	
-	$lang{$_} = $lang;
+	# save to database
+	
+	Tesserae::lang($_, $lang);
 	
 	close LAFH;
 }

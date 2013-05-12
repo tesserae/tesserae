@@ -195,6 +195,7 @@ unless ($no_cgi) {
 	
 END
 
+	$quiet = 1;
 }
 
 my $file;
