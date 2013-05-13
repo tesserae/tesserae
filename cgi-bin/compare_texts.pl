@@ -60,9 +60,9 @@ BEGIN {
 use lib $lib;
 use Tesserae;
 use EasyProgressBar;
-use Word;
-use Phrase;
-use Parallel;
+use v2::Word;
+use v2::Phrase;
+use v2::Parallel;
 
 # modules to read cmd-line options and print usage
 

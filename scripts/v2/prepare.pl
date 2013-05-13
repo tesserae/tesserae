@@ -65,14 +65,15 @@ use lib $lib;
 use Tesserae;
 use EasyProgressBar;
 
-use Word;
-use Phrase;
-use Parallel;
+use v2::Word;
+use v2::Phrase;
+use v2::Parallel;
 
 # load additional modules necessary for this script
 
 use Storable qw(retrieve nstore);
 use File::Basename;
+use File::Path qw(mkpath rmtree);
 
 # load the list of canonical reference abbreviations
 
@@ -445,7 +446,11 @@ while (my $file_in = shift @ARGV)
 
 	# write the parsed file
 
-	my $file_out = catfile($fs{data}, 'v2', 'parsed', "$name.parsed");
+	my $dir_parsed = catdir($fs{data}, 'v2', 'parsed');
+	
+	mkpath($dir_parsed) unless -d $dir_parsed;
+	
+	my $file_out = catfile($dir_parsed, "$name.parsed");
 
 	print STDERR "writing $file_out\n";
 	nstore \@phrase_array, $file_out;
@@ -486,7 +491,7 @@ sub add_line
 
 		# for exact word matching, the lowercase version of same
 
-		$word->word(lcase($lang, $form));
+		$word->word(Tesserae::lcase($lang, $form));
 
 		# its locus
 
