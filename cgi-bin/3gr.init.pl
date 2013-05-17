@@ -161,6 +161,7 @@ unless ($no_cgi) {
 		<meta http-equiv="Refresh" content="0; url='$redirect'">
 	</head>
 	<body>
+		<div class="waiting">
 END
 
 }
@@ -391,12 +392,10 @@ else {
 	$session->param('keys',   \@keys);
 	$session->param('maxval', [@max{@keys}]);
 	
-
-	print $session->id();
-
 	print <<END;
 	
-		Your search is done.  If you are not redirected automatically, <a href="$redirect">click here.</a>
+			Your search is done.  If you are not redirected automatically, <a href="$redirect">click here.</a>
+		</div>
 	</body>
 </html>
 END

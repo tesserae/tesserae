@@ -10,10 +10,10 @@
 				<h1>Greek Search</h1>
 				
 				<p>
-					This is the prototype for our forthcoming Greek search.  Texts will be very limited for the time being.
+					We are working to expand the corpus of searchable Greek texts; for the present, selection is limited.
 				</p>
 				<p>
-						These results have not been tested.  If you notice anything interesting (or broken), please let us know.
+					These results have not been tested.  If you notice anything interesting (or broken), please let us know.
 				</p>
 				
 				<table class = "input">

@@ -336,7 +336,7 @@ print <<END unless ($no_cgi);
    	<p>
 			Your results are done!  If you are not redirected automatically, 
 			<a href="$url{cgi}/read_multi.pl?session=$session">Click here</a> to proceed.
-	</p>
+		</p>
 	</div>
 </body>
 </html>
@@ -421,7 +421,7 @@ sub search_multi {
 	}
 	else {
 	
-		print "<p>parsing the intitial search...\n";
+		print "<p>parsing the intitial search...</p>\n";
 		
 		$pr = HTMLProgress->new(scalar(keys %match_target));
 		
