@@ -223,7 +223,7 @@ $bench = merge($tess, $bench);
 # print results
 
 if   ($no_cgi) { export($bench) }
-else           {...}
+else           {}
 
 
 #
@@ -255,7 +255,6 @@ sub export {
 }
 
 sub html_no_session {
-	...
 }
 
 #
