@@ -196,12 +196,6 @@ my $max_processes = 0;
 my $pm;
 
 #
-# work is prose
-#
-
-my $prose = 0;
-
-#
 # declare language tools
 #
 
@@ -215,6 +209,9 @@ my $quiet = 0;
 # print usage and exit
 my $help = 0;
 
+# flag work as prose (not used yet)
+my $prose = 0;
+
 #
 # command line options
 #
@@ -223,8 +220,8 @@ GetOptions(
 	"lang=s"          => \$lang,
 	"parallel=i"      => \$max_processes,
 	"quiet"           => \$quiet,
-	"use-lingua-stem" => \$use_lingua_stem,
 	"prose"           => \$prose,
+	"use-lingua-stem" => \$use_lingua_stem,
 	"help"            => \$help
 	);
 
@@ -672,7 +669,7 @@ for my $file_in (@files) {
 		
 		$phrase[$phrase_id]{LINE_ID} = [sort {$a <=> $b} keys %{$phrase[$phrase_id]{LINE_ID}} ];
 
-		# if there's a range, make it easy to read;
+		# if there's a range, just use the first line
 			
 		$phrase[$phrase_id]{LOCUS} = $line[$phrase[$phrase_id]{LINE_ID}[0]]{LOCUS};
 	}
@@ -687,24 +684,10 @@ for my $file_in (@files) {
 	
 	unless (-d $path_data ) { mkpath($path_data) }
 	
-	# say whether we're processing as prose
-	
-	if ($prose) {
-	
-		print STDERR "Using prose mode.\n";
-	}
-
 	my $file_out = catfile($path_data, $name);
 
 	print "writing $file_out.token\n" unless $quiet;
 	nstore \@token, "$file_out.token";
-
-	# in the case of prose, overwrite line data
-	# with phrase data
-
-	@line = @phrase if $prose;
-
-	# store line and phrase data
 
 	print "writing $file_out.line\n" unless $quiet;
 	nstore \@line, "$file_out.line";

@@ -71,14 +71,24 @@ use Pod::Usage;
 use Storable;
 use CGI qw/:standard/;
 
+# is the program being run from the web or
+# from the command line?
+
+my $query = CGI->new() || die "$!";
+
+my $no_cgi = defined($query->request_method()) ? 0 : 1;
+
 # set parameters
 
 my ($target, $unit, $id);
-my $no_cgi = 0;
 
 # get options from command line
 
-GetOptions('no-cgi' => \$no_cgi, 'target=s' => \$target, 'unit=s' => \$unit, 'id=i' => \$id);
+GetOptions(
+	'target=s' => \$target, 
+	'unit=s'   => \$unit, 
+	'id=i'     => \$id
+);
 
 # Get further options from cgi interface if appropriate
 
@@ -134,17 +144,27 @@ else {
 	@lines = ($id);
 }
 
-# if the context is fewer than 10 lines, then add some
+# if the context is fewer than 80 words, then add some
 # to the beginning and the end.
 
-if ($#lines < 9) {
-	
-	my $needed = int((10 - $#lines)/2);
+for (my ($len, $left, $right) = (0, @lines[0,-1]); $len < 80;) {
 
-	my $start = $lines[0] >= 5 ? $lines[0] - 5 : 0;
-	my $end = ($lines[-1] + 5) <= $#line ? $lines[-1] + 5 : $#line;
+	$left--  unless $left  == 0;
+	$right++ unless $right == $#line;
 	
-	@lines = ($start..$end);
+	@lines = ($left..$right);
+	
+	last if $left == 0 and $right == $#line;
+	
+	$len = 0;
+	
+	for my $l (@lines) { 
+		
+		for my $t (@{$line[$l]{TOKEN_ID}}) {
+		
+			$len ++ if $token[$t]{TYPE} eq 'WORD';
+		}
+	}
 }
 
 # display the text
@@ -176,7 +196,7 @@ for my $line_id (@lines) {
 	else {
 		
 		if ($line_id == $id) { $mark = "&#9758;" }
-		$col_l = "<td>";
+		$col_l = "<td valign=\"top\">";
 		$col_r = "</td>";
 		$row_l = "      <tr>";
 		$row_r = "</tr>\n";
