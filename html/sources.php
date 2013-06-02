@@ -1,5 +1,5 @@
 <?php include "first.php"; ?>
-<?php include "nav_about.php"; ?>
+<?php include "nav_search.php"; ?>
 		</div>
 		<div id="main">
 			<h1>
@@ -25,6 +25,67 @@
 					<th>
 						Added by
 					</th>
+				</tr>
+				<tr>
+					<td>Aeschylus</td>
+				        <td>Agamemnon</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0005">Perseus</a></td>
+					<td>Herbert Weir Smyth, Ph.D., <em>Aeschylus, with an English translation by Herbert Weir Smyth, Ph. D. in two volumes.</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1926.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+				<tr>
+					<td>Aeschylus</td>
+				        <td>Eumenides</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0005">Perseus</a></td>
+					<td>Herbert Weir Smyth, Ph.D., <em>Aeschylus, with an English translation by Herbert Weir Smyth, Ph. D. in two volumes.</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1926.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Aeschylus</td>
+				        <td>Libation Bearers</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0007">Perseus</a></td>
+					<td>Herbert Weir Smyth, Ph.D., <em>Aeschylus, with an English translation by Herbert Weir Smyth, Ph. D. in two volumes. </em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1926.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Aeschylus</td>
+				        <td>Persians</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0005">Perseus</a></td>
+					<td>Herbert Weir Smyth, Ph.D., <em>Aeschylus, with an English translation by Herbert Weir Smyth, Ph. D. in two volumes.</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1926.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Aeschylus</td>
+				        <td>Prometheus Bound</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0009">Perseus</a></td>
+					<td>Herbert Weir Smyth, Ph.D., <em>Aeschylus, with an English translation by Herbert Weir Smyth, Ph. D. in two volumes.</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1926.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Aeschylus</td>
+				        <td>Seven Against Thebes</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0005">Perseus</a></td>
+					<td>Herbert Weir Smyth, Ph.D., <em>Aeschylus, with an English translation by Herbert Weir Smyth, Ph. D. in two volumes.</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1926.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Aeschylus</td>
+				        <td>Suppliant Women</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0005">Perseus</a></td>
+					<td>Herbert Weir Smyth, Ph.D., <em>Aeschylus, with an English translation by Herbert Weir Smyth, Ph. D. in two volumes.</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1926.</td>
+					<td>Anna Glenn</td>
+
 				</tr>
 				<tr>
 					<td>
@@ -95,8 +156,81 @@
 					</td>
 				</tr>
 				<tr>
+					<td>Aristophanes</td>
+					<td>Frogs</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0031">Perseus</a></td>
+					<td>F.W. Hall and W.M. Geldart, <em>Aristophanes Comoediae, ed. F.W. Hall and W.M. Geldart, vol. 2</em>. Oxford: Clarendon Press, Oxford, 1907.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+
+				<tr>
+					<td>Aristophanes</td>
+					<td>Lysistrata</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0035">Perseus</a></td>
+					<td>F.W. Hall and W.M. Geldart, <em>Aristophanes Comoediae, ed. F.W. Hall and W.M. Geldart, vol. 2</em>. Oxford: Clarendon Press, Oxford, 1907.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Aristophanes</td>
+					<td>Peace</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0037">Perseus</a></td>
+					<td>F.W. Hall and W.M. Geldart, <em>Aristophanes Comoediae, ed. F.W. Hall and W.M. Geldart, vol. 1</em>. Oxford: Clarendon Press, Oxford, 1907.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Aristophanes</td>
+					<td>Plutus</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0039">Perseus</a></td>
+					<td>F.W. Hall and W.M. Geldart, <em>Aristophanes Comoediae, ed. F.W. Hall and W.M. Geldart, vol. 2</em>. Oxford: Clarendon Press, Oxford, 1907.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Aristophanes</td>
+					<td>Thesmaphoriazusae</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0041">Perseus</a></td>
+					<td>F.W. Hall and W.M. Geldart, <em>Aristophanes Comoediae, ed. F.W. Hall and W.M. Geldart, vol. 2</em>. Oxford: Clarendon Press, Oxford, 1907.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+				
+				<tr>
+					<td>Aristophanes</td>
+				        <td>Ecclesiazusae</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0029">Perseus</a></td>
+					<td>F.W. Hall and W.M. Geldart, <em>Aristophanes Comoediae, ed. F.W. Hall and W.M. Geldart, vol. 2</em>. Oxford: Clarendon Press, Oxford, 1907.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Aristophanes</td>
+				        <td>Knights</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0033">Perseus</a></td>
+					<td>F.W. Hall and W.M. Geldart, <em>Aristophanes Comoediae, ed. F.W. Hall and W.M. Geldart, vol. 1</em>. Oxford: Clarendon Press, Oxford, 1907.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Aristophanes</td>
+				        <td>Wasps</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0043">Perseus</a></td>
+					<td>F.W. Hall and W.M. Geldart, <em>Aristophanes Comoediae, ed. F.W. Hall and W.M. Geldart, vol. 1</em>. Oxford: Clarendon Press, Oxford, 1907.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+				
+				<tr>
 					<td>
-						Augustine, Saint
+						Augustine
 					</td>
 					<td>
 						Epistulae. Selections
@@ -112,8 +246,61 @@
 					</td>
 				</tr>
 				<tr>
+					<td>Ausonius</td>
+					<td>Cupido cruciatur</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0607">Perseus</a></td>
+					<td>Hugh G. Evelyn-White, <em>Ausonius. Works.</em>. London; Cambridge, Massachusetts: William Heinemann Ltd.; Harvard University Press, 1919.</td>
+					<td>Katherine Roache</td>
+
+				</tr>
+				<tr>
+					<td>Ausonius</td>
+					<td>De Herediolo</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0608">Perseus</a></td>
+					<td>Hugh G. Evelyn-White, <em>Ausonius. Works.</em>. London; Cambridge, Massachusetts: William Heinemann Ltd.; Harvard University Press, 1919.</td>
+					<td>Katherine Roache</td>
+
+				</tr>
+
+				<tr>
+					<td>Ausonius</td>
+					<td>Epicedion in Patrem</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0607">Perseus</a></td>
+					<td>Hugh G. Evelyn-White, <em>Ausonius. Works.</em>. London; Cambridge, Massachusetts: William Heinemann Ltd.; Harvard University Press, 1919.</td>
+					<td>Katherine Roache</td>
+
+				</tr>
+
+				<tr>
+					<td>Ausonius</td>
+					<td>Griphus Ternarii numeri</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0607">Perseus</a></td>
+					<td>Hugh G. Evelyn-White, <em>Ausonius. Works.</em>. London; Cambridge, Massachusetts: William Heinemann Ltd.; Harvard University Press, 1919.</td>
+					<td>Katherine Roache</td>
+
+				</tr>
+
+				<tr>
+					<td>Ausonius</td>
+					<td>Mosella</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0619">Perseus</a></td>
+					<td>Hugh G. Evelyn-White, <em>Ausonius. Works.</em>. London; Cambridge, Massachusetts: William Heinemann Ltd.; Harvard University Press, 1919.</td>
+					<td>Katherine Roache</td>
+
+				</tr>
+
+				<tr>
+					<td>Ausonius</td>
+					<td>Oratio Consulis Ausonii Versibus Ropalicis</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0619">Perseus</a></td>
+					<td>Hugh G. Evelyn-White, <em>Ausonius. Works.</em>. London; Cambridge, Massachusetts: William Heinemann Ltd.; Harvard University Press, 1919.</td>
+					<td>Katherine Roache</td>
+
+				</tr>
+				
+				<tr>
 					<td>
-						Ausonius, Decimus Magnus
+						Ausonius
 					</td>
 					<td>
 						Ausonii Burdigalensis Vasatis Gratiarum Actio Ad Grati Angratianum Imperatorem Pro Consulatu
@@ -130,7 +317,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Ausonius
 					</td>
 					<td>
 						Ausonii de XII Caesaribus per Suetonium Tranquillum scriptis
@@ -147,7 +334,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Ausonius
 					</td>
 					<td>
 						Cento Nuptialis
@@ -164,7 +351,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Ausonius
 					</td>
 					<td>
 						Commemoratio professorum Burdigalensium
@@ -181,7 +368,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Ausonius
 					</td>
 					<td>
 						De Bissula
@@ -196,6 +383,15 @@
 						Katherine Roache
 					</td>
 				</tr>
+				<tr>
+					<td>Bede</td>
+					<td>Historiam ecclesiasticam gentis Anglorum</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0135">Perseus</a></td>
+					<td>Charles Plummer, <em>Historiam ecclesiasticam gentis Anglorum</em>. Oxfordii: e typographeo Clarendoniano, 1896.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+				
 				<tr>
 					<td>
 						Boethius
@@ -215,7 +411,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Boethius
 					</td>
 					<td>
 						De Fide Catholica
@@ -232,7 +428,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Boethius
 					</td>
 					<td>
 						Liber De Persona et Duabus Naturis Contra Eutychen Et Nestorium
@@ -249,7 +445,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Boethius
 					</td>
 					<td>
 						Quomodo Substantiae in Eo Quod Sint Bonae Sint Cum Non Sint Substanialia Bona
@@ -266,7 +462,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Boethius
 					</td>
 					<td>
 						Quomodo Trinitas Unus Deus Ac Non Tres Dii (De Trinitate)
@@ -275,7 +471,7 @@
 						<a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atex%3a2008.01.0680">Perseus</a>
 					</td>
 					<td>
-						H.F. Stewart, <em>Theological Tractates and the Consolation of Phil sophy</em>. London; Cambridge, Massachusetts: William Heinemann Ltd.; Harvard U iversity Press, 1918.
+						H.F. Stewart, <em>Theological Tractates and the Consolation of Philosophy</em>. London; Cambridge, Massachusetts: William Heinemann Ltd.; Harvard U iversity Press, 1918.
 					</td>
 					<td>
 						Anna Glenn
@@ -283,7 +479,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Boethius
 					</td>
 					<td>
 						Utrum Pater Et Filius Ac Spiritus Sanctus De Divinitate Substantiali ter Praedicentur Liber
@@ -317,7 +513,7 @@
 				</tr>
 				<tr>
 					<td>
-						Caesar
+						Julius Caesar
 					</td>
 					<td>
 						De Bello Gallico
@@ -350,6 +546,55 @@
 					</td>
 				</tr>
 				<tr>
+					<td>Celsus</td>
+				        <td>De Medicina</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2007.01.0088">Perseus</a></td>
+					<td>Friedrich Marx, <em>A. Cornelii Celsi quae supersunt</em>. Lipsiae: Teubner, 1915.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+				
+				<tr>
+					<td>Cicero</td>
+					<td>De lege agraria contra Rullum</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0013">Perseus</a></td>
+					<td>Albert Clark, <em>M. Tulli Ciceronis Orationes:
+				Recognovit brevique adnotatione critica instruxit
+				Albertus Curtis Clark</em>. Oxonii: e Typographeo Clarendoniano, 1909.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Cicero</td>
+				        <td>De Republica</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2007.01.0031">Perseus</a></td>
+					<td>C. F. W. Mueller, <em>Librorum de Re Publica Sex</em>. Leipzig: Teubner, 1889.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Cicero</td>
+					<td>Paradoxa stoicorum ad M. Brutum</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2007.01.0045">Perseus</a></td>
+					<td>J. G. Baiter, <em>M. Tullii Ciceronis opera quae supersunt omnia</em>. Leipzig: Tauchnitz, 1865.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+					<td>Cicero</td>
+					<td>Pro Scauro</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0015">Perseus</a></td>
+					<td>Albert Clark, <em>M. Tulli Ciceronis Orationes:
+				Recognovit brevique adnotatione critica instruxit
+				Albertus Curtis Clark</em>. Oxonii: e Typographeo Clarendoniano, 1909.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+				
+				<tr>
 					<td>
 						Cicero
 					</td>
@@ -368,7 +613,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Brutus
@@ -385,7 +630,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Cum populo gratias egit
@@ -402,7 +647,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De Amicitia
@@ -419,7 +664,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De Divinatione
@@ -436,7 +681,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De domo sua
@@ -453,7 +698,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De Fato
@@ -470,7 +715,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De Finibus Bonorum et Malorum
@@ -487,7 +732,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De haruspicum responso
@@ -504,7 +749,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De imperio Cn. Pompei
@@ -521,7 +766,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De Inventione
@@ -538,7 +783,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De Natura Deorum
@@ -552,7 +797,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De Officiis
@@ -569,7 +814,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De Optimo Genere Oratorum
@@ -586,7 +831,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De Oratore
@@ -603,7 +848,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De Partitione Oratore
@@ -620,7 +865,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De provinciis consularibus
@@ -637,7 +882,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						De Senectute
@@ -654,7 +899,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Divinatio in C. Verrem
@@ -671,7 +916,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Divinatio in Q. Caecilius
@@ -688,7 +933,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Epistulae ad Familiares
@@ -705,7 +950,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						In Catilinam
@@ -722,7 +967,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						In L. Pisonem
@@ -739,7 +984,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						In Vatinium
@@ -756,7 +1001,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Letters to Atticus
@@ -773,7 +1018,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Letters to and from Brutus
@@ -790,7 +1035,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Letters to and from Quintus
@@ -807,7 +1052,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Lucullus
@@ -824,7 +1069,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Orator
@@ -841,7 +1086,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Philippicae
@@ -858,7 +1103,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro A. Caecina
@@ -875,7 +1120,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Archia
@@ -892,7 +1137,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Balbo
@@ -909,7 +1154,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Cluentio
@@ -926,7 +1171,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro C. Rabiro perduellionis reo
@@ -943,7 +1188,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro C. Rabiro postumo
@@ -960,7 +1205,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Fonteio
@@ -977,7 +1222,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro L. Flacco
@@ -994,7 +1239,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Ligario
@@ -1011,7 +1256,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Marcello
@@ -1028,7 +1273,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro M. Caelio
@@ -1045,7 +1290,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Milone
@@ -1062,7 +1307,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Murena
@@ -1079,7 +1324,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Plancio
@@ -1096,7 +1341,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Publius Quincto
@@ -1113,7 +1358,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Q. Roscio comoedo
@@ -1130,7 +1375,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Rabiro perduellionis reo
@@ -1147,7 +1392,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Rege Deiotaro
@@ -1164,7 +1409,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Sestio
@@ -1181,7 +1426,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro S. Roscio
@@ -1198,7 +1443,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Sulla
@@ -1215,7 +1460,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Pro Tullio
@@ -1232,7 +1477,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Timaeus
@@ -1249,7 +1494,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Topica
@@ -1266,7 +1511,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Cicero
 					</td>
 					<td>
 						Tusculanae Disputationes
@@ -1281,6 +1526,15 @@
 						Anna Glenn
 					</td>
 				</tr>
+				<tr>
+					<td>Q. Cicero</td>
+					<td>Essay on Running for Consul</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0016">Perseus</a></td>
+					<td>L. C. Purser,  5 August 1999.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+				
 				<tr>
 					<td>
 						Columella
@@ -1300,7 +1554,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Columella
 					</td>
 					<td>
 						Res Rustica, Books V-IX
@@ -1403,7 +1657,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Horace
 					</td>
 					<td>
 						Carmen Saeculare
@@ -1420,7 +1674,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Horace
 					</td>
 					<td>
 						Epistles
@@ -1437,7 +1691,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Horace
 					</td>
 					<td>
 						Epodes
@@ -1454,7 +1708,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Horace
 					</td>
 					<td>
 						Odes
@@ -1471,7 +1725,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Horace
 					</td>
 					<td>
 						Satires
@@ -1505,7 +1759,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Jerome
 					</td>
 					<td>
 						Vulgate
@@ -1536,6 +1790,13 @@
 					<td>
 						Chris Forstall
 					</td>
+				</tr>
+				<tr>
+					<td>Livy</td>
+					<td>Ab urbe condita, books 1-10, 21-45</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0169">Perseus</a></td>
+					<td>W. Weissenborn, <em>Titi Livi ab urbe condita libri</em> Leipzig: Teubner, 1898.</td>
+					<td>Anna Glenn</td>
 				</tr>
 				<tr>
 					<td>
@@ -1624,7 +1885,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Ovid
 					</td>
 					<td>
 						Ars Amatoria
@@ -1641,7 +1902,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Ovid
 					</td>
 					<td>
 						Fasti
@@ -1658,7 +1919,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Ovid
 					</td>
 					<td>
 						Heroides
@@ -1675,7 +1936,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Ovid
 					</td>
 					<td>
 						Medicamina Faciei Femineae
@@ -1692,7 +1953,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Ovid
 					</td>
 					<td>
 						Metamorphoses
@@ -1709,7 +1970,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Ovid
 					</td>
 					<td>
 						Ex Ponto
@@ -1726,7 +1987,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Ovid
 					</td>
 					<td>
 						Remedia Amoris
@@ -1743,7 +2004,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Ovid
 					</td>
 					<td>
 						Tristia
@@ -1758,6 +2019,16 @@
 						Chris Forstall
 					</td>					
 				</tr>
+				<tr>
+					<td>Persius</td>
+					<td>Satires</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0497">Perseus</a></td>
+					<td>G.G.Ramsay, <em>Juvenal and Persius with An English Translation</em>. London: William Heinemann; G. P. Putnam's Son, 1918.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				
 				<tr>
 					<td>
 						Propertius
@@ -1794,7 +2065,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Asinaria
@@ -1811,7 +2082,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Aulularia
@@ -1828,7 +2099,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Bacchides
@@ -1845,7 +2116,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Captivi
@@ -1863,7 +2134,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Casina
@@ -1880,7 +2151,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Cistellaria
@@ -1897,7 +2168,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Curculio
@@ -1914,7 +2185,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Epidicus
@@ -1931,7 +2202,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Menaechmi
@@ -1948,7 +2219,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Mercator
@@ -1965,7 +2236,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Miles Gloriosus
@@ -1982,7 +2253,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Mostellaria
@@ -1999,7 +2270,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Persa
@@ -2016,7 +2287,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Poenulus
@@ -2033,7 +2304,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Poenulus
@@ -2050,7 +2321,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Rudens
@@ -2067,7 +2338,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Stichus
@@ -2084,7 +2355,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Trinummus
@@ -2101,7 +2372,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Plautus
 					</td>
 					<td>
 						Truculentus
@@ -2150,6 +2421,16 @@
 						Tony R Waleszczak &amp; Jessica Micceri
 					</td>
 				</tr>
+				
+				<tr>
+					<td>Curtius Rufus</td>
+					<td>Historiae Alexandri Magni</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0536">Perseus</a></td>
+					<td>Edmund Hedicke, <em>Historiarum Alexandri Magni Macedonis libri qui supersunt</em>. Lipsiae: in aedibus B.G. Teubneri, 1908.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+				
 				<tr>
 					<td>
 						Silius Italicus
@@ -2217,7 +2498,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Scriptores Historiae Augustae
 					</td>
 					<td>
 						Historia Augusta, Vol. 2
@@ -2251,7 +2532,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						Agamemnon
@@ -2268,7 +2549,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						Apocolocyntosis
@@ -2285,7 +2566,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						De Beneficiis
@@ -2302,7 +2583,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						De Brevitate Vitae
@@ -2319,7 +2600,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						De Clementia
@@ -2336,7 +2617,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						De Consolatione ad Helvium
@@ -2353,7 +2634,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						De Consolatione ad Marciam
@@ -2370,7 +2651,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						De Consolatione ad Polybium
@@ -2387,7 +2668,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						De Constantia
@@ -2404,7 +2685,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						De Ira
@@ -2421,7 +2702,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						De Otio
@@ -2438,7 +2719,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						De Providentia
@@ -2455,7 +2736,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						De Tranquillitate Animi
@@ -2472,7 +2753,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						De Vita Beata
@@ -2489,7 +2770,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						Hercules Furens
@@ -2506,7 +2787,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						Hercules Oetaeus
@@ -2523,7 +2804,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						Medea
@@ -2540,7 +2821,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						Octavia
@@ -2557,7 +2838,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						Oedipus
@@ -2574,7 +2855,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						Phaedra
@@ -2591,7 +2872,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						Phoenissae
@@ -2608,7 +2889,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						Thyestes
@@ -2625,7 +2906,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca
 					</td>
 					<td>
 						Troades
@@ -2659,7 +2940,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca the Elder
 					</td>
 					<td>
 						Excerpta Controversiae
@@ -2676,7 +2957,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca the Elder
 					</td>
 					<td>
 						Fragmenta
@@ -2693,7 +2974,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Seneca the Elder
 					</td>
 					<td>
 						Suasoriae
@@ -2727,7 +3008,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Servius Honoratus
 					</td>
 					<td>
 						Commentary on the Eclogues of Vergil
@@ -2744,7 +3025,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Servius Honoratus
 					</td>
 					<td>
 						Commentary on the Georgics of Vergil
@@ -2758,6 +3039,32 @@
 					<td>
 						Elizabeth Hunter
 					</td>
+				</tr>
+				<tr>
+					<td>Shakespeare</td>
+					<td>Hamlet</td>
+					<td><a href="http://icon.shef.ac.uk/Moby/mshak.html">Moby Shakespeare</a></td>
+					<td>W. G. Clark, <em>The Globe Shakespeare</em>. New York: Nelson Doubleday, Inc., 7 May 93.</td>
+					<td>Timothy Tilbe</td>
+
+				</tr>
+
+				<tr>
+					<td>Shakespeare</td>
+					<td>A Midsummer Night's Dream</td>
+					<td><a href="http://icon.shef.ac.uk/Moby/mshak.html">Moby Shakespeare</a></td>
+					<td>W. G. Clark, <em>The Globe Shakespeare</em>. New York: Nelson Doubleday, Inc., 7 May 93.</td>
+					<td>Timothy Tilbe</td>
+
+				</tr>
+
+				<tr>
+					<td>Shakespeare</td>
+					<td>Richard III</td>
+					<td><a href="http://icon.shef.ac.uk/Moby/mshak.html">Moby Shakespeare</a></td>
+					<td>W. G. Clark, <em>The Globe Shakespeare</em>. New York: Nelson Doubleday, Inc., 7 May 93.</td>
+					<td>Timothy Tilbe</td>
+
 				</tr>
 				<tr>
 					<td>
@@ -2846,7 +3153,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Tacitus
 					</td>
 					<td>
 						Dialogus de Oratoribus
@@ -2863,7 +3170,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Tacitus
 					</td>
 					<td>
 						Historiae
@@ -2877,6 +3184,59 @@
 					<td>
 						Elizabeth Hunter
 					</td>
+				</tr>
+				<tr>
+				        <td>Terence</td>
+				        <td>Adelphi</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0086">Perseus</a></td>
+					<td>Edward St. John Parry, <em>Publii Terentii Comoediae VI</em>. London: Whitaker and Co., Ave Maria Lane;  George Bell, Fleet Street, 1857.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+				   <td>Terence</td>
+					<td>Andria</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0087">Perseus</a></td>
+					<td>Edward St. John Parry, <em>Publii Terentii Comoediae VI</em>. London: Whitaker and Co., Ave Maria Lane;  George Bell, Fleet Street, 1857.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr> 
+				<td>Terence</td>
+					<td>Eunuchus</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0088">Perseus</a></td>
+					<td>Edward St. John Parry, <em>Publii Terentii Comoediae VI</em>. London: Whitaker and Co., Ave Maria Lane;  George Bell, Fleet Street, 1857.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+				<td>Terence</td>
+					<td>Heautontimorumenos</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0089">Perseus</a></td>
+					<td>Edward St. John Parry, <em>Publii Terentii Comoediae VI</em>. London: Whitaker and Co., Ave Maria Lane; George Bell, Fleet
+				                        Street, 1857.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+
+				<tr>
+				<td>Terence</td>
+					<td>Hecyra</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0090">Perseus</a></td>
+					<td>Edward St. John Parry, <em>Publii Terentii Comoediae VI</em>. London: Whitaker and Co., Ave Maria Lane;  George Bell, Fleet Street, 1857.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+				<tr>
+					<td>Terence</td>
+					<td>Phormio</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0091">Perseus</a></td>
+					<td>Edward St. John Parry, <em>Publii Terentii Comoediae VI</em>. London: Whitaker and Co., Ave Maria Lane;  George Bell, Fleet Street, 1857.</td>
+					<td>Anna Glenn</td>
+
 				</tr>
 				<tr>
 					<td>
@@ -2897,7 +3257,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Tertullian
 					</td>
 					<td>
 						De Spectaculis
@@ -2930,6 +3290,15 @@
 					</td>
 				</tr>
 				<tr>
+					<td>Valerius Maximus</td>
+					<td>Facta et Dicta Memorabilia</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0675">Perseus</a></td>
+					<td>Karl Friedrich Kempf, <em>Factorvm et Dictorvm Memorabilivm, Libri Novem</em>. Leipsig: Teubner, 1888.</td>
+					<td>Elizabeth Hunter</td>
+
+				</tr>
+
+				<tr>
 					<td>
 						Vergil
 					</td>
@@ -2948,7 +3317,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Vergil
 					</td>
 					<td>
 						Eclogues
@@ -2965,7 +3334,7 @@
 				</tr>
 				<tr>
 					<td>
-						—
+						Vergil
 					</td>
 					<td>
 						Georgics
@@ -2980,6 +3349,15 @@
 						Chris Forstall
 					</td>
 				</tr>
+				<tr>
+					<td>Vitruvius Pollio</td>
+				        <td>De Architectura</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0072">Perseus</a></td>
+					<td>F. Krohn, <em>On Architecture</em>. Lipsiae: B.G. Teubner, 1912.</td>
+					<td>Anna Glenn</td>
+
+				</tr>
+				
 			</table>
 		</div>
 		<?php include "last.php"; ?>
