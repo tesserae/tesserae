@@ -98,7 +98,7 @@ my $target    = 'lucan.bellum_civile.part.1';
 my $source    = 'vergil.aeneid.part.1';
 my $unit_id   = 0;
 my $topics    = 15;
-my $threshold = 0.7;
+my $threshold = 0.5;
 
 #
 # command-line arguments

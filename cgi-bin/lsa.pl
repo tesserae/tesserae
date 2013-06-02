@@ -100,7 +100,7 @@ my $quiet = 0;
 my $target = 'lucan.bellum_civile.part.1';
 my $source = 'vergil.aeneid.part.1';
 my $unit_id = 0;
-my $threshold = .7;
+my $threshold = .5;
 my $topics = 15;
 
 #
