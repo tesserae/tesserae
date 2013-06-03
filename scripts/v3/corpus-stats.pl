@@ -144,6 +144,12 @@ if ($help) {
 }
 
 #
+# allow utfu output to STDERR
+#
+
+binmode STDERR, ':utf8';
+
+#
 # specify language to parse at cmd line
 #
 

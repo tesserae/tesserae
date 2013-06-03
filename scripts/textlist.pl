@@ -146,7 +146,7 @@ sub display {
 	$display =~ s/\./ - /g;
 	$display =~ s/\_/ /g;
 
-	$display =~ s/\b([a-z])/uc($1)/eg;
+	$display =~ s/(^|\s)([[:alpha:]])/$1 . uc($2)/eg;
 
 	return $display;
 }

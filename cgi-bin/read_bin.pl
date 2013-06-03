@@ -95,6 +95,7 @@ use warnings;
 use Cwd qw/abs_path/;
 use File::Spec::Functions;
 use FindBin qw/$Bin/;
+use utf8;
 
 # read config before executing anything else
 
@@ -154,10 +155,12 @@ use Pod::Usage;
 use CGI qw(:standard);
 use POSIX;
 use Storable qw(nstore retrieve);
+use Encode;
 
 # allow unicode output
 
 binmode STDOUT, ":utf8";
+binmode STDERR, ":utf8";
 
 # is the program being run from the web or
 # from the command line?
@@ -638,6 +641,11 @@ sub print_html {
 		# format the list of all unique shared words
 	
 		my $keys = join(", ", keys %seen_keys);
+		
+		# utf8 encoded versions of target, source
+		
+		my $utarget = decode('utf8', $target);
+		my $usource = decode('utf8', $source);
 
 		#
 		# print one row of the table
@@ -656,7 +664,7 @@ sub print_html {
 		
 		print "          <td>\n";
 		print "            <a href=\"javascript:;\""
-		    . " onclick=\"window.open(link='$url{cgi}/context2.pl?target=$target;unit=$unit;id=$unit_id_target', "
+		    . " onclick=\"window.open(link='$url{cgi}/context2.pl?target=$utarget;unit=$unit;id=$unit_id_target', "
 		    . " 'context', 'width=520,height=240')\">";
 		print "$abbr{$target} $unit_target[$unit_id_target]{LOCUS}";
 		print "            </a>\n";
@@ -686,7 +694,7 @@ sub print_html {
 		
 		print "          <td>\n";
 		print "            <a href=\"javascript:;\""
-		    . " onclick=\"window.open(link='$url{cgi}/context2.pl?target=$source;unit=$unit;id=$unit_id_source', "
+		    . " onclick=\"window.open(link='$url{cgi}/context2.pl?target=$usource;unit=$unit;id=$unit_id_source', "
 		    . " 'context', 'width=520,height=240')\">";
 		print "$abbr{$source} $unit_source[$unit_id_source]{LOCUS}";
 		print "            </a>\n";

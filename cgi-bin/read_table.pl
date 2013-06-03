@@ -171,6 +171,7 @@ use Pod::Usage;
 use CGI qw/:standard/;
 use Storable qw(nstore retrieve);
 use File::Path qw(mkpath rmtree);
+use Encode;
 
 binmode STDERR, 'utf8';
 
@@ -441,6 +442,11 @@ if (Tesserae::check_prose_list($target) or Tesserae::check_prose_list($source)) 
 	$unit = 'phrase';
 }
 
+# assume unicode text names are utf8,
+# whether input via cmd line or cgi
+
+# $target = decode('utf8', $target);
+# $source = decode('utf8', $source);
 
 # print all params for debugging
 

@@ -158,6 +158,7 @@ use utf8;
 use File::Path qw(mkpath rmtree);
 use File::Basename;
 use Storable qw(nstore retrieve);
+use Encode;
 
 # optional modules
 
@@ -211,6 +212,9 @@ my $help = 0;
 
 # flag work as prose (not used yet)
 my $prose = 0;
+
+# allow utf8 output to stderr
+binmode STDERR, ':utf8';
 
 #
 # command line options
@@ -686,28 +690,28 @@ for my $file_in (@files) {
 	
 	my $file_out = catfile($path_data, $name);
 
-	print "writing $file_out.token\n" unless $quiet;
+	print STDERR "writing $file_out.token\n" unless $quiet;
 	nstore \@token, "$file_out.token";
 
-	print "writing $file_out.line\n" unless $quiet;
+	print STDERR "writing $file_out.line\n" unless $quiet;
 	nstore \@line, "$file_out.line";
 	
-	print "writing $file_out.phrase\n" unless $quiet;
+	print STDERR "writing $file_out.phrase\n" unless $quiet;
 	nstore \@phrase, "$file_out.phrase";
 
 	for (qw/word stem syn 3gr/) {
 	
 		next if $omit{$_};
 
-		print "writing $file_out.index_$_\n" unless $quiet;
+		print STDERR "writing $file_out.index_$_\n" unless $quiet;
 		nstore $index{$_}, "$file_out.index_$_";
 		
 		# calculate frequencies for stop and score
 				
-		print "writing $file_out.freq_stop_$_\n" unless $quiet;
+		print STDERR "writing $file_out.freq_stop_$_\n" unless $quiet;
 		write_freq_stop($index{$_}, "$file_out.freq_stop_$_");
 
-		print "writing $file_out.freq_score_$_\n" unless $quiet;
+		print STDERR "writing $file_out.freq_score_$_\n" unless $quiet;
 		write_freq_score($_, $index{word}, "$file_out.freq_score_$_");
 	}
 
@@ -717,7 +721,7 @@ for my $file_in (@files) {
 	
 	my $temp_file = catfile($temp_dir, $name . ".abbr");
 
-	if (open (LAFH, ">", $temp_file)) {
+	if (open (LAFH, ">:utf8", $temp_file)) {
 	
 		print LAFH "$abbr\n";
 		close LAFH;
@@ -731,7 +735,7 @@ for my $file_in (@files) {
 
 	$temp_file = catfile($temp_dir, $name . ".lang");
 
-	if (open (LAFH, ">", $temp_file)){
+	if (open (LAFH, ">:utf8", $temp_file)){
 	
 		print LAFH "$lang\n";
 		close LAFH;
