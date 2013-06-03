@@ -5,6 +5,7 @@ use File::Basename;
 use Storable qw(nstore retrieve);
 use utf8;
 use Unicode::Normalize;
+use Encode;
 
 require Exporter;
 
@@ -465,7 +466,7 @@ sub get_textlist {
 
 	opendir(DH, $directory);
 	
-	my @textlist = grep {/^[^.]/} readdir(DH);
+	my @textlist = map { decode('utf8', $_) } grep {/^[^.]/} readdir(DH);
 	
 	closedir(DH);
 	
