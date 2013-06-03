@@ -445,6 +445,8 @@ sub check_prose_list {
 	
 		chomp $line;
 		
+		$line =~ s/#.*//;
+		
 		next unless $line =~ /\S/;
 		
 		return 1 if $name =~ /$line/;
