@@ -200,42 +200,51 @@ use Cwd qw/abs_path/;
 use FindBin qw/$Bin/;
 use File::Spec::Functions;
 
-# load configuration file
+# read config before executing anything else
 
-my $tesslib;
+my $lib;
 
 BEGIN {
+
+	# look for configuration file
 	
-	my $dir  = $Bin;
-	my $prev = "";
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
 			
-	while (-d $dir and $dir ne $prev) {
+	while (1) {
 
-		my $pointer = catfile($dir, '.tesserae.conf');
-
-		if (-s $pointer) {
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
 		
 			open (FH, $pointer) or die "can't open $pointer: $!";
 			
-			$tesslib = <FH>;
+			$lib = <FH>;
 			
-			chomp $tesslib;
+			chomp $lib;
 			
 			last;
 		}
+									
+		$lib = abs_path(catdir($lib, '..'));
 		
-		$dir = abs_path(catdir($dir, '..'));
-	}
-	
-	unless ($tesslib) {
-	
-		die "can't find .tesserae.conf!";
-	}
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
 }
 
 # load Tesserae-specific modules
 
-use lib $tesslib;
+use lib $lib;
 
 use Tesserae;
 use EasyProgressBar;
