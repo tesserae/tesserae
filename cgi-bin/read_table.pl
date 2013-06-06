@@ -284,6 +284,7 @@ GetOptions(
 			'filter'       => \$filter,
 			'interest=f'   => \$interest,
 			'benchmark'    => \$bench,
+			'no-cgi'       => \$no_cgi,
 			'quiet'        => \$quiet,
 			'help'         => \$help);
 

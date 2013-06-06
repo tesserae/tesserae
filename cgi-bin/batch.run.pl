@@ -166,7 +166,7 @@ use Pod::Usage;
 use DBI;
 use Storable;
 use File::Path qw/rmtree mkpath/;
-use Data::Dumper;
+use CGI qw/:standard/;
 
 # initialize some variables
 
@@ -175,8 +175,10 @@ my $verbose  = 1;
 my $parallel = 0;
 my $cleanup  = 1;
 
-my $dbname;
-my $done;
+my $file_in;
+my $file_out;
+my $dir_base;
+
 my @plugin = qw/Runs/;
 
 my @param_names = qw/
@@ -199,7 +201,7 @@ my $no_cgi = defined($query->request_method()) ? 0 : 1;
 
 # html header
 
-print header('-charset'=>'utf-8', '-type'=>'text/html') unless $no_cgi;
+print header('-charset'=>'utf-8', '-type'=>'text/plain') unless $no_cgi;
 
 #
 # get user options
@@ -211,7 +213,7 @@ if ($no_cgi) {
 
 	GetOptions(
 		'cleanup!'   => \$cleanup,
-		'dbname=s'   => \$dbname,
+		'output=s'   => \$file_out,
 		'plugin=s'   => \@plugin,
 		'help'       => \$help,
 		'parallel=i' => \$parallel,
@@ -228,15 +230,26 @@ if ($no_cgi) {
 
 	# get file to read from first cmd line arg
 
-	my $file = shift(@ARGV);
+	$file_in = shift(@ARGV);
 
-	unless ($file) { pod2usage(1) }
+	unless ($file_in) { pod2usage(1) }
 }
 	
 # from web interface
 	
 else {
+
+		$file_in  = $query->param('file');
+		@plugin   = $query->param('plugin');
+		$parallel = 1;
+		$verbose  = 0;
+		$cleanup  = 1;
+		$dir_base = $fs{tmp};
 		
+		unless ($file_in) {
+			
+			die "no file specified from web interface";
+		}
 }
 
 #
@@ -257,21 +270,29 @@ for my $plugin (@plugin) {
 
 ($parallel, my $pm) = init_parallel($parallel);
 
+#
+# load the list of tess runs
+#
 
-
-my @run = @{parse_file($file)};
-
+my @run = @{parse_file($file_in)};
 
 #
 # create database
 #
 
-$dbname = check_dbname($dbname);
-init_db($dbname);
+# generate a name for output if one wasn't specified
 
-my $datadir = catdir($dbname,  'working');
-my $dbfile  = catfile($dbname, 'sqlite.db');
+$file_out = ($file_out || new_file($dir_base));
 
+# create the database
+
+my ($dir_work, $file_db) = init_db($file_out);
+
+#
+# set lock on work in progress
+#  - only used by web interface
+
+set_lock($file_out) unless $no_cgi;
 
 #
 # main loop
@@ -284,6 +305,17 @@ my $pr = ProgressBar->new(scalar(@run), ($verbose != 1));
 for (my $i = 0; $i <= $#run; $i++) {
 
 	$pr->advance();
+	
+	# maintenance tools for web interface
+	
+	unless ($no_cgi) {
+	
+		write_progress($file_out, $pr);
+		unless (check_lock($file_out)) {
+		
+			die "batch run terminated";
+		}
+	}
 	
 	# fork
 	
@@ -298,8 +330,9 @@ for (my $i = 0; $i <= $#run; $i++) {
 	
 	my $bin;
 	
-	$cmd =~ s/--bin\s+(\S+)/"--bin " . ($bin = catfile($datadir, $1))/e;
-	$cmd .= ' --quiet' unless $verbose > 1;
+	$cmd =~ s/--bin\s+(\S+)/"--bin " . ($bin = catfile($file_out, $1))/e;
+	$cmd .= ' --quiet'  unless $verbose > 1;
+	$cmd .= ' --no-cgi';
 	
 	# run tesserae, note how long it took
 
@@ -309,7 +342,7 @@ for (my $i = 0; $i <= $#run; $i++) {
 	# connect to database
 	#
 	
-	my $dbh = DBI->connect("dbi:SQLite:dbname=$dbfile", "", "");
+	my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
 	
 	# load tesserae data from the results files
 	
@@ -351,7 +384,7 @@ $pm->wait_all_children if $parallel;
 # export data to text files
 #
 
-export_tables($dbname, "\t");
+export_tables($file_out, $file_db, "\t");
 
 #
 # remove working files
@@ -361,9 +394,14 @@ if ($cleanup) {
 
 	print STDERR "Cleaning up\n" if $verbose;
 
-	rmtree($datadir);
-	# unlink($dbfile);
+	rmtree($dir_work);
 }
+
+#
+# clear data for pickup by web user
+#
+
+remove_lock($file_out) unless $no_cgi;
 
 #
 # subroutines
@@ -434,44 +472,37 @@ sub parse_file {
 # generate an output directory if none provided
 #
 
-sub check_dbname {
+sub new_file {
 
-	my $dbname = shift;
+	my $dir = shift;
 	
-	unless ($dbname) {
+	# default to current directory
 	
-		opendir (my $dh, curdir) or die "can't read current directory: $!";
+	unless ($dir) {
 		
-		my @existing = sort (grep {/^tesbatch\.\d+$/} readdir $dh);
-		
-		my $i = 0;
-		
-		if (@existing) {
-		
-			$existing[-1] =~ /\.(\d+)/;
-			$i = $1 + 1;
-		}
-	
-		$dbname = sprintf("tesbatch.%03i", $i);
-		$dbname = abs_path(catfile(curdir, $dbname));
-		
-		mkpath($dbname);
+		$dir = curdir;
 	}
-	else {
-
-		$dbname = File::Spec::Functions::rel2abs($dbname);
 	
-		if (-e $dbname and not -d $dbname) {
+	# look for existing names
 	
-			print STDERR "$dbname already exists and is not a directory.\n";
-			print STDERR "Please choose a new name.\n";
-			exit;
-		}
+	opendir (my $dh, $dir) or die "can't read current directory: $!";
 		
-		mkpath($dbname);
+	my @existing = sort (grep {/^tesbatch\.\d+$/} readdir $dh);
+		
+	my $i = 0;
+		
+	if (@existing) {
+		
+		$existing[-1] =~ /\.(\d+)/;
+		$i = $1 + 1;
 	}
+	
+	my $file_out = sprintf("tesbatch.%03i", $i);
+	$file_out = abs_path(catdir($dir, $file_out));
+	
+	mkpath($file_out);
 
-	return $dbname;
+	return $file_out;
 }
 
 #
@@ -480,15 +511,22 @@ sub check_dbname {
 
 sub init_db {
 
-	my $dbname = shift;
+	my $file_out = shift;
 
 	#	
-	# open / create the database file
+	# create the database file
 	#
 	
-	my $dbfile = catfile($dbname, 'sqlite.db');
+	my $file_db = catfile($file_out, 'sqlite.db');
 	
-	my $dbh = DBI->connect("dbi:SQLite:dbname=$dbfile", "", "");
+	if (-s $file_db) {
+		
+		unlink $file_db;
+	}
+		
+	my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
+	
+	# create necessary tables
 	
 	my %cols = ();
 	
@@ -497,7 +535,10 @@ sub init_db {
 		%cols = (%cols, $plugin->cols);
 	}
 	
-	init_tables($dbh, %cols);
+	for my $table (keys %cols) {
+		
+		create_table($dbh, $table, $cols{$table});
+	}
 	
 	$dbh->disconnect;
 	
@@ -505,42 +546,12 @@ sub init_db {
 	# create a working directory for all the tesserae results
 	#
 	
-	my $working = catdir($dbname, 'working');
-	rmtree($working);
-	mkpath($working);
+	my $dir_work = catdir($file_out, 'working');
+	rmtree($dir_work);
+	mkpath($dir_work);
+	
+	return ($dir_work, $file_db);
 }
-
-
-# figure out what tables are necessary
-# and create them in the database
-
-sub init_tables {
-
-	my ($dbh, %cols) = @_;
-	
-	my %done;
-	
-	my $sth = $dbh->prepare(
-		'select name from sqlite_master 
-			where type="table";');
-			
-	$sth->execute;
-	
-	my %exists;
-	foreach(@{$sth->fetchall_arrayref()}) {
-		$exists{$_} = 1;
-	}
-		
-	# init
-
-	for my $table (keys %cols) {
-		
-		create_table($dbh, $table, $cols{$table}, $exists{$table});
-	}
-	
-	return \%done;
-}
-
 
 #
 # extract parameters from string
@@ -610,11 +621,9 @@ sub parse_results {
 
 sub export_tables {
 
-	my ($dbname, $delim) = @_;
-	
-	my $dbfile = catfile($dbname, 'sqlite.db');
-	
-	my $dbh = DBI->connect("dbi:SQLite:dbname=$dbfile", "", "");
+	my ($file_out, $file_db, $delim) = @_;
+		
+	my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
 
 	print STDERR "Exporting data\n" if $verbose;
 		
@@ -627,7 +636,7 @@ sub export_tables {
 		
 			$sth->execute;
 		
-			my $file = catfile($dbname, "$table.txt");
+			my $file = catfile($file_out, "$table.txt");
 		
 			open (FH, ">:utf8", $file) or die "can't write $file: $!";
 			
@@ -655,9 +664,14 @@ sub export_tables {
 
 sub create_table {
 
-	my ($dbh, $table, $cols, $exists) = @_;
+	my ($dbh, $table, $cols) = @_;
 	
-	my $sth;
+	my $sth = $dbh->prepare(
+		'select name from sqlite_master 
+			where type="table" and name="' . $table . '";'
+	);
+	
+	my $exists = $sth->fetchrow_array;
 	
 	if ($exists) {
 	
@@ -669,4 +683,65 @@ sub create_table {
 		"create table $table (" . join(",", @$cols) . ");"
 	);
 	$sth->execute;
+}
+
+#
+# mark output as "in progress"
+#
+
+sub set_lock {
+
+	my $file_out = shift;
+	
+	my $file_lock = catfile($file_out, '.lock');
+	
+	open (my $fh, '>', $file_lock) or die "can't create lock $file_lock: $!";
+	
+	print $fh time . ',';
+	
+	close $fh;
+}
+
+#
+# remove lock
+#
+
+sub remove_lock {
+
+	my $file_out = shift;
+	
+	my $file_lock = catfile($file_out, '.lock');
+	
+	unlink $file_lock;
+}
+
+#
+# check for presence of lock
+#   - absence of the lock is used as a signal to terminate
+
+sub check_lock {
+
+	my $file_out = shift;
+	
+	my $file_lock = catfile($file_out, '.lock');
+	
+	return -e $file_lock;
+}
+
+#
+# record progress so that others can see it
+#
+
+sub write_progress {
+
+	my ($file_out, $pr) = @_;
+	
+	my $file_progress = catfile($file_out, '.progress');
+	
+	open (my $fh, '>>', $file_progress) 
+		or die "can't write progress file $file_progress: $!";
+	
+	print $fh join("\t", time, $pr->count, $pr->terminus) . "\n";
+	
+	close ($fh);
 }

@@ -994,7 +994,9 @@ sub html_top {
 		<tr>
 		<td>
 		<form action="$url{cgi}/batch.run.pl" method="post" id="Form_run">
-			<input type="hidden" name="file"   value="$opt{file}" />
+			<input type="hidden" name="file"   value="$opt{file}"    />
+			<input type="hidden" name="plugin" value="Runs"          />
+			<input type="hidden" name="plugin" value="Tallies"       />
 			<input type="submit" name="submit" value="Run this Batch"/>
 		</form>
 		</td>
