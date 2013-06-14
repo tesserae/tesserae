@@ -166,7 +166,6 @@ use Pod::Usage;
 use DBI;
 use Storable;
 use File::Path qw/rmtree mkpath/;
-use CGI qw/:standard/;
 
 # initialize some variables
 
@@ -174,10 +173,9 @@ my $help     = 0;
 my $verbose  = 1;
 my $parallel = 0;
 my $cleanup  = 1;
+my $manage   = 0;
 
-my $file_in;
-my $file_out;
-my $dir_base;
+my $session;
 
 my @plugin = qw/Runs/;
 
@@ -192,64 +190,42 @@ my @param_names = qw/
 	dibasis/;
 
 #
-# is this script being called from the web or cli?
-#
-
-my $query = CGI->new() || die "$!";
-
-my $no_cgi = defined($query->request_method()) ? 0 : 1;
-
-# html header
-
-print header('-charset'=>'utf-8', '-type'=>'text/plain') unless $no_cgi;
-
-#
 # get user options
 #
 
 # from command line
 
-if ($no_cgi) {
+GetOptions(
+	'cleanup!'   => \$cleanup,
+	'plugin=s'   => \@plugin,
+	'help'       => \$help,
+	'parallel=i' => \$parallel,
+	'manage'     => \$manage,
+	'quiet'      => sub { $verbose = 0 },
+	'verbose'    => sub { $verbose++ }
+);
 
-	GetOptions(
-		'cleanup!'   => \$cleanup,
-		'output=s'   => \$file_out,
-		'plugin=s'   => \@plugin,
-		'help'       => \$help,
-		'parallel=i' => \$parallel,
-		'quiet'      => sub { $verbose = 0 },
-		'verbose'    => sub { $verbose++ }
-	);
+# print usage if the user needs help
 
-	# print usage if the user needs help
+if ($help) {
 
-	if ($help) {
-
-		pod2usage(1);
-	}
-
-	# get file to read from first cmd line arg
-
-	$file_in = shift(@ARGV);
-
-	unless ($file_in) { pod2usage(1) }
+	pod2usage(1);
 }
-	
-# from web interface
-	
-else {
 
-		$file_in  = $query->param('file');
-		@plugin   = $query->param('plugin');
-		$parallel = 1;
-		$verbose  = 0;
-		$cleanup  = 1;
-		$dir_base = $fs{tmp};
-		
-		unless ($file_in) {
-			
-			die "no file specified from web interface";
-		}
+# get file to read from first cmd line arg
+
+$session = shift(@ARGV);
+
+if (! defined $session) {
+
+	pod2usage(1);
+}
+
+unless (-d $session and -s catfile($session, '.list')) {
+
+	my $list = catfile($session, '.list');
+
+	die "Can't find $list. Are you sure $session is a prepared batch run?";
 }
 
 #
@@ -259,9 +235,9 @@ else {
 for my $plugin (@plugin) {
 	
 	$plugin =~ s/[^a-z_].*//i;
-	next unless -s catfile($fs{script}, 'Batch', $plugin . '.pm');
+	next unless -s catfile($fs{script}, 'batch', 'plugins', $plugin . '.pm');
 
-	eval "require Batch::$plugin";	
+	eval "require batch::plugins::$plugin";
 }
 
 #
@@ -274,45 +250,47 @@ for my $plugin (@plugin) {
 # load the list of tess runs
 #
 
-my @run = @{parse_file($file_in)};
+my @run = @{parse_file(catfile($session, '.list'))};
 
 #
 # create database
 #
 
-# generate a name for output if one wasn't specified
-
-$file_out = ($file_out || new_file($dir_base));
-
 # create the database
 
-my ($dir_work, $file_db) = init_db($file_out);
+my ($dir_work, $file_db) = init_db($session);
 
 #
-# set lock on work in progress
-#  - only used by web interface
-
-set_lock($file_out) unless $no_cgi;
-
-#
-# main loop
+# preamble
 #
 
 print STDERR "Performing " . scalar(@run) . " Tesserae searches\n" if $verbose;
 
 my $pr = ProgressBar->new(scalar(@run), ($verbose != 1));
 
+if ($manage) {
+	
+	write_init($session, $pr);
+	write_status($session, $pr);
+}
+
+#
+# main loop
+#
+
 for (my $i = 0; $i <= $#run; $i++) {
 
 	$pr->advance();
 	
-	# maintenance tools for web interface
+	# maintenance tools
 	
-	unless ($no_cgi) {
-	
-		write_progress($file_out, $pr);
-		unless (check_lock($file_out)) {
+	if ($manage) {
+
+		write_status($session, $pr);
 		
+		if (check_kill($session)) {
+
+			write_status($session, $pr, -1);
 			die "batch run terminated";
 		}
 	}
@@ -330,9 +308,9 @@ for (my $i = 0; $i <= $#run; $i++) {
 	
 	my $bin;
 	
-	$cmd =~ s/--bin\s+(\S+)/"--bin " . ($bin = catfile($file_out, $1))/e;
+	$cmd =~ s/--bin\s+(\S+)/"--bin " . ($bin = catfile($dir_work, $1))/e;
+	$cmd .= ' --no-cgi --bench';
 	$cmd .= ' --quiet'  unless $verbose > 1;
-	$cmd .= ' --no-cgi';
 	
 	# run tesserae, note how long it took
 
@@ -384,7 +362,7 @@ $pm->wait_all_children if $parallel;
 # export data to text files
 #
 
-export_tables($file_out, $file_db, "\t");
+export_tables($session, $file_db, "\t");
 
 #
 # remove working files
@@ -401,7 +379,7 @@ if ($cleanup) {
 # clear data for pickup by web user
 #
 
-remove_lock($file_out) unless $no_cgi;
+write_status($session, $pr, 1);
 
 #
 # subroutines
@@ -417,26 +395,16 @@ sub init_parallel {
 	
 	my $pm;
 	
-	if ($parallel) {
+	my $override = Tesserae::check_mod('Parallel::ForkManager');
 
-		eval {
+	if ($parallel && $override) {
 		
-			require Parallel::ForkManager;
-		};
+		$parallel = 0;
+	}
 	
-		if ($@) {
+	if ($parallel) {
 		
-			print STDERR "can't load Parallel::ForkManager: $@\n";
-			
-			print STDERR "continuing with --parallel 0\n";
-			
-			$parallel = 0;
-		}
-	
-		else {
-		
-			$pm = Parallel::ForkManager->new($parallel);
-		}
+		$pm = Parallel::ForkManager->new($parallel);
 	}
 	
 	return ($parallel, $pm);
@@ -468,42 +436,6 @@ sub parse_file {
 	return \@run;
 }
 
-#
-# generate an output directory if none provided
-#
-
-sub new_file {
-
-	my $dir = shift;
-	
-	# default to current directory
-	
-	unless ($dir) {
-		
-		$dir = curdir;
-	}
-	
-	# look for existing names
-	
-	opendir (my $dh, $dir) or die "can't read current directory: $!";
-		
-	my @existing = sort (grep {/^tesbatch\.\d+$/} readdir $dh);
-		
-	my $i = 0;
-		
-	if (@existing) {
-		
-		$existing[-1] =~ /\.(\d+)/;
-		$i = $1 + 1;
-	}
-	
-	my $file_out = sprintf("tesbatch.%03i", $i);
-	$file_out = abs_path(catdir($dir, $file_out));
-	
-	mkpath($file_out);
-
-	return $file_out;
-}
 
 #
 # create a new database
@@ -511,15 +443,15 @@ sub new_file {
 
 sub init_db {
 
-	my $file_out = shift;
+	my $session = shift;
 
 	#	
 	# create the database file
 	#
 	
-	my $file_db = catfile($file_out, 'sqlite.db');
+	my $file_db = catfile($session, 'sqlite.db');
 	
-	if (-s $file_db) {
+	if (-e $file_db) {
 		
 		unlink $file_db;
 	}
@@ -546,7 +478,7 @@ sub init_db {
 	# create a working directory for all the tesserae results
 	#
 	
-	my $dir_work = catdir($file_out, 'working');
+	my $dir_work = catdir($session, 'working');
 	rmtree($dir_work);
 	mkpath($dir_work);
 	
@@ -621,7 +553,7 @@ sub parse_results {
 
 sub export_tables {
 
-	my ($file_out, $file_db, $delim) = @_;
+	my ($session, $file_db, $delim) = @_;
 		
 	my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
 
@@ -636,7 +568,7 @@ sub export_tables {
 		
 			$sth->execute;
 		
-			my $file = catfile($file_out, "$table.txt");
+			my $file = catfile($session, "$table.txt");
 		
 			open (FH, ">:utf8", $file) or die "can't write $file: $!";
 			
@@ -686,62 +618,53 @@ sub create_table {
 }
 
 #
-# mark output as "in progress"
-#
-
-sub set_lock {
-
-	my $file_out = shift;
-	
-	my $file_lock = catfile($file_out, '.lock');
-	
-	open (my $fh, '>', $file_lock) or die "can't create lock $file_lock: $!";
-	
-	print $fh time . ',';
-	
-	close $fh;
-}
-
-#
-# remove lock
-#
-
-sub remove_lock {
-
-	my $file_out = shift;
-	
-	my $file_lock = catfile($file_out, '.lock');
-	
-	unlink $file_lock;
-}
-
-#
 # check for presence of lock
 #   - absence of the lock is used as a signal to terminate
 
-sub check_lock {
+sub check_kill {
 
-	my $file_out = shift;
+	my $session = shift;
 	
-	my $file_lock = catfile($file_out, '.lock');
+	my $file_kill = catfile($session, '.kill');
 	
-	return -e $file_lock;
+	return -e $file_kill;
 }
+
+#
+# record initialization params for management script
+#
+
+sub write_init {
+
+	my ($session, $pr) = @_;
+	
+	my $file_init = catfile($session, '.init');
+	
+	open (my $fh, '>', $file_init) 
+		or die "can't write progress file $file_init: $!";
+	
+	print $fh join("\t", time, $pr->terminus);
+	
+	close ($fh);
+}
+
 
 #
 # record progress so that others can see it
 #
 
-sub write_progress {
+sub write_status {
 
-	my ($file_out, $pr) = @_;
+	my ($session, $pr, $flag) = @_;
 	
-	my $file_progress = catfile($file_out, '.progress');
+	$flag = 0 unless defined $flag;
 	
-	open (my $fh, '>>', $file_progress) 
-		or die "can't write progress file $file_progress: $!";
+	my $file_status = catfile($session, '.status');
 	
-	print $fh join("\t", time, $pr->count, $pr->terminus) . "\n";
+	open (my $fh, '>', $file_status) 
+		or die "can't write progress file $file_status: $!";
+	
+	print $fh join("\t", time, $pr->count, $flag);
 	
 	close ($fh);
 }

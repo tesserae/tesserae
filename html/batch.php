@@ -5,7 +5,7 @@
 		
 		<div id="main">
 			
-			<form action="<?php echo $url_cgi . '/batch.prepare.pl' ?>" method="post" ID="Form1">
+			<form action="<?php echo $url_cgi . '/batch.enqueue.pl' ?>" method="post" ID="Form1">
 
 				<h1>Batch Processing</h1>
 				

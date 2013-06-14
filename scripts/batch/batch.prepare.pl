@@ -11,7 +11,7 @@ batch.prepare.pl - prepare a systematic set of tesserae searches
 
 =head1 SYNOPSIS
 
-batch.prepare.pl --outfile FILE [options] [tessoptions]
+batch.prepare.pl [options] [tessoptions]
 
 =head1 DESCRIPTION
 
@@ -31,12 +31,6 @@ read_table.pl; Here, unlike with read_table.pl, you can specify multiple values.
 =item B<--outfile> I<FILE>
 
 The destination for output.
-	
-=item B<--parallel> I<N>
-
-Allow I<N> processes to run simultaneously.  Since this script doesn't run the search,
-this won't really do anything, but it can be used to calculate a more accurate ETA for 
-your results.
 
 =item B<--interactive>
 
@@ -257,11 +251,10 @@ use Pod::Usage;
 # load additional modules necessary for this script
 
 use DBI;
-use File::Temp qw/tempdir/;
+use File::Path qw/mkpath rmtree/;
 use Pod::Usage;
 use Term::UI;
 use Term::ReadLine;
-use CGI qw/:standard/;
 
 #
 # initialize variables
@@ -282,8 +275,10 @@ my @params = qw/
 my $interactive = 0;
 my $parallel    = 0;
 my $quiet       = 0;
+my $get_session = 0;
 my $file_input;
 my $file_output;
+my $dir_parent;
 my $fh_output;
 my $help;
 my $man;
@@ -291,118 +286,78 @@ my $man;
 my %par;
 
 #
-# is this script being called from the web or cli?
-#
-
-my $query = CGI->new() || die "$!";
-
-my $no_cgi = defined($query->request_method()) ? 0 : 1;
-
-# html header
-
-print header('-charset'=>'utf-8', '-type'=>'text/html') unless $no_cgi;
-
-#
 # get user options
 #
-
-# from command line
-
-if ($no_cgi) {
 	
-	# define options for all params
-	
-	my %opt;
+# define options for all params
 
-	for (@params) { 
+my %opt;
 
-		$par{$_} = undef;
-		$opt{"$_=s"} = \$par{$_};
-	}
-	
-	# get input from cmd line args
-	
-	GetOptions(%opt,
-		'help'        => \$help,
-		'interactive' => \$interactive,
-		'infile=s'    => \$file_input,
-		'man'         => \$man,
-		'outfile=s'   => \$file_output,
-		'parallel=i'  => \$parallel,
-		'quiet'       => \$quiet
-	);
-	
-	# print brief/detailed help if requested
+for (@params) { 
 
-	if ($help) { 
-		
-		pod2usage(-verbose => 1);
-	}
-	elsif ($man) {
-		
-		pod2usage(-verbose => 2);
-	}
-	
-	# read from file if specified
-	
-	if ($file_input) {
-
-		parse_file($file_input)
-	}
-	
-	# or enter interactive mode if requested
-	
-	elsif ($interactive) {
-		
-		interactive()
-	}
-	
-	# print usage and exit if source or target is missing
-
-	unless ($par{source} and $par{target}) {
-
-		print STDERR "Source or target unspecified.\n";
-		pod2usage(-verbose => 0);
-	}
-
-	if (! $file_output and ! $interactive) {
-
-		print STDERR "No output file specified.\n";
-		pod2usage(-verbose => 0);
-	}
-
-	# parse user input for ranges, lists
-
-	%par = %{parse_params(\%par)};
-	
-	# create output file
-	
-	open ($fh_output, ">:utf8", $file_output) or die "can't write to $file_output: $!";
-	print STDERR "writing to $file_output\n";
+	$par{$_} = undef;
+	$opt{"$_=s"} = \$par{$_};
 }
 
-# from web interface
+# get input from cmd line args
 
-else {
-	
-	for (@params) {
+GetOptions(%opt,
+	'help'        => \$help,
+	'interactive' => \$interactive,
+	'infile=s'    => \$file_input,
+	'man'         => \$man,
+	'outfile=s'   => \$file_output,
+	'parentdir=s' => \$dir_parent,
+	'parallel=i'  => \$parallel,
+	'get-session' => \$get_session,
+	'quiet'       => \$quiet
+);
 
-		@{$par{$_}} = $query->param($_);
-	}
+# print brief/detailed help if requested
+
+if ($help) { 
 	
-	my %parsed = %{parse_params(
-		{
-			stop => $par{stop}[0],
-			dist => $par{dist}[0]
-		}
-	)};
-	
-	$par{stop} = $parsed{stop};
-	$par{dist} = $parsed{dist};
-	
-	$fh_output = File::Temp->new(UNLINK => 0);
-	$quiet = 1;
+	pod2usage(-verbose => 1);
 }
+elsif ($man) {
+	
+	pod2usage(-verbose => 2);
+}
+
+# read from file if specified
+
+if ($file_input) {
+
+	parse_file($file_input)
+}
+
+# or enter interactive mode if requested
+
+elsif ($interactive) {
+	
+	interactive()
+}
+
+# print usage and exit if source or target is missing
+
+unless ($par{source} and $par{target}) {
+
+	print STDERR "Source or target unspecified.\n";
+	pod2usage(-verbose => 0);
+}
+
+# parse user input for ranges, lists
+
+%par = %{parse_params(\%par)};
+
+# create output file
+
+$file_output = init_name($file_output, $dir_parent);
+
+my $file_config = catfile($file_output, '.list');
+
+open ($fh_output, ">:utf8", $file_config) or die "can't write to $file_config: $!";
+print STDERR "writing $file_config\n" unless $quiet;
 
 #
 # calculate all combinations
@@ -433,10 +388,10 @@ for my $pname (@params) {
 print_list_file($fh_output, \@combi);
 
 #
-# if called from web, print summary
+# if requested, return the name of the session
 #
 
-print_html() unless $no_cgi;
+print "$file_output\n" if $get_session;
 
 #
 # subroutines
@@ -512,6 +467,50 @@ sub parse_params {
 	
 	return \%par;
 }
+
+#
+# generate an output directory if none provided
+#
+
+sub init_name {
+
+	my ($file_out, $dir) = @_;
+	
+	if ($file_out) {
+	
+		rmtree($file_out);
+		mkpath($file_out);	
+	}
+	else {
+		
+		$dir = curdir unless $dir;
+	
+		# look for existing names
+	
+		opendir (my $dh, $dir) or die "can't read directory $dir: $!";
+		
+		my @existing = sort (grep {/^tesbatch\.\d+$/} readdir $dh);
+		
+		my $i = 0;
+		
+		if (@existing) {
+		
+			$existing[-1] =~ /\.(\d+)/;
+			$i = $1 + 1;
+		}
+	
+		$file_out = sprintf("tesbatch.%08i", $i);
+		$file_out = catdir($dir, $file_out);
+	}
+	
+	$file_out = abs_path($file_out);
+	
+	rmtree($file_out);
+	mkpath($file_out);
+
+	return $file_out;
+}
+
 
 #
 # turn seconds into nice time
@@ -837,7 +836,7 @@ sub parse_file {
 	
 	my @line = split(/\n+/, $text);
 	
-	my @all = @{get_all_texts($lang)};
+	my @all = @{Tesserae::get_textlist($lang)};
 	
 	for my $l (@line) {
 		
@@ -884,6 +883,7 @@ sub parse_file {
 		$par{$_} = join(',', @{$section{$_}});
 	}
 }
+
 #
 # print all combinations
 #
@@ -912,7 +912,6 @@ sub print_list_file {
 	my $maxlen = length($#combi);
 	my $format = "%0${maxlen}i";
 
-
 	for (my $i = 0; $i <= $#combi; $i++) {
 
 		my @opt = @{$combi[$i]};
@@ -921,92 +920,4 @@ sub print_list_file {
 	
 		print $fh_output join(" ",	catfile($fs{cgi}, "read_table.pl"), @opt) . "\n";
 	}
-}
-
-#
-# html summary of searches to be run
-#
-
-sub print_html {
-
-	# header	
-
-	print html_top(
-		n    => scalar(@combi),
-		dur  => parse_time(scalar(@combi) * 10),
-		file => $fh_output->filename
-	);
-		
-	# table showing all runs
-
-	my @table = (
-		
-		Tr(th(['run', @params]))
-	);
-
-	for (my $i = 0; $i <= $#combi; $i++) {
-
-		my %opt = @{$combi[$i]};
-		my @val = ($i, @opt{map {"--$_"} @params});
-	
-		push @table, Tr(td(\@val));	
-	}
-	
-	print "\n\t\t<!-- auto generated table -->\n";
-	print table(@table);
-	print "\n\t\t<!-- end table -->\n";
-
-	# footer
-
-	print "\t</body>\n</html>\n";
-}
-
-#
-# top part of the web page
-#
-
-sub html_top {
-
-	my %opt = @_;
-	
-	return <<END;
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
-	<head>
-		<title>Tesserae Batch Run Summary</title>
-		<meta name="keywords" content="intertext, text analysis, classics, university at buffalo, latin" />
-		<link rel="stylesheet" type="text/css" href="$url{css}/style.css" />
-		<style type="text/css">
-			td {
-				padding: 0px 5px;
-			}
-		</style>
-	</head>
-	<body>
-		<h2>Summary</h2>
-		
-		<p>Generates $opt{n} combinations.</p>
-		<p>If each run takes 10 seconds, this batch will take $opt{dur}.</p>
-
-		<table>
-		<tr>
-		<td>
-		<form action="$url{cgi}/batch.run.pl" method="post" id="Form_run">
-			<input type="hidden" name="file"   value="$opt{file}"    />
-			<input type="hidden" name="plugin" value="Runs"          />
-			<input type="hidden" name="plugin" value="Tallies"       />
-			<input type="submit" name="submit" value="Run this Batch"/>
-		</form>
-		</td>
-		<td>
-		<form action="$url{html}/batch.php" method="get" id="Form_cancel">
-			<input type="submit" name="submit" value="Start Over"/>
-		</form>
-		</td>
-		</tr>
-		</table>
-			
-END
 }
