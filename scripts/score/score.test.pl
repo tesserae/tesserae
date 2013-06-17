@@ -185,16 +185,16 @@ my $t0 = time;
 
 # source means the alluded-to, older text
 
-my $source;
+my $source ='vergil.aeneid';
 
 # target means the alluding, newer text
 
-my $target;
+my $target ='lucan.bellum_civile.part.1';
 
 # unit means the level at which results are returned: 
 # - choice right now is 'phrase' or 'line'
 
-my $unit = "line";
+my $unit = 'phrase';
 
 # feature means the feature set compared: 
 # - choice is 'word' or 'stem'
@@ -271,9 +271,9 @@ my $frontend = 'default';
 my %redirect;
 
 GetOptions( 
-			'source=s'     => \$source,
-			'target=s'     => \$target,
-			'unit=s'       => \$unit,
+#			'source=s'     => \$source,
+#			'target=s'     => \$target,
+#			'unit=s'       => \$unit,
 			'feature=s'    => \$feature,
 			'stopwords=i'  => \$stopwords, 
 			'stbasis=s'    => \$stoplist_basis,
