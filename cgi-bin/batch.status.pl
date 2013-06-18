@@ -384,6 +384,7 @@ sub html_results {
 	<div class="results">
 	<p>Results available:</p>
 	<form action="$url{cgi}/batch.dl.pl" method="get" id="Form1">
+	<input type="hidden" name="session" value="$session" />
 	<table class="results_index">
 END
 		
