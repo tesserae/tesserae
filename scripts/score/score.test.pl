@@ -1072,7 +1072,7 @@ sub get_scoring_algorithms {
 	return (
 	
 		default => \&score_default,
-		foo     => \&score_template
+		team    => \&score_team
 	);
 }
 
