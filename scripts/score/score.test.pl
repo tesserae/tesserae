@@ -1043,6 +1043,39 @@ sub exact_match {
 	return scalar(@exact_match);
 }
 
+# save the list of multi-text searches to session file
+
+sub write_multi_list {
+	
+	my ($session, $incl) = @_;
+	
+	my @include = @$incl;
+	
+	my $file_list = catfile($session, '.multi.list');
+	
+	open (FH, ">:utf8", $file_list) or die "can't write $file_list: $!";
+	
+	for (@include) {
+	
+		print FH $_ . "\n";
+	}
+	
+	close FH;
+}
+
+##
+## add new scoring algorithms here
+##
+
+sub get_scoring_algorithms {
+
+	return (
+	
+		default => \&score_default,
+		foo     => \&score_template
+	);
+}
+
 sub score_default {
 	
 	my ($match_t_ref, $match_s_ref, $distance) = @_;
@@ -1145,24 +1178,4 @@ sub score_team {
 	}
 	
 	return $score;
-}
-
-# save the list of multi-text searches to session file
-
-sub write_multi_list {
-	
-	my ($session, $incl) = @_;
-	
-	my @include = @$incl;
-	
-	my $file_list = catfile($session, '.multi.list');
-	
-	open (FH, ">:utf8", $file_list) or die "can't write $file_list: $!";
-	
-	for (@include) {
-	
-		print FH $_ . "\n";
-	}
-	
-	close FH;
 }
