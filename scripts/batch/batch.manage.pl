@@ -105,10 +105,13 @@ use Pod::Usage;
 
 # load additional modules necessary for this script
 
+use DBI;
+use Parallel::ForkManager;
 
 # initialize some variables
 
-my $queue = catdir($fs{tmp}, 'tesbatch.queue');
+my $dir_client = catdir($fs{tmp},  'batch');
+my $dir_manage = catdir($fs{data}, 'batch');
 
 my $help = 0;
 
@@ -124,21 +127,56 @@ if ($help) {
 	pod2usage(1);
 }
 
-# get the next queued session
+# connect to databases
 
-my $session = get_next() or exit;
+my ($dbh_manage, $dbh_client) = init_db();
 
-# remove it from the queue
+#
+# fork child daemons
+#
 
-dequeue($session);
+my $pm = Parallel::ForkManager->new(4);
 
-# run the session
+for (my $i = 0; 1; $i = ($i + 1) % 5) {
 
-run_session($session);
+	sleep 5;
+
+	$pm->start and next;
+
+	# get the next queued session
+
+	my $session = get_next($dbh_manage, $dbh_client);
+	
+	# run the session
+
+	if (defined $session) {
+
+		run_session($session);
+	}
+		
+	$pm->finish;
+}
+
+$pm->wait_all_children;
 
 #
 # subroutines
 #
+
+#
+# connect to databases
+#
+
+sub init_db {
+
+	my $db_client  = catfile($dir_client, 'queue.db');
+	my $dbh_client = DBI->connect("dbi:SQLite:dbname=$db_client", "", "");
+
+	my $db_manage  = catfile($dir_manage, 'queue.db');
+	my $dbh_manage = DBI->connect("dbi:SQLite:dbname=$db_manage", "", "");
+
+	return ($dbh_manage, $dbh_client);
+}
 
 #
 # check the queue
@@ -146,33 +184,70 @@ run_session($session);
 
 sub get_next {
 	
-	opendir(my $dh, $queue) || die "can't open queue $queue: $!";
-	
-	my @session = sort(grep { /^\d{8}$/ } readdir($dh));
-	
-	closedir($dh);
-	
-	return $session[0];
-}
+	my ($dbh_manage, $dbh_client) = @_;
 
-#
-# remove a session from the queue
-#
+	my $config;
 
-sub dequeue {
-
-	my $session = shift;
+	# get the list of queued config files
 	
-	my $file_session = catfile($queue, $session);
+	my @queue;
+
+	my $queue = $dbh_client->selectall_arrayref(
+		"select CONF from queue order by ROWID;"
+	);
 		
-	my $success = unlink($file_session);
+	if (defined $queue) {
 	
-	unless ($success) {
-	
-		warn "can't remove $session from queue: $!";
+		@queue = map { $_->[0] } @$queue;
 	}
 	
-	return $success;
+	# get the list of past and ongoing jobs
+	
+	my %status;
+		
+	my $status = $dbh_manage->selectall_arrayref(
+		"select CONF, STATUS from queue;"
+	);
+		
+	if (defined $status) {
+	
+		for my $row (@$status) {
+		
+			$status{$row->[0]} = $row->[1];
+		}
+	}
+		
+	# go down the list of queued configs
+	# and pop the first one that hasn't
+	# yet been run
+		
+	while ($config = shift @queue) {
+		
+		last unless defined $status{$config};
+	}
+	continue {
+		
+		$config = undef;
+	}
+	
+	#
+	# make sure there aren't too many searches going already
+	#
+	
+	my $max_ongoing = 5;
+	my $ongoing = 0;
+	
+	for (keys %status) {
+		
+		if ($status{$_} == 0)  { $ongoing++ }
+	}
+	
+	if ($ongoing >= $max_ongoing) {
+	
+		$config = undef;
+	}
+	
+	return $config;
 }
 
 #
@@ -181,9 +256,9 @@ sub dequeue {
 
 sub run_session {
 	
-	my $session = shift;
+	my $config = shift;
 	
-	my $file_session = catfile($fs{tmp}, 'tesbatch.' . $session);
+	$config = catfile($fs{tmp}, 'batch', 'conf.' . $config);
 	
 	my $file_script = catfile($fs{script}, 'batch', 'batch.run.pl');
 	
@@ -192,7 +267,7 @@ sub run_session {
 		'--quiet',
 		'--manage',
 		'--plugin' => 'Tallies',
-		$file_session
+		$config
 	);
 	
 	`$cmd`;

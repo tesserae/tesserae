@@ -103,11 +103,15 @@ use Pod::Usage;
 
 use DBI;
 use File::Temp;
+use File::Path qw/mkpath rmtree/;
 use CGI qw/:standard/;
 
 #
 # initialize variables
 #
+
+my $dir_client = catdir($fs{tmp},  'batch');
+my $dir_manage = catdir($fs{data}, 'batch');
 
 my @params = qw/
 	source
@@ -122,12 +126,12 @@ my @params = qw/
 my %par;
 
 #
-# is this script being called from the web or cli?
+# initialize CGI
 #
 
 my $query = CGI->new() || die "$!";
 
-# html header
+# print html header
 
 print header('-charset'=>'utf-8', '-type'=>'text/html');
 
@@ -141,22 +145,22 @@ for (@params) {
 }
 
 #
+# open database
+#
+
+my $dbh = init_db();
+
+#
 # create the config file for batch.prepare.pl
 #
 
-my $fh_config = generate_config_file(\%par);
+my $session = generate_config_file(\%par);
 
 #
-# run batch.prepare.pl on the config file
+# add config file to the queue
 #
 
-my $session = init_session($fh_config->filename);
-
-#
-# add session to the queue
-#
-
-enqueue($session);
+enqueue($dbh, $session);
 
 #
 # redirect to status page
@@ -168,88 +172,60 @@ print html_redirect($session);
 # subroutines
 #
 
-# run batch.prepare.pl and return session id
+#
+# open connection to database
+#
 
-sub init_session {
+sub init_db {
 	
-	my $file_config = shift;
+	# make sure working directory exists and create it if not
 	
-	my $script = catfile($fs{script}, 'batch', 'batch.prepare.pl');
+	unless (-d $dir_client) {
 	
-	my $cmd = join(' ',
-		$script,
-		'--infile' => $file_config,
-		'--parent' => $fs{tmp},
-		'--get-session',
-		'--quiet'
+		mkpath($dir_client) or die "can't create $dir_client: $!";
+	}
+	
+	# connect to database
+
+	my $file_db = catfile($dir_client, 'queue.db');
+	
+	my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
+	
+	# check to make sure table exists
+	
+	my $sth = $dbh->prepare(
+		'select name from sqlite_master where type="table";'
 	);
 	
-	$session = `$cmd`;
-	chomp $session;
+	$sth->execute;
+	
+	my $exists = 0;
 
-	my @dir = File::Spec->splitdir($session);
-
-	$session = $dir[-1];
-	$session =~ s/tesbatch\.//;
-
-	return $session;
-}
-
-#
-# turn seconds into nice time
-#
-
-sub parse_time {
-
-	my %name  = ('d' => 'day',
-				 'h' => 'hour',
-				 'm' => 'minute',
-				 's' => 'second');
-				
-	my %count = ('d' => 0,
-				 'h' => 0,
-				 'm' => 0,
-				 's' => 0);
-	
-	$count{'s'} = shift;
-	
-	if ($count{'s'} > 59) {
-	
-		$count{'m'} = int($count{'s'} / 60);
-		$count{'s'} -= ($count{'m'} * 60);
-	}
-	if ($count{'m'} > 59) {
-	
-		$count{'h'} = int($count{'m'} / 60);
-		$count{'m'} -= ($count{'h'} * 60);		
-	}
-	if ($count{'h'} > 23) {
-	
-		$count{'d'} = int($count{'h'} / 24);
-		$count{'d'} -= ($count{'h'} * 24);
-	}
-	
-	my @string = ();
-	
-	for (qw/d h m s/) {
-	
-		next unless $count{$_};
+	while (my $table = $sth->fetchrow_arrayref) {
 		
-		push @string, $count{$_} . " " . $name{$_};
+		if ($table->[0] eq 'queue') {
 		
-		$string[-1] .= 's' if $count{$_} > 1;
+			$exists = 1;
+		}
+	}
+		
+	# create it if it doesn't
+	
+	unless ($exists) {
+		
+		my $sth = $dbh->prepare(
+			'create table queue (
+				CONF char(4),
+				KILL int
+			);'
+		);
+		
+		$sth->execute;
 	}
 	
-	my $sep = " ";
+	# return database handle
 	
-	if (scalar @string > 1) {
-			
-		$string[-1] = 'and ' . $string[-1];
-		
-		$sep = ', ' if scalar @string > 2;
-	}
-	
-	return join ($sep, @string);
+	return $dbh;
 }
 
 #
@@ -258,17 +234,13 @@ sub parse_time {
 
 sub enqueue {
 
-	my $session = shift;
-	
-	my $file_out = catdir($fs{tmp}, $session);
-	
-	my $file_queue = catfile($fs{data}, 'batch', 'queue', $session);
+	my ($dbh, $session) = @_;
 
-	open (my $fh, '>', $file_queue) or die "can't write queue $file_queue: $!";
+	my $sth = $dbh->prepare(
+		"insert into queue values ('$session', 0);"
+	);
 	
-	print $fh time;
-	
-	close ($fh);
+	$sth->execute;
 }
 
 #
@@ -280,7 +252,11 @@ sub generate_config_file {
 	my ($par) = @_;
 	my %par = %$par;
 	
-	my $fh = File::Temp->new();
+	my $fh = File::Temp->new(
+		DIR      => $dir_client, 
+		TEMPLATE => 'conf.XXXX',
+		UNLINK   => 0
+	);
 
 	binmode $fh, ':utf8';
 	
@@ -298,7 +274,13 @@ sub generate_config_file {
 	
 	close ($fh);
 	
-	return ($fh);
+	chmod 0644, $fh->filename;
+	
+	my $session = $fh->filename;
+	
+	$session = substr($session, -4, 4);
+	
+	return $session;
 }
 
 #

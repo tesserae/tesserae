@@ -166,18 +166,24 @@ use Pod::Usage;
 use DBI;
 use Storable;
 use File::Path qw/rmtree mkpath/;
+use File::Basename;
+use File::Temp;
 
 # initialize some variables
 
-my $help     = 0;
-my $verbose  = 1;
-my $parallel = 0;
-my $cleanup  = 1;
-my $manage   = 0;
+my $help;
+my $verbose = 1;
+my $manage  = 0;
+my $lang    = 'la';
 
-my $session;
-
-my @plugin = qw/Runs/;
+my %cl_opt = (
+	parallel   => undef,
+	manage     => undef,
+	session    => undef,
+	dir_parent => undef,
+	cleanup    => undef,
+	plugin     => undef
+);
 
 my @param_names = qw/
 	source
@@ -189,6 +195,9 @@ my @param_names = qw/
 	dist
 	dibasis/;
 
+my $dir_client = catdir($fs{tmp},  'batch');
+my $dir_manage = catdir($fs{data}, 'batch');
+
 #
 # get user options
 #
@@ -196,13 +205,15 @@ my @param_names = qw/
 # from command line
 
 GetOptions(
-	'cleanup!'   => \$cleanup,
-	'plugin=s'   => \@plugin,
 	'help'       => \$help,
-	'parallel=i' => \$parallel,
-	'manage'     => \$manage,
+	'session=s'  => \$cl_opt{session},
 	'quiet'      => sub { $verbose = 0 },
-	'verbose'    => sub { $verbose++ }
+	'verbose'    => sub { $verbose++ },
+	'cleanup!'   => \$cl_opt{cleanup},
+	'plugin=s@'  => \$cl_opt{plugin},
+	'parallel=i' => \$cl_opt{parallel},
+	'parent=s'   => \$cl_opt{dir_parent},
+	'manage'     => \$manage
 );
 
 # print usage if the user needs help
@@ -214,43 +225,46 @@ if ($help) {
 
 # get file to read from first cmd line arg
 
-$session = shift(@ARGV);
+my $config = shift(@ARGV);
 
-if (! defined $session) {
+if (! defined $config) {
 
 	pod2usage(1);
 }
 
-unless (-d $session and -s catfile($session, '.list')) {
+# parse file to get search parameters
 
-	my $list = catfile($session, '.list');
+my %par = %{parse_config($config)};
 
-	die "Can't find $list. Are you sure $session is a prepared batch run?";
-}
+# options specified on cmd line override those in config
 
-#
-# load plugin modules
-#
-
-for my $plugin (@plugin) {
+for (keys %cl_opt) {
 	
-	$plugin =~ s/[^a-z_].*//i;
-	next unless -s catfile($fs{script}, 'batch', 'plugins', $plugin . '.pm');
-
-	eval "require batch::plugins::$plugin";
+	if (defined $cl_opt{$_}) {
+		
+		$par{$_} = $cl_opt{$_};
+	}
 }
+
+# validate parameters
+
+%par = %{validate(\%par)};
+
+my $session = init_session($par{session}, $par{dir_parent});
+
+my @plugins = @{$par{plugin}};
+
+my $cleanup = defined($par{cleanup}) ? $par{cleanup} : 1;
+
+# get all combinations
+
+my @run = @{combi(\%par)};
 
 #
 # try to load Parallel::ForkManager
 #   - if requested.
 
-($parallel, my $pm) = init_parallel($parallel);
-
-#
-# load the list of tess runs
-#
-
-my @run = @{parse_file(catfile($session, '.list'))};
+my ($parallel, $pm) = init_parallel($par{parallel});
 
 #
 # create database
@@ -258,7 +272,7 @@ my @run = @{parse_file(catfile($session, '.list'))};
 
 # create the database
 
-my ($dir_work, $file_db) = init_db($session);
+($par{dir_work}, $par{file_db}) = init_db($session);
 
 #
 # preamble
@@ -268,10 +282,12 @@ print STDERR "Performing " . scalar(@run) . " Tesserae searches\n" if $verbose;
 
 my $pr = ProgressBar->new(scalar(@run), ($verbose != 1));
 
+my $dbh_manage;
+
 if ($manage) {
 	
-	write_init($session, $pr);
-	write_status($session, $pr);
+	$dbh_manage = init_manage($pr);
+	write_status($dbh_manage, $pr);
 }
 
 #
@@ -286,11 +302,11 @@ for (my $i = 0; $i <= $#run; $i++) {
 	
 	if ($manage) {
 
-		write_status($session, $pr);
+		write_status($dbh_manage, $pr);
 		
-		if (check_kill($session)) {
+		if (check_kill($dbh_manage, $config)) {
 
-			write_status($session, $pr, -1);
+			write_status($dbh_manage, $pr, -1);
 			die "batch run terminated";
 		}
 	}
@@ -301,26 +317,22 @@ for (my $i = 0; $i <= $#run; $i++) {
 	
 		$pm->start and next;
 	}
-
-	# modify arguments a little
 	
-	my $cmd = $run[$i];
+	# create directory for tess output based on session, run_id
 	
-	my $bin;
+	my $bin = catfile($par{dir_work}, $i);
 	
-	$cmd =~ s/--bin\s+(\S+)/"--bin " . ($bin = catfile($dir_work, $1))/e;
-	$cmd .= ' --no-cgi --bench';
-	$cmd .= ' --quiet'  unless $verbose > 1;
+	# join params to make shell command
 	
-	# run tesserae, note how long it took
-
-	my $time = exec_run($cmd);
+	my $cmd = make_run(@{$run[$i]}, '--bin' => $bin);
+		
+	exec_run($cmd);
 	
 	#
 	# connect to database
 	#
 	
-	my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
+	my $dbh = DBI->connect("dbi:SQLite:dbname=$par{file_db}", "", "");
 	
 	# load tesserae data from the results files
 	
@@ -330,21 +342,19 @@ for (my $i = 0; $i <= $#run; $i++) {
 	# process all plugins
 	#
 	
-	for my $plugin (@plugin) {
+	for my $plugin (@plugins) {
 		
 		print STDERR "Processing $plugin\n" if $verbose > 1;
 	
 		my %opt = (
 		
 			run_id      => $i,
-			bin         => $bin,
 			target      => $target,
 			source      => $source,
 			meta        => $meta,
 			score       => $score,
 			param_names => \@param_names,
-			dbh         => $dbh, 
-			time        => $time,
+			dbh         => $dbh,
 			verbose     => $verbose
 		);
 			
@@ -362,7 +372,7 @@ $pm->wait_all_children if $parallel;
 # export data to text files
 #
 
-export_tables($session, $file_db, "\t");
+export_tables($session, $par{file_db}, "\t");
 
 #
 # remove working files
@@ -372,14 +382,14 @@ if ($cleanup) {
 
 	print STDERR "Cleaning up\n" if $verbose;
 
-	rmtree($dir_work);
+	rmtree($par{dir_work});
 }
 
 #
 # clear data for pickup by web user
 #
 
-write_status($session, $pr, 1);
+write_status($dbh_manage, $pr, 1) if $manage;
 
 #
 # subroutines
@@ -410,33 +420,6 @@ sub init_parallel {
 	return ($parallel, $pm);
 }
 
-
-#
-# parse the input file
-#
-
-sub parse_file {
-
-	my $file = shift;
-	
-	my @run;
-	
-	open(my $fh, "<", $file) or die "can't read $file: $!";
-	
-	print STDERR "reading $file\n" if $verbose;
-	
-	while (my $l = <$fh>) {
-	
-		chomp $l;
-		push @run, $l if $l =~ /[a-z]/i
-	}
-	
-	close $fh;
-	
-	return \@run;
-}
-
-
 #
 # create a new database
 #
@@ -462,7 +445,7 @@ sub init_db {
 	
 	my %cols = ();
 	
-	for my $plugin (@plugin) {
+	for my $plugin (@plugins) {
 
 		%cols = (%cols, $plugin->cols);
 	}
@@ -484,26 +467,6 @@ sub init_db {
 	
 	return ($dir_work, $file_db);
 }
-
-#
-# extract parameters from string
-#
-
-sub params_from_string {
-
-	my $cmd = shift;
-	my %par;
-	
-	$cmd =~ s/.*read_table.pl\s+//;
-	
-	while ($cmd =~ /--(\S+)\s+([^-]\S*)/g) {
-	
-		$par{$1} = $2;
-	}
-	
-	return \%par;
-}
-
 
 #
 # execute a run, return benchmark data
@@ -559,7 +522,7 @@ sub export_tables {
 
 	print STDERR "Exporting data\n" if $verbose;
 		
-	for my $plugin (@plugin){
+	for my $plugin (@plugins){
 		my %cols = $plugin->cols;
 		
 		for my $table (keys %cols) {
@@ -618,34 +581,124 @@ sub create_table {
 }
 
 #
-# check for presence of lock
-#   - absence of the lock is used as a signal to terminate
+# check for presence of kill flag set by web interface
+# 
 
 sub check_kill {
 
-	my $session = shift;
+	my $dbh_manage = shift;
 	
-	my $file_kill = catfile($session, '.kill');
+	# short versions of config, session
 	
-	return -e $file_kill;
+	my $config_  = $config;
+	$config_     = substr($config_, -4, 4);
+
+	my $session_ = $session;
+	$session_    = substr($session_, -4, 4);
+	
+	# check for flag set through the web interface
+	
+	my $db_client  = catfile($dir_client, 'queue.db');
+	
+	my $dbh_client = DBI->connect("dbi:SQLite:dbname=$db_client", "", "");
+	
+	my $flag_client = $dbh_client->selectrow_arrayref(
+
+		"select KILL from queue where CONF = '$config_';"
+	);
+	
+	$flag_client = defined($flag_client) ? $flag_client->[0] : 0;
+	
+	$dbh_client->disconnect;
+	
+	# check for flag set by manager
+	
+	my $flag_manage = $dbh_manage->selectrow_arrayref(
+
+		"select STATUS from queue where SESSION = '$session_';"
+	);
+	
+	$flag_manage = (defined($flag_manage) and $flag_manage->[0] == -1) ? 1 : 0;
+	
+	return ($flag_client or $flag_manage);
 }
 
 #
 # record initialization params for management script
 #
 
-sub write_init {
+sub init_manage {
 
-	my ($session, $pr) = @_;
+	my $pr = shift;
+
+	# make sure session management directory exists
+
+	unless (-d $dir_manage) {
 	
-	my $file_init = catfile($session, '.init');
+		mkpath($dir_manage) or die "can't create directory $dir_manage: $!";
+	}
 	
-	open (my $fh, '>', $file_init) 
-		or die "can't write progress file $file_init: $!";
+	# connect to database
 	
-	print $fh join("\t", time, $pr->terminus);
+	my $db_manage  = catfile($dir_manage, 'queue.db');
 	
-	close ($fh);
+	my $dbh_manage = DBI->connect("dbi:SQLite:dbname=$db_manage", "", "");
+	
+	# make sure table exists
+	
+	my $exists = $dbh_manage->selectrow_arrayref(
+		
+		'select name from sqlite_master where type="table" and name="queue";'
+	);
+	
+	# create it if it doesn't
+	
+	unless ($exists) {
+		
+		my $sth = $dbh_manage->prepare(
+			'create table queue (
+				CONF    char(4),
+				SESSION char(4),
+				START   int,
+				TIME    int,
+				NRUNS   int,
+				RUNID   int,
+				STATUS  int
+			);'
+		);
+		
+		$sth->execute;
+	}
+
+	# short forms of session, config
+	
+	my $config_  = $config;
+	$config_     = substr($config_,  -4, 4);
+	
+	my $session_ = $session;
+	$session_    = substr($session_, -4, 4);
+	
+	#
+	# create an entry for this batch
+	#
+
+	my @values = (
+		"'$config_'", 
+		"'$session_'", 
+		time,
+		"NULL",
+		$pr->terminus,
+		"NULL",
+		0
+	);
+		
+	my $sth = $dbh_manage->prepare(
+		'insert into queue values(' . join(',', @values) . ');'
+	);
+	
+	$sth->execute;
+	
+	return $dbh_manage;
 }
 
 
@@ -655,16 +708,393 @@ sub write_init {
 
 sub write_status {
 
-	my ($session, $pr, $flag) = @_;
+	my ($dbh, $pr, $flag) = @_;
+		
+	my $time  = time;
+	my $runid = $pr->count;
 	
-	$flag = 0 unless defined $flag;
+	my $session_  = $session;
+	$session_     = substr($session_,  -4, 4);
 	
-	my $file_status = catfile($session, '.status');
+	my @values = (
+		
+		"TIME   = $time",
+		"RUNID  = $runid"
+	);
 	
-	open (my $fh, '>', $file_status) 
-		or die "can't write progress file $file_status: $!";
+	if (defined $flag) {
+		
+		push @values, "STATUS = $flag";
+	}
 	
-	print $fh join("\t", time, $pr->count, $flag);
+	my $sth = $dbh->prepare(
+ 		"update queue set " . join(',', @values) . " where SESSION='$session_';"
+	);	
 	
-	close ($fh);
+	$sth->execute;
+}
+
+#
+# parse a config file for parameters
+#
+
+sub parse_config {
+
+	my $file = shift;
+	
+	open (FH, "<", $file) || die "can't open $file: $!";
+	
+	my $text;
+	
+	while (my $line = <FH>) {
+	
+		$text .= $line;
+	}
+	
+	close FH;
+	
+	$text =~ s/[\x12\x15]+/\n/sg;
+	
+	my %section;
+	
+	my $pname = "";
+	
+	my @line = split(/\n+/, $text);
+	
+	my @all = @{Tesserae::get_textlist($lang)};
+	
+	for my $l (@line) {
+
+		# remove comments
+
+		$l =~ s/#.*//;
+		
+		# skip empty lines
+		
+		next unless $l =~ /\S/;
+		
+		# look for section headers
+		
+		if ($l =~ /\[\s*(\S.+).*\]/) {
+		
+			$pname = lc($1);
+			next;
+		}	
+		
+		# look for range syntax
+		
+		if ($l =~ /range\s*\(from\D*(\d+)\b.*?to\D*(\d+)(.*)/) {
+		
+			my ($from, $to, $tail) = ($1, $2, $3);
+			
+			my $step = 1;
+			
+			if (defined $tail and $tail =~ /step\D*(\d+)/) {
+			
+				$step = $1;
+			}
+			
+			$l = seq($from, $to, $step);
+		}
+		elsif ($l =~ /(\d+)\s*-\s*(\d+)(.*)/) {
+		
+			my ($from, $to, $tail) = ($1, $2, $3);
+			
+			my $step = 1;
+			
+			if (defined $tail and $tail =~ /:\s*(\d+)/) {
+			
+				$step = $1;
+			}
+			
+			$l = seq($from, $to, $step);
+		}
+		
+		# add to current section
+							
+		push @{$section{$pname}}, $l;
+	}
+	
+	# flatten lists to a single line,
+	#  remove whitespace
+	#  drop blanks
+	
+	for (keys %section) {
+	
+		$par{$_} = join(',', @{$section{$_}});
+		$par{$_} =~ s/\s//g;
+		$par{$_} = [grep { /\S/ } split(/,/, $par{$_})];		
+	}
+	
+	#
+	# convert params that take only one option from array to scalar
+	#
+	
+	for (qw/session dir_parent cleanup parallel/) {
+	
+		if (defined $par{$_}) {
+			
+			$par{$_} = $par{$_}[0];
+		}
+	}
+	
+	return \%par;
+}
+
+#
+# parse command-line options 
+# for multiple values, ranges
+#
+
+sub validate {
+	
+	my $ref = shift;
+	my %par = %$ref;
+	
+	my $flag = 0;
+	
+	# expand text names for source, target
+		
+	for my $pname (qw/source target/) {
+		
+		unless (defined $par{$pname}) {
+		
+			$par{$pname} = [];
+		}
+	
+		my @pass;
+		my @all = @{Tesserae::get_textlist($lang, -sort=>1)};
+
+		for my $val (@{$par{$pname}}) {
+		
+			$val =~ s/\./\\./g;
+			$val =~ s/\*/.*/g;
+			$val = "^$val\$";
+			
+			push @pass, (grep { /$val/ } @all);
+		}
+		
+		if (@pass) {
+		
+			$par{$pname} = Tesserae::uniq(\@pass);
+		}
+		else {
+		
+			$flag = 1;
+			warn "No matching texts for $pname";
+		}
+	}
+	
+	# 
+	# validate remaining params that take strings
+	#
+
+	my %allowed = (
+	
+		unit     => [qw/line phrase/],
+		feature  => [qw/word stem syn 3gr/],  
+		stbasis  => [qw/target source both corpus/],
+		dibasis  => [qw/span span-target span-source freq freq-target freq-source/]
+	);
+	
+	for my $pname (keys %allowed) {
+		
+		unless (defined $par{$pname}) {
+		
+			$par{$pname} = [];
+		}
+		
+		my @pass;
+		
+		for my $val (@{$par{$pname}}) {
+		
+			if (grep {$val eq $_} @{$allowed{$pname}}) {
+			
+				push @pass, $val;
+			}
+		}
+		
+ 		unless (@pass) {
+		
+			warn "No matching values for $pname";
+			$flag = 1;
+		}
+		
+		$par{$pname} = \@pass;
+	}
+
+	for my $pname (qw/stop dist/) {
+	
+		unless (defined $par{$pname}) {
+
+			$par{$pname} = [];
+		}
+		
+		my @val = map { int($_) } @{$par{$pname}};
+	
+		unless (@val) {
+			
+			warn "No allowable values for $pname";
+			$flag = 1;
+		}
+		
+		$par{$pname} = \@val;
+	}
+	
+	#
+	# validate plugins
+	#   - load those that pass
+
+	push @{$par{plugin}}, 'Runs';
+
+	for my $plugin (@{$par{plugin}}) {
+
+		$plugin =~ s/[^a-z_].*//i;
+
+		if (-s catfile($fs{script}, 'batch', 'plugins', $plugin . '.pm')) {
+
+			eval "require batch::plugins::$plugin";
+		}
+		else {
+
+			warn "Invalid plugin: $plugin";
+		}
+	}
+
+	# fail if any section didn't validate
+
+	if ($flag) {
+	
+		die "Can't validate config $config";
+	}
+
+	#
+	# remove duplicate entries from all sections
+	#
+	
+	for my $pname (keys %par) {
+		
+		if (ref($par{$pname}) eq 'ARRAY') {
+			
+			$par{$pname} = Tesserae::uniq($par{$pname});
+		}
+	}
+
+	return \%par;
+}
+
+#
+# generate a sequence of integers
+#
+
+sub seq {
+
+	my ($from, $to, $step) = map { int($_) } @_;
+		
+	if ($from > $to) {
+	
+		($from, $to) = ($to, $from);
+	}
+	
+	if ($step < 0) {
+	
+		$step *= -1;
+	}
+	
+	if ($step == 0) {
+	
+		$to = $from;
+	}
+	
+	my @seq;
+	
+	for (my $i = $from; $i <= $to; $i += $step) {
+	
+		push @seq, $i;
+	}
+	
+	my $seq = join(',', @seq);
+
+	return $seq;
+}
+
+#
+# calculate all combinations of params
+#
+
+sub combi {
+
+	my $ref = shift;
+	my %par = %$ref;
+	
+	my @combi = ([]);
+
+	for my $pname (@param_names) {
+
+		my @combi_ = @combi;
+		@combi = ();
+
+		for my $cref (@combi_) {
+
+			for my $val (@{$par{$pname}}) {
+
+				push @combi, [@{$cref}, "--$pname" => $val];
+			}
+		}
+	}
+		
+	return \@combi;	
+}
+
+
+#
+# write a command that executes a tess search from params
+#
+
+sub make_run {
+
+	my (@tess_options) = @_;
+	
+	my $script = catfile($fs{cgi}, 'read_table.pl');
+	
+	my $cmd = join(" ",
+		$script,
+		@tess_options,
+		'--quiet'
+	);
+	
+	return $cmd;
+}
+
+#
+# generate a session directory if none provided
+#
+
+sub init_session {
+
+	my ($file_out, $dir) = @_;
+	
+	if ($file_out) {
+			
+		if (-e $file_out) {
+			rmtree($file_out) or die "can't overwrite existing session $file_out: $!";
+		}
+		
+		mkpath($file_out) or die "can't create session $file_out: $!";
+	}
+	else {
+		
+		$dir = ($dir || curdir);
+	
+		$file_out = File::Temp::tempdir(
+			'tesbatch.XXXX',
+			DIR => $dir
+		);
+	}
+	
+	$file_out = abs_path($file_out);
+	
+	chmod 0744, $file_out;
+
+	return $file_out;
 }

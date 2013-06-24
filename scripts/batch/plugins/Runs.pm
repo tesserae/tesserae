@@ -82,8 +82,7 @@ sub cols {
 			'dibasis char(11)',
 			'words   int',
 			'lines   int',
-			'phrases int',
-			'time    int'
+			'phrases int'
 		]
 	);
 }
@@ -103,11 +102,11 @@ sub process {
 	my $values = join(', ', add_quotes(
 		$opt{run_id}, 
 		@params,
-		@units,
-		$opt{time}
+		@units
 	));
-		
-	my $sth = $opt{dbh}->prepare("insert into runs values ($values);");
+	
+	my $sql = "insert into runs values ($values);";		
+	my $sth = $opt{dbh}->prepare($sql);
 	
 	$sth->execute;
 }

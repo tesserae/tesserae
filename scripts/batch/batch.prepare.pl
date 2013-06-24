@@ -469,50 +469,6 @@ sub parse_params {
 }
 
 #
-# generate an output directory if none provided
-#
-
-sub init_name {
-
-	my ($file_out, $dir) = @_;
-	
-	if ($file_out) {
-	
-		rmtree($file_out);
-		mkpath($file_out);	
-	}
-	else {
-		
-		$dir = curdir unless $dir;
-	
-		# look for existing names
-	
-		opendir (my $dh, $dir) or die "can't read directory $dir: $!";
-		
-		my @existing = sort (grep {/^tesbatch\.\d+$/} readdir $dh);
-		
-		my $i = 0;
-		
-		if (@existing) {
-		
-			$existing[-1] =~ /\.(\d+)/;
-			$i = $1 + 1;
-		}
-	
-		$file_out = sprintf("tesbatch.%08i", $i);
-		$file_out = catdir($dir, $file_out);
-	}
-	
-	$file_out = abs_path($file_out);
-	
-	rmtree($file_out);
-	mkpath($file_out);
-
-	return $file_out;
-}
-
-
-#
 # turn seconds into nice time
 #
 
@@ -809,80 +765,6 @@ sub interactive {
 	}
 }
 
-#
-# parse a config file for parameters
-#
-
-sub parse_file {
-
-	my $file = shift;
-	
-	open (FH, "<", $file) || die "can't open $file: $!";
-	
-	my $text;
-	
-	while (my $line = <FH>) {
-	
-		$text .= $line;
-	}
-	
-	close FH;
-	
-	$text =~ s/[\x12\x15]+/\n/sg;
-	
-	my %section;
-	
-	my $pname = "";
-	
-	my @line = split(/\n+/, $text);
-	
-	my @all = @{Tesserae::get_textlist($lang)};
-	
-	for my $l (@line) {
-		
-		if ($l =~ /\[\s*(\S.+).*\]/) {
-		
-			$pname = lc($1);
-			next;
-		}	
-
-		$l =~ s/#.*//;
-		
-		if ($l =~ /range\s*\(from\D*(\d+)\b.*?to\D*(\d+)(.*)/) {
-		
-			my ($from, $to, $tail) = ($1, $2, $3);
-			
-			my $step = 1;
-			
-			if (defined $tail and $tail =~ /step\D*(\d+)/) {
-			
-				$step = $1;
-			}
-			
-			$l = "$from-$to:$step";
-		}
-		elsif ($l =~ /(\d+)\s*-\s*(\d+)(.*)/) {
-		
-			my ($from, $to, $tail) = ($1, $2, $3);
-			
-			my $step = 1;
-			
-			if (defined $tail and $tail =~ /:\s*(\d+)/) {
-			
-				$step = $1;
-			}
-			
-			$l = "$from-$to:$step";
-		}
-
-		push @{$section{$pname}}, $l;
-	}
-	
-	for (keys %section) {
-	
-		$par{$_} = join(',', @{$section{$_}});
-	}
-}
 
 #
 # print all combinations
