@@ -104,12 +104,16 @@ use Pod::Usage;
 
 use CGI qw/:standard/;
 use Archive::Zip;
+use DBI;
 
 # initialize some variables
 
 my $help;
 my $session;
 my @dl;
+
+my $dir_client = catdir($fs{tmp},  'batch');
+my $dir_manage = catdir($fs{data}, 'batch');
 
 #
 # is this script being called from the web or cli?
@@ -156,21 +160,30 @@ else {
 	}
 }
 
+# establish session directory
+
+my $dir_session = catdir($fs{data}, 'batch', 'batch.' . $session);
+
 # html header
 
-print header(-type => 'application/zip', -attachment => $session . '.zip');
+print header(
+	-type       => 'application/octet-stream', 
+	-attachment => $session . '.db'
+);
 
 # check files requested
 
-my @files = validate($session, \@dl);
+my @files = validate(\@dl);
 
 # create zip
 
-my $zip = create_archive(@files);
+# my $zip = create_archive(@files);
 
 # send it to user
 
-$zip->writeToFileHandle(*STDOUT, 0);
+# $zip->writeToFileNamed(catfile($fs{tmp}, $session . '.zip'));
+
+export_files($files[0]);
 
 #
 # subroutines
@@ -180,15 +193,13 @@ $zip->writeToFileHandle(*STDOUT, 0);
 
 sub validate {
 
-	my ($session, $ref) = @_;
+	my ($ref) = @_;
 	
 	my @dl = @$ref;
 
 	my $flag = 0;
 
 	# make sure session exists
-	
-	my $dir_session = catdir($fs{tmp}, 'tesbatch.' . $session);
 
 	unless (-d $dir_session) {
 	
@@ -198,28 +209,19 @@ sub validate {
 	
 	# make sure search is complete
 	
-	my $file_status = catfile($fs{tmp}, 'tesbatch.' . $session, '.status');
+	my $db_manage = catfile($fs{data}, 'batch', 'queue.db');
+	my $dbh_manage = DBI->connect("dbi:SQLite:dbname=$db_manage", "", "");
 	
-	if (-e $file_status) {
+	my $status = $dbh_manage->selectrow_arrayref(
 		
-		open(my $fh_status, '<', $file_status) or die "can't read $file_status: $!";
-		
-		my $line = <$fh_status>;
-		
-		my ($time_now, $count_now, $status) = split(/\t/, $line);
-		
-		unless ($status == 1) {
-		
-			warn "session $session is not complete";
-			$flag = 1;
-		}
-	}
-	else {
+		"select STATUS from queue where SESSION='$session';"
+	);
 	
-		warn "session $session has not been processed";
+	unless (defined($status) and $status->[0]==1) {
+	
 		$flag = 1;
 	}
-	
+		
 	# return empty list if one of the previous tests failed
 	
 	if ($flag) {
@@ -235,8 +237,13 @@ sub validate {
 	
 	closedir ($dh);
 	
+	print STDERR "validate: all_files=" . join(",", @all_files) . "\n";
+	print STDERR "validate: dl=" . join(",", @dl) . "\n";			
+	
 	@dl = @{Tesserae::intersection(\@dl, \@all_files)};
-		
+				
+	print STDERR "validate: validated=" . join(",", @dl) . "\n";			
+	
 	return @dl;
 }
 
@@ -250,12 +257,40 @@ sub create_archive {
 	
 	my $zip = Archive::Zip->new();
 	
-	my $dir_session = catdir($fs{tmp}, 'tesbatch.' . $session);
-	
 	for my $file (@files) {
 	
-		$zip->addFile( catfile($dir_session, $file), $file);
+		my $orig_file = catfile($dir_session, $file);
+		my $arch_file = $file;
+	
+		print STDERR "$orig_file -> $arch_file\n";
+	
+		my $member = $zip->addFile($orig_file, $arch_file);
+		
+		print STDERR "member: $member\n";
 	}
 	
 	return $zip;
+}
+
+#
+# export database
+#
+
+sub export_files {
+
+	my $name     = shift;
+	my $file_in  = catfile($dir_session, $name);
+	
+	open(my $fh_in,  '<', $file_in) 
+		or die "can't read $file_in: $!";
+		
+	binmode($fh_in);
+	binmode(STDOUT);
+	
+	my $buffer;
+	
+	while (read($fh_in, $buffer, 4096)) {
+	
+		print $buffer;
+	}
 }

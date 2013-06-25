@@ -116,6 +116,9 @@ use DBI;
 my $help;
 my $session;
 
+my $dir_client = catdir($fs{tmp},  'batch');
+my $dir_manage = catdir($fs{data}, 'batch');
+
 #
 # is this script being called from the web or cli?
 #
@@ -166,6 +169,11 @@ else {
 	}
 }
 
+#
+# connect to databases
+#
+
+my ($dbh_manage, $dbh_client) = init_db();
 
 #
 # check status
@@ -211,58 +219,60 @@ sub get_status {
 
 	my $session = shift;
 
-	my $status;
-
-	my $dir_session = catdir($fs{tmp}, 'tesbatch.' . $session);
-
-	# if session directory doesn't exist, return DNE
-
-	unless (-d $dir_session) {
+	#
+	# get status from session management files
+	#
+	
+	# from the client db look for the kill flag
+	
+	#  if undef : the session hasn't been queued,
+	#         1 : the session has been cancelled
+	#         0 : the session is queued
+	
+	my $flag_kill = $dbh_client->selectrow_arrayref(
 		
+		"select KILL from queue where SESSION='$session';"
+	);
+	
+	if (! defined $flag_kill) {
+	
 		return (-2, undef, undef);
 	}
+	elsif ($flag_kill->[0] == 1) {
 	
-	# otherwise, get status from session management files
-		
-	my $file_init   = catfile($fs{tmp}, 'tesbatch.' . $session, '.init');
-	my $file_status = catfile($fs{tmp}, 'tesbatch.' . $session, '.status');
-	
-	my ($time_init,   $time_now);
-	my ($count_final, $count_now);
-	
-	if (-e $file_init) {
-
-		open (my $fh_init, '<', $file_init) or die "can't read $file_init: $!";
-		
-		my $line = <$fh_init>;
-		
-		($time_init, $count_final) = split(/\t/, $line);
-		
-		close ($fh_init);
+		return (-1, undef, undef);
 	}
 	
-	if (-e $file_status) {
-		
-		open(my $fh_status, '<', $file_status) or die "can't read $file_status: $!";
-		
-		my $line = <$fh_status>;
-		
-		($time_now, $count_now, $status) = split(/\t/, $line)
-	}
+	#
+	# check status in manager db
+	#
 	
-	# calculate progress, eta
+	my ($status, $progress, $eta);
 	
-	my ($progress, $eta);
+	my $row = $dbh_manage->selectrow_arrayref(
 
-	if (defined ($time_init and $time_now and $count_now and $count_final)) {
+		"select STATUS,START,TIME,NRUNS,RUNID from queue where SESSION='$session';"
+	);
+	
+	if (defined $row) {
+	
+		$status = $row->[0];
+	
+		my ($time_init, $time_now, $count_final, $count_now) = @{$row}[1..4];
+	
+	
+		# calculate progress, eta if possible
+		
+		if (defined ($time_init and $time_now and $count_now and $count_final)) {
 					
-		my $elapsed = $time_now - $time_init;
+			my $elapsed = $time_now - $time_init;
 
-		$progress = $count_now/$count_final;
+			$progress = $count_now/$count_final;
 	
-		if ($progress < 1) {
+			if ($progress < 1) {
 
-			$eta = int(($elapsed / $progress) - $elapsed);
+				$eta = int(($elapsed / $progress) - $elapsed);
+			}
 		}
 	}
 	
@@ -371,35 +381,25 @@ sub html_results {
 
 	my $session = shift;
 	
-	my $dir = catdir($fs{tmp}, 'tesbatch.' . $session);
+	my $dir = catdir($fs{data}, 'batch', 'batch.' . $session);
 				
-	opendir(my $dh, $dir) or die "can't open results $dir: $!";
-	
-	my @tables = grep { /\.txt$/ && -s catfile($dir, $_)} 
-					 readdir($dh);
+	# opendir(my $dh, $dir) or die "can't open results $dir: $!";
+	# 
+	# my @tables = grep { /\.txt$/} 
+	# 				 readdir($dh);
+	# 
+	# closedir($dh);
 		
-	closedir($dh);
-	
 	my $html = <<END; 
 	<div class="results">
-	<p>Results available:</p>
-	<form action="$url{cgi}/batch.dl.pl" method="get" id="Form1">
-	<input type="hidden" name="session" value="$session" />
-	<table class="results_index">
+		<form action="$url{cgi}/batch.dl.pl" method="get" id="Form1">
+			<input type="hidden" name="session" value="$session"  />
+			<input type="hidden" name="dl"      value="sqlite.db" />
+			<input type="submit" name="download" value="Download Files" />
+		</form>
+	</div>
 END
-		
-	for (@tables) {
-		
-		$html .= "<tr>"
-				. "<td>$_</td>"
-				. "<td><input type=\"hidden\" name=\"dl\" value=\"$_\" /></td>"
-				. "</tr>";
-	}
-	
- 	$html .= '</table>';
-	$html .= '<p><input type="submit" name="download" value="Download Files" /></p>';
-	$html .= '</div>';
-	
+
 	return $html;
 }
 
@@ -509,3 +509,18 @@ sub html_bottom {
 	
 	return $html;
 }
+
+#
+# connect to databases
+#
+
+sub init_db {
+
+	my $db_client  = catfile($dir_client, 'queue.db');
+	my $dbh_client = DBI->connect("dbi:SQLite:dbname=$db_client", "", "");
+
+	my $db_manage  = catfile($dir_manage, 'queue.db');
+	my $dbh_manage = DBI->connect("dbi:SQLite:dbname=$db_manage", "", "");
+
+	return ($dbh_manage, $dbh_client);
+}	

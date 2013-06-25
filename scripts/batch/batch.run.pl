@@ -167,7 +167,6 @@ use DBI;
 use Storable;
 use File::Path qw/rmtree mkpath/;
 use File::Basename;
-use File::Temp;
 
 # initialize some variables
 
@@ -386,6 +385,12 @@ if ($cleanup) {
 }
 
 #
+# make results readable by everyone
+#
+
+chmod 0755, $session;
+
+#
 # clear data for pickup by web user
 #
 
@@ -588,28 +593,34 @@ sub check_kill {
 
 	my $dbh_manage = shift;
 	
-	# short versions of config, session
+	# short version of session
 	
-	my $config_  = $config;
-	$config_     = substr($config_, -4, 4);
-
 	my $session_ = $session;
 	$session_    = substr($session_, -4, 4);
 	
 	# check for flag set through the web interface
+	# but if the client db doesn't exist, don't create it
 	
-	my $db_client  = catfile($dir_client, 'queue.db');
+	my $flag_client = 0;
 	
-	my $dbh_client = DBI->connect("dbi:SQLite:dbname=$db_client", "", "");
-	
-	my $flag_client = $dbh_client->selectrow_arrayref(
+	my $db_client = catfile($dir_client, 'queue.db');
+		
+	if (-e $db_client) {
+		
+		my $dbh_client = DBI->connect("dbi:SQLite:dbname=$db_client", "", "");
+		
+		$flag_client = $dbh_client->selectrow_arrayref(
 
-		"select KILL from queue where CONF = '$config_';"
-	);
+			"select KILL from queue where SESSION = '$session_';"
+		);
 	
-	$flag_client = defined($flag_client) ? $flag_client->[0] : 0;
-	
-	$dbh_client->disconnect;
+		if (defined $flag_client) {
+
+			 $flag_client = $flag_client->[0];
+		}
+		
+		$dbh_client->disconnect;
+	}
 	
 	# check for flag set by manager
 	
@@ -657,7 +668,6 @@ sub init_manage {
 		
 		my $sth = $dbh_manage->prepare(
 			'create table queue (
-				CONF    char(4),
 				SESSION char(4),
 				START   int,
 				TIME    int,
@@ -670,10 +680,7 @@ sub init_manage {
 		$sth->execute;
 	}
 
-	# short forms of session, config
-	
-	my $config_  = $config;
-	$config_     = substr($config_,  -4, 4);
+	# short form of session
 	
 	my $session_ = $session;
 	$session_    = substr($session_, -4, 4);
@@ -683,7 +690,6 @@ sub init_manage {
 	#
 
 	my @values = (
-		"'$config_'", 
 		"'$session_'", 
 		time,
 		"NULL",
@@ -1075,6 +1081,11 @@ sub init_session {
 	my ($file_out, $dir) = @_;
 	
 	if ($file_out) {
+		
+		if ($dir) {
+		
+			$file_out = catfile($dir, $file_out);
+		}
 			
 		if (-e $file_out) {
 			rmtree($file_out) or die "can't overwrite existing session $file_out: $!";

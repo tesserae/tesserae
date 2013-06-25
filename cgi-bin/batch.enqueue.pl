@@ -215,7 +215,7 @@ sub init_db {
 		
 		my $sth = $dbh->prepare(
 			'create table queue (
-				CONF char(4),
+				SESSION char(4),
 				KILL int
 			);'
 		);
@@ -249,7 +249,7 @@ sub enqueue {
 
 sub generate_config_file {
 
-	my ($par) = @_;
+	my $par = shift;
 	my %par = %$par;
 	
 	my $fh = File::Temp->new(

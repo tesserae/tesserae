@@ -127,10 +127,6 @@ if ($help) {
 	pod2usage(1);
 }
 
-# connect to databases
-
-my ($dbh_manage, $dbh_client) = init_db();
-
 #
 # fork child daemons
 #
@@ -142,6 +138,10 @@ for (my $i = 0; 1; $i = ($i + 1) % 5) {
 	sleep 5;
 
 	$pm->start and next;
+
+	# connect to databases
+
+	my ($dbh_manage, $dbh_client) = init_db();
 
 	# get the next queued session
 
@@ -169,11 +169,47 @@ $pm->wait_all_children;
 
 sub init_db {
 
+	# check for client db;
+	# don't create it if it doesn't exist
+	
 	my $db_client  = catfile($dir_client, 'queue.db');
-	my $dbh_client = DBI->connect("dbi:SQLite:dbname=$db_client", "", "");
+	
+	my $dbh_client;
+
+	if ( -e $db_client) {
+	
+		$dbh_client = DBI->connect("dbi:SQLite:dbname=$db_client", "", "");
+	}
+
+	# check for manager db, create if doesn't exist
 
 	my $db_manage  = catfile($dir_manage, 'queue.db');
 	my $dbh_manage = DBI->connect("dbi:SQLite:dbname=$db_manage", "", "");
+
+	# make sure table exists
+	
+	my $exists = $dbh_manage->selectrow_arrayref(
+		
+		'select name from sqlite_master where type="table" and name="queue";'
+	);
+	
+	# create it if it doesn't
+	
+	unless ($exists) {
+		
+		my $sth = $dbh_manage->prepare(
+			'create table queue (
+				SESSION char(4),
+				START   int,
+				TIME    int,
+				NRUNS   int,
+				RUNID   int,
+				STATUS  int
+			);'
+		);
+		
+		$sth->execute;
+	}
 
 	return ($dbh_manage, $dbh_client);
 }
@@ -186,14 +222,16 @@ sub get_next {
 	
 	my ($dbh_manage, $dbh_client) = @_;
 
-	my $config;
+	unless ($dbh_client) { return undef }
+
+	my $session;
 
 	# get the list of queued config files
 	
 	my @queue;
 
 	my $queue = $dbh_client->selectall_arrayref(
-		"select CONF from queue order by ROWID;"
+		"select SESSION from queue order by ROWID;"
 	);
 		
 	if (defined $queue) {
@@ -206,7 +244,7 @@ sub get_next {
 	my %status;
 		
 	my $status = $dbh_manage->selectall_arrayref(
-		"select CONF, STATUS from queue;"
+		"select SESSION, STATUS from queue;"
 	);
 		
 	if (defined $status) {
@@ -216,18 +254,24 @@ sub get_next {
 			$status{$row->[0]} = $row->[1];
 		}
 	}
-		
+			
 	# go down the list of queued configs
 	# and pop the first one that hasn't
 	# yet been run
 		
-	while ($config = shift @queue) {
+	while ($session = shift @queue) {
 		
-		last unless defined $status{$config};
+		if (defined $status{$session}) {
+			
+		}
+		else {
+			
+			last;
+		}
 	}
 	continue {
 		
-		$config = undef;
+		$session = undef;
 	}
 	
 	#
@@ -239,15 +283,15 @@ sub get_next {
 	
 	for (keys %status) {
 		
-		if ($status{$_} == 0)  { $ongoing++ }
+		if (defined $status{$_} and $status{$_} == 0)  { $ongoing++ }
 	}
 	
 	if ($ongoing >= $max_ongoing) {
-	
-		$config = undef;
+		
+		$session = undef;
 	}
-	
-	return $config;
+		
+	return $session;
 }
 
 #
@@ -256,9 +300,9 @@ sub get_next {
 
 sub run_session {
 	
-	my $config = shift;
+	my $session = shift;
 	
-	$config = catfile($fs{tmp}, 'batch', 'conf.' . $config);
+	my $file_config = catfile($fs{tmp}, 'batch', 'conf.' . $session);
 	
 	my $file_script = catfile($fs{script}, 'batch', 'batch.run.pl');
 	
@@ -266,8 +310,10 @@ sub run_session {
 		$file_script,
 		'--quiet',
 		'--manage',
-		'--plugin' => 'Tallies',
-		$config
+		'--plugin'  => 'Tallies',
+		'--session' => 'batch.' . $session,
+		'--parent'  => $dir_manage,
+		$file_config
 	);
 	
 	`$cmd`;
