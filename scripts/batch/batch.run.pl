@@ -234,7 +234,7 @@ if (! defined $config) {
 
 # parse file to get search parameters
 
-my %par = %{parse_config($config)};
+my %param = %{parse_config($config)};
 
 # options specified on cmd line override those in config
 
@@ -242,29 +242,29 @@ for (keys %cl_opt) {
 	
 	if (defined $cl_opt{$_}) {
 		
-		$par{$_} = $cl_opt{$_};
+		$param{$_} = $cl_opt{$_};
 	}
 }
 
 # validate parameters
 
-%par = %{validate(\%par)};
+%param = %{validate(\%param)};
 
-my $session = init_session($par{session}, $par{dir_parent});
+my $session = init_session($param{session}, $param{dir_parent});
 
-my @plugins = @{$par{plugin}};
+my @plugins = @{$param{plugin}};
 
-my $cleanup = defined($par{cleanup}) ? $par{cleanup} : 1;
+my $cleanup = defined($param{cleanup}) ? $param{cleanup} : 1;
 
 # get all combinations
 
-my @run = @{combi(\%par)};
+my @run = @{combi(\%param)};
 
 #
 # try to load Parallel::ForkManager
 #   - if requested.
 
-my ($parallel, $pm) = init_parallel($par{parallel});
+my ($parallel, $pm) = init_parallel($param{parallel});
 
 #
 # create database
@@ -272,7 +272,7 @@ my ($parallel, $pm) = init_parallel($par{parallel});
 
 # create the database
 
-($par{dir_work}, $par{file_db}) = init_db($session);
+($param{dir_work}, $param{file_db}) = init_db($session);
 
 #
 # preamble
@@ -320,7 +320,7 @@ for (my $i = 0; $i <= $#run; $i++) {
 	
 	# create directory for tess output based on session, run_id
 	
-	my $bin = catfile($par{dir_work}, $i);
+	my $bin = catfile($param{dir_work}, $i);
 	
 	# join params to make shell command
 	
@@ -332,7 +332,7 @@ for (my $i = 0; $i <= $#run; $i++) {
 	# connect to database
 	#
 	
-	my $dbh = DBI->connect("dbi:SQLite:dbname=$par{file_db}", "", "");
+	my $dbh = DBI->connect("dbi:SQLite:dbname=$param{file_db}", "", "");
 	
 	# load tesserae data from the results files
 	
@@ -372,7 +372,7 @@ $pm->wait_all_children if $parallel;
 # export data to text files
 #
 
-export_tables($session, $par{file_db}, "\t");
+export_tables($session, $param{file_db}, "\t");
 
 #
 # remove working files
@@ -382,7 +382,7 @@ if ($cleanup) {
 
 	print STDERR "Cleaning up\n" if $verbose;
 
-	rmtree($par{dir_work});
+	rmtree($param{dir_work});
 }
 
 #
@@ -828,9 +828,9 @@ sub parse_config {
 	
 	for (keys %section) {
 	
-		$par{$_} = join(',', @{$section{$_}});
-		$par{$_} =~ s/\s//g;
-		$par{$_} = [grep { /\S/ } split(/,/, $par{$_})];		
+		$param{$_} = join(',', @{$section{$_}});
+		$param{$_} =~ s/\s//g;
+		$param{$_} = [grep { /\S/ } split(/,/, $param{$_})];		
 	}
 	
 	#
@@ -839,13 +839,13 @@ sub parse_config {
 	
 	for (qw/session dir_parent cleanup parallel/) {
 	
-		if (defined $par{$_}) {
+		if (defined $param{$_}) {
 			
-			$par{$_} = $par{$_}[0];
+			$param{$_} = $param{$_}[0];
 		}
 	}
 	
-	return \%par;
+	return \%param;
 }
 
 #
@@ -856,7 +856,7 @@ sub parse_config {
 sub validate {
 	
 	my $ref = shift;
-	my %par = %$ref;
+	my %param = %$ref;
 	
 	my $flag = 0;
 	
@@ -864,15 +864,15 @@ sub validate {
 		
 	for my $pname (qw/source target/) {
 		
-		unless (defined $par{$pname}) {
+		unless (defined $param{$pname}) {
 		
-			$par{$pname} = [];
+			$param{$pname} = [];
 		}
 	
 		my @pass;
 		my @all = @{Tesserae::get_textlist($lang, -sort=>1)};
 
-		for my $val (@{$par{$pname}}) {
+		for my $val (@{$param{$pname}}) {
 		
 			$val =~ s/\./\\./g;
 			$val =~ s/\*/.*/g;
@@ -883,7 +883,7 @@ sub validate {
 		
 		if (@pass) {
 		
-			$par{$pname} = Tesserae::uniq(\@pass);
+			$param{$pname} = Tesserae::uniq(\@pass);
 		}
 		else {
 		
@@ -906,14 +906,14 @@ sub validate {
 	
 	for my $pname (keys %allowed) {
 		
-		unless (defined $par{$pname}) {
+		unless (defined $param{$pname}) {
 		
-			$par{$pname} = [];
+			$param{$pname} = [];
 		}
 		
 		my @pass;
 		
-		for my $val (@{$par{$pname}}) {
+		for my $val (@{$param{$pname}}) {
 		
 			if (grep {$val eq $_} @{$allowed{$pname}}) {
 			
@@ -927,17 +927,17 @@ sub validate {
 			$flag = 1;
 		}
 		
-		$par{$pname} = \@pass;
+		$param{$pname} = \@pass;
 	}
 
 	for my $pname (qw/stop dist/) {
 	
-		unless (defined $par{$pname}) {
+		unless (defined $param{$pname}) {
 
-			$par{$pname} = [];
+			$param{$pname} = [];
 		}
 		
-		my @val = map { int($_) } @{$par{$pname}};
+		my @val = map { int($_) } @{$param{$pname}};
 	
 		unless (@val) {
 			
@@ -945,16 +945,16 @@ sub validate {
 			$flag = 1;
 		}
 		
-		$par{$pname} = \@val;
+		$param{$pname} = \@val;
 	}
 	
 	#
 	# validate plugins
 	#   - load those that pass
 
-	push @{$par{plugin}}, 'Runs';
+	push @{$param{plugin}}, 'Runs';
 
-	for my $plugin (@{$par{plugin}}) {
+	for my $plugin (@{$param{plugin}}) {
 
 		$plugin =~ s/[^a-z_].*//i;
 
@@ -979,15 +979,15 @@ sub validate {
 	# remove duplicate entries from all sections
 	#
 	
-	for my $pname (keys %par) {
+	for my $pname (keys %param) {
 		
-		if (ref($par{$pname}) eq 'ARRAY') {
+		if (ref($param{$pname}) eq 'ARRAY') {
 			
-			$par{$pname} = Tesserae::uniq($par{$pname});
+			$param{$pname} = Tesserae::uniq($param{$pname});
 		}
 	}
 
-	return \%par;
+	return \%param;
 }
 
 #
@@ -1032,7 +1032,7 @@ sub seq {
 sub combi {
 
 	my $ref = shift;
-	my %par = %$ref;
+	my %param = %$ref;
 	
 	my @combi = ([]);
 
@@ -1043,7 +1043,7 @@ sub combi {
 
 		for my $cref (@combi_) {
 
-			for my $val (@{$par{$pname}}) {
+			for my $val (@{$param{$pname}}) {
 
 				push @combi, [@{$cref}, "--$pname" => $val];
 			}
