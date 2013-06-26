@@ -175,6 +175,7 @@ my $help;
 my $verbose = 1;
 my $manage  = 0;
 my $lang    = 'la';
+my $no_dup  = 0;
 
 my %cl_opt = (
 	parallel   => undef,
@@ -213,6 +214,7 @@ GetOptions(
 	'plugin=s@'  => \$cl_opt{plugin},
 	'parallel=i' => \$cl_opt{parallel},
 	'parent=s'   => \$cl_opt{dir_parent},
+	'no_dup'     => \$no_dup,
 	'manage'     => \$manage
 );
 
@@ -259,6 +261,8 @@ my $cleanup = defined($param{cleanup}) ? $param{cleanup} : 1;
 # get all combinations
 
 my @run = @{combi(\%param)};
+
+if ($no_dup) { @run = @{remove_intratext(\@run)} }
 
 #
 # try to load Parallel::ForkManager
@@ -1109,4 +1113,24 @@ sub init_session {
 	chmod 0744, $file_out;
 
 	return $file_out;
+}
+
+
+#
+# remove runs that have source and target the same
+#
+
+sub remove_intratext {
+
+	my $ref = shift;
+	
+	my @combi = @$ref;
+
+	@combi = grep {
+		
+		my %tessopt = (@$_);
+		$tessopt{'--source'} ne $tessopt{'--target'};
+	} @combi;
+	
+	return \@combi;
 }
