@@ -273,13 +273,8 @@ my @params = qw/
 	dibasis/;
 
 my $interactive = 0;
-my $parallel    = 0;
 my $quiet       = 0;
-my $get_session = 0;
-my $file_input;
 my $file_output;
-my $dir_parent;
-my $fh_output;
 my $help;
 my $man;
 
@@ -304,13 +299,7 @@ for (@params) {
 GetOptions(%opt,
 	'help'        => \$help,
 	'interactive' => \$interactive,
-	'infile=s'    => \$file_input,
-	'man'         => \$man,
-	'outfile=s'   => \$file_output,
-	'parentdir=s' => \$dir_parent,
-	'parallel=i'  => \$parallel,
-	'get-session' => \$get_session,
-	'quiet'       => \$quiet
+	'outfile=s'   => \$file_output
 );
 
 # print brief/detailed help if requested
@@ -322,13 +311,6 @@ if ($help) {
 elsif ($man) {
 	
 	pod2usage(-verbose => 2);
-}
-
-# read from file if specified
-
-if ($file_input) {
-
-	parse_file($file_input)
 }
 
 # or enter interactive mode if requested
@@ -350,48 +332,11 @@ unless ($par{source} and $par{target}) {
 
 %par = %{parse_params(\%par)};
 
-# create output file
-
-$file_output = init_name($file_output, $dir_parent);
-
-my $file_config = catfile($file_output, '.list');
-
-open ($fh_output, ">:utf8", $file_config) or die "can't write to $file_config: $!";
-print STDERR "writing $file_config\n" unless $quiet;
-
 #
-# calculate all combinations
+# create config file
 #
 
-my @combi = ([]);
-
-for my $pname (@params) {
-
-	next unless defined $par{$pname};
-	
-	my @combi_ = @combi;
-	@combi = ();
-	
-	for my $cref (@combi_) {
-	
-		for my $val (@{$par{$pname}}) {
-		
-			push @combi, [@{$cref}, "--$pname" => $val];
-		}
-	}
-}
-
-#
-# create list
-#
-
-print_list_file($fh_output, \@combi);
-
-#
-# if requested, return the name of the session
-#
-
-print "$file_output\n" if $get_session;
+write_config($file_output, \%par);
 
 #
 # subroutines
@@ -423,18 +368,31 @@ sub parse_params {
 			
 			s/\s//g;
 
-			if (/(\d+)-(\d+)(?::(\d+))?/) {
-	
-				my $low  = $1;
-				my $high = $2;
-				my $step = $3 || 1;
-		
-				if ($low > $high) { ($low, $high) = ($high, $low) }
-			
-				for (my $i = $low; $i <= $high; $i += $step) {
-	
-					push @val, $i;
+			if (/range\(from\D*(\d+)\b.*?to\D*(\d+)(.*)/) {
+
+				my ($from, $to, $tail) = ($1, $2, $3);
+
+				my $step = 1;
+
+				if (defined $tail and $tail =~ /step\D*(\d+)/) {
+
+					$step = $1;
 				}
+
+				push @val, "$from-$to:$step";
+			}
+			elsif (/(\d+)\s*-\s*(\d+)(.*)/) {
+
+				my ($from, $to, $tail) = ($1, $2, $3);
+
+				my $step = 1;
+
+				if (defined $tail and $tail =~ /:\s*(\d+)/) {
+
+					$step = $1;
+				}
+
+				push @val, "$from-$to:$step";
 			}
 			else {
 				push @val, $_;
@@ -466,63 +424,6 @@ sub parse_params {
 	}
 	
 	return \%par;
-}
-
-#
-# turn seconds into nice time
-#
-
-sub parse_time {
-
-	my %name  = ('d' => 'day',
-				 'h' => 'hour',
-				 'm' => 'minute',
-				 's' => 'second');
-				
-	my %count = ('d' => 0,
-				 'h' => 0,
-				 'm' => 0,
-				 's' => 0);
-	
-	$count{'s'} = shift;
-	
-	if ($count{'s'} > 59) {
-	
-		$count{'m'} = int($count{'s'} / 60);
-		$count{'s'} -= ($count{'m'} * 60);
-	}
-	if ($count{'m'} > 59) {
-	
-		$count{'h'} = int($count{'m'} / 60);
-		$count{'m'} -= ($count{'h'} * 60);		
-	}
-	if ($count{'h'} > 23) {
-	
-		$count{'d'} = int($count{'h'} / 24);
-		$count{'d'} -= ($count{'h'} * 24);
-	}
-	
-	my @string = ();
-	
-	for (qw/d h m s/) {
-	
-		next unless $count{$_};
-		
-		push @string, $count{$_} . " " . $name{$_};
-		
-		$string[-1] .= 's' if $count{$_} > 1;
-	}
-	
-	my $sep = " ";
-	
-	if (scalar @string > 1) {
-			
-		$string[-1] = 'and ' . $string[-1];
-		
-		$sep = ', ' if scalar @string > 2;
-	}
-	
-	return join ($sep, @string);
 }
 
 #
@@ -767,39 +668,28 @@ sub interactive {
 
 
 #
-# print all combinations
+# write config file
 #
 
-sub print_list_file {
-	
-	my ($fh_output, $combi_ref) = @_;
-	my @combi = @$combi_ref;
-	
-	my $n = scalar @combi; 
+sub write_config {
 
-	unless ($quiet) {
-		print STDERR "Generates $n combinations.\n";
-		print STDERR "If each run takes 10 seconds, this batch will take ";
-		print STDERR $n ? 
-					parse_time($n * 10) . ".\n"
-					: "no time at all!\n";
-
-		if ($parallel and $n) {
+	my ($file, $ref) = @_;
 	
-			print STDERR "With parallel processing, it could take as little as ";
-			print STDERR parse_time($n * 10 / $parallel) . "\n";
+	my %par = %$ref;
+	
+	open (my $fh, '>:utf8', $file) or die "can't write $file: $!";
+	
+	for my $key (keys %par) {
+	
+		print $fh "[$key]\n";
+		
+		for my $val (@{$par{$key}}) {
+		
+			print $fh "$val\n";
 		}
+		
+		print $fh "\n";
 	}
-
-	my $maxlen = length($#combi);
-	my $format = "%0${maxlen}i";
-
-	for (my $i = 0; $i <= $#combi; $i++) {
-
-		my @opt = @{$combi[$i]};
 	
-		push @opt, ('--bin' => sprintf($format, $i));
-	
-		print $fh_output join(" ",	catfile($fs{cgi}, "read_table.pl"), @opt) . "\n";
-	}
+	close ($fh);
 }
