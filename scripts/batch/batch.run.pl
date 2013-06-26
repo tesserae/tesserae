@@ -237,7 +237,8 @@ if (! defined $config) {
 # parse file to get search parameters
 
 my $ref   = parse_config($config);
-my %param = %$ref;
+my %param;
+%param = %$ref;
 
 # options specified on cmd line override those in config
 
