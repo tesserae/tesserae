@@ -925,7 +925,7 @@ sub print_delim {
 							
 							my $locus = $multi{$other}{$unit_id_target}{$unit_id_source}{$_}{LOCUS};
 							my $score = $multi{$other}{$unit_id_target}{$unit_id_source}{$_}{SCORE};
-							$score = sprintf("%i", $score);
+							$score = sprintf("%.0f", $score);
 							
 							push @loci, "$locus ($score)";
 						}
