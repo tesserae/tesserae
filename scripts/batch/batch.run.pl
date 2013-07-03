@@ -175,7 +175,6 @@ my $help;
 my $verbose = 1;
 my $manage  = 0;
 my $lang    = 'la';
-my $no_dup  = 0;
 
 my %cl_opt = (
 	parallel   => undef,
@@ -183,7 +182,8 @@ my %cl_opt = (
 	session    => undef,
 	dir_parent => undef,
 	cleanup    => undef,
-	plugin     => undef
+	plugin     => undef,
+	no_dup     => undef
 );
 
 my @param_names = qw/
@@ -215,7 +215,7 @@ GetOptions(
 	'plugin=s@'  => \$cl_opt{plugin},
 	'parallel=i' => \$cl_opt{parallel},
 	'parent=s'   => \$cl_opt{dir_parent},
-	'no_dup'     => \$no_dup,
+	'no_dup'     => \$cl_opt{no_dup},
 	'manage'     => \$manage
 );
 
@@ -265,7 +265,7 @@ my $cleanup = defined($param{cleanup}) ? $param{cleanup} : 1;
 
 my @run = @{combi(\%param)};
 
-if ($no_dup) { @run = @{remove_dups(\@run)} }
+if ($param{no_dup}) { @run = @{remove_dups(\@run)} }
 
 #
 # try to load Parallel::ForkManager
