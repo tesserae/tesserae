@@ -332,12 +332,12 @@ sub html_status {
 	);
 	
 	my %message = (
-		PENDING    => "Your search is currently queued and awaiting processing."
+		PENDING    => "Your search is currently queued and awaiting processing. "
 		               . "Please check back in a few minutes by reloading this page.",
 		PROCESSING => "Your search is currently being processed. You can continue "
 		               . "to monitor its progress by reloading this page.",
 		FINISHED   => "Your search is finished! You can download the results below.",
-		CANCELLED  => "This session has been cancelled. Please start over.",		
+		CANCELLED  => "This session has been cancelled. Please start over. ",		
 		DNE        => "The session you're looking for can't be found."
 						   . "Please try again."
 	);

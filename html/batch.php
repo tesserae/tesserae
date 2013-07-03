@@ -86,6 +86,12 @@
 							<input type="checkbox" name="dibasis" value="freq-source">freq-source</input>
 						</td>
 					</tr>
+					<tr>
+						<td><span class="h2">Score cutoff:</span></td>
+						<td>
+							<input name="cutoff" size="80" maxlength="80" value="0"/>
+						</td>
+					</tr>
 				</table>
 				
 				<input type="submit" value="Prepare" ID="btnSubmit" NAME="btnSubmit" onclick="return validateForm()" method="post"/>
@@ -135,6 +141,11 @@
 				if (! anySelected('dibasis')) { 
 					
 					is_unselected.push('distance metric');
+				}
+
+				if (document.getElementsByName('cutoff')[0].value.search(/[0-9]/) < 0) {
+				
+					is_unselected.push('score cutoff');
 				}
 				
 				var flag = true;

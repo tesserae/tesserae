@@ -121,7 +121,8 @@ my @params = qw/
 	stop
 	stbasis
 	dist
-	dibasis/;
+	dibasis
+	cutoff/;
 
 my %par;
 
