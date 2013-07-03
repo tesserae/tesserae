@@ -80,6 +80,7 @@ sub cols {
 			'stbasis char(7)',
 			'dist    int',
 			'dibasis char(11)',
+			'cutoff  int',
 			'words   int',
 			'lines   int',
 			'phrases int'
@@ -110,6 +111,7 @@ sub process {
 	
 	$sth->execute;
 }
+
 
 #
 # calculate the denominator to be used for unit normalization

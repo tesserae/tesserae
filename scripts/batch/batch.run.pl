@@ -194,7 +194,8 @@ my @param_names = qw/
 	stop
 	stbasis
 	dist
-	dibasis/;
+	dibasis
+	cutoff/;
 
 my $dir_client = catdir($fs{tmp},  'batch');
 my $dir_manage = catdir($fs{data}, 'batch');
@@ -264,7 +265,7 @@ my $cleanup = defined($param{cleanup}) ? $param{cleanup} : 1;
 
 my @run = @{combi(\%param)};
 
-if ($no_dup) { @run = @{remove_intratext(\@run)} }
+if ($no_dup) { @run = @{remove_dups(\@run)} }
 
 #
 # try to load Parallel::ForkManager
@@ -513,11 +514,12 @@ sub parse_results {
 	
 	my $file_score = catfile($bin, 'match.score');
 	my $score = retrieve($file_score);
+
+	my $file_target = catfile($bin, 'match.target');
+	my $target = retrieve($file_target);
 	
-	# might use these later
-	
-	my $target;
-	my $source;
+	my $file_source = catfile($bin, 'match.source');
+	my $source = retrieve($file_source);
 		
 	return ($meta, $target, $source, $score);
 }
@@ -936,7 +938,7 @@ sub validate {
 		$param{$pname} = \@pass;
 	}
 
-	for my $pname (qw/stop dist/) {
+	for my $pname (qw/stop dist cutoff/) {
 	
 		unless (defined $param{$pname}) {
 
@@ -1122,17 +1124,28 @@ sub init_session {
 # remove runs that have source and target the same
 #
 
-sub remove_intratext {
+sub remove_dups {
 
 	my $ref = shift;
 	
 	my @combi = @$ref;
 
-	@combi = grep {
-		
-		my %tessopt = (@$_);
-		$tessopt{'--source'} ne $tessopt{'--target'};
-	} @combi;
+	my @keep;
+	my %seen;
+
+	for my $run (@combi) {
 	
-	return \@combi;
+		my %tessopt = (@$run);
+		
+		next if $tessopt{'--source'} eq $tessopt{'--target'};
+
+		my ($a, $b) = sort(@tessopt{qw/--source --target/});
+		next if $seen{$a}{$b};
+		
+		$seen{$a}{$b} = 1;
+		
+		push @keep, $run;
+	}
+	
+	return \@keep;
 }

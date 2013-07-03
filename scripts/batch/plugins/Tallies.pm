@@ -32,6 +32,7 @@ sub process {
 	write_row($opt{dbh}, $row);
 }
 
+
 sub get_tallies {
 
 	my %opt = @_;
