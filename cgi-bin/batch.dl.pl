@@ -164,26 +164,38 @@ else {
 
 my $dir_session = catdir($fs{data}, 'batch', 'batch.' . $session);
 
-# html header
-
-print header(
-	-type       => 'application/octet-stream', 
-	-attachment => $session . '.db'
-);
-
 # check files requested
 
 my @files = validate(\@dl);
 
-# create zip
+unless (@files) { quit_no_files() }
 
-# my $zip = create_archive(@files);
+# output file: if more than one file requested, create a zip archive
 
-# send it to user
+my $dl_file = $#files > 0 ? $session . '.zip'
+                          : $session . '.' . $files[0];
 
-# $zip->writeToFileNamed(catfile($fs{tmp}, $session . '.zip'));
+# html header
 
-export_files($files[0]);
+print header(
+	-type       => 'application/octet-stream', 
+	-attachment => $dl_file
+);
+
+if ($#files > 0) {
+
+	# create zip
+
+	my $zip = create_archive(@files);
+
+	# send it to user
+
+	$zip->writeToFileHandle(*STDOUT);
+}
+else {
+	
+	export_files($files[0]);
+}
 
 #
 # subroutines
@@ -236,14 +248,9 @@ sub validate {
 	my @all_files = grep { /^[^\.]/ } readdir ($dh);
 	
 	closedir ($dh);
-	
-	print STDERR "validate: all_files=" . join(",", @all_files) . "\n";
-	print STDERR "validate: dl=" . join(",", @dl) . "\n";			
-	
+		
 	@dl = @{Tesserae::intersection(\@dl, \@all_files)};
-				
-	print STDERR "validate: validated=" . join(",", @dl) . "\n";			
-	
+					
 	return @dl;
 }
 
@@ -293,4 +300,28 @@ sub export_files {
 	
 		print $buffer;
 	}
+}
+
+#
+# error message
+#
+
+sub quit_no_files {
+
+	print header;
+	
+	print <<END;
+<html>
+	<head>
+	<title>Tesserae</title>
+	</head>
+	<body>
+		<p>
+			Can't find the file(s) you tried to download. Please try again.
+		</p>
+	</body>
+</html>
+END
+
+	exit;
 }

@@ -195,16 +195,27 @@ print html_status($status);
 
 # progress bar
 
-if (defined $progress) {
+if (defined $progress and $progress < 1) {
 
 	print html_progress($progress, $eta);
 }
 
 # index of results, if batch is done
 
-if (defined $status && $status == 1) {
+if (defined $status and $status == 1) {
 	
-	print html_results($session);
+	print html_user_action(html_results($session));
+}
+elsif ( ! defined $status or $status == 0) {
+	
+	print html_user_action(
+		html_refresh($session),
+		html_cancel($session, $status)
+	);
+}
+elsif ( $status == 2) {
+
+	print html_user_action(html_refresh($session));
 }
 
 # page footer
@@ -269,12 +280,14 @@ sub get_status {
 
 			$progress = $count_now/$count_final;
 	
-			if ($progress < 1) {
+			if ($progress > 0 and $progress < 1) {
 
 				$eta = int(($elapsed / $progress) - $elapsed);
 			}
 		}
 	}
+	
+	if ($status == 0 and $progress == 1) { $status = 2 }
 	
 	return ($status, $progress, $eta);
 }
@@ -303,17 +316,52 @@ sub html_top {
 		<!-- $refresh_link -->
 		<link rel="stylesheet" type="text/css" href="$url{css}/style.css" />
 		<style type="text/css">
-			table.results_index {
-				
-				margin-left: 3em;
-				font-family: monospace;
+			div.container {
+				margin: 10px auto;
+				width:  40em;
+			}
+			div.batch_head {
+				text-align: center;
+			}
+			div.progress {
+			}
+			div.progress_container {
+				width: 200px;
+				height: 10px;
+				margin: auto;
+				padding: 1px;
+				border: 1px solid black;
+			}
+			div.progress_bar {
+				height: 100%;
+				position: relative;
+				left: 0px;
+				top: 0px;
+				background: blue;
+			}
+			div.progress_message {
+			}
+			div.user_action {
+			}
+			div.user_action form {
+				float: left;
+				width: 50%;
+				margin: auto;
+				text-align: center;
+			}
+			div.refresh {	
+			}
+			input.btn {
+				margin: 5px;
 			}
 		</style>
 	</head>
 	<body>
-		<h2>Status of Batch Results</h2>
-		<p><strong>Session ID</strong>: $session</p>
-		
+		<div class="container">
+			<div class="batch_head">
+				<h2>Status of Batch Results</h2>
+				<p><strong>Session ID</strong>: $session</p>
+			</div>
 END
 }
 
@@ -325,6 +373,7 @@ sub html_status {
 		defined $status ?	(
 			$status ==  0 ? 'PROCESSING' :
 			$status ==  1 ? 'FINISHED'   :
+			$status ==  2 ? 'FINISHING'  :
 			$status == -1 ? 'CANCELLED'  :
 			'DNE'
 		) :
@@ -333,11 +382,14 @@ sub html_status {
 	
 	my %message = (
 		PENDING    => "Your search is currently queued and awaiting processing. "
-		               . "Please check back in a few minutes by reloading this page.",
+		               . "Please check back in a few minutes by reloading this page. ",
 		PROCESSING => "Your search is currently being processed. You can continue "
-		               . "to monitor its progress by reloading this page.",
-		FINISHED   => "Your search is finished! You can download the results below.",
-		CANCELLED  => "This session has been cancelled. Please start over. ",		
+		               . "to monitor its progress by reloading this page. ",
+		FINISHING  => "Your search has finished; "
+							. "one moment while we prepare your results.",
+		FINISHED   => "Your results are ready to download!",
+		CANCELLED  => "This session has been cancelled. Please "
+							. "<a href=\"$url{html}/batch.php\">start over</a>. ",		
 		DNE        => "The session you're looking for can't be found."
 						   . "Please try again."
 	);
@@ -357,22 +409,24 @@ sub html_progress {
 
 	my ($progress, $eta) = @_;
 	
-	my $html = '<div class="progress">';
-	
-	if (defined $progress) {
+	$progress = sprintf("%.0f%%", $progress * 100);
 		
-		$html .= "<p>" . int($progress * 100) . "% complete<br />";
-	}
-	else {
- 		$html .= "Can't read progress, something must have gone wrong.";		
-	}
+	my $html =<<END;
+	<div class="progress">
+		<div class="progress_container">
+			<div class=\"progress_bar\" style=\"width: $progress\" ></div>
+		</div>
+		<div class="progress_message">
+			$progress complete
+END
 	
 	if (defined $eta) {
 		
-	 	$html .= "ETA: " . parse_time($eta) . "</p>";	
+	 	$html .= "<p>ETA: " . parse_time($eta) . "</p>";	
 	}
 	
- 	$html .= '</div>';
+	$html .= '</div>'
+	       . '</div>';
 
 	return $html;
 }
@@ -381,25 +435,87 @@ sub html_results {
 
 	my $session = shift;
 	
+	#
+	# get the list of tables
+	#
+	
 	my $dir = catdir($fs{data}, 'batch', 'batch.' . $session);
 				
-	# opendir(my $dh, $dir) or die "can't open results $dir: $!";
-	# 
-	# my @tables = grep { /\.txt$/} 
-	# 				 readdir($dh);
-	# 
-	# closedir($dh);
+	opendir(my $dh, $dir) or die "can't open results $dir: $!";
+	 
+	my @tables = grep { /\.txt$/} 
+	 				 readdir($dh);
+	 
+	closedir($dh);
+	
+	my $dl_txt;
 		
-	my $html = <<END; 
-	<div class="results">
-		<form action="$url{cgi}/batch.dl.pl" method="get" id="Form1">
-			<input type="hidden" name="session" value="$session"  />
-			<input type="hidden" name="dl"      value="sqlite.db" />
-			<input type="submit" name="download" value="Download Files" />
+	for (@tables) {
+		$dl_txt .= qq'<input type="hidden" name="dl" value="$_" />';
+	}
+			
+	my $form_txt = <<END;
+		<form action="$url{cgi}/batch.dl.pl" method="get" id="FormDlTxt">
+			<input type="hidden" name="session"  value="$session"        />
+			$dl_txt
+			<input type="submit" class ="btn" name="BtnDlTxt" value="Download Plain Text" />
 		</form>
-	</div>
 END
 
+	my $form_db = <<END; 
+		<form action="$url{cgi}/batch.dl.pl" method="get" id="FormDlDb">
+			<input type="hidden" name="session"  value="$session"       />
+			<input type="hidden" name="dl"       value="sqlite.db"      />
+			<input type="submit" class = "btn" name="BtnDlDb" value="Download SQLite DB" />
+		</form>
+END
+
+	return ($form_txt, $form_db);
+}
+
+sub html_cancel {
+
+	my ($session, $status) = @_;
+
+	my $dequeue = defined $status ? 0 : 1;
+	
+	my $html = <<END;
+		<form action="$url{cgi}/batch.kill.pl" method="post" id="FormKill">
+			<input type="hidden" name="session" value="$session"  />
+			<input type="hidden" name="dequeue" value="$dequeue" />
+			<input type="submit" class = "btn" name="BtnKill" value="Cancel" />
+		</form>
+END
+
+	return $html;
+}
+
+sub html_refresh {
+
+	my $session = shift;
+
+	my $html = <<END;
+		<form action="$url{cgi}/batch.status.pl" method="get" id="FormRefresh">
+			<input type="hidden" name="session" value="$session"    />
+			<input type="submit" class="btn" name="BtnRefresh" value="Refresh" />
+		</form>
+END
+
+	return $html;
+}
+
+sub html_user_action {
+
+	my @forms = @_;
+	
+	my $html = '<div class="user_action">';
+	
+	for (@forms) {
+		$html .= $_;
+	}
+	
+	$html .= '</div>';
+	
 	return $html;
 }
 
@@ -505,7 +621,11 @@ sub details {
 
 sub html_bottom {
 
-	my $html = "\t</body>\n</html>\n";
+	my $html = <<END;
+		</div>
+	</body>
+</html>
+END
 	
 	return $html;
 }

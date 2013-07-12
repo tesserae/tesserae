@@ -148,6 +148,8 @@ if ($dequeue) {
 	dequeue($session);
 }
 
+print html_redirect($session);
+
 
 #
 # subroutines
@@ -200,8 +202,6 @@ sub set_kill {
 
 	my $session = shift;
 
-	print $session;
-	
 	my $success = $dbh_client->do(
 		"update queue set KILL=1 where SESSION='$session';"
 	);
@@ -270,19 +270,15 @@ sub html_redirect {
 	<head>
 		<title>Tesserae Batch Run Summary</title>
 		<meta name="keywords" content="intertext, text analysis, classics, university at buffalo, latin" />
-		<!-- <meta http-equiv="Refresh" content="15: url='$redirect'"> -->
+		<meta http-equiv="refresh" content="0; url='$redirect'">
 		<link rel="stylesheet" type="text/css" href="$url{css}/style.css" />
 		</style>
 	</head>
 	<body>
-		<h2>Your run has been queued</h2>
+		<h2>Attempting to cancel session $session</h2>
 		
 		<p>
-			Your search has been entered into a queue to be processed. It has been assigned the session ID <strong>$session</strong>. You can check the status and estimated time to completion of your search, download results when finished, or cancel processing at any time by pointing your browser to the URL below.
-		</p>
-		
-		<p>
-			<a href="$redirect">$redirect</a>
+			If you are not redirected automatically, <a href="$redirect">click here</a> to confirm that the session has been cancelled.
 		</p>
 	</body>
 </html>

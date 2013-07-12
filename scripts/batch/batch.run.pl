@@ -226,6 +226,15 @@ if ($help) {
 	pod2usage(1);
 }
 
+# set up management db if requested
+
+my $dbh_manage;
+
+if ($manage) {
+
+	$dbh_manage = init_db_manage();
+}
+
 # get file to read from first cmd line arg
 
 my $config = shift(@ARGV);
@@ -253,7 +262,14 @@ for (keys %cl_opt) {
 
 # validate parameters
 
-%param = %{validate(\%param)};
+unless (validate(\%param)) {
+
+ 	manage_failed($config) if $manage;
+
+ 	die "Can't validate config $config";
+}
+
+# other setup tasks
 
 my $session = init_session($param{session}, $param{dir_parent});
 
@@ -279,7 +295,7 @@ my ($parallel, $pm) = init_parallel($param{parallel});
 
 # create the database
 
-($param{dir_work}, $param{file_db}) = init_db($session);
+($param{dir_work}, $param{file_db}) = init_db_session($session);
 
 #
 # preamble
@@ -289,12 +305,10 @@ print STDERR "Performing " . scalar(@run) . " Tesserae searches\n" if $verbose;
 
 my $pr = ProgressBar->new(scalar(@run), ($verbose != 1));
 
-my $dbh_manage;
-
 if ($manage) {
 	
-	$dbh_manage = init_manage($pr);
-	write_status($dbh_manage, $pr);
+	init_manage($session, $pr);
+	write_status($session, $pr, undef);
 }
 
 #
@@ -309,11 +323,11 @@ for (my $i = 0; $i <= $#run; $i++) {
 	
 	if ($manage) {
 
-		write_status($dbh_manage, $pr);
+		write_status($session, $pr);
 		
-		if (check_kill($dbh_manage, $config)) {
+		if (check_kill($session)) {
 
-			write_status($dbh_manage, $pr, -1);
+			write_status($session, $pr, -1);
 			die "batch run terminated";
 		}
 	}
@@ -402,7 +416,7 @@ chmod 0755, $session;
 # clear data for pickup by web user
 #
 
-write_status($dbh_manage, $pr, 1) if $manage;
+write_status($session, $pr, 1) if $manage;
 
 #
 # subroutines
@@ -437,7 +451,7 @@ sub init_parallel {
 # create a new database
 #
 
-sub init_db {
+sub init_db_session {
 
 	my $session = shift;
 
@@ -600,7 +614,7 @@ sub create_table {
 
 sub check_kill {
 
-	my $dbh_manage = shift;
+	my $session = shift;
 	
 	# short version of session
 	
@@ -647,9 +661,7 @@ sub check_kill {
 # record initialization params for management script
 #
 
-sub init_manage {
-
-	my $pr = shift;
+sub init_db_manage {
 
 	# make sure session management directory exists
 
@@ -688,11 +700,20 @@ sub init_manage {
 		
 		$sth->execute;
 	}
+	
+	return $dbh_manage;
+}
 
+sub init_manage {
+	
+	my ($session, $pr) = @_;
+	
 	# short form of session
 	
 	my $session_ = $session;
 	$session_    = substr($session_, -4, 4);
+	
+	my $nruns = defined $pr ? $pr->terminus : "NULL";
 	
 	#
 	# create an entry for this batch
@@ -702,7 +723,7 @@ sub init_manage {
 		"'$session_'", 
 		time,
 		"NULL",
-		$pr->terminus,
+		$nruns,
 		"NULL",
 		0
 	);
@@ -712,8 +733,6 @@ sub init_manage {
 	);
 	
 	$sth->execute;
-	
-	return $dbh_manage;
 }
 
 
@@ -723,30 +742,35 @@ sub init_manage {
 
 sub write_status {
 
-	my ($dbh, $pr, $flag) = @_;
-		
-	my $time  = time;
-	my $runid = $pr->count;
-	
+	my ($session, $pr, $flag) = @_;
+
 	my $session_  = $session;
 	$session_     = substr($session_,  -4, 4);
 	
-	my @values = (
+	my @values;
+	
+	if (defined $pr) {
 		
-		"TIME   = $time",
-		"RUNID  = $runid"
-	);
+		my $time  = time;
+		my $runid = $pr->count;
+
+		push @values, (
+			"TIME  = $time",
+			"RUNID = $runid"
+		);
+	}
 	
 	if (defined $flag) {
 		
 		push @values, "STATUS = $flag";
 	}
 	
-	my $sth = $dbh->prepare(
- 		"update queue set " . join(',', @values) . " where SESSION='$session_';"
-	);	
+	if (@values) {
 	
-	$sth->execute;
+		$dbh_manage->do(
+	 		"update queue set " . join(',', @values) . " where SESSION='$session_';"
+		);
+	}
 }
 
 #
@@ -863,12 +887,38 @@ sub parse_config {
 
 sub validate {
 	
-	my $ref = shift;
-	my %param = %$ref;
+	my $param_ref = shift;
+	my %param = %$param_ref;
 	
 	my $flag = 0;
 	
+	#
+	# fill in default values for blank parameters
+	#  - other than source, target
+	#
+
+	my %default = (
+
+		unit     => 'line',
+		feature  => 'stem',
+		stop     => 10,
+		stbasis  => 'both',
+		dist     => 999,
+		dibasis  => 'freq',
+		cutoff   => 0
+	);
+	
+	for my $pname (keys %default) {
+		
+		unless (defined $param{$pname}) {
+		
+			$param{$pname} = [$default{$pname}];
+		}
+	}
+		
+	#
 	# expand text names for source, target
+	#
 		
 	for my $pname (qw/source target/) {
 		
@@ -903,7 +953,7 @@ sub validate {
 	# 
 	# validate remaining params that take strings
 	#
-
+	
 	my %allowed = (
 	
 		unit     => [qw/line phrase/],
@@ -913,12 +963,7 @@ sub validate {
 	);
 	
 	for my $pname (keys %allowed) {
-		
-		unless (defined $param{$pname}) {
-		
-			$param{$pname} = [];
-		}
-		
+				
 		my @pass;
 		
 		for my $val (@{$param{$pname}}) {
@@ -939,12 +984,7 @@ sub validate {
 	}
 
 	for my $pname (qw/stop dist cutoff/) {
-	
-		unless (defined $param{$pname}) {
-
-			$param{$pname} = [];
-		}
-		
+			
 		my @val = map { int($_) } @{$param{$pname}};
 	
 		unless (@val) {
@@ -976,13 +1016,6 @@ sub validate {
 		}
 	}
 
-	# fail if any section didn't validate
-
-	if ($flag) {
-	
-		die "Can't validate config $config";
-	}
-
 	#
 	# remove duplicate entries from all sections
 	#
@@ -995,7 +1028,20 @@ sub validate {
 		}
 	}
 
-	return \%param;
+	#
+	# copy validated parameters to original hash
+	#
+	
+	for my $pname (keys %param) {
+	
+		${$param_ref}{$pname} = $param{$pname};
+	}
+
+	#
+	# return true if no problems
+	#
+
+	return (! $flag);
 }
 
 #
@@ -1148,4 +1194,26 @@ sub remove_dups {
 	}
 	
 	return \@keep;
+}
+
+#
+# create a record for a failed session, set to cancelled
+#
+
+sub manage_failed {
+
+	my $config = shift;
+	
+	# fake session id for failed session
+	
+	$config =~ /conf\.(\S{4})/;
+	my $session = $1;
+
+	# create a row for the aborted session
+	
+	init_manage($session, undef);
+
+	# set to cancelled
+
+	write_status($session, undef, -1);
 }
