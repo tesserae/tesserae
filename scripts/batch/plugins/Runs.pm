@@ -83,7 +83,8 @@ sub cols {
 			'cutoff  int',
 			'words   int',
 			'lines   int',
-			'phrases int'
+			'phrases int',
+			'lemmata int'
 		]
 	);
 }
@@ -99,11 +100,12 @@ sub process {
 	my %meta = %{$opt{meta}};
 	my @params = @meta{map {uc($_)} @{$opt{param_names}}};
 	my @units  = @{units($meta{TARGET}, $meta{SOURCE})};
-	
+		
 	my $values = join(', ', add_quotes(
 		$opt{run_id}, 
 		@params,
-		@units
+		@units,
+		ntypes(@params[0,1])
 	));
 	
 	my $sql = "insert into runs values ($values);";		
@@ -154,6 +156,31 @@ sub add_quotes {
 	}
 	
 	return @_;
+}
+
+#
+# figure out how many different lemmata occur among the two texts
+#
+
+sub ntypes {
+
+	my ($target, $source) = @_;
+	
+	my %combined;
+	
+	for ($target, $source) {
+	
+		my $file = catfile($fs{data}, 'v3', Tesserae::lang($_), $_, $_ . '.freq_stop_stem');
+		my @list = @{Tesserae::stoplist_array($file)};
+		
+		for (@list) {
+			$combined{$_} = 1;
+		}
+	}
+	
+	my $ntypes = scalar(keys %combined);
+	
+	return $ntypes;
 }
 
 1;
