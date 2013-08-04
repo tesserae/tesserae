@@ -54,24 +54,34 @@ sub process {
 		$pr->advance;
 		
 		for my $unit_id_source (keys %{$match{$unit_id_target}}) {
-			
-			$sth_intertext->execute(
-				$opt{run_id},
-				$unit_id_target, 
-				$unit_id_source, 
-				$score{$unit_id_target}{$unit_id_source}
-			);
+		
+			{
+				$sth_intertext->execute(
+					$opt{run_id},
+					$unit_id_target, 
+					$unit_id_source, 
+					$score{$unit_id_target}{$unit_id_source}
+				) and last;
+				
+				print STDERR "$! ...retrying\n";
+				redo;
+			}
 			
 			for my $token_id (keys %{$match{$unit_id_target}{$unit_id_source}}) {
 			
 				my $key = join("-", keys %{$match{$unit_id_target}{$unit_id_source}{$token_id}});
 				
-				$sth_token->execute(
-					$opt{run_id},
-					$unit_id_target,
-					$unit_id_source,
-					'"' . $key . '"'
-				);
+				{
+					$sth_token->execute(
+						$opt{run_id},
+						$unit_id_target,
+						$unit_id_source,
+						'"' . $key . '"'
+					) and last;
+					
+					print STDERR "$! ...retrying\n";
+					redo;
+				}
 			}
 		}
 	}	

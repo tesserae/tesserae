@@ -129,8 +129,6 @@ while (my $lang = shift @ARGV) {
 	
 	dropdown("$base.l.php", \@full);
 	dropdown("$base.r.php", \@full, \%part);
-	checkboxes("$base.multi.php", \@full);
-
 }
 
 #
@@ -170,6 +168,10 @@ sub dropdown {
 		if (defined $part{$name}) {
 		
 			print FH sprintf("<optgroup label=\"%s\">\n", display($name));
+			
+			print FH sprintf("   <option value=\"%s\">%s - Full Text</option>\n", 
+				$name, 
+				display($name));
 	
 			for (@{$part{$name}}) {
 				
@@ -197,34 +199,3 @@ sub dropdown {
 	close FH;
 }
 
-sub checkboxes {
-
-	my ($file, $full) = @_;
-	
-	my @full = @$full;
-	
-	open (FH, ">:utf8", $file) or die "can't write to $file: $!";
-
-	print FH "<table>\n";
-	
-	push @full, ""if (scalar(@full) % 2);
-	my $half = scalar(@full)/2;
-	
-	for (my $i = 0; $i < $half; $i++) {
-	
-		print FH sprintf("<tr><td>%s</td><td>%s</td></tr>\n",
-			chk($full[$i]),
-			$i + $half <= $#full ? chk($full[$i + $half]) : "");
-	}
-	
-	print FH "</table>\n";
-
-}
-
-sub chk {
-	
-	my $name = shift;
-		
-	return sprintf('<input type="checkbox" name="include" value="%s">%s</input>',
-		$name, display($name));
-}

@@ -111,7 +111,12 @@ sub process {
 	my $sql = "insert into runs values ($values);";		
 	my $sth = $opt{dbh}->prepare($sql);
 	
-	$sth->execute;
+	{ 
+		$sth->execute and last;
+		
+		print STDERR "$! ...retrying\n";
+		redo;
+	}
 }
 
 
