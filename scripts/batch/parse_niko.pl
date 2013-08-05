@@ -115,6 +115,7 @@ use Pod::Usage;
 # load additional modules necessary for this script
 
 use Encode qw/encode decode/;
+use File::Path;
 
 # initialize some variables
 
@@ -165,14 +166,76 @@ copy_metadata(
 my @text_id = @{index_runs()};
 
 #
-# read intertexts and index them 
+# partition intertexts, tokens
 #
 
-my %intertext_id = %{index_intertexts()};
+my $partitions = catdir($session, 'parts');
+make_path($partitions);
+
+partition('intertexts.txt', 0);
+my $max = partition('tokens.txt', 0);
+
+#
+# now process each partition separately
+#
+
+for (my $i = 0; $i <= $max; $i++) {
+
+	# read intertexts and index them 
+
+	my %intertext_id = %{index_intertexts($i)};
+	
+}
+		
 
 #
 # subroutines
 #
+
+# divide intertexts, tokens into batches based on run id
+
+sub partition {
+	
+	my ($name, $key) = @_;
+
+	my $file_in = catfile($session, $name);
+	
+	open (my $fhi, '<:utf8', $file_in) or die "can't read $file_in: $!";
+	
+	print STDERR "partitioning $file_in\n" unless $quiet;
+	
+	my $pr = ProgressBar->new(-s $file_in, $quiet);
+	
+	$pr->advance(length(decode('utf8', <$fh>)));
+		
+	my $current = -1;
+	
+	my $fho;
+	
+	while (my $line = <$fhi>) {
+	
+		$pr->advance(length(decode('utf8', $line)));
+			
+		my @field = split(/\t/, $line);
+		
+		my $subscript = int($field[$key] / 1000);
+		
+		if ($subscript != $current) {
+		
+			my $file_out = catfile($partitions, $name . '.' . $subscript . '.txt');
+
+			open ($fho, '>:utf8', $file_out) or die "can't write $file_out: $!";
+			
+			print $fho $head;
+			
+			$current = $subscript;
+		}
+		
+		print $fho $line;
+	}
+	
+	return $current;
+}
 
 # copy Authors, Texts from Tesserae
 
@@ -276,60 +339,66 @@ sub index_runs {
 # write Intertexts.csv at the same time, since it takes
 # such a long time to go through the whole list of intertexts
 
-sub index_intertexts {
-		
-	print STDERR "processing intertexts\n" unless $quiet;
-
-	# open files
-	
-	my $file_in  = catfile($session, 'intertexts.txt');
-	my $file_out = catfile($session, 'Intertexts.csv');
-	
-	open (my $fhi, '<:utf8', $file_in)  or die "can't read $file_in: $!";
-	open (my $fho, '>:utf8', $file_out) or die "can't read $file_out: $!";
-
-	# progress bar
-	
-	my $pr = ProgressBar->new(-s $file_in, $quiet);
-	
-	# header rows: skip for input file, write for output file
-
-	$pr->advance(length(decode('utf8', <$fhi>)));
-	print $fho join(",", qw/ID TARGET SOURCE UNIT_T UNIT_S SCORE/) . "\n";
-	
-	# $id is sequential id for intertexts, %index links id to run,unit_t,unit_s
-
+{
 	my $id = 0;
-	my %index;
-	
-	while (my $row = <$fhi>) {
+
+	sub index_intertexts {
 		
-		$pr->advance(length(decode('utf8', $row)));
-		chomp $row;
-	
-		# index the intertext
-	
-		my ($run, $unit_t, $unit_s, $score) = split(/\t/, $row);
+		my $part = shift;
 		
-		$index{$run}{$unit_t}{$unit_s} = $id;
-		$id++;
+		print STDERR "processing intertexts $part/$max\n" unless $quiet;
+
+		# open files
+	
+		my $file_in  = catfile($partitions, "intertexts.$part.txt");
+		my $file_out = catfile($session, 'Intertexts.csv');
+	
+		my $mode = $part ? '>:utf8' : '>>:utf8';
+	
+		open (my $fhi, '<:utf8', $file_in)  or die "can't read $file_in: $!";
+		open (my $fho,    $mode, $file_out) or die "can't read $file_out: $!";
+
+		# progress bar
+	
+		my $pr = ProgressBar->new(-s $file_in, $quiet);
+	
+		# header rows: skip for input file, write for output file
+
+		print $fho join(",", qw/ID TARGET SOURCE UNIT_T UNIT_S SCORE/) . "\n" unless $part;
+	
+		# $id is sequential id for intertexts, %index links id to run,unit_t,unit_s
+
+		my %index;
+	
+		while (my $row = <$fhi>) {
+		
+			$pr->advance(length(decode('utf8', $row)));
+			chomp $row;
+	
+			# index the intertext
+	
+			my ($run, $unit_t, $unit_s, $score) = split(/\t/, $row);
+		
+			$index{$run}{$unit_t}{$unit_s} = $id;
 				
-		# make all scores 3 decimal places
+			# make all scores 3 decimal places
 		
-		$score  = sprintf("%.3f", $score);
+			$score  = sprintf("%.3f", $score);
 		
-		# write to output file
+			# write to output file
 		
-		print $fho join(",", 
-			$id,                  # intertext id
-			$text_id[$run]->[0],  # target id
-			$text_id[$run]->[1],  # source id
-			$unit_t,              # target unit
-			$unit_s,              # source unit
-			$score                # score
-		) . "\n";
+			print $fho join(",", 
+				$id,                  # intertext id
+				$text_id[$run]->[0],  # target id
+				$text_id[$run]->[1],  # source id
+				$unit_t,              # target unit
+				$unit_s,              # source unit
+				$score                # score
+			) . "\n";
 		
-	}
+			$id++;
+		}
 	
-	return \%index;
+		return \%index;
+	}
 }

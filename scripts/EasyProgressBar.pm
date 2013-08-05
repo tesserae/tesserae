@@ -23,6 +23,7 @@ sub new {
 	$self->{COUNT}    = 0;
 	$self->{PROGRESS} = 0;
 	$self->{DONE}     = 0;
+	$self->{T0}       = time;
 	$self->{QUIET}    = $quiet;
 	
 	bless($self);
@@ -230,6 +231,140 @@ sub finish {
 	print "</div>\n";
 	
 	$self->{DONE} = 1;
+}
+
+sub progress {
+	
+	my $self = shift;
+	
+	return $self->{PROGRESS};
+}
+
+sub count {
+
+	my $self = shift;
+	
+	return $self->{COUNT};
+}
+
+sub terminus {
+
+	my $self = shift;
+	
+	my $new = shift;
+	
+	if (defined $new) {
+	
+		$self->{END} = $new;
+		
+		$self->draw();
+	}
+	
+	return $self->{END};
+}
+
+# A modification of ProgressBar for very long running jobs
+
+package VerySlowProgressBar;
+	
+sub new {
+	my $self = {};
+	
+	shift;
+	
+	my $terminus = shift || die "VerySlowProgressBar->new() called with no final value";
+	
+	$self->{END} = $terminus;
+	
+	my $quiet = shift || 0;
+	
+	$self->{COUNT}    = 0;
+	$self->{PROGRESS} = 0;
+	$self->{DONE}     = 0;
+	$self->{T0}       = time;
+	$self->{REFRESH}  = .025;
+	$self->{QUIET}    = $quiet;
+	
+	bless($self);
+	
+	$self->draw();
+		
+	return $self;
+}
+
+sub advance {
+
+	my $self = shift;
+	
+	my $incr = shift;
+	
+	$self->{COUNT} += ($incr || 1);
+	
+	if ($self->{COUNT}/$self->{END} > $self->{PROGRESS} + $self->{REFRESH}) {
+		
+		$self->{PROGRESS} = $self->{COUNT} / $self->{END};
+
+		$self->draw();
+	}
+	
+	if ($self->{COUNT} >= $self->{END}) {
+	
+		$self->finish();
+	}
+}
+
+sub set {
+
+	my $self = shift;
+	
+	my $new = shift || 0;
+	
+	$self->{COUNT} = $new;
+	
+	$self->draw();
+}
+
+sub t0 {
+
+	my $self = shift;
+
+	my $new = shift;
+
+	if (defined $new) {
+
+		$self->{T0} = $new;
+
+		$self->draw();
+	}
+
+	return $self->{T0};	
+}
+
+sub draw {
+
+	my $self = shift;
+		
+	unless ($self->{QUIET} or $self->{DONE}) {
+
+		my $dur  = time - $self->{T0};
+		my $rate = $self->{COUNT} / $dur;
+		
+		my $eta = $self->{T0} + $self->{END} / $rate;
+		
+		print STDERR sprintf("%.2f%% done; ETA %s", $self->{PROGRESS}, localtime($eta)) . "\n";
+	}
+}
+
+sub finish {
+
+	my $self = shift;
+
+	unless ($self->{QUIET} or $self->{DONE}) {
+
+		print STDERR "your very-long-running task is done!\n";
+	}
+	
+	$self->{DONE} = 1;	
 }
 
 sub progress {
