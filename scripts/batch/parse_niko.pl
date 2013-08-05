@@ -206,7 +206,7 @@ sub partition {
 	
 	my $pr = ProgressBar->new(-s $file_in, $quiet);
 	
-	$pr->advance(length(decode('utf8', <$fh>)));
+	$pr->advance(length(decode('utf8', <$fhi>)));
 		
 	my $current = -1;
 	
@@ -225,9 +225,7 @@ sub partition {
 			my $file_out = catfile($partitions, $name . '.' . $subscript . '.txt');
 
 			open ($fho, '>:utf8', $file_out) or die "can't write $file_out: $!";
-			
-			print $fho $head;
-			
+
 			$current = $subscript;
 		}
 		
