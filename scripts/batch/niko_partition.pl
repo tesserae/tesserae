@@ -2,20 +2,32 @@
 
 =head1 NAME
 
-parse.niko.pl - collate and prepare data for Dr. Nikolaev
+niko_partition.pl - partition huge dataset produced by Nikolaev plugin
 
 =head1 SYNOPSIS
 
-parse.niko.pl [options] SESSION
+niko_partition.pl --table TABLE --key KEY [--table TABLE2 --key KEY2] SESSION
 
 =head1 DESCRIPTION
 
-Read output of batch.run.pl with Nikolaev plugin, prepare CSV tables 
-as per Nikolaev's requirements.
+Splits I<intertexts.txt> and I<tokens.txt> into a number of smaller files
+for easier processing.
 
 =head1 OPTIONS AND ARGUMENTS
 
 =over
+
+item B<--table> TABLE
+
+Table to partition
+
+item B<--key> KEY
+
+Column by which to sort as an integer; first column is 0.
+
+item B<SESSION>
+
+Directory containing the tables.
 
 =item B<--help>
 
@@ -34,7 +46,7 @@ The contents of this file are subject to the University at Buffalo Public Licens
 
 Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
 
-The Original Code is parse.niko.pl.
+The Original Code is niko_partition.pl.
 
 The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
 
@@ -121,12 +133,14 @@ use File::Path qw/mkpath rmtree/;
 
 my $help  = 0;
 my $quiet = 0;
-my $parts = 28;
+my @table = ();
+my @key   = (); 
 
 # get user options
 
 GetOptions(
-	'parts=i' => \$parts,
+	'table=s' => \@table,
+	'key=i'   => \@key,
 	'quiet'   => \$quiet,
 	'help'    => \$help
 );
@@ -154,31 +168,27 @@ unless (defined $session and -d $session) {
 }
 
 #
-# copy metadata from Tesserae
+# each table needs a key
 #
 
-copy_metadata(
-	Authors => [0, 1, 3, 4, 5, 6],
-	Texts   => [0, 1, 2, 4, 5, 7]
-);
+if ($#table != $#key) {
 
-#
-# retrieve text ids from txt file
-#
-
-my @text_id = @{index_runs()};
-
-#
-# now process each partition separately
-#
-
-for (my $i = 0; $i <= $parts; $i++) {
-
-	# read intertexts and index them 
-
-	my %intertext_id = %{index_intertexts($i)};
-	
+	warn "number of tables must equal number of keys";
+	pod2usage(1);
 }
+
+#
+# partition intertexts, tokens
+#
+
+my $partitions = catdir($session, 'parts');
+mkpath($partitions) unless -d $partitions;
+
+for my $i (0..$#tables) {
+
+	partition($table[$i], $key[$i]);
+}
+
 		
 #
 # subroutines
@@ -227,171 +237,5 @@ sub partition {
 		close $fho[$i];
 	}
 	
-	return $#fho;
-}
-
-# copy Authors, Texts from Tesserae
-
-sub copy_metadata {
-
-	my %col_ref = @_;
-	
-	for my $name (keys %col_ref) {
-		
-		my $file_in  = catfile($fs{data}, 'common', 'metadata', $name . '.txt');
-		my $file_out = catfile($session, ucfirst($name) . '.csv');
-	
-		open (my $fhi, "<:utf8", $file_in)  or die "can't read file $file_in: $!";
-		open (my $fho, ">:utf8", $file_out) or die "can't read file $file_out: $!";
-	
-		print STDERR "copying $file_in to $file_out\n";
-	
-		while (my $row = <$fhi>) {
-	
-			chomp $row;
-		
-			my @field = split(/\t/, $row);
-			
-			unless (defined $col_ref{$name}) {
-				
-				$col_ref{$name} = [0..$#field];
-			}
-		
-			print $fho join(',', @field[@{$col_ref{$name}}]) . "\n";
-		}
-	
-		close $fhi;
-		close $fho;
-	}
-}
-
-# load text ids from file
-
-sub load_text_ids {
-
-	print STDERR "loading text ids\n" unless $quiet;
-
-	my $file = catfile($fs{data}, 'common', 'metadata', 'Texts.txt');
-	
-	my %id;
-	
-	open (my $fh, "<:utf8", $file) or die "can't read file $file: $!";
-	
-	<$fh>;
-	
-	while (my $l = <$fh>) {
-		
-		my @field = split(/\t/, $l);
-		
-		next unless $#field == 7;
-		
-		$id{$field[6]} = $field[0];
-	}
-	
-	return \%id;
-}
-
-sub index_runs {
-
-	# load text ids
-
-	my %id = %{load_text_ids()};
-	
-	#
-	# for each run_id, we want target_id and source_id.
-	#
-	
-	print STDERR "indexing runs\n" unless $quiet;
-	
-	my $file_in  = catfile($session, 'runs.txt');
-	
-	open (my $fh, '<:utf8', $file_in)  or die "can't read $file_in: $!";
-	
-	my @text_id;
-
-	my $pr = ProgressBar->new(-s $file_in, $quiet);
-	
-	$pr->advance(length(decode('utf8', <$fh>)));
-	
-	while (my $row = <$fh>) {
-		
-		$pr->advance(length(decode('utf8', $row)));
-		chomp $row;
-	
-		my @field = split(/\t/, $row);
-		
-		my ($run, $source, $target) = @field[0,1,2];
-				
-		$text_id[$run] = [$id{$target}, $id{$source}];
-	}
-	
-	return \@text_id;
-}
-
-# translate runid, source, target into intertext id
-# write Intertexts.csv at the same time, since it takes
-# such a long time to go through the whole list of intertexts
-
-{
-	my $id = 0;
-
-	sub index_intertexts {
-		
-		my $part = shift;
-		
-		print STDERR "processing intertexts $part/$parts\n" unless $quiet;
-
-		# open files
-	
-		my $file_in  = catfile($partitions, "intertexts.$part.txt");
-		my $file_out = catfile($session, 'Intertexts.csv');
-	
-		my $mode = $part ? '>:utf8' : '>>:utf8';
-	
-		open (my $fhi, '<:utf8', $file_in)  or die "can't read $file_in: $!";
-		open (my $fho,    $mode, $file_out) or die "can't read $file_out: $!";
-
-		# progress bar
-	
-		my $pr = ProgressBar->new(-s $file_in, $quiet);
-	
-		# header rows: skip for input file, write for output file
-
-		print $fho join(",", qw/ID TARGET SOURCE UNIT_T UNIT_S SCORE/) . "\n" unless $part;
-	
-		# $id is sequential id for intertexts, %index links id to run,unit_t,unit_s
-
-		my %index;
-	
-		while (my $row = <$fhi>) {
-		
-			$pr->advance(length(decode('utf8', $row)));
-			chomp $row;
-	
-			# index the intertext
-	
-			my ($run, $unit_t, $unit_s, $score) = split(/\t/, $row);
-		
-			$index{$run}{$unit_t}{$unit_s} = $id;
-				
-			# make all scores 3 decimal places
-		
-			$score  = sprintf("%.3f", $score);
-		
-			# write to output file
-		
-			print $fho join(",", 
-				$id,                  # intertext id
-				$text_id[$run]->[0],  # target id
-				$text_id[$run]->[1],  # source id
-				$unit_t,              # target unit
-				$unit_s,              # source unit
-				$score                # score
-			) . "\n";
-		
-			$id++;
-		}
-	
-		return \%index;
-	}
+	print "table $name: last part $#fho\n";
 }
