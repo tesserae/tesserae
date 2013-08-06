@@ -359,10 +359,12 @@ sub draw {
 		}
 		else {
 
-			$eta = 'NA'
+			my $len = length(localtime(time));
+
+			$eta = sprintf("%-${len}s", 'NA');
 		}
 		
-		print STDERR sprintf("%.3f%% done; ETA %s", $self->{PROGRESS}, $eta) . "\n";
+		print STDERR sprintf("% 5.1f%% done; ETA %s", 100*$self->{PROGRESS}, $eta) . "\r";
 	}
 }
 

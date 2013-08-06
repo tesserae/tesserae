@@ -209,10 +209,8 @@ sub partition {
 	my $pr = VerySlowProgressBar->new(-s $file_in, $quiet);
 	
 	$pr->advance(length(decode('utf8', <$fhi>)));
-		
-	my $current = -1;
-	
-	my $fho;
+			
+	my @fho;
 	
 	while (my $line = <$fhi>) {
 	
@@ -222,19 +220,24 @@ sub partition {
 		
 		my $subscript = int($field[$key] / 1000);
 		
-		if ($subscript != $current) {
+		unless (defined $fho[$subscript]) {
 		
 			my $file_out = catfile($partitions, $name . '.' . $subscript . '.txt');
 
-			open ($fho, '>:utf8', $file_out) or die "can't write $file_out: $!";
+			open (my $fh, '>:utf8', $file_out) or die "can't write $file_out: $!";
 
-			$current = $subscript;
+			$fho[$subscript] = *$fh;
 		}
 		
 		print $fho $line;
 	}
 	
-	return $current;
+	for (my $i = 0; $i <= $#fho; $i++) {
+	
+		close $fho[$i];
+	}
+	
+	return $#fho;
 }
 
 # copy Authors, Texts from Tesserae
