@@ -115,7 +115,7 @@ use Pod::Usage;
 # load additional modules necessary for this script
 
 use Encode qw/encode decode/;
-use File::Path;
+use File::Path qw/mkpath rmtree/;
 
 # initialize some variables
 
@@ -170,10 +170,12 @@ my @text_id = @{index_runs()};
 #
 
 my $partitions = catdir($session, 'parts');
-make_path($partitions);
+mkpath($partitions) unless -d $partitions;
 
-partition('intertexts.txt', 0);
-my $max = partition('tokens.txt', 0);
+# my $max = partition('intertexts', 0);
+# my $max = partition('tokens', 0);
+
+my $max = 28;
 
 #
 # now process each partition separately
@@ -198,13 +200,13 @@ sub partition {
 	
 	my ($name, $key) = @_;
 
-	my $file_in = catfile($session, $name);
+	my $file_in = catfile($session, $name . '.txt');
 	
 	open (my $fhi, '<:utf8', $file_in) or die "can't read $file_in: $!";
 	
 	print STDERR "partitioning $file_in\n" unless $quiet;
 	
-	my $pr = ProgressBar->new(-s $file_in, $quiet);
+	my $pr = VerySlowProgressBar->new(-s $file_in, $quiet);
 	
 	$pr->advance(length(decode('utf8', <$fhi>)));
 		

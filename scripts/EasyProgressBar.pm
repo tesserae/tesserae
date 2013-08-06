@@ -282,7 +282,7 @@ sub new {
 	$self->{PROGRESS} = 0;
 	$self->{DONE}     = 0;
 	$self->{T0}       = time;
-	$self->{REFRESH}  = .025;
+	$self->{REFRESH}  = .005;
 	$self->{QUIET}    = $quiet;
 	
 	bless($self);
@@ -347,11 +347,22 @@ sub draw {
 	unless ($self->{QUIET} or $self->{DONE}) {
 
 		my $dur  = time - $self->{T0};
-		my $rate = $self->{COUNT} / $dur;
+		my $eta;
 		
-		my $eta = $self->{T0} + $self->{END} / $rate;
+		if ($dur > 0) {
+
+			my $rate = $self->{COUNT} / $dur;
 		
-		print STDERR sprintf("%.2f%% done; ETA %s", $self->{PROGRESS}, localtime($eta)) . "\n";
+			$eta = $self->{T0} + $self->{END} / $rate;
+
+			$eta = localtime($eta);
+		}
+		else {
+
+			$eta = 'NA'
+		}
+		
+		print STDERR sprintf("%.3f%% done; ETA %s", $self->{PROGRESS}, $eta) . "\n";
 	}
 }
 
