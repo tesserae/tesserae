@@ -229,7 +229,8 @@ sub partition {
 			$fho[$subscript] = *$fh;
 		}
 		
-		print $$fho[$subscript] $line;
+		my $fho = $fho[$subscript];
+		print $fho $line;
 	}
 	
 	for (my $i = 0; $i <= $#fho; $i++) {
