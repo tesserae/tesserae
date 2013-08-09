@@ -352,17 +352,8 @@ for (my $i = 0; $i <= $#run; $i++) {
 	#
 	# connect to database
 	#
-	
-	# if necessary, use sub-database for each child process
-	
-	my $subscript = 0;
-	
-	if ($parallel) {
-	
-		$subscript = $i % $parallel;
-	}
-	
-	my $file_db = db_subscr_filename($param{file_db}, $subscript);
+		
+	my $file_db = $param{file_db};
 	my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
 	
 	# load tesserae data from the results files
@@ -471,35 +462,30 @@ sub init_db_session {
 	# create the database file
 	#
 	
-	my $file_db = catfile($session, 'sqlite');
-		
-	for (my $subscript = 0; $subscript >= ($parallel ? $parallel - 1 : 0); $subscript ++) {
-		
-		my $file_db = db_subscr_filename($file_db, $subscript);
+	my $file_db = catfile($session, 'sqlite.db');
 	
-		if (-e $file_db) {
-		
-			unlink $file_db;
-		}
-		
-		my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
+	if (-e $file_db) {
 	
-		# create necessary tables
-	
-		my %cols = ();
-	
-		for my $plugin (@plugins) {
-
-			%cols = (%cols, $plugin->cols);
-		}
-	
-		for my $table (keys %cols) {
-		
-			create_table($dbh, $table, $cols{$table});
-		}
-	
-		$dbh->disconnect;
+		unlink $file_db;
 	}
+		
+	my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
+	
+	# create necessary tables
+	
+	my %cols = ();
+	
+	for my $plugin (@plugins) {
+
+		%cols = (%cols, $plugin->cols);
+	}
+	
+	for my $table (keys %cols) {
+	
+		create_table($dbh, $table, $cols{$table});
+	}
+
+	$dbh->disconnect;
 	
 	#
 	# create a working directory for all the tesserae results
@@ -564,52 +550,43 @@ sub export_tables {
 	my ($session, $file_db, $delim) = @_;
 		
 	print STDERR "Exporting data\n" if $verbose;
-	
-	my @dbh;
-	
-	for (my $subscript = 0; $subscript >= ($parallel ? $parallel - 1 : 0); $subscript ++) {
-	
-		my $file_db = db_subscr_filename($file_db, $subscript);
-
-		my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
-	
-		for my $plugin (@plugins){
-		
-			my %cols = $plugin->cols;
-		
-			for my $table (keys %cols) {
-	
-				my $sth = $dbh->prepare("select * from $table;");
-		
-				$sth->execute;
-		
-				my $file = catfile($session, "$table.txt");
-		
-				my $mode = $subscript ? ">>:utf8" : ">:utf8";
-		
-				open (FH, $mode, $file) or die "can't write $file: $!";
 			
-				my @head = @{$cols{$table}};
-			
-				for (@head) {
-					s/\s.*//;
-				}
+	my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
+	
+	for my $plugin (@plugins){
+	
+		my %cols = $plugin->cols;
+	
+		for my $table (keys %cols) {
+	
+			my $sth = $dbh->prepare("select * from $table;");
+	
+			$sth->execute;
+	
+			my $file = catfile($session, "$table.txt");
 		
-				print FH join($delim, @head) . "\n";
+			open (FH, '>:utf8', $file) or die "can't write $file: $!";
 		
-				while (my $ref = $sth->fetchrow_arrayref) {
+			my @head = @{$cols{$table}};
 		
-					my @row = @$ref;
-			
-					print FH join($delim, @row) . "\n";
-				}
-		
-				close FH;
+			for (@head) {
+				s/\s.*//;
 			}
-		}
 	
-		$dbh->disconnect;
+			print FH join($delim, @head) . "\n";
+	
+			while (my $ref = $sth->fetchrow_arrayref) {
+	
+				my @row = @$ref;
+		
+				print FH join($delim, @row) . "\n";
+			}
+	
+			close FH;
+		}
 	}
+
+	$dbh->disconnect;
 }
 
 sub create_table {
@@ -1243,19 +1220,4 @@ sub manage_failed {
 	# set to cancelled
 
 	write_status($session, undef, -1);
-}
-
-# 
-# filenames for subscripted child databases
-#
-
-sub db_subscr_filename {
-
-	my ($name, $subscript) = @_;
-	
-	my $ndigits = length($parallel);
-	
-	my $file = sprintf("%s-%0${ndigits}i.db", $name, $subscript);
-	
-	return $file;
 }
