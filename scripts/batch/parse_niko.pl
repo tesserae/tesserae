@@ -153,6 +153,8 @@ unless (defined $session and -d $session) {
 	pod2usage(1);
 }
 
+my $partitions = catdir($session, 'parts');
+
 #
 # copy metadata from Tesserae
 #
@@ -176,59 +178,17 @@ for (my $i = 0; $i <= $parts; $i++) {
 
 	# read intertexts and index them 
 
-	my %intertext_id = %{index_intertexts($i)};
+	my $intertext_id = index_intertexts($i);
 	
+	# reformat the tokens using the intertext index
+	
+	index_tokens($i, $intertext_id);
 }
 		
 #
 # subroutines
 #
 
-# divide intertexts, tokens into batches based on run id
-
-sub partition {
-	
-	my ($name, $key) = @_;
-
-	my $file_in = catfile($session, $name . '.txt');
-	
-	open (my $fhi, '<:utf8', $file_in) or die "can't read $file_in: $!";
-	
-	print STDERR "partitioning $file_in\n" unless $quiet;
-	
-	my $pr = VerySlowProgressBar->new(-s $file_in, $quiet);
-	
-	$pr->advance(length(decode('utf8', <$fhi>)));
-			
-	my @fho;
-	
-	while (my $line = <$fhi>) {
-	
-		$pr->advance(length(decode('utf8', $line)));
-			
-		my @field = split(/\t/, $line);
-		
-		my $subscript = int($field[$key] / 1000);
-		
-		unless (defined $fho[$subscript]) {
-		
-			my $file_out = catfile($partitions, $name . '.' . $subscript . '.txt');
-
-			open (my $fh, '>:utf8', $file_out) or die "can't write $file_out: $!";
-
-			$fho[$subscript] = *$fh;
-		}
-		
-		print $$fho[$subscript] $line;
-	}
-	
-	for (my $i = 0; $i <= $#fho; $i++) {
-	
-		close $fho[$i];
-	}
-	
-	return $#fho;
-}
 
 # copy Authors, Texts from Tesserae
 

@@ -374,7 +374,7 @@ sub finish {
 
 	unless ($self->{QUIET} or $self->{DONE}) {
 
-		print STDERR "your very-long-running task is done!\n";
+		print STDERR "\nyour very-long-running task is done!\n";
 	}
 	
 	$self->{DONE} = 1;	

@@ -184,7 +184,7 @@ if ($#table != $#key) {
 my $partitions = catdir($session, 'parts');
 mkpath($partitions) unless -d $partitions;
 
-for my $i (0..$#tables) {
+for my $i (0..$#table) {
 
 	partition($table[$i], $key[$i]);
 }
