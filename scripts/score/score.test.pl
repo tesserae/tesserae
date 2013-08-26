@@ -2,62 +2,23 @@
 
 =head1 NAME
 
-read_table.pl - Perform a Tesserae search.
+score.test.pl - Compare a set of scoring algorithms on the Lucan-Vergil benchmark.
 
 =head1 SYNOPSIS
 
-B<read_table.pl> B<--target> I<target_text> B<--source> I<source_text> [OPTIONS]
+B<score.test.pl> [OPTIONS]
 
 =head1 DESCRIPTION
 
-This script compares two texts in the Tesserae corpus and returns a list of "parallels", pairs of textual units which share common features.  These parallels are organized in a set of hashes which are saved as a binaries using Storable.  These files, kept together in a directory named for the session, can be read and formatted in a user-friendly way with the companion script I<read_bin.pl>.
-
-This script is primarily called as a cgi executable from the web interface.  Called as a cgi, it creates a new session id for the results and saves them to the Tesserae I<tmp/> directory.  It then redirects the browser to I<read_bin.pl> which mediates viewing the results.
-
-It can also be run from the command line.  In this case, the results are written to a new directory given a user-specified session name (or "tesresults" by default).
-
-The names of the source and target texts to be searched must be specified.  B<Target> means the alluding (more recent) text.  B<Source> is the alluded-to (earlier) text.
-
-The name of a text is identical to its filename without the C<.tess> extension.  For example, our benchmark test is to search for allusions to Vergil's Aeneid in Book 1 of Lucan's Bellum Civile.  The file containing the Aeneid is I<texts/la/vergil.aeneid.tess> and that containing just the first book of Pharsalia is I<texts/la/lucan.bellum_civile/lucan.bellum_civile.part.1.tess>.  Thus, a default search, taking Lucan as the alluder and Vergil as the alluded-to, is run like this:
-
-% cgi-bin/read_table.pl --source vergil.aeneid \	
-                        --target lucan.bellum_civile.part.1
+Does a Tesserae search using target=lucan.bellum_civile.part.1, source=vergil.aeneid, unit=phrase. Each parallel is scored by each of the scoring modules specified using the --plugin option; if none is specified all available plugins are run. The output is a list of scores for each parallel, along with annotator type and commentary results.
 
 =head1 OPTIONS 
 
 =over
 
-=item B<--unit> line|phrase
+=item B<--plugin> NAME
 
-I<unit> specifies the textual units to be compared.  Choices currently are B<line> (the default) which compares verse lines or B<phrase>, which compares grammatical phrases.  For now we assume that the punctuation marks [.;:?] delimit phrases.
-
-=item B<--feature> word|stem|syn 
-
-This specifies the features set to match against.  B<word> only allows matches on forms that are identical. B<stem> (the default), allows matches on any inflected form of the same stem. B<syn> matches not only forms of the same headword but also other headwords taken to be related in meaning.  B<stem> and B<syn> only work if the appropriate dictionaries are installed; B<syn> won't work on Greek or English.
-
-=item B<--stop> I<stoplist_size>
-
-I<stoplist_size> is the number of stop words (stems, etc.) to use.  Matches on any of these are excluded from results.  The stop list is calculated by ordering all the features (see above) in the stoplist basis (see below) by frequency and taking the top I<N>, where I<N>=I<stoplist_size>.  The default is 10.
-
-=item B<--stbasis> corpus|target|source|both
-
-Stoplist basis is a string indicating the source for the ranked list of features from which the stoplist is taken.  B<corpus> (the default) derives the stoplist from the entire corpus; B<source>, uses only the source; B<target>, only the target; and B<both> uses the source and target but nothing else.
-
-=item B<--dist> I<max_dist>
-
-This sets the maximum distance between matching words.  For two units (one in the source and one in the target) to be considered a match, each must have at least two words common to the other (regardless of the feature on which they matched).  It's generally true that in good allusions these words are close together in both units.  Setting the maximum distance to I<N> means that matches where either unit's matching words are more than I<N> words apart will be excluded. The default distance is 999, which is presumably equivalent to setting no limit. Note that adjacent words are considered to have a distance of 1, words separated by an intervening word have a distance of 2, and so on.
-
-=item B<--dibasis> span|span-target|span-source|freq|freq-target|freq-source
-
-Distance basis is a string indicating the way to calculate the distance between matching words in a parallel (matching pair of units).  B<span> adds together the distance in words between the two farthest-apart words in each phrase.  Related to this are B<span-target> which uses the distance between the two farthest-apart words in the target unit only, and B<span-source> which uses the two farthest-apart words in the source unit.  A (probably) better basis is B<freq>, which uses the distance between the two words with the lowest frequencies (in their own text only), adding the frequency-based distances of the target and source units together.  As for B<span>, you can select the frequency-based distance in only one text with B<freq-target> or B<freq-source>.  The default is B<freq>.
-
-=item B<--cutoff> I<score_cutoff>
-
-Each match found by Tesserae is given a score.  Setting a cutoff will cause any match with a score less than this to be dropped from the results.  Default is 0 (presumably equivalent to no cutoff).
-
-=item B<--binary> I<name>
-
-This is the name to be given to the session. Tesserae will create a new directory with this name and save there the Storable binaries containing your results.  The default is I<tesresults>.
+Use NAME to score each parallel. Must be a Perl module in the plugins directory. To specify more than one plugin, repeat the B<--plugin> flag. If none is specified, all the modules in the plugins dir will be used.
 
 =item B<--quiet>
 
@@ -69,13 +30,9 @@ Print this message and exit.
 
 =back
 
-The values of all these options should be printed to STDERR when you run the script from the command-line, and should also be saved with the results.
+In addition, any of the usual options for read_table.pl can be given as well, with the exception of I<source>, I<target>, and I<unit>.
 
 =head1 KNOWN BUGS
-
-Right now the script also prints benchmark information to STDOUT.  This consists of a couple of messages about how many seconds different parts of the script take.  You can't turn it off, but you could always redirect it to /dev/null.
-
-Also, I'm not sure what will happen if you select a feature that hasn't been installed.
 
 =head1 SEE ALSO
 
@@ -88,7 +45,7 @@ The contents of this file are subject to the University at Buffalo Public Licens
 
 Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
 
-The Original Code is read_table.pl.
+The Original Code is score.test.pl.
 
 The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
 
@@ -159,6 +116,7 @@ BEGIN {
 
 use lib $lib;
 use Tesserae;
+use Parallel;
 use EasyProgressBar;
 
 # modules to read cmd-line options and print usage
@@ -168,7 +126,6 @@ use Pod::Usage;
 
 # load additional modules necessary for this script
 
-use CGI qw/:standard/;
 use Storable qw(nstore retrieve);
 use File::Path qw(mkpath rmtree);
 use Encode;
@@ -178,10 +135,6 @@ binmode STDERR, 'utf8';
 #
 # set some parameters
 #
-
-# time for benchmark
-
-my $t0 = time;
 
 # source means the alluded-to, older text
 
@@ -214,10 +167,6 @@ my $stoplist_basis = "corpus";
 
 my $filter = 0;
 
-# minimium frequency for interesting words
-
-my $interest = 0.008;
-
 # output file
 
 my $file_results = "tesresults";
@@ -225,13 +174,6 @@ my $file_results = "tesresults";
 # session id
 
 my $session = "NA";
-
-# is the program being run from the web or
-# from the command line?
-
-my $query = CGI->new() || die "$!";
-
-my $no_cgi = defined($query->request_method()) ? 0 : 1;
 
 # print debugging messages to stderr?
 
@@ -253,40 +195,30 @@ my $cutoff = 0;
 
 my $multi_cutoff = 0;                  
 
-# text list to pass on to multitext.pl
-
-my @include;
-
 # help flag
 
 my $help;
 
-# print benchmark times?
+# benchmark data
 
-my $bench = 0;
+my $file_bench = catfile($fs{data}, 'bench', 'rec.cache');
 
-# which script should mediate the display of results
+# scoring modules to use
 
-my $frontend = 'default';
-my %redirect;
+my @plugins = qw/Default/;
 
 GetOptions( 
-#			'source=s'     => \$source,
-#			'target=s'     => \$target,
-#			'unit=s'       => \$unit,
-			'feature=s'    => \$feature,
-			'stopwords=i'  => \$stopwords, 
-			'stbasis=s'    => \$stoplist_basis,
-			'binary=s'     => \$file_results,
-			'distance=i'   => \$max_dist,
-			'dibasis=s'    => \$distance_metric,
-			'cutoff=f'     => \$cutoff,
-			'filter'       => \$filter,
-			'interest=f'   => \$interest,
-			'benchmark'    => \$bench,
-			'no-cgi'       => \$no_cgi,
-			'quiet'        => \$quiet,
-			'help'         => \$help);
+	'feature=s'    => \$feature,
+	'stopwords=i'  => \$stopwords, 
+	'stbasis=s'    => \$stoplist_basis,
+	'binary=s'     => \$file_results,
+	'distance=i'   => \$max_dist,
+	'dibasis=s'    => \$distance_metric,
+	'cutoff=f'     => \$cutoff,
+	'quiet'        => \$quiet,
+	'help'         => \$help,
+	'plugin=s'     => \@plugins
+);
 
 #
 # print usage info if help flag set
@@ -297,66 +229,17 @@ if ($help) {
 	pod2usage(-verbose => 2);
 }
 
-# html header
 #
-# put this stuff early on so the web browser doesn't
-# give up
+# load score plugins
+#
 
-unless ($no_cgi) {
+for my $plugin (@plugins) {
+	
+	$plugin =~ s/[^a-z_].*//i;
+	next unless -s catfile($fs{script}, 'score', 'plugins', $plugin . '.pm');
 
-	print header();
-
-	my $stylesheet = "$url{css}/style.css";
-
-	print <<END;
-
-<html>
-<head>
-	<title>Tesserae results</title>
-	<link rel="stylesheet" type="text/css" href="$stylesheet" />
-END
-
-	#
-	# determine the session ID
-	# 
-
-	# open the temp directory
-	# and get the list of existing session files
-
-	opendir(my $dh, $fs{tmp}) || die "can't opendir $fs{tmp}: $!";
-
-	my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}/ && -d catfile($fs{tmp}, $_) } readdir($dh);
-
-	closedir $dh;
-
-	# sort them and get the id of the last one
-
-	@tes_sessions = sort(@tes_sessions);
-
-	$session = $tes_sessions[-1];
-
-	# then add one to it;
-	# if we can't determine the last session id,
-	# then start at 0
-
-	if (defined($session)) {
-
-	   $session =~ s/^.+results-//;
-	}
-	else {
-
-	   $session = "0"
-	}
-
-	# put the id into hex notation to save space and make it look confusing
-
-	$session = sprintf("%08x", hex($session)+1);
-
-	# open the new session file for output
-
-	$file_results = catfile($fs{tmp}, "tesresults-$session");
+	eval "require score::plugins::$plugin";
 }
-
 
 #
 # abbreviations of canonical citation refs
@@ -375,80 +258,6 @@ my %abbr = %{ retrieve($file_abbr) };
 my $file_lang = catfile($fs{data}, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
-# if web input doesn't seem to be there, 
-# then check command line arguments
-
-if ($no_cgi) {
-
-	unless (defined ($source and $target)) {
-
-		pod2usage( -verbose => 1);
-	}
-}
-else {
-
-	$source          = $query->param('source')       || "";
-	$target          = $query->param('target')       || "";
-	$unit            = $query->param('unit')         || $unit;
-	$feature         = $query->param('feature')      || $feature;
-	$stopwords       = defined($query->param('stopwords')) ? $query->param('stopwords') : $stopwords;
-	$stoplist_basis  = $query->param('stbasis')      || $stoplist_basis;
-	$max_dist        = $query->param('dist')         || $max_dist;
-	$distance_metric = $query->param('dibasis')      || $distance_metric;
-	$cutoff          = $query->param('cutoff')       || $cutoff;
-	$filter          = defined($query->param('filter')) ? $query->param('filter') : $filter;
-	$interest        = $query->param('interest')     || $interest;
-	$frontend        = $query->param('frontend')     || $frontend;
-	$multi_cutoff    = $query->param('mcutoff')      || $multi_cutoff;
-	@include         = $query->param('include');
-	
-	if ($source eq "" or $target eq "") {
-	
-		die "read_table.pl called from web interface with no source/target";
-	}
-	
-	$quiet = 1;
-	
-	# how to redirect browser to results
-
-	%redirect = ( 
-		default  => "$url{cgi}/read_bin.pl?session=$session",
-		recall   => "$url{cgi}/check-recall.pl?session=$session",
-		fulltext => "$url{cgi}/fulltext.pl?session=$session",
-		multi    => "$url{cgi}/multitext.pl?session=$session;mcutoff=$multi_cutoff;list=1"
-	);
-
-	
-	print <<END;
-	<meta http-equiv="Refresh" content="0; url='$redirect{$frontend}'">
-	</head>
-	<body>
-		<div class="waiting">
-		<p>
-			Searching...
-		</p>
-END
-                                       
-
-
-}
-
-#
-# force unit=phrase if either work is prose
-#
-# Note: This is a hack!  Fix later!!
-
-if (Tesserae::check_prose_list($target) or Tesserae::check_prose_list($source)) {
-
-	$unit = 'phrase';
-}
-
-# assume unicode text names are utf8,
-# whether input via cmd line or cgi
-
-# $target = decode('utf8', $target);
-# $source = decode('utf8', $source);
-
 # print all params for debugging
 
 unless ($quiet) {
@@ -463,7 +272,6 @@ unless ($quiet) {
 	print STDERR "max_dist=$max_dist\n";
 	print STDERR "distance basis=$distance_metric\n";
 	print STDERR "score cutoff=$cutoff\n";
-	print STDERR "interesting freq=$interest\n";
 }
 
 
@@ -509,7 +317,6 @@ if ( $feature eq "syn" ) {
 # read data from table
 #
 
-
 unless ($quiet) {
 	
 	print STDERR "reading source data\n";
@@ -539,8 +346,6 @@ my %index_target   = %{ retrieve("$file_target.index_$feature" ) };
 #
 #
 
-my $t1 = time;
-
 # this hash holds information about matching units
 
 my %match_target;
@@ -558,14 +363,7 @@ unless ($quiet) {
 
 # draw a progress bar
 
-my $pr;
-
-if ($no_cgi) {
-	$pr = ProgressBar->new(scalar(keys %index_source), $quiet);
-}
-else {
-	$pr = HTMLProgress->new(scalar(keys %index_source));
-}
+my $pr = ProgressBar->new(scalar(keys %index_source), $quiet);
 
 # start with each key in the source
 
@@ -599,15 +397,11 @@ for my $key (keys %index_source) {
 	}
 }
 
-print "search>>" . (time-$t1) . "\n" if $no_cgi and $bench;
-
 #
 #
 # assign scores
 #
 #
-
-$t1 = time;
 
 # how many matches in all?
 
@@ -615,18 +409,9 @@ my $total_matches = 0;
 
 # draw a progress bar
 
-if ($no_cgi) {
+print STDERR "calculating scores\n" unless $quiet;
 
-	print STDERR "calculating scores\n" unless $quiet;
-
-	$pr = ProgressBar->new(scalar(keys %match_target), $quiet);
-}
-else {
-
-	print "<p>Scoring...</p>\n";
-
-	$pr = HTMLProgress->new(scalar(keys %match_target));
-}
+$pr = ProgressBar->new(scalar(keys %match_target), $quiet);
 
 #
 # look at the matches one by one, according to unit id in the target
@@ -706,7 +491,7 @@ for my $unit_id_target (keys %match_target) {
 		#
 		# calculate the distance
 		# 
-		
+				
 		my $distance = dist($match_target{$unit_id_target}{$unit_id_source}, $match_source{$unit_id_target}{$unit_id_source}, $distance_metric);
 		
 		if ($distance > $max_dist) {
@@ -728,102 +513,62 @@ for my $unit_id_target (keys %match_target) {
 		}
 		
 		#
-		# calculate the score
+		# package up the match for export to modules
+		#
+				
+		my $mat =[
+			encapsulate_phrase(
+				$match_target{$unit_id_target}{$unit_id_source},
+				$unit_target[$unit_id_target],				
+				\@token_target,
+				\%freq_target
+			),
+			encapsulate_phrase(
+				$match_source{$unit_id_target}{$unit_id_source},
+				$unit_source[$unit_id_source],				
+				\@token_source,
+				\%freq_source
+			)
+		];
+		
+		#
+		# calculate scores
 		#
 		
 		# score
 		
-		my $score = score_default($match_target{$unit_id_target}{$unit_id_source}, $match_source{$unit_id_target}{$unit_id_source}, $distance);
-								
-		if ( $score < $cutoff) {
-
-			delete $match_target{$unit_id_target}{$unit_id_source};
-			delete $match_source{$unit_id_target}{$unit_id_source};
-			next;			
-		}
+		my @score;
 		
+		for my $plugin (@plugins) {
+			
+			push @score, $plugin->score($mat);
+		}
+												
 		# save calculated score, matched words, etc.
 		
-		$match_score{$unit_id_target}{$unit_id_source} = $score;
+		$match_score{$unit_id_target}{$unit_id_source} = \@score;
 		
 		$total_matches++;
 	}
 }
 
-my %feature_notes = (
-	
-	word => "Exact matching only.",
-	stem => "Stem matching enabled.  Forms whose stem is ambiguous will match all possibilities.",
-	syn  => "Stem + synonym matching.  This search is still in development.  Note that stopwords may match on less-common synonyms.  max_heads=$max_heads; min_similarity=$min_similarity"
-	
-	);
+# benchmark set
 
-print "score>>" . (time-$t1) . "\n" if $no_cgi and $bench;
+print STDERR "reading benchmark set $file_bench\n" unless $quiet;
 
-#
-# write binary results
-#
+my $bench = read_bench($file_bench);
 
-$t1 = time;
+# tesserae data as parallel
 
-my %match_meta = (
+my $tess = read_tess();
 
-	SOURCE    => $source,
-	TARGET    => $target,
-	UNIT      => $unit,
-	FEATURE   => $feature,
-	STOP      => $stopwords,
-	STOPLIST  => [@stoplist],
-	STBASIS   => $stoplist_basis,
-	DIST      => $max_dist,
-	DIBASIS   => $distance_metric,
-	SESSION   => $session,
-	CUTOFF    => $cutoff,
-	FILTER    => $filter,
-	INTEREST  => $interest,
-	COMMENT   => $feature_notes{$feature},
-	TOTAL     => $total_matches
-);
+# merge
 
+$bench = merge($tess, $bench);
 
-if ($no_cgi) {
-	
-	print STDERR "writing $file_results\n" unless $quiet;
-}
-else {
+# print results
 
-	print "<p>Writing session data.</p>";
-}
-
-rmtree($file_results);
-mkpath($file_results);
-	
-nstore \%match_target, catfile($file_results, "match.target");
-nstore \%match_source, catfile($file_results, "match.source");
-nstore \%match_score,  catfile($file_results, "match.score" );
-nstore \%match_meta,   catfile($file_results, "match.meta"  );
-
-if (@include) {
-
-	write_multi_list($file_results, \@include);
-}
-
-print "store>>" . (time-$t1) . "\n" if $no_cgi and $bench;
-
-print <<END unless ($no_cgi);
-
-	<p>
-      Your search is done.  If you are not redirected automatically, 
-      <a href="$redirect{$frontend}">click here</a>.
-	</p>
-	</div>
-</body>
-</html>
-
-END
-
-
-print "total>>" . (time-$t0)  . "\n" if $no_cgi and $bench;
+export($bench);
 
 #
 # subroutines
@@ -1016,166 +761,205 @@ sub load_stoplist {
 	return \@stoplist;
 }
 
-sub exact_match {
 
-	my ($ref_target, $ref_source) = @_[0,1];
+#
+# package up a match concisely
+#
 
-	my @target_id = keys %$ref_target;
-	my @source_id = keys %$ref_source;
+sub encapsulate_phrase {
+
+	my ($ref_match, $ref_unit, $ref_token, $ref_freq) = @_;
 	
-	my @ttokens;
-	my @stokens;
+	my @token_id = @{$ref_unit->{TOKEN_ID}};
+	
+	my @match;
+	my @token;
+	my @freq;
+	
+	for my $i (@token_id) {
+	
+		next unless $ref_token->[$i]->{TYPE} eq 'WORD';
 		
-	for (@target_id) {
-	
-		push @ttokens, $token_target[$_]{FORM};
-	}
-	
-	for (@source_id) {
-		push @stokens, $token_source[$_]{FORM};
-	}
-	
-	@ttokens = @{Tesserae::uniq(\@ttokens)};
-	@stokens = @{Tesserae::uniq(\@ttokens)};
-	
-	my @exact_match = @{Tesserae::intersection(\@ttokens, \@stokens)};
-	
-	return scalar(@exact_match);
-}
-
-# save the list of multi-text searches to session file
-
-sub write_multi_list {
-	
-	my ($session, $incl) = @_;
-	
-	my @include = @$incl;
-	
-	my $file_list = catfile($session, '.multi.list');
-	
-	open (FH, ">:utf8", $file_list) or die "can't write $file_list: $!";
-	
-	for (@include) {
-	
-		print FH $_ . "\n";
-	}
-	
-	close FH;
-}
-
-##
-## add new scoring algorithms here
-##
-
-sub get_scoring_algorithms {
-
-	return (
-	
-		default => \&score_default,
-		team    => \&score_team
-	);
-}
-
-sub score_default {
-	
-	my ($match_t_ref, $match_s_ref, $distance) = @_;
-
-	my %match_target = %$match_t_ref;
-	my %match_source = %$match_s_ref;
-	
-	my $score = 0;
-		
-	for my $token_id_target (keys %match_target ) {
-									
-		# add the frequency score for this term
-		
-		my $freq = 1/$freq_target{$token_target[$token_id_target]{FORM}}; 
+		push @token, $ref_token->[$i]->{FORM};
+		push @freq,  $ref_freq->{$ref_token->[$i]->{FORM}};
 				
-		# for 3-grams only, consider how many features the word matches on
-				
-	if ($feature eq '3gr') {
+		if (defined $ref_match->{$i}) {
 		
-			$freq *= scalar(keys %{$match_target{$token_id_target}});
+			push @match, $#token;
 		}
-		
-		$score += $freq;
 	}
 	
-	for my $token_id_source ( keys %match_source ) {
-
-		# add the frequency score for this term
-
-		my $freq = 1/$freq_source{$token_source[$token_id_source]{FORM}};
-		
-		# for 3-grams only, consider how many features the word matches on
-				
-		if ($feature eq '3gr') {
-		
-			$freq *= scalar(keys %{$match_source{$token_id_source}});
-		}
-		
-		$score += $freq;
-	}
-	
-	$score = sprintf("%.3f", log($score/$distance));
-	
-	return $score;
+	return (\@token, \@freq, \@match);
 }
 
-sub score_team {
+#
+# read benchmark data
+#  -- borrowed from append_bench_scores.pl
 
-	# the parallel to check
-	
-	my ($match_t_ref, $match_s_ref) = @_;
+sub read_bench {
 
-	my %match_target = %$match_t_ref;
-	my %match_source = %$match_s_ref;
+	my $file = shift;
 	
-	# count interesting words in three categories
+	my @bench = @{retrieve($file)};
 	
-	my @cat   = (0, 0, 0);
-	my @level = (0.0004, 0.0008, 0.0018);
+	my $pr = ProgressBar->new(scalar(@bench), $quiet);
 	
-	# start with a "reject" policy
-	
-	my $score = 0;
-	
-	# check all the tokens in the target phrase
-	
-	for my $token_id_target (keys %match_target ) {
+	for (@bench) {
 		
-		for (0..2) {
+		$pr->advance();
+	
+		my %rec = %$_;
 		
-			if ($freq_target{$token_target[$token_id_target]{FORM}} < $level[$_]) {
+		my %opt = (
+			target      => 'lucan.bellum_civile.part.1',
+			target_loc  => join('.', $rec{BC_BOOK}, $rec{BC_LINE}),
+			target_text => $rec{BC_TXT},
+			source      => 'vergil.aeneid',
+			source_loc  => join('.', $rec{AEN_BOOK}, $rec{AEN_LINE}),
+			source_text => $rec{AEN_TXT},
+			auth        => $rec{AUTH},
+			type        => $rec{SCORE},
+			target_unit => $rec{BC_PHRASEID},
+			source_unit => $rec{AEN_PHRASEID}
+		);
+		
+		$_ = Parallel->new(%opt);
+	}
+	
+	return \@bench;
+}
+
+#
+# read tesserae data
+#
+
+sub read_tess {
+
+	my @tess;
+	
+	print STDERR "reading tesserae data\n";
+
+	my $pr = ProgressBar->new(scalar(keys %match_score), $quiet);
+
+	for my $unit_id_target (keys %match_score) {
+		
+		$pr->advance();
+	
+		for my $unit_id_source (keys %{$match_score{$unit_id_target}}) {
 			
-				$cat[$_]++;
-			}
-		}
-	}
-	
-	# and the source phrase
-	
-	for my $token_id_source ( keys %match_source ) {
-		
-		for (0..2) {
-		
-			if ($freq_source{$token_source[$token_id_source]{FORM}} < $level[$_]) { 
+			my %opt = (
+				
+				target      => $target,
+				source      => $source,
+				target_unit => $unit_id_target,
+				source_unit => $unit_id_source,
+				score       => $match_score{$unit_id_target}{$unit_id_source}
+			);
 			
-				$cat[$_]++; 
-			}
+			push @tess, Parallel->new(%opt);
 		}
 	}
 	
-	# get the number of exact matches
-	
-	my $exact_match = exact_match(\%match_target, \%match_source);
-	
-	# promote parallel to "keep" if it meets the criteria
-	
-	if (($cat[2] > 0) or ($cat[1] > 1) or ($cat[0] > 0 and $exact_match > 0 ))  {
+	return \@tess;
+}
 
-		$score = 1;
+#
+# merge the tess results and the bench results,
+# combining parallels that refer to the same 
+# phrase pairs
+#
+
+sub merge {
+
+	my ($ref_a, $ref_b) = @_;
+		
+	my @a = @$ref_a;
+	my @b = @$ref_b;
+	
+	my %index;
+	my @merged;
+	
+	print STDERR "indexing...\n" unless $quiet;
+	
+	my $pr = ProgressBar->new(scalar(@a) + scalar(@b), $quiet);
+	
+	for (@a, @b) {
+		
+		$pr->advance();
+		
+		push @{$index{$_->get('target_unit')}{$_->get('source_unit')}}, $_;
 	}
 	
-	return $score;
+	print STDERR "merging...\n" unless $quiet;
+	
+	$pr = ProgressBar->new(scalar(keys %index), $quiet);
+	
+	for my $unit_id_target (keys %index) {
+		
+		$pr->advance();
+		
+		for my $unit_id_source (keys %{$index{$unit_id_target}}) {
+		
+			my $p = Parallel->new();
+
+			my @to_be_merged = @{$index{$unit_id_target}{$unit_id_source}};
+			
+			for (@to_be_merged) {
+		
+				$p->merge($_);
+			}
+
+			push @merged, $p;
+		}
+	}
+	
+	return \@merged;
+}
+
+#
+# print score comparison
+#
+
+sub export {
+
+	my ($bench_ref, $q_) = @_;
+	my @bench = @$bench_ref;
+	my $q = ($q_ or $quiet);
+	
+	print STDERR "exporting records\n" unless $q;
+	
+	my @fields = qw/target source type auth/;
+	
+	my @header = (@fields, map {lc} @plugins);
+	
+	print join("\t", @header) . "\n";
+	
+	my $pr = ProgressBar->new(scalar(@bench), $q);
+	
+	for my $p (@bench) {
+		
+		$pr->advance;
+		
+		next unless defined $p->get('type');
+		
+		my $score = $p->get('score');
+		
+		unless (defined $score) {
+			
+			$score = [(undef) x scalar(@plugins)];
+		}
+		
+		my @scores = map {defined $_ ? $_ : 'NA'} @$score;
+			
+		print join("\t", 
+			$p->dump(
+				select => [qw/target source type auth/],
+				join   => ';',
+				na     => 'NA'
+			),
+			@scores
+		);
+				
+		print "\n";
+	}
 }
