@@ -18,9 +18,6 @@ import collections
 import argparse
 import unicodedata
 
-from stemming.porter2 import stem
-from gensim import corpora, models, similarities
-
 def read_pointer():
 	'''look for .tesserae.conf; return lib path'''
 	
@@ -44,9 +41,13 @@ def read_pointer():
 	return lib
 
 sys.path.append(read_pointer())
+
 from tesserae import fs, url
 from Tesserae import progressbar
 from Tesserae import tesslang
+
+#from stemming.porter2 import stem
+from gensim import corpora, models, similarities
 
 #
 # a collection of compiled regular expressions
@@ -272,8 +273,8 @@ def bag_of_words(defs, stem_flag, quiet):
 							for w in pat.clean['any'].split(defs[lemma]) 
 							if not w.isspace() and w != '']
 				
-		if stem_flag:
-			defs[lemma] = [stem(w) for w in defs[lemma]]
+#		if stem_flag:
+#			defs[lemma] = [stem(w) for w in defs[lemma]]
 		
 		if len(defs[lemma]) > 0:
 			count.update(defs[lemma])

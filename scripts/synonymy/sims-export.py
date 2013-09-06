@@ -16,7 +16,6 @@ import sys
 import codecs
 import unicodedata
 import argparse
-from gensim import corpora, models, similarities
 
 def read_pointer():
 	'''look for .tesserae.conf; return lib path'''
@@ -41,9 +40,12 @@ def read_pointer():
 	return lib
 
 sys.path.append(read_pointer())
+
 from tesserae import fs, url
 from Tesserae import progressbar
 from Tesserae import tesslang
+
+from gensim import corpora, models, similarities
 
 by_word  = dict()
 corpus   = []
