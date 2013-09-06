@@ -26,7 +26,7 @@
 						<td><span class="h2">Source:</span></td>
 						<td>
 							<select name="source" ID="source" multiple="true">
-								<?php include $fs_html.'/textlist.la.l.php'; ?>
+								<?php include $fs_html.'/textlist.la.r.php'; ?>
 							</select>
 						</td>
 					</tr>

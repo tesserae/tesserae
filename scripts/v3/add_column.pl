@@ -911,7 +911,7 @@ sub write_freq_score {
 		
 		if    ($feature eq 'stem') { @indexable = @{stems($word1)} }
 		elsif ($feature eq 'syn' ) { @indexable = @{syns($word1)}  }
-		elsif ($feature eq '3gr' ) { @indexable = @{chr_ngrams(3, Tesserae::alpha($lang, $word1))}  }
+		elsif ($feature eq '3gr' ) { @indexable = @{chr_ngrams(3, Tesserae::alpha($lang, $word1))}}
 						
 		# for each of its indexable features
 		
