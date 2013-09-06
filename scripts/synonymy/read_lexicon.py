@@ -137,7 +137,7 @@ def write_dict(defs, name, quiet):
 	f = open(os.path.join(fs['data'], 'synonymy', name + '.pickle'), 'w')
 		
 	if not quiet:
-		print "Saving dictionary to {}".format(f.name)
+		print "Saving dictionary to {0}".format(f.name)
 		
 	pickle.dump(defs, f)
 	
@@ -150,7 +150,7 @@ def read_dict(name, quiet):
 	f = open(os.path.join('data', name + '.pickle'), 'r')
 		
 	if not quiet:
-		print "Loading dictionary from {}".format(f.name)
+		print "Loading dictionary from {0}".format(f.name)
 		
 	defs = pickle.load(f)
 	
@@ -168,7 +168,7 @@ def parse_XML_dictionaries(langs, quiet):
 		filename = os.path.join(fs['data'], 'common', lang + '.lexicon.xml')
 		
 		if not quiet:
-			print 'Reading lexcion {0}'.format(filename)
+			print 'Reading lexicon {0}'.format(filename)
 		
 		pr = progressbar.ProgressBar(os.stat(filename).st_size, quiet)
 		
@@ -244,7 +244,7 @@ def parse_XML_dictionaries(langs, quiet):
 		defs[lemma] = '; '.join(defs[lemma])
 	
 	if not quiet:
-		print 'Lost {} empty definitions'.format(len(empty_keys))
+		print 'Lost {0} empty definitions'.format(len(empty_keys))
 	
 	for k in empty_keys:
 		del defs[k]
@@ -295,7 +295,7 @@ def bag_of_words(defs, stem_flag, quiet):
 			empty_keys.add(lemma)
 	
 	if not quiet:
-		print 'Lost {} empty definitions'.format(len(empty_keys))
+		print 'Lost {0} empty definitions'.format(len(empty_keys))
 	
 	for k in empty_keys:
 		del defs[k]
@@ -398,7 +398,7 @@ def main():
 	# write_dict(defs, 'bow_defs')
 	
 	if not opt.quiet:
-		print '{} lemmas still have definitions'.format(len(defs))
+		print '{0} lemmas still have definitions'.format(len(defs))
 	
 	# convert back into one string of defining words per lemma
 	
@@ -462,7 +462,7 @@ def main():
 
 	if opt.topics is not None and opt.topics > 0:
 		if not opt.quiet:
-			print 'Performing LSI with {} topics'.format(opt.topics)
+			print 'Performing LSI with {0} topics'.format(opt.topics)
 		
 		lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=opt.topics)
 		
