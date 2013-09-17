@@ -49,6 +49,58 @@ package Parallel;
 use strict;
 use Exporter;
 
+# modules necessary to look for config
+
+use Cwd qw/abs_path/;
+use FindBin qw/$Bin/;
+use File::Spec::Functions;
+
+# load configuration file
+
+my $tesslib;
+
+BEGIN {
+	
+	my $dir  = $Bin;
+	my $prev = "";
+			
+	while (-d $dir and $dir ne $prev) {
+
+		my $pointer = catfile($dir, '.tesserae.conf');
+
+		if (-s $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$tesslib = <FH>;
+			
+			chomp $tesslib;
+			
+			last;
+		}
+		
+		$dir = abs_path(catdir($dir, '..'));
+	}
+	
+	unless ($tesslib) {
+	
+		die "can't find .tesserae.conf!";
+	}
+}
+
+# load Tesserae-specific modules
+
+use lib $tesslib;
+
+use Tesserae;
+use EasyProgressBar;
+
+# additional modules
+
+use Storable;
+
+# set some parameters
+
 our $VERSION   = 3.00;
 our @ISA       = qw(Exporter);
 our @EXPORT    = ();
@@ -74,6 +126,7 @@ my @options = qw/
 	score
 /;
 
+
 #
 # labels for attributes
 #  - matches dump() below
@@ -89,7 +142,7 @@ sub header {
 
 sub new {
 	
-	my ($class, %opt) = (@_);
+	my ($package, %opt) = (@_);
 
 	my $self = {};
 	
@@ -107,7 +160,7 @@ sub new {
 sub get {
 
 	my ($self, $attr) = @_;
-	
+		
 	return $self->{$attr};
 }
 
@@ -226,21 +279,35 @@ sub dump {
 	
 	my @dump;
 	
-	for (@options) {
+	my @select = (defined $opt{select} ? @{$opt{select}} : @options);
+	
+	for (@select) {
 		
-		my $val = ($self->get($_) or $na);
+		my $val = $self->get($_);
 		
-		if (ref($val) eq 'ARRAY' and $opt{join}) {
-		
-			$val = join($opt{join}, @$val);
+		unless (defined $val) { 
+
+			$val = $na; 
 		}
+		
+		if (ref($val) ne 'ARRAY') {
+			
+			push @dump, $val;
+		}
+		else {
+			
+			my @val = map {defined $_ ? $_ : $na} @$val;
+			
+			push @dump, ($opt{join} ? join($opt{join}, @val) : @val);
+		}
+	}
+		
+	for (@dump) {
 		
 		if ($opt{w}) {
 		
-			$val = sprintf("%.${opt{w}}s", $val);
+			$_ = sprintf("%.${opt{w}}s", $_);
 		}
-	
-		push @dump, $val;
 	}
 	
 	return @dump;
