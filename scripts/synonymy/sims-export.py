@@ -41,9 +41,9 @@ def read_pointer():
 
 sys.path.append(read_pointer())
 
-from tesserae import fs, url
-from Tesserae import progressbar
-from Tesserae import tesslang
+from TessPy.tesserae import fs, url
+from TessPy import progressbar
+from TessPy import tesslang
 
 from gensim import corpora, models, similarities
 
@@ -54,38 +54,58 @@ index    = []
 full_def = dict()
 
 
-def get_results(q, n, file, filter):
+def get_results(q, n, c, file, filter):
 	"""test query q against the similarity matrix"""
 		
 	row = [q]
 		
 	if (q in by_word):
 		q_id = by_word[q]
-				
+						
 		# query the similarity matrix
 		
 		sims = index[corpus[q_id]]
 		sims = sorted(enumerate(sims), key=lambda item: -item[1])
 				
-		# display each result, its score, and text-only def
+		# filter results
 		
 		for pair in sims:	
 			r_id, score = pair
 			
 			r = by_id[r_id]
 			
-			if filter and is_greek(r) != (filter - 1):
-				continue
+			# results to skip: 
+			#	- wrong language, or
+			#   - result == query
+			
+			if filter:
+				if is_greek(r) != (filter - 1):
+					continue
+			else:
+				if r == q:
+					continue
+			
+			# conditions to quit checking:
+			#   - score below cutoff, or
+			#   - top n already returned
+			
+			if c is not None:
+				if score < c:
+					break
+				if len(row) > 12:
+					break
+			else:
+				if len(row) > n:
+					break
 			
 			row.append(r)
-					
-			if len(row) > n:
-				break
-		
-		if file is not None:
-			file.write(u','.join(row) + '\n')
-		else:
-			print u','.join(row)
+			
+		if len(row) > 1:
+										
+			if file is not None:
+				file.write(u','.join(row) + '\n')
+			else:
+				print u','.join(row)
 
 
 def is_greek(form):
@@ -112,6 +132,10 @@ def main():
 			help = 'Translation mode: 1=Greek to Latin; 2=Latin to Greek')
 	parser.add_argument('-l', '--lsi', action='store_const', const=1,
 			help = 'Use LSI to reduce dimensionality')
+	parser.add_argument('-f', '--feature', metavar="FEAT", default='trans2', type=str,
+			help = 'Name of feature dictionary to create')
+	parser.add_argument('-c', '--cutoff', metavar='C', default=None, type=float,
+			help = 'Similarity threshold for synonymy (range: 0-1).')
 	
 	opt = parser.parse_args()
 	
@@ -194,7 +218,7 @@ def main():
  	if not quiet:
 		print 'Exporting dictionary'
 	
-	filename_csv = os.path.join(fs['data'], 'synonymy', 'trans2.csv')
+	filename_csv = os.path.join(fs['data'], 'synonymy', opt.feature + '.csv')
 	
 	file_output = codecs.open(filename_csv, 'w', encoding='utf_8')
 	
@@ -210,7 +234,7 @@ def main():
 		if opt.translate and is_greek(q) == (opt.translate - 1):
 			continue
 
-		get_results(q, opt.results, file_output, opt.translate)
+		get_results(q, opt.results, opt.cutoff, file_output, opt.translate)
 
 
 if __name__ == '__main__':

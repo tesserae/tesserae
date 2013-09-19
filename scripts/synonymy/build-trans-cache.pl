@@ -164,8 +164,6 @@ unless ($file) {
 binmode STDOUT, ':utf8';
 
 #
-
-
 # parse the csv dictionary
 #
 
@@ -196,8 +194,6 @@ while (my $line = <$fh>) {
 	next unless @trans;
 	
 	push @{$trans{$head}}, @trans;
-	
-	print "$head: " . join(" ", @trans) . "\n";
 }
 
 #

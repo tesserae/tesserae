@@ -42,9 +42,9 @@ def read_pointer():
 
 sys.path.append(read_pointer())
 
-from tesserae import fs, url
-from Tesserae import progressbar
-from Tesserae import tesslang
+from TessPy.tesserae import fs, url
+from TessPy import progressbar
+from TessPy import tesslang
 
 #from stemming.porter2 import stem
 from gensim import corpora, models, similarities
