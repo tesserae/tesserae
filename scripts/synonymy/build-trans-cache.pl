@@ -6,19 +6,31 @@ build-trans-cache.pl - install translation dictionary
 
 =head1 SYNOPSIS
 
-build-trans-cache.pl [--feature NAME] DICT
+build-trans-cache.pl [--feature NAME] --la|grc DICT [--la|grc DICT]
 
 =head1 DESCRIPTION
 
-Reads a translation dictionary in CSV format; creates and installs Tesserae dictionary in Storable binary format. Dictionaries should be utf-8 encoded text, with one line per headword. Each line begins with the Greek headword to be translated, followed by one or more Latin headwords to be considered "translations" of the Greek. Fields must be separated by commas.
+Reads one or more translation/synonymy dictionaries in CSV format; creates and installs Tesserae feature dictionaries in Storable binary format. Dictionaries should be utf-8 encoded text, with one line per headword. Each line begins with the headword to be translated, followed by one or more  headwords to be considered its "translations" or "synonyms." Fields must be separated by commas. See I<perldoc build-trans-cache.pl> for examples.
+
+=head1 EXAMPLES
+
+To create a Greek-Latin translation feature set, first use I<sims-export.py> to create a dictionary with Greek headwords in the first position on the line, followed by Latin translations. Then do, e.g.,
+
+  I<build-trans-cache.pl> --feature g2l --grc g2l_dict.csv
+
+This will create a feature set called "g2l," using the dictionary "g2l_dict.csv" for the Greek feature set and the base stem dictionary for the Latin.
+
+On the other hand, to create a synonymy feature set, first use I<sims-export.py> to create a dictionary without the translation filter, so that Greek and Latin headwords are used indiscriminately throughout the CSV dictionary. Then give I<build-trans-cache> the same CSV file for both Greek and Latin, e.g.,
+
+   I<build-trans-cache.pl> --feature syn --grc syn_dict.csv --la syn_dict.csv
 
 =head1 OPTIONS AND ARGUMENTS
 
 =over
 
-=item I<DICT>
+=item B<--la|grc> DICT
 
-Dictionary file to read.
+Language-based dictionary to read. Use B<--la> to specify a Latin dictionary, B<--grc> to specify a Greek dictionary. If a dictionary is provided for one language only, the other will use the existing stem dictionary.
 
 =item B<--feature> NAME
 
@@ -132,6 +144,7 @@ use utf8;
 my $feat  = 'trans';
 my $help  = 0;
 my $quiet = 0;
+my %file;
 
 my $re_dia   = qr/[\x{0313}\x{0314}\x{0301}\x{0342}\x{0300}\x{0308}\x{0345}]/;
 my $re_vowel = qr/[αειηουωΑΕΙΗΟΥΩ]/;
@@ -139,9 +152,11 @@ my $re_vowel = qr/[αειηουωΑΕΙΗΟΥΩ]/;
 # get user options
 
 GetOptions(
-	'feature=s' => \$feat,
-	'help'      => \$help,
-	'quiet'     => \$quiet
+	'feature=s'   => \$feat,
+	'latin=s'     => \$file{la},
+	'grc|greek=s' => \$file{grc},
+	'help'        => \$help,
+	'quiet'       => \$quiet
 );
 
 # print usage if the user needs help
@@ -151,84 +166,77 @@ if ($help) {
 	pod2usage(1);
 }
 
-# Get filename from user arg
-
-my $file = shift @ARGV;
-
-unless ($file) {
-	
-	warn "Please specify CSV dictionary to read.";
-	pod2usage(1);
-}
-
 binmode STDOUT, ':utf8';
 
 #
 # parse the csv dictionary
 #
+for my $lang (qw/grc la/) {
 
-my %trans;
+	my %trans;
 
-open (my $fh, '<:utf8', $file) or die "Can't read dictionary $file: $!";
+	if (defined $file{$lang}) {
+		
+		open (my $fh, '<:utf8', $file{$lang}) or die "Can't read dictionary $file{$lang}: $!";
 
-print STDERR "Parsing $file\n" unless $quiet;
+		print STDERR "Parsing $file{$lang}\n" unless $quiet;
 
-my $pr = ProgressBar->new(-s $file, $quiet);
+		my $pr = ProgressBar->new(-s $file{$lang}, $quiet);
 
-while (my $line = <$fh>) {
+		while (my $line = <$fh>) {
 
-	$pr->advance(length(Encode::encode('utf8', $line)));
+			$pr->advance(length(Encode::encode('utf8', $line)));
 
-	chomp $line;
+			chomp $line;
 	
-	my ($head, @trans) = split(/\s*,\s*/, $line);
+			my ($head, @trans) = split(/\s*,\s*/, $line);
 	
-	$head = NFKD($head);
-	$head =~ s/\d//g;
-	$head =~ s/^(${re_dia}+)(${re_vowel}{2,})/$2/;
-	$head =~ s/^(${re_dia}+)(${re_vowel}{1})/$2$1/;
-	$head =~ s/σ\b/ς/;
+			$head = NFKD($head);
+			$head =~ s/\d//g;
+			$head =~ s/^(${re_dia}+)(${re_vowel}{2,})/$2/;
+			$head =~ s/^(${re_dia}+)(${re_vowel}{1})/$2$1/;
+			$head =~ s/σ\b/ς/;
 	
-	@trans = grep { /\S/ } @trans;
+			@trans = grep { /\S/ } @trans;
 	
-	next unless @trans;
+			next unless @trans;
 	
-	push @{$trans{$head}}, @trans;
+			push @{$trans{$head}}, @trans;
+		}
+
+		#
+		# save as Storable binary
+		#
+
+		my $file_cache = catfile($fs{data}, 'common', "$lang.$feat.cache");
+
+		print STDERR "Writing $file_cache\n" unless $quiet;
+
+		nstore(\%trans, $file_cache);
+	}
+	else {
+		
+		#
+		# copy the base stem dictionary
+		#
+
+		my $from = catfile($fs{data}, 'common', "$lang.stem.cache");
+		my $to   = catfile($fs{data}, 'common', "$lang.$feat.cache");
+
+		unless (-s $from) {
+
+			my $warning = "Can't find base stem cache $from!\n"
+							. "Without stems the translation feature will not work!\n"
+							. "Please run build-stem-cache.pl, then either re-run this script\n"
+							. "or copy $from to $to yourself.\n";
+
+			warn $warning;
+			die "No stem dictionary, can't continue.";
+		}
+		
+		print STDERR "Writing $to\n" unless $quiet;
+
+		copy($from, $to);
+	}
 }
-
-#
-# save as Storable binary
-#
-
-my $file_cache = catfile($fs{data}, 'common', "grc.$feat.cache");
-
-print STDERR "Writing $file_cache\n" unless $quiet;
-
-nstore(\%trans, $file_cache);
-
-#
-# copy the Latin stem dictionary
-#
-
-my $from = catfile($fs{data}, 'common', 'la.stem.cache');
-my $to   = catfile($fs{data}, 'common', "la.$feat.cache");
-
-unless (-s $from) {
-
-	my $warning = <<END;
-Can't find Latin stem cache $from!
-Without Latin stems the translation feature will not work!
-Please run build-stem-cache.pl, then either re-run this script
-or copy $from to $to yourself.
-END
-
-	warn $warning;
-	die "No stem dictionary, can't continue.";
-}
-
-print STDERR "Writing $to\n" unless $quiet;
-
-copy($from, $to);
-
-
 

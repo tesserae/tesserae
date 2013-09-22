@@ -15,6 +15,8 @@ our @EXPORT = qw(%top $apache_user %is_word %non_word $phrase_delimiter %ancilla
 
 our @EXPORT_OK = qw(uniq intersection tcase lcase beta_to_uni alpha stoplist_hash stoplist_array check_prose_list lang);
 
+our $VERSION = '3.1.0_0';
+
 #
 # read config file
 #
@@ -45,10 +47,23 @@ unless ($override_stemmer) {
 
 # feature dependencies
 
-my %feature_dep = (
+our %feature_dep = (
 	
-	trans1 => 'stem',
-	trans => 'stem'
+	'trans1' => 'stem',
+	'trans2' => 'stem',
+	'syn'    => 'stem'
+);
+
+# per-feature frequency tables to use in scoring
+
+our %feature_score = (
+
+	'word'   => 'word',
+	'stem'   => 'stem',
+	'trans1' => 'stem',
+	'trans2' => 'stem',
+	'syn'    => 'syn',
+	'3gr'    => '3gr'
 );
 
 # some features require special code
@@ -58,6 +73,7 @@ my %feature_override = (
 	'3gr'    => \&chr_ngrams,
 	'porter' => \&porter
 );
+
 
 # cache for feature lookup
 

@@ -152,7 +152,9 @@ BEGIN {
 		}
 		
 		die "can't find .tesserae.conf!\n";
-	}	
+	}
+	
+	$lib = catdir($lib, 'TessPerl');
 }
 
 # load Tesserae-specific modules
@@ -265,6 +267,10 @@ my $help;
 
 my $bench = 0;
 
+# what frequency table to use in scoring
+
+my $score_basis;
+
 # which script should mediate the display of results
 
 my $frontend = 'default';
@@ -282,7 +288,7 @@ GetOptions(
 			'dibasis=s'    => \$distance_metric,
 			'cutoff=f'     => \$cutoff,
 			'filter'       => \$filter,
-			'interest=f'   => \$interest,
+			'score=s'      => \$score_basis,
 			'benchmark'    => \$bench,
 			'no-cgi'       => \$no_cgi,
 			'quiet'        => \$quiet,
@@ -295,6 +301,13 @@ GetOptions(
 if ($help) {
 
 	pod2usage(-verbose => 2);
+}
+
+# default score basis set by Tesserae.pm
+
+unless (defined $score_basis)  { 
+	
+	$score_basis = $Tesserae::feature_score{$feature};
 }
 
 # html header
@@ -387,8 +400,8 @@ if ($no_cgi) {
 }
 else {
 
-	$source          = $query->param('source')       || "";
-	$target          = $query->param('target')       || "";
+	$source          = $query->param('source');
+	$target          = $query->param('target');
 	$unit            = $query->param('unit')         || $unit;
 	$feature         = $query->param('feature')      || $feature;
 	$stopwords       = defined($query->param('stopwords')) ? $query->param('stopwords') : $stopwords;
@@ -397,14 +410,23 @@ else {
 	$distance_metric = $query->param('dibasis')      || $distance_metric;
 	$cutoff          = $query->param('cutoff')       || $cutoff;
 	$filter          = defined($query->param('filter')) ? $query->param('filter') : $filter;
-	$interest        = $query->param('interest')     || $interest;
+	$score_basis     = $query->param('score')        || $score_basis;
 	$frontend        = $query->param('frontend')     || $frontend;
 	$multi_cutoff    = $query->param('mcutoff')      || $multi_cutoff;
 	@include         = $query->param('include');
 	
-	if ($source eq "" or $target eq "") {
+	unless (defined $source) {
 	
-		die "read_table.pl called from web interface with no source/target";
+		die "read_table.pl called from web interface with no source";
+	}
+	unless (defined $target) {
+	
+		die "read_table.pl called from web interface with no target";
+	}
+	
+	if ($score_basis eq 'feature') {
+	
+		$score_basis = $feature;
 	}
 	
 	$quiet = 1;
@@ -428,8 +450,6 @@ else {
 			Searching...
 		</p>
 END
-                                       
-
 
 }
 
@@ -463,7 +483,7 @@ unless ($quiet) {
 	print STDERR "max_dist=$max_dist\n";
 	print STDERR "distance basis=$distance_metric\n";
 	print STDERR "score cutoff=$cutoff\n";
-	print STDERR "interesting freq=$interest\n";
+	print STDERR "score basis=$score_basis\n";
 }
 
 
@@ -473,13 +493,13 @@ unless ($quiet) {
 
 # token frequencies from the target text
 
-my $file_freq_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target . ".freq_score_$feature");
+my $file_freq_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target . ".freq_score_" . $score_basis);
 
 my %freq_target = %{Tesserae::stoplist_hash($file_freq_target)};
 
 # token frequencies from the target text
 
-my $file_freq_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source . ".freq_score_$feature");
+my $file_freq_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source . ".freq_score_" . $score_basis);
 
 my %freq_source = %{Tesserae::stoplist_hash($file_freq_source)};
 
@@ -490,19 +510,6 @@ my %freq_source = %{Tesserae::stoplist_hash($file_freq_source)};
 my @stoplist = @{load_stoplist($stoplist_basis, $stopwords)};
 
 unless ($quiet) { print STDERR "stoplist: " . join(",", @stoplist) . "\n"}
-
-#
-# if the featureset is synonyms, get the parameters used
-# to create the synonym dictionary for debugging purposes
-#
-
-my $max_heads = "NA";
-my $min_similarity = "NA";
-
-if ( $feature eq "syn" ) { 
-
-	($max_heads, $min_similarity) = @{ retrieve(catfile($fs{data}, "common", "$lang{$target}.syn.cache.param")) };
-}
 
 
 #
@@ -754,8 +761,7 @@ my %feature_notes = (
 	
 	word => "Exact matching only.",
 	stem => "Stem matching enabled.  Forms whose stem is ambiguous will match all possibilities.",
-	syn  => "Stem + synonym matching.  This search is still in development.  Note that stopwords may match on less-common synonyms.  max_heads=$max_heads; min_similarity=$min_similarity"
-	
+	syn  => "Stem + synonym matching.  This search is still in development.  Note that stopwords may match on less-common synonyms."
 	);
 
 print "score>>" . (time-$t1) . "\n" if $no_cgi and $bench;
@@ -780,8 +786,9 @@ my %match_meta = (
 	SESSION   => $session,
 	CUTOFF    => $cutoff,
 	FILTER    => $filter,
-	INTEREST  => $interest,
+	SCORE     => $score_basis,
 	COMMENT   => $feature_notes{$feature},
+	VERSION   => $Tesserae::VERSION,
 	TOTAL     => $total_matches
 );
 
