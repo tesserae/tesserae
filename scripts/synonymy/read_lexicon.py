@@ -14,7 +14,6 @@ import re
 import os.path
 import codecs
 import pickle
-import collections
 import argparse
 import unicodedata
 
@@ -260,7 +259,7 @@ def bag_of_words(defs, stem_flag, quiet):
 	if not quiet:
 		print "Converting defs to bags of words"
 	
-	count = collections.Counter()
+	count = {}
 	
 	pr = progressbar.ProgressBar(len(defs), quiet)
 	
@@ -277,7 +276,11 @@ def bag_of_words(defs, stem_flag, quiet):
 #			defs[lemma] = [stem(w) for w in defs[lemma]]
 		
 		if len(defs[lemma]) > 0:
-			count.update(defs[lemma])
+			for d in defs[lemma]:
+				if d in count:
+					count[d] += 1
+				else:
+					count[d] = 1
 		else:
 			empty_keys.add(lemma)
 	
