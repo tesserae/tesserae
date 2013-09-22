@@ -83,6 +83,9 @@ my %feat;
 # some language-processing stuff
 #
 
+my $re_dia   = qr/[\x{0313}\x{0314}\x{0301}\x{0342}\x{0300}\x{0308}\x{0345}]/;
+my $re_vowel = qr/[αειηουωΑΕΙΗΟΥΩ]/;
+
 # punctuation marks which delimit phrases
 
 our $phrase_delimiter = '[\.\?\!\;\:]';
@@ -205,10 +208,12 @@ sub standardize {
 	my @string = @_;
 	
 	for (@string) {
-		
+
 		$_ = NFKD($_);
 		$_ = lcase($lang, $_);
-		
+
+		s/\d//g;
+				
 		# latin
 		
 		if ($lang eq 'la') {
@@ -224,6 +229,10 @@ sub standardize {
 			# change grave accent (context-specific) to acute (dictionary form)
 			
 			s/\x{0300}/\x{0301}/g;
+
+			s/^(${re_dia}+)(${re_vowel}{2,})/$2/;
+			s/^(${re_dia}+)(${re_vowel}{1})/$2$1/;
+			s/σ\b/ς/;
 			
 			# remove non-word chars
 			

@@ -651,7 +651,7 @@ sub print_html {
 		
 		print "          <td>\n";
 		print "            <a href=\"javascript:;\""
-		    . " onclick=\"window.open(link='$url{cgi}/context2.pl?target=$utarget;unit=$unit;id=$unit_id_target', "
+		    . " onclick=\"window.open(link='$url{cgi}/context.pl?target=$utarget;unit=$unit;id=$unit_id_target', "
 		    . " 'context', 'width=520,height=240')\">";
 		print "$abbr{$target} $unit_target[$unit_id_target]{LOCUS}";
 		print "            </a>\n";
@@ -681,7 +681,7 @@ sub print_html {
 		
 		print "          <td>\n";
 		print "            <a href=\"javascript:;\""
-		    . " onclick=\"window.open(link='$url{cgi}/context2.pl?target=$usource;unit=$unit;id=$unit_id_source', "
+		    . " onclick=\"window.open(link='$url{cgi}/context.pl?target=$usource;unit=$unit;id=$unit_id_source', "
 		    . " 'context', 'width=520,height=240')\">";
 		print "$abbr{$source} $unit_source[$unit_id_source]{LOCUS}";
 		print "            </a>\n";

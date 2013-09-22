@@ -494,7 +494,7 @@ sub lemmatizeLatin {
 	my @tokens = @_;
 	my @lemmas;
 	for (0..$#tokens){
-	my $tok = $tokens[$_];	
+	my $tok = Tesserae::standardize('la', $tokens[$_]);
 	my $lem;
 	$lem = ${$la_dictionary{$tok}}[0];
 	if (defined ($lem)){}
@@ -513,7 +513,7 @@ sub lemmatizeGreek {
 
 	my @lemmas;
 	for (0..$#tokens){
-	my $tok = standardize($tokens[$_]);	
+	my $tok = Tesserae::standardize('grc', $tokens[$_]);	
 #	print STDERR "The 'Greek' subroutine has been passed: $tok;\n";
 	my $lem;
 	$lem = ${$grc_dictionary{$tok}}[0];

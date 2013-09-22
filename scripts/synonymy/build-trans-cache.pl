@@ -148,8 +148,6 @@ my $help  = 0;
 my $quiet = 0;
 my %file;
 
-my $re_dia   = qr/[\x{0313}\x{0314}\x{0301}\x{0342}\x{0300}\x{0308}\x{0345}]/;
-my $re_vowel = qr/[αειηουωΑΕΙΗΟΥΩ]/;
 
 # get user options
 
@@ -193,12 +191,10 @@ for my $lang (qw/grc la/) {
 	
 			my ($head, @trans) = split(/\s*,\s*/, $line);
 	
-			$head = NFKD($head);
-			$head =~ s/\d//g;
-			$head =~ s/^(${re_dia}+)(${re_vowel}{2,})/$2/;
-			$head =~ s/^(${re_dia}+)(${re_vowel}{1})/$2$1/;
-			$head =~ s/σ\b/ς/;
-	
+			$head = Tesserae::standardize($lang, $head);
+			
+			@trans = Tesserae::standardize($lang, @trans);
+			
 			@trans = grep { /\S/ } @trans;
 	
 			next unless @trans;

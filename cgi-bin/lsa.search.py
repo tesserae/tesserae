@@ -1,6 +1,15 @@
 #!/usr/bin/env python
 '''run an lsa query'''
 
+# modules necessary to read config file,
+# parse command-line arguments
+
+import os
+import sys
+import argparse
+
+# read config
+
 def read_pointer():
 	'''look for .tesserae.conf; return lib path'''
 	
@@ -22,6 +31,41 @@ def read_pointer():
 	lib = f.readline().strip()
 	
 	return lib
+
+sys.path.append(read_pointer())
+
+
+#
+# Tesserae-specific modules
+#
+
+from TessPy.tesserae import fs, url
+from TessPy import progressbar
+from TessPy import tesslang
+
+#
+# additional modules for this script
+#
+
+import string
+import cgi, cgitb
+import logging
+from gensim import corpora, models, similarities
+
+#
+# global variables
+#
+
+
+#
+# functions
+#
+
+
+#
+# main
+#
+
 
 def main():
 
@@ -140,19 +184,6 @@ def main():
 #
 # call function main as default action
 #
-
-import string
-import os
-import sys
-import cgi, cgitb
-
-import logging
-import argparse
-
-sys.path.append(read_pointer())
-from tesserae import fs, url
-
-from gensim import corpora, models, similarities
 
 if __name__ == '__main__':
     main()
