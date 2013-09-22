@@ -1,16 +1,9 @@
 # 
-# this script is a hack to get edo out of the stoplist
-#
-# - find all the words that have both edo and sum as 
-#   possible stems, and delete edo.
-# - the justification for this is that edo is put on
-#   the stoplist anyway, thanks to these words, so
-#   they're never going to match it; might as well
-#   cut our losses and allow the unambiguous cases
-#   of edo to have a chance an matching.
+# Language-specific patches
 #
 # Chris Forstall
 # 2012-07-23
+# rev 2013-09-21
 
 use strict;
 use warnings;
@@ -65,6 +58,8 @@ BEGIN {
 		
 		die "can't find .tesserae.conf!\n";
 	}	
+	
+	$lib = catdir($lib, 'TessPerl');	
 }
 
 # load Tesserae-specific modules
@@ -76,25 +71,32 @@ use EasyProgressBar;
 # load additional modules necessary for this script
 
 use Storable qw(nstore retrieve);
+use Unicode::Normalize;
+use utf8;
+
+binmode STDERR, ':utf8';
 
 #
-# set some parameters
+# Latin: remove words that conflict with sum
 #
 
-my $lang = 'la';
+{
+	my $lang = 'la';
 
-my $file_cache = catfile($fs{data}, 'common', "$lang.stem.cache");
+	my $file_cache = catfile($fs{data}, 'common', "$lang.stem.cache");
 
-my %stem = %{retrieve($file_cache)};
+	my %stem = %{retrieve($file_cache)};
 
-print STDERR "removing stems which compete with \"sum\" from the stem dictionary\n";
+	print STDERR "removing stems which compete with \"sum\" from the stem dictionary\n";
 
-for (keys %stem) {
+	for (keys %stem) {
 
-	if ( grep {/^sum$/} @{$stem{$_}}) {
+		if ( grep {/^sum$/} @{$stem{$_}}) {
 	
-		$stem{$_} = ['sum'];
+			$stem{$_} = ['sum'];
+		}
 	}
+
+	nstore \%stem, $file_cache;
 }
 
-nstore \%stem, $file_cache;

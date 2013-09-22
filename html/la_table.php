@@ -4,8 +4,8 @@
 <?php 
 	$lang = 'la'; 
 	$full_lang = 'Latin';
-	$default_t = 'catullus.carmina';
-	$default_s = 'vergil.aeneid';
+	$default_t = 'vergil.georgics.part.1';
+	$default_s = 'catullus.carmina';
 ?>
 
 

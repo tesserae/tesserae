@@ -1,12 +1,12 @@
 #!/usr/bin/env perl
 
 #
-# index_multi.pl
+# index_multi_child.pl
 #
 
 =head1 NAME
 
-index_multi.pl - index texts for multi-text searching
+index_multi_child.pl - index a single text for multi-text searching
 
 =head1 SYNOPSIS
 
@@ -141,7 +141,7 @@ BEGIN {
 		
 		die "can't find .tesserae.conf!\n";
 	}
-
+	
 	$lib = catdir($lib, 'TessPerl');	
 }
 
@@ -166,7 +166,6 @@ use File::Copy;
 # optional modules
 
 my $override_stemmer  = Tesserae::check_mod("Lingua::Stem");
-my $override_parallel = Tesserae::check_mod("Parallel::ForkManager");
 
 # allow unicode output
 
@@ -175,14 +174,6 @@ binmode STDOUT, ":utf8";
 # initialize some variables
 
 my $help = 0;
-
-# number of parallel processes to run
-
-my $max_processes = 0;
-
-# set language
-
-my $lang = 'la';
 
 # these are for optional use of Lingua::Stem
 
@@ -198,8 +189,6 @@ my $quiet = 0;
 #
 
 GetOptions(
-	'lang=s'          => \$lang,
-	'parallel=i'      => \$max_processes,
 	'quiet'           => \$quiet,
 	'use-lingua-stem' => \$use_lingua_stem,
 	'help'            => \$help);
@@ -227,23 +216,11 @@ if ($use_lingua_stem and $override_stemmer) {
 }
 
 #
-# initialize parallel processing
+# get text to index from cmd line args
 #
 
-my $pm;
-
-if ($max_processes and $override_parallel) {
-
-	print STDERR "Parallel processing requires Parallel::ForkManager from CPAN.\n";
-	print STDERR "Proceeding with parallel=0.\n";
-	$max_processes = 0;
-
-}
-
-if ($max_processes) {
-
-	$pm = Parallel::ForkManager->new($max_processes);
-}
+my $text = shift @ARGV;
+my $lang = Tesserae::lang($text);
 
 #		
 # get dictionaries
@@ -284,174 +261,147 @@ else {
 	$omit{stem} = 1;
 }
 
+#
+# index a text
+#
 
-# get the list of texts to index
-
-my @corpus = @{Tesserae::get_textlist($lang, -no_part => 1)};
-@corpus = grep { ! /vulgate/ } @corpus;
-
-# the giant index
-
-print STDERR "indexing " . scalar(@corpus) . " texts...\n";
+print STDERR "indexing $text...\n";
 	
-# initialize process manager
+for my $unit (qw/phrase line/) {
 
-my $prmanager;
+	print STDERR "unit: $unit\ntext: $text\n";
 
-if ($max_processes) {
+	# if the work is prose, the line index can be copied from phrase
 
-	$prmanager = Parallel::ForkManager->new($max_processes);
-}
+	if ($unit eq 'line' and Tesserae::check_prose_list($text)) {
+		
+		print STDERR "prose mode:\n";
 			
-for my $text (@corpus) {
+		for (qw/word stem/) {
+		
+			my $index_phrase = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_phrase_$_");
+			my $index_line   = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_line_$_");
+			
+			print STDERR "  copying $index_phrase to $index_line\n";
 
-	# fork
-	
-	if ($max_processes) {
-	
-		$prmanager->start and next;
+			copy($index_phrase, $index_line);
+		}
+		
+		next;
 	}
+		
+	# otherwise, calculate
 
-	for my $unit (qw/phrase line/) {
+	my %index_word;
+	my %index_stem;
+		
+	# load the text from the database
 	
-		print STDERR "unit: $unit\ntext: $text\n";
+	my $file_token = catfile($fs{data}, 'v3', $lang, $text, $text . ".token");
+	my $file_unit  = catfile($fs{data}, 'v3', $lang, $text, $text . "." . $unit);
 
-		# if the work is prose, the line index can be copied from phrase
-
-		if ($unit eq 'line' and Tesserae::check_prose_list($text)) {
+	my @token = @{retrieve($file_token)};
+	my @unit  = @{retrieve($file_unit)};
 		
-			print STDERR "prose mode:\n";
+	# get text- and feature-specific frequencies for scoring
+
+	my $file_freq_word = catfile($fs{data}, 'v3', $lang, $text, $text . ".freq_score_word");
+	my $file_freq_stem = catfile($fs{data}, 'v3', $lang, $text, $text . ".freq_score_stem");
+
+	my %freq_word = %{Tesserae::stoplist_hash($file_freq_word)};
+	my %freq_stem = %{Tesserae::stoplist_hash($file_freq_stem)};
+	
+	print "indexing " . scalar(@token) . " tokens / " . scalar(@unit) . " ${unit}s...\n";
 			
-			for (qw/word stem/) {
+	for my $unit_id (0..$#unit) {
+		
+		# these track the unique word- and stem-pairs in the unit
+
+		my %word_pairs;
+		my %stem_pairs;
+		
+		# get the list of tokens in this unit
+		
+		next unless defined $unit[$unit_id]{TOKEN_ID};
+		
+		my @tokens = @{$unit[$unit_id]{TOKEN_ID}};
 			
-				my $index_phrase = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_phrase_$_");
-				my $index_line   = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_line_$_");
+		# check every possible pair
+	
+		for my $i (0..$#tokens-1) {
+			
+			my $token_id_a = $tokens[$i];
+
+			# skip punctuation tokens
+			
+			next if $token[$token_id_a]{TYPE} ne 'WORD';
+			
+			for my $j ($i+1..$#tokens) {
 				
-				print STDERR "  copying $index_phrase to $index_line\n";
-
-				copy($index_phrase, $index_line);
-			}
-			
-			next;
-		}
-		
-		# otherwise, calculate
-
-		my %index_word;
-		my %index_stem;
-		
-		# load the text from the database
-		
-		my $file_token = catfile($fs{data}, 'v3', $lang, $text, $text . ".token");
-		my $file_unit  = catfile($fs{data}, 'v3', $lang, $text, $text . "." . $unit);
-
-		my @token = @{retrieve($file_token)};
-		my @unit  = @{retrieve($file_unit)};
-		
-		# get text- and feature-specific frequencies for scoring
-
-		my $file_freq_word = catfile($fs{data}, 'v3', $lang, $text, $text . ".freq_score_word");
-		my $file_freq_stem = catfile($fs{data}, 'v3', $lang, $text, $text . ".freq_score_stem");
-
-		my %freq_word = %{Tesserae::stoplist_hash($file_freq_word)};
-		my %freq_stem = %{Tesserae::stoplist_hash($file_freq_stem)};
-		
-		print "indexing " . scalar(@token) . " tokens / " . scalar(@unit) . " ${unit}s...\n";
+				my $token_id_b = $tokens[$j];
 				
-		for my $unit_id (0..$#unit) {
-			
-			# these track the unique word- and stem-pairs in the unit
-
-			my %word_pairs;
-			my %stem_pairs;
-			
-			# get the list of tokens in this unit
-			
-			next unless defined $unit[$unit_id]{TOKEN_ID};
-			
-			my @tokens = @{$unit[$unit_id]{TOKEN_ID}};
+				next if $token[$token_id_b]{TYPE} ne 'WORD';
 				
-			# check every possible pair
-		
-			for my $i (0..$#tokens-1) {
+				# first check the forms.
 				
-				my $token_id_a = $tokens[$i];
-
-				# skip punctuation tokens
+				my $form_a = $token[$token_id_a]{FORM};
+				my $form_b = $token[$token_id_b]{FORM};
 				
-				next if $token[$token_id_a]{TYPE} ne 'WORD';
+				# if they're identical, then stems will be too.
+				# don't bother indexing
 				
-				for my $j ($i+1..$#tokens) {
-					
-					my $token_id_b = $tokens[$j];
-					
-					next if $token[$token_id_b]{TYPE} ne 'WORD';
-					
-					# first check the forms.
-					
-					my $form_a = $token[$token_id_a]{FORM};
-					my $form_b = $token[$token_id_b]{FORM};
-					
-					# if they're identical, then stems will be too.
-					# don't bother indexing
-					
-					next if $form_a eq $form_b;
-					
-					# index this unit by this pair of forms
-					
-					my $score = log((1/$freq_word{$form_a} + 1/$freq_word{$form_b}) / ($j - $i));
+				next if $form_a eq $form_b;
+				
+				# index this unit by this pair of forms
+				
+				my $score = log((1/$freq_word{$form_a} + 1/$freq_word{$form_b}) / ($j - $i));
 
-					$word_pairs{join("~", sort($form_a, $form_b))} = $score;
+				$word_pairs{join("~", sort($form_a, $form_b))} = $score;
 
-					# now check stems
+				# now check stems
+				
+				next if $omit{stem};
+				
+				my @stems_a = @{stems($form_a)};
+				my @stems_b = @{stems($form_b)};
+				
+				for my $stem_a (@stems_a) {
 					
-					next if $omit{stem};
-					
-					my @stems_a = @{stems($form_a)};
-					my @stems_b = @{stems($form_b)};
-					
-					for my $stem_a (@stems_a) {
+					for my $stem_b (@stems_b) {
 						
-						for my $stem_b (@stems_b) {
-							
-							my $score = log((1/$freq_stem{$form_a} + 1/$freq_stem{$form_b}) / ($j - $i));
-							
-							$stem_pairs{join("~", sort($stem_a, $stem_b))} = $score;
-						}
-					}					
-				}
-			}
-			
-			# index the unit for each pair
-
-			for (keys %word_pairs) {
-				
-				$index_word{$_}{$unit_id} = $word_pairs{$_};
-			}
-			
-			for (keys %stem_pairs) {
-				
-				$index_stem{$_}{$unit_id} = $stem_pairs{$_};
+						my $score = log((1/$freq_stem{$form_a} + 1/$freq_stem{$form_b}) / ($j - $i));
+						
+						$stem_pairs{join("~", sort($stem_a, $stem_b))} = $score;
+					}
+				}					
 			}
 		}
 		
-		my $file_index_word = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_${unit}_word");
-		my $file_index_stem = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_${unit}_stem");
+		# index the unit for each pair
 
-		print STDERR "saving $file_index_word\n";
-		nstore \%index_word, $file_index_word;
-
-		unless ($omit{stem}) {
-
-			print STDERR "saving $file_index_stem\n";
-			nstore \%index_stem, $file_index_stem;	
-		}		
-	}	
+		for (keys %word_pairs) {
+			
+			$index_word{$_}{$unit_id} = $word_pairs{$_};
+		}
+		
+		for (keys %stem_pairs) {
+			
+			$index_stem{$_}{$unit_id} = $stem_pairs{$_};
+		}
+	}
 	
-	$prmanager->finish if $max_processes;
-}
+	my $file_index_word = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_${unit}_word");
+	my $file_index_stem = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_${unit}_stem");
 
-$prmanager->wait_all_children if $max_processes;
+	print STDERR "saving $file_index_word\n";
+	nstore \%index_word, $file_index_word;
+
+	unless ($omit{stem}) {
+
+		print STDERR "saving $file_index_stem\n";
+		nstore \%index_stem, $file_index_stem;	
+	}		
+}	
 
 sub stems {
 

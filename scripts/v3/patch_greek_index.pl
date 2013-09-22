@@ -1,43 +1,38 @@
-#! /usr/bin/perl
+#!/usr/bin/env perl
 
 #
-# print a frequency list
+# This is a template for how Tesserae scripts should begin.
+#
+# Please fill in documentation notes in POD below.
+#
+# Don't forget to modify the COPYRIGHT section as follows:
+#  - name of the script where it says "The Original Code is"
+#  - your name(s) where it says "Contributors"
 #
 
 =head1 NAME
 
-print-stoplist.pl - print a frequency list
+name.pl	- do something
 
 =head1 SYNOPSIS
 
-perl print-stoplist.pl [--score] [--feature FEATURE] TEXT
-perl print-stoplist.pl [--feature FEATURE] --corpus LANG
+name.pl [options] ARG1 [, ARG2, ...]
 
 =head1 DESCRIPTION
 
-Prints the feature frequency table used to create stoplists, either for a particular
-text or for the corpus of texts for a given language.
+A more complete description of what this script does.
 
 =head1 OPTIONS AND ARGUMENTS
 
 =over
 
-=item B<TEXT>
+=item I<ARG1>
 
-The name of a text for which to produce the frequency table.  The name should be given
-as for read_table.pl.
+Description of what ARG1 does.
 
-=item B<--score>
+=item B<--option>
 
-Print the frequencies used for scoring instead of those used for stoplists.
-
-=item B<--feature FEATURE>
-
-Print the frequencies for feature FEATURE.  Default is I<stem>.
-
-=item B<--corpus LANG>
-
-Print the corpus-wide frequencies for language LANG.
+Description of what --option does.
 
 =item B<--help>
 
@@ -49,8 +44,6 @@ Print usage and exit.
 
 =head1 SEE ALSO
 
-read_table.pl - perform a Tesserae search
-
 =head1 COPYRIGHT
 
 University at Buffalo Public License Version 1.0.
@@ -58,13 +51,13 @@ The contents of this file are subject to the University at Buffalo Public Licens
 
 Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
 
-The Original Code is print-stoplist.pl.
+The Original Code is name.pl.
 
 The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
 
 Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
 
-Contributor(s): Chris Forstall
+Contributor(s):
 
 Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
 
@@ -123,8 +116,8 @@ BEGIN {
 		
 		die "can't find .tesserae.conf!\n";
 	}
-
-	$lib = catdir($lib, 'TessPerl');	
+	
+	$lib = catdir($lib, 'TessPerl');
 }
 
 # load Tesserae-specific modules
@@ -140,62 +133,107 @@ use Pod::Usage;
 
 # load additional modules necessary for this script
 
-use CGI qw/:standard/;
-use Storable qw(nstore retrieve);
-use File::Path qw(mkpath rmtree);
+use Storable qw/nstore retrieve/;
+use File::Copy;
+use File::Basename;
+use Unicode::Normalize;
+use utf8;
+
+# optional modules
+
+my $override_parallel = Tesserae::check_mod("Parallel::ForkManager");
 
 # initialize some variables
 
 my $help    = 0;
-my $corpus  = 0;
-my $file    = '';
-my $mode    = 'stop';
-my $score   = 0;
-my $feature = 'stem';
+my $quiet   = 0;
+
+#
+# These are for parallel processing
+#
+
+my $max_processes = 0;
+my $pm;
 
 # get user options
 
-GetOptions( 'corpus=s'  => \$corpus,
-			'score'     => \$score,   
-			'feature=s' => \$feature,
-			'help'      => \$help);
+GetOptions(
+	'help'            => \$help,
+	'quiet'           => \$quiet,
+	'parallel=i'      => \$max_processes
+);
 
-#
 # print usage if the user needs help
-#
-# you could also use perldoc name.pl
 	
 if ($help) {
 
 	pod2usage(1);
 }
 
-$mode = 'score' if ($score and not $corpus);
+binmode STDOUT, ':utf8';
 
-$file = shift @ARGV;
+#
+# initialize parallel processing
+#
 
-if ($corpus) {
+if ($max_processes and $override_parallel) {
 
-	$file = catfile($fs{data}, 'common', "$corpus.$feature.freq");
+	print STDERR "Parallel processing requires Parallel::ForkManager from CPAN.\n";
+	print STDERR "Proceeding with parallel=0.\n";
+	$max_processes = 0;
+
 }
-else {
 
-	my $file_lang = catfile($fs{data}, 'common', 'lang');
-	my %lang = %{retrieve($file_lang)};
+if ($max_processes) {
 
-	$file = catfile($fs{data}, 'v3', $lang{$file}, $file, "$file.freq_${mode}_$feature");
+	$pm = Parallel::ForkManager->new($max_processes);
+}
+
+#
+# get texts to process from command-line args
+#
+
+my @files = map { glob } @ARGV;
+
+@files = @{Tesserae::get_textlist('grc')};
+
+#
+# process the files
+#
+
+for my $file (@files) {
 	
-	unless (-s $file) {
+	# fork
 	
-		print STDERR "can't read frequency list $file: $!\n";
-
-		pod2usage(1);
+	if ($max_processes) {
+	
+		$pm->start and next;
 	}
+	
+	my $lang = 'grc';
+		
+	my $file_index = catfile($fs{data}, 'v3', $lang, $file, "$file.index_word");
+	
+	my %index = %{retrieve($file_index)};
+	
+	#
+	# remove δε
+	#
+
+ 	for (qw/δέ δ/) {
+
+		my $key = NFKD($_);
+
+		if (exists $index{$key}) {
+			delete $index{$key};
+		}
+	}	
+	
+	print STDERR "Patching $file_index\n" unless $quiet;
+	nstore \%index, $file_index;
+		
+	$pm->finish if $max_processes;	
 }
 
-my %freq = %{retrieve($file)};
+$pm->wait_all_children if $max_processes;
 
-for my $key (sort {$freq{$b} <=> $freq{$a}} keys %freq) {
-
-	print sprintf("%.8f\t%s\n", $freq{$key}, $key);
-}

@@ -1,43 +1,38 @@
-#! /usr/bin/perl
+#!/usr/bin/env perl
 
 #
-# print a frequency list
+# This is a template for how Tesserae scripts should begin.
+#
+# Please fill in documentation notes in POD below.
+#
+# Don't forget to modify the COPYRIGHT section as follows:
+#  - name of the script where it says "The Original Code is"
+#  - your name(s) where it says "Contributors"
 #
 
 =head1 NAME
 
-print-stoplist.pl - print a frequency list
+name.pl	- do something
 
 =head1 SYNOPSIS
 
-perl print-stoplist.pl [--score] [--feature FEATURE] TEXT
-perl print-stoplist.pl [--feature FEATURE] --corpus LANG
+name.pl [options] ARG1 [, ARG2, ...]
 
 =head1 DESCRIPTION
 
-Prints the feature frequency table used to create stoplists, either for a particular
-text or for the corpus of texts for a given language.
+A more complete description of what this script does.
 
 =head1 OPTIONS AND ARGUMENTS
 
 =over
 
-=item B<TEXT>
+=item I<ARG1>
 
-The name of a text for which to produce the frequency table.  The name should be given
-as for read_table.pl.
+Description of what ARG1 does.
 
-=item B<--score>
+=item B<--option>
 
-Print the frequencies used for scoring instead of those used for stoplists.
-
-=item B<--feature FEATURE>
-
-Print the frequencies for feature FEATURE.  Default is I<stem>.
-
-=item B<--corpus LANG>
-
-Print the corpus-wide frequencies for language LANG.
+Description of what --option does.
 
 =item B<--help>
 
@@ -49,8 +44,6 @@ Print usage and exit.
 
 =head1 SEE ALSO
 
-read_table.pl - perform a Tesserae search
-
 =head1 COPYRIGHT
 
 University at Buffalo Public License Version 1.0.
@@ -58,13 +51,13 @@ The contents of this file are subject to the University at Buffalo Public Licens
 
 Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
 
-The Original Code is print-stoplist.pl.
+The Original Code is name.pl.
 
 The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
 
 Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
 
-Contributor(s): Chris Forstall
+Contributor(s):
 
 Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
 
@@ -122,8 +115,8 @@ BEGIN {
 		}
 		
 		die "can't find .tesserae.conf!\n";
-	}
-
+	}	
+	
 	$lib = catdir($lib, 'TessPerl');	
 }
 
@@ -140,25 +133,21 @@ use Pod::Usage;
 
 # load additional modules necessary for this script
 
-use CGI qw/:standard/;
-use Storable qw(nstore retrieve);
-use File::Path qw(mkpath rmtree);
+use Storable;
+use Unicode::Normalize;
+use utf8;
 
 # initialize some variables
 
-my $help    = 0;
-my $corpus  = 0;
-my $file    = '';
-my $mode    = 'stop';
-my $score   = 0;
-my $feature = 'stem';
+my $help = 0;
+
+my $re_dia   = qr/[\x{0313}\x{0314}\x{0301}\x{0342}\x{0300}\x{0308}\x{0345}]/;
+my $re_vowel = qr/[αειηουωΑΕΙΗΟΥΩ]/;
 
 # get user options
 
-GetOptions( 'corpus=s'  => \$corpus,
-			'score'     => \$score,   
-			'feature=s' => \$feature,
-			'help'      => \$help);
+GetOptions(
+	'help'  => \$help);
 
 #
 # print usage if the user needs help
@@ -170,32 +159,125 @@ if ($help) {
 	pod2usage(1);
 }
 
-$mode = 'score' if ($score and not $corpus);
+binmode STDOUT, ':utf8';
 
-$file = shift @ARGV;
+my $file = shift @ARGV;
 
-if ($corpus) {
+$file = 'homer.iliad' unless defined $file;
 
-	$file = catfile($fs{data}, 'common', "$corpus.$feature.freq");
-}
-else {
+#
+#
+#
 
-	my $file_lang = catfile($fs{data}, 'common', 'lang');
-	my %lang = %{retrieve($file_lang)};
+my $file_stem  = catfile($fs{data}, 'common', 'grc.stem.cache');
+my $file_trans = catfile($fs{data}, 'common', "grc.trans.cache");
 
-	$file = catfile($fs{data}, 'v3', $lang{$file}, $file, "$file.freq_${mode}_$feature");
+my %stem = %{retrieve($file_stem)};
+my %trans = %{retrieve($file_trans)};
+
+my $lang = Tesserae::lang($file);
+
+my $file_base = catfile($fs{data}, 'v3', $lang, $file, $file);
+
+my $file_index_word  = $file_base . ".index_word";
+my $file_index_stem  = $file_base . ".index_stem";
+
+my %index_word = %{retrieve($file_index_word)};
+my %index_stem = %{retrieve($file_index_stem)};
+my %index_trans;
+
+
+
+print "translation dictionary has " . scalar(keys %trans) . " entries\n";
+print "$file has " . scalar(keys %index_word) . " words\n";
+print "$file has " . scalar(keys %index_stem) . " stems\n";
+
+my %count;
+
+for my $stem (keys %index_stem) {
 	
-	unless (-s $file) {
+	my $stem_clean = NFKD($stem);
+	$stem_clean =~ s/\d//g;
+	$stem_clean =~ s/^(${re_dia}+)(${re_vowel}{2,})/$2/;
+	$stem_clean =~ s/^(${re_dia}+)(${re_vowel}{1})/$2$1/;
+	$stem_clean =~ s/σ\b/ς/;
 	
-		print STDERR "can't read frequency list $file: $!\n";
-
-		pod2usage(1);
+	if (defined $trans{$stem_clean}) {
+		push @{$count{yes}}, $stem_clean;
+	}
+	else {
+		push @{$count{no}}, $stem_clean;
 	}
 }
 
-my %freq = %{retrieve($file)};
+print "Found:\n";
 
-for my $key (sort {$freq{$b} <=> $freq{$a}} keys %freq) {
+for (keys %count) {
 
-	print sprintf("%.8f\t%s\n", $freq{$key}, $key);
+	print join("\t", $_, scalar(@{$count{$_}})) . "\n";
+}
+
+print STDERR "writing not_found.txt\n";
+
+my $pr = ProgressBar->new(scalar @{$count{no}});
+
+open(FH, ">:utf8", "not_found.txt");
+
+for (sort @{$count{no}}) {
+
+	$pr->advance();
+
+	print FH "$_\n";
+}
+
+close FH;
+
+print STDERR "writing dict.txt\n";
+
+$pr = ProgressBar->new(scalar keys %trans);
+
+open(FH, ">:utf8", "dict.txt");
+
+for (sort keys %trans) {
+
+	$pr->advance;
+	print FH "$_\n";
+}
+
+close FH;
+
+sub stems {
+
+	my $form = shift;
+	
+	my @stems;
+	
+	if (defined $stem{$form}) {
+	
+		@stems = @{$stem{$form}};
+	}
+	else {
+	
+		@stems = ($form);
+	}
+	
+	return \@stems;
+}
+
+sub syns {
+	
+	my $stem = shift;
+	
+	my @syns;
+	
+	if (defined $trans{$stem}) {
+
+		@syns = @{$trans{$stem}};
+	}
+	else {
+	
+		@syns = ($stem);
+	}
+	
+	return Tesserae::uniq(\@syns);
 }
