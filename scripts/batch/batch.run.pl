@@ -1012,9 +1012,12 @@ sub validate {
 
 		$plugin =~ s/[^a-z_].*//i;
 
-		if (-s catfile($fs{script}, 'batch', 'plugins', $plugin . '.pm')) {
+		my $mod  = join('::', 'batch', 'plugins', $plugin);
+		my $path = catfile($fs{script}, 'TessPerl', 'batch', 'plugins', $plugin . '.pm');
 
-			eval "require batch::plugins::$plugin";
+		if (-s $path) {
+
+			eval "require $mod;";
 		}
 		else {
 

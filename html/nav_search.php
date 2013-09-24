@@ -1,6 +1,5 @@
 			<div id="nav_sub">
 				<ul>
-					<li><a href="<?php echo $url_html.'/index.php' ?>">Home</a></li>
 					<li><a href="<?php echo $url_html.'/la_table.php' ?>">Latin</a></li>
 					<li><a href="<?php echo $url_html.'/grc_table.php' ?>">Greek</a></li>
 					<li><a href="<?php echo $url_html.'/en_table.php' ?>">English</a></li>
