@@ -594,7 +594,7 @@ sub lang {
 
 sub feat {
 
-	my ($lang, $feature, $form) = @_;
+	my ($lang, $feature, $form, %opt) = @_;
 	
 	my $flag = 0;
 
@@ -607,7 +607,7 @@ sub feat {
 	
 			my $file_dict = catfile($fs{data}, 'common', join('.', $lang, $feature, 'cache'));
 
-			print STDERR "loading dictionary: $file_dict\n";
+			# print STDERR "loading dictionary: $file_dict\n";
 	
 			$feat{$lang}{$feature} = retrieve($file_dict);
 		}
@@ -632,7 +632,7 @@ sub feat {
 	
 	if (defined $feature_dep{$feature}) {
 	
-		@form = @{feat($lang, $feature_dep{$feature}, \@form)};
+		@form = @{feat($lang, $feature_dep{$feature}, \@form, %opt)};
 	}
 			
 	for $form (@form) {
@@ -642,7 +642,7 @@ sub feat {
 
 		if (defined $feature_override{$feature}) {
 
-			push @indexable, @{$feature_override{$feature}->($lang, $form)};
+			push @indexable, @{$feature_override{$feature}->($lang, $form, %opt)};
 		}		
 		else {
 		
@@ -651,7 +651,11 @@ sub feat {
 		
 			if (defined $feat{$lang}{$feature}{$form}) {
 
-				push @indexable, @{$feat{$lang}{$feature}{$form}};
+				my @indexable_ = @{$feat{$lang}{$feature}{$form}};
+				
+				if ($opt{force}) { @indexable_ = @indexable_[0] }
+				
+				push @indexable, @indexable_;
 			}
 			else {
 
