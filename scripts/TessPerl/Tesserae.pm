@@ -267,8 +267,8 @@ sub standardize {
 	return wantarray ? @string : shift @string;	
 }
 
-sub lcase
-{
+sub lcase {
+
 	my $lang = shift;
 
 	my @string = @_;
@@ -321,8 +321,7 @@ sub tcase {
 	return wantarray ? @string : shift @string;
 }
 
-sub beta_to_uni
-{
+sub beta_to_uni {
 	
 	my @text = @_;
 	

@@ -140,11 +140,16 @@ use utf8;
 
 # initialize some variables
 
-my %file        = ('la' => undef, 'grc' => undef);
+my %file;
 my $feature     = 'trans1';
 my $help        = 0;
 my $quiet       = 0;
 my $max_results = 2;
+
+for qw(/la grc/) {
+
+	$file{$_} = catfile($fs{data}, 'synonymy', "$_.nt_parallel.tess");
+}
 
 # get user options
 

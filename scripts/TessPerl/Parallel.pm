@@ -325,6 +325,14 @@ sub dump {
 			$_ = sprintf("%.${opt{w}}s", $_);
 		}
 	}
+
+	if ($opt{lab}) {
+	
+		for (0..$#dump) {
+		
+			$dump[$_] = join("=", $select[$_], $dump[$_]);
+		}
+	}
 	
 	return @dump;
 }

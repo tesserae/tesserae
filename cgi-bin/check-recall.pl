@@ -83,6 +83,7 @@ use CGI qw(:standard);
 
 use Storable;
 use File::Basename;
+use Parallel;
 
 # optional modules
 
@@ -101,7 +102,10 @@ my $rev = 1;
 my @w = (7);
 my $quiet = 1;
 
-my %name = ( source => 'vergil.aeneid', target => 'lucan.bellum_civile.part.1');
+my %name = ( 
+	'source' => 'vergil.aeneid', 
+	'target' => 'lucan.bellum_civile.part.1'
+);
 
 my %file;
 
@@ -125,12 +129,14 @@ my $no_cgi = defined($query->request_method()) ? 0 : 1;
 #
 
 GetOptions(
-	"cache=s"        => \$file{cache},
-	"session=s"      => \$session,
-	"sort=s"         => \$sort,
-	"reverse"        => \$rev,
-	"multi=i"        => \$process_multi,
-	"export=s"       => \$export
+	"cache=s"    => \$file{cache},
+	"session=s"  => \$session,
+	"sort=s"     => \$sort,
+	"source=s"   => \$name{source},
+	"target=s"   => \$name{target},
+	"reverse"    => \$rev,
+	"multi=i"    => \$process_multi,
+	"export=s"   => \$export
 	);
 
 #
@@ -141,10 +147,12 @@ unless ($no_cgi) {
 		
 	# form data
 		
-	$session    = $query->param('session');
-	$sort       = $query->param('sort')    || $sort;
-	$export     = $query->param('export')  || 'html';
-	$rev        = $query->param('rev') if defined $query->param('rev');
+	$session      = $query->param('session');
+	$sort         = $query->param('sort')   || $sort;
+	$export       = $query->param('export') || 'html';
+	$name{source} = $query->param('source') || $name{source};
+	$name{target} = $query->param('target') || $name{target};
+	$rev          = $query->param('rev')    if defined $query->param('rev');
 	
 	$quiet = 1;
 	
@@ -156,7 +164,6 @@ unless ($no_cgi) {
 	if ($export eq "csv") { $h{'-type'} = "text/csv"; $h{'-attachment'} = "tesresults-$session.csv" }
 	if ($export eq "tab") { $h{'-type'} = "text/plain"; $h{'-attachment'} = "tesresults-$session.txt" }
 	if ($export =~ /^miss/) { $h{'-type'} = "text/plain"; $h{'-attachment'} = "tesresults-$session.missed.txt" }
-
 
 	print header(%h);
 } 
@@ -225,16 +232,6 @@ my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
 #
-# dictionaries - loaded only if necessary
-#
-
-my $file_stem = catfile($fs{data}, 'common', 'la.stem.cache');
-my $file_syn  = catfile($fs{data}, 'common', 'la.syn.cache');
-
-my %stem;
-my %syn;
-
-#
 # compare 
 #
 
@@ -253,37 +250,45 @@ print STDERR "comparing\n" unless $quiet;
 	
 for my $i (0..$#bench) {
 	
-	my %rec = %{$bench[$i]};
+	my $auth   = $bench[$i]->get('auth');
+	my $type   = $bench[$i]->get('type');
+	my $unit_t = $bench[$i]->get('target_unit');
+	my $unit_s = $bench[$i]->get('source_unit');
 	
-	$total[$rec{SCORE}]++;
+	if (defined $type) {
 
-	if (defined $rec{AUTH}) {
+		$total[$type]++;
+	}
+	
+	if (defined $auth) {
 		
 		$total[6]++;
 	}
 	
-	if (defined $score{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}) { 
+	if (defined $score{$unit_t}{$unit_s}) { 
 		
 		# tally the match for stats
-		
-		$count[$rec{SCORE}]++;
-		$score[$rec{SCORE}] += $score{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}};
-		
-		# add the benchmark data to the tess parallel
-		
-		$type{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}} = $rec{SCORE};
 
-		if (defined $rec{AUTH}) {
+		if (defined $type) {
+
+			$count[$type]++;
+			$score[$type] += $score{$unit_t}{$unit_s};
+		
+			# add the benchmark data to the tess parallel
+		
+			$type{$unit_t}{$unit_s} = $type;
+		}
+
+		if (defined $auth) {
 			
 			# tally commentator match
 			
 			$count[6]++;
-			$score[6] += $score{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}};
+			$score[6] += $score{$unit_t}{$unit_s};
 			
 			# add commentators to tess parallel
 			
-			$auth{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}} = $rec{AUTH};
-			
+			$auth{$unit_t}{$unit_s} = $auth;
 		}
 				
 		push @order, $i;
@@ -403,23 +408,24 @@ sub html_table {
 
 	if ($sort eq 'score') {
 		
-		@order = sort { $score{$bench[$a]{BC_PHRASEID}}{$bench[$a]{AEN_PHRASEID}} <=> $score{$bench[$b]{BC_PHRASEID}}{$bench[$b]{AEN_PHRASEID}} }
-					sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
-					sort { $bench[$a]{AEN_PHRASEID} <=> $bench[$b]{AEN_PHRASEID} }	
-				(@order);		
+		@order = sort { $score{$bench[$a]->get('unit_t')}{$bench[$a]->get('unit_s')} <=> $score{$bench[$b]->get('unit_t')}{$bench[$b]->get('unit_s')} }
+					sort { $bench[$a]->get('unit_t') <=> $bench[$b]->get('unit_t') }
+					sort { $bench[$a]->get('unit_s') <=> $bench[$b]->get('unit_s') }	
+					@order;
 	}	
 	elsif ($sort eq 'type') {
 		
-		@order = sort { $bench[$a]{SCORE}  <=> $bench[$b]{SCORE} }
-					sort { $score{$bench[$a]{BC_PHRASEID}}{$bench[$a]{AEN_PHRASEID}} <=> $score{$bench[$b]{BC_PHRASEID}}{$bench[$b]{AEN_PHRASEID}} }
-					sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
-				(@order);		
+		@order = sort { $bench[$a]->get('type')  <=> $bench[$b]->get('type') }
+					sort { $score{$bench[$a]->get('unit_t')}{$bench[$a]->get('unit_s')} <=> $score{$bench[$b]->get('unit_t')}{$bench[$b]->get('unit_s')} }
+					sort { $bench[$a]->get('unit_t') <=> $bench[$b]->get('unit_t') }
+					sort { $bench[$a]->get('unit_s') <=> $bench[$b]->get('unit_s') }	
+					@order;		
 	}
 	else {
 		
-		@order = sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
-					sort { $bench[$a]{AEN_PHRASEID} <=> $bench[$b]{AEN_PHRASEID} }	
-				(@order);
+		@order = sort { $bench[$a]->get('unit_t') <=> $bench[$b]->get('unit_t') }
+					sort { $bench[$a]->get('unit_s') <=> $bench[$b]->get('unit_s') }	
+					@order;
 	}
 	
 	if ($rev) { @order = reverse @order }
@@ -430,8 +436,7 @@ sub html_table {
 	
 	for my $i (@order) {
 	
-		my $unit_id_target = $bench[$i]{BC_PHRASEID};
-		my $unit_id_source = $bench[$i]{AEN_PHRASEID};
+		my ($unit_id_target, $unit_id_source) = $bench[$i]->get('unit_t', 'unit_s');
 	
 		# note marked words
 	
@@ -475,14 +480,14 @@ sub html_table {
 		}
 		
 		$table_data .= table_row($mode,
-				   $bench[$i]{BC_BOOK}  . '.' . $bench[$i]{BC_LINE},
-				   $phrase_target,
-				   $bench[$i]{AEN_BOOK} . '.' . $bench[$i]{AEN_LINE},
-				   $phrase_source,
-				   $bench[$i]{SCORE},
-				   $score{$unit_id_target}{$unit_id_source},
-				   (defined $bench[$i]{AUTH} ? join(",", @{$bench[$i]{AUTH}}) : "")
-				   );
+			$bench[$i]->get('target_loc'),
+			$phrase_target,
+			$bench[$i]->get('source_loc'),
+			$phrase_source,
+			$bench[$i]->get('score'),
+			$score{$unit_id_target}{$unit_id_source},
+			(defined $bench[$i]->get('auth') ? join(",", @{$bench[$i]->get('auth')}) : "")
+		);
 	}
 
 	my $recall_stats;
@@ -956,15 +961,7 @@ sub print_delim {
 sub print_missed {
 	
 	my $delim = shift;
-	
-	#
-	# for this we need the dictionaries
-	#
-	
-	print STDERR "loading stem dictionary\n";
-	
-	%stem = %{retrieve($file_stem)};
-	
+		
 	print STDERR "writing output\n";
 	
 	#
@@ -1011,12 +1008,12 @@ sub print_missed {
 	
 		$pr->advance();
 
-		my %rec = %{$bench[$missed[$i]]};
+		my $rec = $bench[$missed[$i]];
 
-		my $unit_id_target = $rec{BC_PHRASEID};
-		my $unit_id_source = $rec{AEN_PHRASEID};
-		my $type = $rec{SCORE};
-		my $auth = defined $rec{AUTH} ? join(",", @{$rec{AUTH}}) : "";
+		my $unit_id_target = $rec->get('unit_t');
+		my $unit_id_source = $rec->get('unit_s');
+		my $type = $rec->get('type');
+		my $auth = defined $rec->get('auth') ? join(",", @{$rec->get('auth')}) : "";
 			
 		# do a tess search on these two phrases
 
@@ -1119,6 +1116,8 @@ sub minitess {
 	my %index;
 		
 	for my $text (qw/target source/) {
+		
+		my $lang = Tesserae::lang($name{$text});
 	
 		for my $token_id (@{$unit{$text}[$unit_id{$text}]{TOKEN_ID}}) {
 
@@ -1126,9 +1125,9 @@ sub minitess {
 		
 			my $word = $token{$text}[$token_id]{FORM};
 
-			for my $stem (@{stems($word)}) {
+			for my $feat (@{Tesserae::feat($lang, $meta{FEATURE}, $word)}) {
 			
-				push @{$index{$stem}{$text}}, $token_id;
+				push @{$index{$feat}{$text}}, $token_id;
 			}
 		}
 	}
@@ -1145,21 +1144,23 @@ sub minitess {
 	my %marked;
 	my %seen_keys;
 	
-	for my $stem (keys %index) {
+	for my $feat (keys %index) {
 	
-		next unless defined ($index{$stem}{target} and $index{$stem}{source});
+		next unless defined ($index{$feat}{target} and $index{$feat}{source});
 		
 		# mark all tokens that share a common stem
 		
 		for my $text (qw/target source/) {
+			
+			my $lang = Tesserae::lang($name{$text});
 		
-			for my $token_id (@{$index{$stem}{$text}}) {
+			for my $token_id (@{$index{$feat}{$text}}) {
 			
 				$marked{$text}{$token_id} = 1;
 				
-				my @stems = @{stems($token{$text}[$token_id]{FORM})};
+				my @feats = @{Tesserae::feat($lang, $meta{FEATURE}, $token{$text}[$token_id]{FORM})};
 				
-				$seen_keys{join("-", sort @stems)} = 1;
+				$seen_keys{join("-", sort @feats)} = 1;
 			}
 		}
 	}
@@ -1169,46 +1170,4 @@ sub minitess {
 	$results{seen_keys}     = [keys %seen_keys];
 	
 	return \%results;
-}
-
-sub stems {
-
-	my $form = shift;
-	
-	my @stems;
-	
-	if ($use_lingua_stem) {
-	
-		@stems = @{$stemmer->stem($form)};
-	}
-	elsif (defined $stem{$form}) {
-	
-		@stems = @{$stem{$form}};
-	}
-	else {
-	
-		@stems = ($form);
-	}
-	
-	return \@stems;
-}
-
-sub syns {
-
-	my $form = shift;
-	
-	my %syns;
-	
-	for my $stem (@{stems($form)}) {
-	
-		if (defined $syn{$stem}) {
-		
-			for (@{$syn{$stem}}) {
-			
-				$syns{$_} = 1;
-			}
-		}
-	}
-	
-	return [keys %syns];
 }

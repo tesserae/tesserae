@@ -1,0 +1,29 @@
+TARGET_BOOK	TARGET_LINE	TARGET_TEXT	SOURCE_BOOK	SOURCE_LINE	SOURCE_TEXT	TYPE AUTH
+1	1		1	1			Knauer
+1	4	Iunonis ob iram	18	119	χόλος Ἥρης		Knauer
+1	4	Iunonis ob iram	5	892	μένος ... Ἥρης		Knauer
+1	7	altae moenia Romae	16	698	ὑψίπυλον Τροίην		Knauer
+1	8	quo numine	1	8	τίς ... θεῶν		Knauer
+1	8	Musa … mihi memora	2	484	ἔσπετε ... μοι Μοῦσαι		Knauer
+1	9	dolens regina deum	1	9	Διὸς υἱός … χολωθεὶς		Knauer
+1	9	dolens regina deum	4	24	Ἥρῃ … χόλον		Knauer
+1	9	dolens regina deum	8	461	Ἥρῃ … χόλον		Knauer
+1	9	dolens regina deum	5	759	ἐμοὶ δ᾽ ἄχος		Knauer
+1	9	dolens regina deum	18	119	ἀργαλέος χόλος Ἥρης		Knauer
+1	10	tot adire labores	6	77	πόνος ... μάλιστα ... ἐγκέκλιται		Knauer
+1	10	casus ... labores ... impulerit	12	348	πόνος ... νεῖκος … ὄρωρεν		Knauer
+1	10	labores	22	11	πόνος		Knauer
+1	12	urbs … fuit	6	152	ἔστι πόλις		Knauer
+1	15	terris magis omnibus … coluisse	4	51	πολὺ φίλταταί ... πόληες		Knauer
+1	14	dives opum	5	544	ἀφνειὸς βιότοιο		Knauer
+1	14	asperrima	21	541	καρχαλέοι		Knauer
+1	15	terris … coluisse	4	46	πόληες ... Τιέσκετο		Knauer
+1	15	magis omnibus unam ... coluisse	3	388	μάλιστα δέ μιν φιλέεσκε		Knauer
+1	15	magis omnibus unam ... coluisse	5	61	ἔξοχα μιν ἐφίλατο		Knauer
+1	15	magis omnibus unam ... coluisse	20	304	ὃν ... περὶ πάντων φίλατο		Knauer
+1	15	magis omnibus unam	12	243	εἷς ... ἄριστος		Knauer
+1	17	hoc regnum	13	21	ἔνθα δέ οἱ κλυτὰ δώματα		Knauer
+1	17	hic currus	13	23	ἔνθ᾽... ὄχεσφι		Knauer
+1	17	currus	5	722	ὀχέεσσι		Knauer
+1	17	currus … regnum	5	193	μεγάροισι … δίφροι		Knauer
+1	17	currus	8	441	ἅρματα		Knauer

@@ -1,22 +1,94 @@
-# build-rec.pl
-# 
-# This script is supposed to read a set of benchmark, hand-graded allusions
-# from a CSV file and correlate the phrases referenced with phrases in our
-# Tesserae database. 
-#
-# It's not checking the benchmark set against Tesserae results, it's just 
-# making sure that we can actually find the phrase pairs in our texts.
-#
-# The script writes a binary version of the benchmark database, in which
-# it replaces the original text of the two phrases with the equivalent 
-# text from Tesserae.  It's saved to data/rec.cache.
-#
-# Chris Forstall
-# 2011-12-08
-#
-# rev. 2012-06-12 from check-phrase.pl
-# rev. 2012-10-18
-# rev. 2013-03-31
+#!/usr/bin/env perl
+
+=head1 NAME
+
+build-rec.pl - import benchmark allusions into Tesserae
+
+=head1 SYNOPSIS
+
+build-rec.pl [options]
+
+=head1 DESCRIPTION
+
+This script is supposed to read a set of benchmark, hand-graded allusions
+from a text file and correlate the phrases referenced with phrases in our
+Tesserae database. 
+
+It's not checking the benchmark set against Tesserae results, it's just 
+making sure that we can actually find the phrase pairs in our texts.
+
+The script writes a binary version of the benchmark database, in which
+it replaces the original text of the two phrases with the equivalent 
+text from Tesserae.
+
+=head1 OPTIONS AND ARGUMENTS
+
+=over
+
+=item B<--bench> I<FILE>
+
+Read the benchmark from FILE. Default is 'data/bench/bench4.txt'.
+
+=item B<--cache> I<FILE>
+
+The binary file to write. Default is 'data/bench/rec.cache'.
+
+=item B<--target> I<NAME>
+
+The name of the target text. Default is 'lucan.bellum_civile.part.1'.
+
+=item B<--source> I<NAME>
+
+The name of the target text. Default is 'vergil.aeneid'.
+
+=item B<--delim> STRING
+
+The field delimiter in the text file to be read. Default is tab.
+
+=item B<--check> FLOAT
+
+A similarity threshold between the user-entered text and Tesserae's best
+guess at the correct phrase, below which Tesserae will automatically 
+check for typos in the locus. Range: 0-1. Default is 0.3.
+
+=item B<--warn> FLOAT
+
+A similarity threshold below which a warning will be printed to the 
+terminal. The best match will still be selected, even if the similarity
+is 0, but at least you'll know about it. Range: 0-1. Default is 0.18.
+
+=item B<--dump>
+
+For debugging purposes, print the processed benchmark set to the terminal.
+
+=item B<--help>
+
+Print usage and exit.
+
+=back
+
+=head1 KNOWN BUGS
+
+=head1 SEE ALSO
+
+=head1 COPYRIGHT
+
+University at Buffalo Public License Version 1.0.
+The contents of this file are subject to the University at Buffalo Public License Version 1.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://tesserae.caset.buffalo.edu/license.txt.
+
+Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
+
+The Original Code is name.pl.
+
+The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
+
+Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
+
+Contributor(s):
+
+Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
+
+=cut
 
 use strict;
 use warnings;
@@ -72,7 +144,7 @@ BEGIN {
 		die "can't find .tesserae.conf!\n";
 	}
 	
-	$lib = catdir($lib, 'TessPerl');	
+	$lib = catdir($lib, 'TessPerl');
 }
 
 # load Tesserae-specific modules
@@ -80,47 +152,70 @@ BEGIN {
 use lib $lib;
 use Tesserae;
 use EasyProgressBar;
+use Parallel;
+
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
 
 # load additional modules necessary for this script
 
 use Data::Dumper;
 use Storable qw(nstore retrieve);
-use Getopt::Long;
+use utf8;
 
-#
-# set some parameters
-#
+# initialize some variables
 
-# lowest similarity accaptable without remark
-
-my $warn_threshold = .18;
-my $check_alts_threshold = .3;
+my $help  = 0;
+my $delim = "\t";
+my $quiet = 0;
+my $warn  = .18;
+my $check = .3;
+my $dump  = 0;
 
 # location of the data
 
-my $base_l = 'lucan.bellum_civile.part.1';
-my $base_v = 'vergil.aeneid';
+my %name = (
+
+	'target' => 'lucan.bellum_civile.part.1',
+	'source' => 'vergil.aeneid'
+);
 
 my %file = (
 	
-	lucan_token         => catfile($fs{data}, 'v3', 'la', $base_l, "$base_l.token"),
-	lucan_line          => catfile($fs{data}, 'v3', 'la', $base_l, "$base_l.line"),
-	lucan_phrase        => catfile($fs{data}, 'v3', 'la', $base_l, "$base_l.phrase"),
-	
-	vergil_token        => catfile($fs{data}, 'v3', 'la', $base_v, "$base_v.token"),
-	vergil_line         => catfile($fs{data}, 'v3', 'la', $base_v, "$base_v.line"),	
-	vergil_phrase       => catfile($fs{data}, 'v3', 'la', $base_v, "$base_v.phrase"),
-	
-	benchmark => catfile($fs{data}, 'bench', 'bench4.txt'),
-	cache     => catfile($fs{data}, 'bench', 'rec.cache'));
+	bench => catfile($fs{data}, 'bench', 'bench4.txt'),
+	cache => catfile($fs{data}, 'bench', 'rec.cache')
+);
 
-# check for command-line overrides
 
-GetOptions(	    
-			"bench=s"	=> \$file{benchmark},
-			"cache=s"	=> \$file{cache},
-			"check=f"	=> \$check_alts_threshold,
-			"warn=f" 	=> \$warn_threshold );
+# get user options
+
+GetOptions(
+	'help'     => \$help,
+	'quiet'    => \$quiet,
+	'delim=s'  => \$delim,
+	'cache=s'  => \$file{cache},
+	'bench=s'  => \$file{bench},
+	'warn=f'   => \$warn,
+	'check=f'  => \$check,
+	'target=s' => \$name{target},
+	'source=s' => \$name{source},
+	'dump'     => \$dump
+);
+
+#
+# print usage if the user needs help
+#
+# you could also use perldoc name.pl
+	
+if ($help) {
+
+	pod2usage(1);
+}
+
+binmode STDERR, ":utf8";
+binmode STDOUT, ":utf8";
 
 # load the data
 
@@ -128,17 +223,18 @@ my %phrase;
 my %loc_phrase;
 my %phrase_index;
 
-for my $text ('lucan', 'vergil')
-{
+for my $text (qw/target source/) {
 
 	#
 	# load tesserae structures
 	#
 	
-	@{$phrase{$text}} 		= @{ retrieve($file{$text. "_phrase"}) };
-	my @line         	    = @{ retrieve($file{$text. "_line"})   };
-
+	my $base = catfile($fs{data}, 'v3', Tesserae::lang($name{$text}), $name{$text}, $name{$text});
 	
+	$phrase{$text} = retrieve("$base.phrase");
+	my @line       = @{ retrieve("$base.line") };
+	my @token      = @{ retrieve("$base.token") };
+
 	# index the phrases
 	# 
 	#  for a given line number, an array of phrases which include
@@ -156,18 +252,14 @@ for my $text ('lucan', 'vergil')
 		
 		$loc_phrase{$text}[$phrase_id] = $phrase{$text}[$phrase_id]{LOCUS};
 		$loc_phrase{$text}[$phrase_id] =~ s/-.*//;
-			
+		
 	}
 	
 
 	#
 	# simplify the tesserae @phrase arrays to simple arrays of words
 	#
-	
-	# get the word list for this text
-
-	my @token = @{ retrieve($file{$text. "_token"}) };
-	
+		
 	# convert word indices to words
 	
 	for (@{$phrase{$text}}) {
@@ -191,89 +283,86 @@ for my $text ('lucan', 'vergil')
 
 # load the csv file
 
-my @rec = @{ LoadCSV($file{benchmark}) };
+my @rec = @{ LoadCSV($file{bench}) };
 
 # confirm that everything worked
 
-print STDERR "lucan has " . scalar(@{$phrase{'lucan'}}) . " phrases\n";
-print STDERR "vergil has " . scalar(@{$phrase{'vergil'}}) . " phrases\n";
-print STDERR "the csv file contains " . scalar(@rec) . " records\n\n";
+for (qw/target source/) {
+	
+	print STDERR "$name{$_} has " . scalar(@{$phrase{$_}}) . " phrases\n";
+}
 
-print STDERR "aligning records\n";
+print STDERR "the csv file contains " . scalar(@rec) . " records\n\n";
 
 
 #
 # match up each record with a parsed phrase 
 #
 
+print STDERR "aligning records\n\n";
+
 REC: for my $rec_index (0..$#rec) {	
 
-	for my $text ('lucan', 'vergil') {
-		
-		my $pref = ( $text eq 'lucan' ? 'BC' : 'AEN' );
-	
+	for my $text (qw/source target/) {
+			
 		# get the locus and the corresponding index
 		# for the array containing the text
-	
-		my $bn = $rec[$rec_index]{$pref . '_BOOK'};
-		my $ln = $rec[$rec_index]{$pref . '_LINE'};
-		
-		$ln =~ s/-.*//;
-		$ln =~ s/[^0-9]//g;
-		
-		if (! defined $phrase_index{$text}{"$bn.$ln"} ) { 
+			
+		my $loc = $rec[$rec_index]->get($text . '_loc');
+		my $lang = Tesserae::lang($name{$text});
+			
+		if (! defined $phrase_index{$text}{$loc} ) { 
 					
-			die "$rec_index : $text $bn.$ln has no entry in phrase_index" 
+			die "$rec_index : $text $loc has no entry in phrase_index" 
 		}
 		
-		my @phrase_index = @{$phrase_index{$text}{"$bn.$ln"}};
+		my @phrase_index = @{$phrase_index{$text}{$loc}};
 			
 		# get the phrase from the CSV file
 	
-	 	my $search = $rec[$rec_index]{$pref . '_TXT'};
+	 	my $search = $rec[$rec_index]->get($text . '_text');
 	
 		# do the search
 		
-		my ($decided, $max, $debug_string) = Align($search, $text, \@phrase_index);
+		my ($decided, $max, $debug_string) = Align($lang, $search, $text, \@phrase_index);
+				
+		# if the results are really bad, check for a missing zero in the line number
+		
+		if ($max < $check) {
+			
+			if (defined $phrase_index{$text}{$loc . '0'}) {
+				
+				# print STDERR "checking lost trailing zeros\n";
+				
+				push @phrase_index, @{$phrase_index{$text}{$loc . '0'}};
+				
+				if (defined $phrase_index{$text}{$loc . '00'}) { 
+					
+					push @phrase_index, @{$phrase_index{$text}{$loc . '00'}} ;
+				}
+				
+				($decided, $max, $debug_string) = Align($lang, $search, $text, \@phrase_index);
+			}
+		}
 		
 		# check for total failure
 		
 		if (not defined $debug_string) {
 			
-			print STDERR "Empty search string\n\n";
-			$debug_string = $search;
-		}
+			$debug_string = "[empty search]";
+		}	
 		
-		# if the results are really bad, check for a missing zero in the line number
+		if ($max <= $warn) {
 		
-		if ($max < $check_alts_threshold) {
-			
-			if (defined $phrase_index{$text}{"$bn.${ln}0"}) {
-				
-				# print STDERR "checking lost trailing zeros\n";
-				
-				push @phrase_index, @{$phrase_index{$text}{"$bn.${ln}0"}};
-				
-				if (defined $phrase_index{$text}{"$bn.${ln}00"}) { 
-					
-					push @phrase_index, @{$phrase_index{$text}{"$bn.${ln}00"}} ;
-				}
-				
-				($decided, $max, $debug_string) = Align($search, $text, \@phrase_index);
-			}
-		}
-		
-		if ($max <= $warn_threshold) {
-		
-			print STDERR "$rec_index : $text $bn.$ln : $debug_string\n";
+			print STDERR "$rec_index : $text $loc : $debug_string\n";
 			print STDERR "  $max\t$decided\t$loc_phrase{$text}[$decided]\t" . join(" ", @{$phrase{$text}[$decided]}) . "\n";
 			print STDERR "\n";
 		}
 		
 #		print STDERR "decided $decided by $max\n";
 				
-		$rec[$rec_index]{$pref . '_PHRASE'} = $phrase{$text}[$decided];
-		$rec[$rec_index]{$pref . '_PHRASEID'} = $decided;
+		$rec[$rec_index]->set($text . '_text', join(" ", @{$phrase{$text}[$decided]}));
+		$rec[$rec_index]->set($text . '_unit', $decided);
 	}
 }
 
@@ -281,57 +370,24 @@ print STDERR "writing " . scalar(@rec) . " records to $file{cache}\n";
 
 nstore \@rec, $file{cache};
 
+if ($dump) {
 
-
-# this subroutine reads a .tess file specified as the first arg
-# and returns three references:
-#  - an index hash, where keys are book.line refs and values are ints
-#  - a loc array, storing "book.line" refs
-#  - a txt array, storing the lines of the poem
-# the values of the index hash are the indices of the corresponding
-# lines in the two arrays.
-
-# the first arg is the file name to read
-# the second arg is the string preceding the book.line ref in the locus
-
-sub LoadTess {
-	
-	my ($file, $string) = @_;
-	
-	my %index;
-	my @loc;
-	my @txt;
-	
-	open FH, "<$file" || die "can't open $file: $!";
-
-	while (my $line = <FH>) {
-		
-		chomp $line;
-	
-		next unless ($line =~ /<$string (\d+\.\d+)>\t(.+)/);
-	
-		push @loc, $1;
-		push @txt, $2;
-		$index{$1} = $#loc;
-	}
-
-	close FH;
-
-	return (\%index, \@loc, \@txt);
+	dump_debug(\@rec);
 }
 
+#
 # this subroutine reads the CSV file containing hand-graded allusions
 #
 
 sub LoadCSV {
-	
-	print STDERR "reading $file{benchmark}\n";
-	
+		
 	my $file = shift;
 	
 	my @rec;
 
-	open FH, "<$file" || die "can't open $file: $!";
+	open (FH, "<:utf8", $file) or die "can't open $file: $!";
+
+	print STDERR "reading $file\n";
 	
 	# skip the header
 	
@@ -341,62 +397,28 @@ sub LoadCSV {
 		
 		chomp $line;
 		
-		my @field = split(/\t/, $line);
+		my @field = split(/$delim/, $line);
 				
 		for (@field) {
 			
 			s/^"(.*)"$/$1/;
 		}
 		
-		push @rec, {
-			BC_BOOK   => $field[0],
-			BC_LINE   => $field[1],
-			BC_TXT    => $field[2],
-			AEN_BOOK  => $field[3],
-			AEN_LINE  => $field[4],
-			AEN_TXT   => $field[5],
-			SCORE     => $field[6] 
-			};
-		
-		for (keys %{$rec[-1]}) { 
-			
-			if ($rec[-1]{$_} eq "") {
-		
-				print STDERR "record $#rec has no value for $_.\n";
-				print STDERR "\t$file{benchmark} line $.: " . $line . "\n";
-			}
-		}
-			
-		# which commentators cite this?
-		
-		if (defined($field[7]) and $field[7] ne "") {
-		
-			my @auth = split(/,/, $field[7]);
-			
-			$rec[-1]{AUTH} = [@auth];
-		}
+		push @rec, Parallel->new(
+			target      => $name{target},
+			target_loc  => join('.', @field[0,1]),
+			target_text => $field[2],
+			source      => $name{source},
+			source_loc  => join('.', @field[3,4]),
+			source_text => $field[5],
+			score       => $field[6],
+			auth        => $field[7]
+		);
 	}
 	
 	return \@rec;
 	
 	close FH;
-}
-
-# this takes a string of text and turns it into an array
-# of lower-case words, stripping non-letter chars
-
-sub Clean {
-	
-	my $string = shift;
-	
-	$string = lc($string);
-	$string =~ tr/jv/iu/;
-	
-	my @array = split(/[^a-z]+/, $string);
-	
-	@array = grep {/[a-z]/} @array;
-	
-	return @array;
 }
 
 # this sub takes two strings and an array ref
@@ -406,9 +428,11 @@ sub Clean {
 
 sub Align {
 	
-	my ($search, $text, $pi_ref) = @_;
+	my ($lang, $search, $text, $pi_ref) = @_;
 
-	my @search = Clean($search);
+	$search = lc($search);
+	my @search = split(/$non_word{$lang}/, $search);
+	@search = Tesserae::standardize($lang, @search);
 
 	my @phrase_index = @$pi_ref;
 
@@ -460,4 +484,17 @@ sub Align {
 	}
 		
 	return ($decided, $max, $debug_string);
+}
+
+sub dump_debug {
+
+	my $ref = shift;
+	my @rec = @$ref;
+	
+	print STDERR "All records:\n";
+	
+	for my $r (@rec) {
+		
+		print STDERR join("\t", $r->dump(na=>'NA', lab=>1)) . "\n";
+	}
 }
