@@ -285,6 +285,8 @@ for my $i (0..$#bench) {
 			
 			$auth{$unit_t}{$unit_s} = $auth;
 		}
+		
+		$bench[$i]->set('score', $score{$unit_t}{$unit_s});
 				
 		push @order, $i;
 	}
@@ -403,23 +405,23 @@ sub html_table {
 
 	if ($sort eq 'score') {
 		
-		@order = sort { $score{$bench[$a]->get('unit_t')}{$bench[$a]->get('unit_s')} <=> $score{$bench[$b]->get('unit_t')}{$bench[$b]->get('unit_s')} }
-					sort { $bench[$a]->get('unit_t') <=> $bench[$b]->get('unit_t') }
-					sort { $bench[$a]->get('unit_s') <=> $bench[$b]->get('unit_s') }	
+		@order = sort { $bench[$a]->get('score')  <=> $bench[$b]->get('score') }
+					sort { $bench[$a]->get('target_unit') <=> $bench[$b]->get('target_unit') }
+					sort { $bench[$a]->get('source_unit') <=> $bench[$b]->get('source_unit') }	
 					@order;
 	}	
 	elsif ($sort eq 'type') {
 		
-		@order = sort { $bench[$a]->get('type')  <=> $bench[$b]->get('type') }
-					sort { $score{$bench[$a]->get('unit_t')}{$bench[$a]->get('unit_s')} <=> $score{$bench[$b]->get('unit_t')}{$bench[$b]->get('unit_s')} }
-					sort { $bench[$a]->get('unit_t') <=> $bench[$b]->get('unit_t') }
-					sort { $bench[$a]->get('unit_s') <=> $bench[$b]->get('unit_s') }	
+		@order = sort { $bench[$a]->get('type')   <=> $bench[$b]->get('type') }
+					sort { $bench[$a]->get('score')  <=> $bench[$b]->get('score') }
+					sort { $bench[$a]->get('target_unit') <=> $bench[$b]->get('target_unit') }
+					sort { $bench[$a]->get('source_unit') <=> $bench[$b]->get('source_unit') }	
 					@order;		
 	}
 	else {
 		
-		@order = sort { $bench[$a]->get('unit_t') <=> $bench[$b]->get('unit_t') }
-					sort { $bench[$a]->get('unit_s') <=> $bench[$b]->get('unit_s') }	
+		@order = sort { $bench[$a]->get('target_unit') <=> $bench[$b]->get('target_unit') }
+					sort { $bench[$a]->get('source_unit') <=> $bench[$b]->get('source_unit') }	
 					@order;
 	}
 	
@@ -431,7 +433,8 @@ sub html_table {
 	
 	for my $i (@order) {
 	
-		my ($unit_id_target, $unit_id_source) = $bench[$i]->get('unit_t', 'unit_s');
+		my $unit_id_target = $bench[$i]->get('target_unit');
+		my $unit_id_source = $bench[$i]->get('source_unit');
 	
 		# note marked words
 	
@@ -479,8 +482,8 @@ sub html_table {
 			$phrase_target,
 			$bench[$i]->get('source_loc'),
 			$phrase_source,
+			$bench[$i]->get('type'),
 			$bench[$i]->get('score'),
-			$score{$unit_id_target}{$unit_id_source},
 			(defined $bench[$i]->get('auth') ? join(",", @{$bench[$i]->get('auth')}) : "")
 		);
 	}
@@ -547,7 +550,10 @@ sub info {
 	$sel_feature{($meta{FEATURE}||'stem')}   = 'selected="selected"';
 	$sel_stbasis{($meta{STBASIS}||'corpus')} = 'selected="selected"';
 	$sel_dibasis{($meta{DIBASIS}||'freq')}   = 'selected="selected"';
-	$sel_scbasis{$meta{SCORE}}               = 'selected="selected"';
+
+	my $scbasis = $meta{SCORE};
+	if ($scbasis !~ /word|stem/ and $scbasis eq $meta{FEATURE}) { $scbasis = 'feature' }
+	$sel_scbasis{$scbasis} = 'selected="selected"';
 
 	my $cutoff = $meta{CUTOFF} || 0;
 	my $stop   = defined $meta{STOP} ? $meta{STOP} : 10;

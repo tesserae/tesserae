@@ -412,7 +412,7 @@ sub LoadCSV {
 			source_loc  => join('.', @field[3,4]),
 			source_text => $field[5],
 			score       => $field[6],
-			auth        => $field[7]
+			auth        => (defined $field[7] ? [split(/;/, $field[7])] : $field[7])
 		);
 	}
 	
