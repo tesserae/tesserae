@@ -173,10 +173,14 @@ else {
 unless (defined $file{tess}) {
 	
 	if ($no_cgi) {
-		print STDERR $usage;
+		
+		pod2usage(2);
 	}
 	else {
+		
 		$session = "NA";
+		$name{source} = ($query->param('source') || 'vergil.aeneid');
+		$name{target} = ($query->param('target') || 'lucan.bellum_civile.part.1');
 		html_no_table();
 	}
 	exit;
@@ -595,7 +599,7 @@ sub info {
 			</tr>
 			<tr>
 				<th>Unit:</th>
-				<th>$meta{UNIT}</th>
+				<th>phrase</th>
 			</tr>
 			<tr>
 				<th>Feature:</th>
@@ -664,7 +668,7 @@ sub info {
 		<input type="hidden" name="source"       value="$name{source}" />
 		<input type="hidden" name="target"       value="$name{target}" />
 		<input type="hidden" name="recall_cache" value="$cache"        />
-		<input type="hidden" name="unit"         value="$meta{UNIT}"   />
+		<input type="hidden" name="unit"         value="phrase"        />
 		<input type="hidden" name="frontend"     value="recall"        />
 		
 	</form>
