@@ -259,6 +259,10 @@ my $multi_cutoff = 0;
 
 my @include;
 
+# cache param to pass on to check-recall.pl
+
+my $recall_cache = 'rec';
+
 # help flag
 
 my $help;
@@ -414,6 +418,7 @@ else {
 	$frontend        = $query->param('frontend')     || $frontend;
 	$multi_cutoff    = $query->param('mcutoff')      || $multi_cutoff;
 	@include         = $query->param('include');
+	$recall_cache    = $query->param('recall_cache') || $recall_cache;
 	
 	unless (defined $source) {
 	
@@ -435,7 +440,7 @@ else {
 
 	%redirect = ( 
 		default  => "$url{cgi}/read_bin.pl?session=$session",
-		recall   => "$url{cgi}/check-recall.pl?session=$session",
+		recall   => "$url{cgi}/check-recall.pl?session=$session;cache=$recall_cache",
 		fulltext => "$url{cgi}/fulltext.pl?session=$session",
 		multi    => "$url{cgi}/multitext.pl?session=$session;mcutoff=$multi_cutoff;list=1"
 	);

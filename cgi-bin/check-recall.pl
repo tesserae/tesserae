@@ -102,20 +102,10 @@ my $rev = 1;
 my @w = (7);
 my $quiet = 1;
 
-my %name = ( 
-	'source' => 'vergil.aeneid', 
-	'target' => 'lucan.bellum_civile.part.1'
-);
-
 my %file;
+my %name;
 
 $file{cache} = catfile($fs{data}, 'bench', 'rec.cache');
-
-for (qw/target source/) {
-
-	$file{"token_$_"} = catfile($fs{data}, 'v3', 'la', $name{$_}, $name{$_} . ".token");
-	$file{"unit_$_"}  = catfile($fs{data}, 'v3', 'la', $name{$_}, $name{$_} . ".phrase");
-}
 
 # is the program being run from the web or
 # from the command line?
@@ -132,8 +122,6 @@ GetOptions(
 	"cache=s"    => \$file{cache},
 	"session=s"  => \$session,
 	"sort=s"     => \$sort,
-	"source=s"   => \$name{source},
-	"target=s"   => \$name{target},
 	"reverse"    => \$rev,
 	"multi=i"    => \$process_multi,
 	"export=s"   => \$export
@@ -150,9 +138,10 @@ unless ($no_cgi) {
 	$session      = $query->param('session');
 	$sort         = $query->param('sort')   || $sort;
 	$export       = $query->param('export') || 'html';
-	$name{source} = $query->param('source') || $name{source};
-	$name{target} = $query->param('target') || $name{target};
 	$rev          = $query->param('rev')    if defined $query->param('rev');
+	
+	my $cache = $query->param('cache');
+	if ($cache) { $file{cache} = catfile($fs{data}, 'bench', $cache . ".cache")};
 	
 	$quiet = 1;
 	
@@ -212,6 +201,12 @@ my %auth;
 
 $session = $meta{SESSION};
 
+for (qw/target source/) {
+
+	$name{$_} = $meta{uc($_)};
+	$file{"token_$_"} = catfile($fs{data}, 'v3', Tesserae::lang($name{$_}), $name{$_}, $name{$_} . ".token");
+	$file{"unit_$_"}  = catfile($fs{data}, 'v3', Tesserae::lang($name{$_}), $name{$_}, $name{$_} . ".phrase");
+}
 
 # now load the texts
 
@@ -432,7 +427,7 @@ sub html_table {
 	
 	my $frame = `php -f $fs{html}/check_recall.php`;
 	
-	my $table_data;
+	my $table_data ="";
 	
 	for my $i (@order) {
 	
@@ -543,63 +538,75 @@ sub html_no_table {
 
 sub info {
 		
-	my %sel_feature = (word => "", stem => "", syn=>"", '3gr' => "");
+	my %sel_feature = (word => "", stem => "", syn=>"", '3gr' => "", trans1 => "", trans2 => "");
 	my %sel_stbasis = (corpus => "", target => "", source => "", both => "");
 	my %sel_dibasis = (span => "", span_target => "", span_source => "", 
                       freq => "", freq_target => "", freq_source => "");
-    my @sel_filter = ("", "");
+	my %sel_scbasis = (word => "", stem => "", feature=>"");
 
 	$sel_feature{($meta{FEATURE}||'stem')}   = 'selected="selected"';
 	$sel_stbasis{($meta{STBASIS}||'corpus')} = 'selected="selected"';
 	$sel_dibasis{($meta{DIBASIS}||'freq')}   = 'selected="selected"';
-	$sel_filter[$meta{FILTER}]   = 'checked="checked"';
+	$sel_scbasis{$meta{SCORE}}               = 'selected="selected"';
 
 	my $cutoff = $meta{CUTOFF} || 0;
 	my $stop   = defined $meta{STOP} ? $meta{STOP} : 10;
 	my $dist   = defined $meta{DIST} ? $meta{DIST} : 999;
+	
+	my $cache = fileparse($file{cache}, qw/\.cache/);
+	
+	my @feature_choices;
+	
+	if (Tesserae::lang($name{target}) eq Tesserae::lang($name{source})) {
+	
+		@feature_choices = qw/word stem syn 3gr/;
+	}
+	else {
+	
+		@feature_choices = qw/trans1 trans2/;
+	}
+	
+	my $html_feature = join("\n", map { "<option value=\"$_\" $sel_feature{$_}>$_</option>" } @feature_choices);
 
 	my $html = <<END;
 	
 	<form action="$url{cgi}/read_table.pl" method="post" ID="Form1">
 
-		<h1>Lucan-Vergil Recall Test</h1>
+		<h1>Benchmark Recall Test</h1>
 
 		<table class="input">
 			<tr>
-				<td><span class="h2">Session:</span></td>
-				<td>$session</td>
+				<th>Session:</th>
+				<th>$session</th>
 			</tr>
 			<tr>
-				<td><span class="h2">Source:</span></td>
-				<td>Vergil - Aeneid</td>
+				<th>Source:</th>
+				<th>$name{source}</th>
 			</tr>
 			<tr>
-				<td><span class="h2">Target:</span></td>
-				<td>Lucan - Pharsalia - Book 1</td>
+				<th>Target:</th>
+				<th>$name{target}</th>
 			</tr>
 			<tr>
-				<td><span class="h2">Unit:</span></td>
-				<td>Phrase</td>
+				<th>Unit:</th>
+				<th>$meta{UNIT}</th>
 			</tr>
 			<tr>
-				<td><span class="h2">Feature:</span></td>
+				<th>Feature:</th>
 				<td>
 					<select name="feature">
-						<option value="word" $sel_feature{word}>exact form only</option>
-						<option value="stem" $sel_feature{stem}>lemma</option>
-						<option value="syn"  $sel_feature{syn}>lemma + synonyms</option>
-						<option value="3gr"  $sel_feature{'3gr'}>character 3-grams</option>
+						$html_feature
 					</select>
 				</td>
 			</tr>
 			<tr>
-				<td><span class="h2">Number of stop words:</span></td>
+				<th>Number of stop words:</th>
 				<td>
 					<input type="text" name="stopwords" value="$stop">
 				</td>
 			</tr>
 			<tr>
-				<td><span class="h2">Stoplist basis:</span></td>
+				<th>Stoplist basis:</th>
 				<td>
 					<select name="stbasis">
 						<option value="corpus" $sel_stbasis{corpus}>corpus</option>
@@ -610,13 +617,23 @@ sub info {
 				</td>
 			</tr>
 			<tr>
-				<td><span class="h2">Maximum distance:</span></td>
+				<th>Score basis:</th>
+				<td>
+					<select name="score">
+						<option value="word"    $sel_scbasis{word}>word</option>
+						<option value="stem"    $sel_scbasis{stem}>stem</option>
+						<option value="feature" $sel_scbasis{feature}>feature</option>								
+					</select>
+				</td>
+			</tr>	
+			<tr>
+				<th>Maximum distance:</th>
 				<td>
 					<input type="text" name="dist" maxlength="3" value="$dist">
 				</td>
 			</tr>
 			<tr>
-				<td><span class="h2">Distance metric:</span></td>
+				<th>Distance metric:</th>
 				<td>
 					<select name="dibasis">
 						<option value="span"        $sel_dibasis{span}>span</option>
@@ -629,26 +646,20 @@ sub info {
 				</td>
 			</tr>
 			<tr>
-				<td><span class="h2">Drop scores below:</span></td>
+				<th>Drop scores below:</th>
 				<td>
 					<input type="text" name="cutoff" maxlen="3" value="$cutoff">
-				</td>
-			</tr>
-			<tr>
-				<td><span class="h2">Scoring Team filter:</span></td>
-				<td>
-					<input type="radio" name="filter" value="1" $sel_filter[1]> ON
-					<input type="radio" name="filter" value="0" $sel_filter[0]> OFF
 				</td>
 			</tr>
 		</table>
 		
 		<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>
 		
-		<input type="hidden" name="source" value="vergil.aeneid"/>
-		<input type="hidden" name="target" value="lucan.bellum_civile.part.1"/>
-		<input type="hidden" name="unit" value="phrase"/>
-		<input type="hidden" name="frontend" value="recall"/>
+		<input type="hidden" name="source"       value="$name{source}" />
+		<input type="hidden" name="target"       value="$name{target}" />
+		<input type="hidden" name="recall_cache" value="$cache"        />
+		<input type="hidden" name="unit"         value="$meta{UNIT}"   />
+		<input type="hidden" name="frontend"     value="recall"        />
 		
 	</form>
 
@@ -665,6 +676,8 @@ sub re_sort {
 	
 	$sel_rev[$rev]         = 'selected="selected"';
 	$sel_sort{$sort}       = 'selected="selected"';
+	
+	my $cache = fileparse($file{cache}, qw/\.cache/);
 	
 	my $html = <<END;
 	
@@ -692,7 +705,8 @@ sub re_sort {
 			</td>
 			<td>
 				<input type="hidden" name="session" value="$session" />
-				<input type="submit" name="submit" value="Change Display" />
+				<input type="hidden" name="cache"   value="$cache"   />
+				<input type="submit" name="submit"  value="Change Display" />
 			</td>
 		</tr>
 	</table>

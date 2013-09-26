@@ -6,6 +6,18 @@
 
 			</div>
 			
+			<style type="text/css">
+				table.input th {
+					font-size: 1.2em;
+					vertical-align: top; 
+					width: 200px;
+					overflow: hidden;
+				}
+				table.input td {
+					overflow: hidden;
+				}
+			</style>
+			
 			<div id="main">
 					<!--info-->
 			</div>
@@ -37,9 +49,9 @@
 			<table class="output" id="resultsTable">
 				<thead>
 					<tr>
-						<th>BC</th>
+						<th>Target Loc</th>
 						<th>Target Phrase</th>
-						<th>Aeneid</th>
+						<th>Source Loc</th>
 						<th>Source Phrase</th>
 						<th>Parallel Type</th>
 						<th>Tess Score</th>
