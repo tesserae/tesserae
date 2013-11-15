@@ -236,11 +236,30 @@ if ($help) {
 #
 
 for my $plugin (@plugins) {
+
+	print STDERR "trying to load module $plugin...";
 	
 	$plugin =~ s/[^a-z_].*//i;
-	next unless -s catfile($fs{script}, 'score', 'plugins', $plugin . '.pm');
 
-	eval "require score::plugins::$plugin";
+	my $mod  = join('::', 'score', 'plugins', $plugin);
+	my $path = catfile($fs{script}, 'TessPerl', 'score', 'plugins', $plugin . '.pm');
+
+	if (-s $path) {
+
+		if (eval "require $mod;") {
+		
+			print STDERR "ok\n";
+		}
+		else {
+		
+			print STDERR "failed\n";
+		}
+	}
+	else {
+
+		print STDERR "failed\n";
+		warn "Invalid plugin: $plugin";
+	}
 }
 
 #

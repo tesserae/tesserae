@@ -46,7 +46,7 @@ BEGIN {
 		die "can't find .tesserae.conf!";
 	}
 
-	$lib = catdir($lib, 'TessPerl');	
+	$tesslib = catdir($tesslib, 'TessPerl');	
 }
 
 # load Tesserae-specific modules

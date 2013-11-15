@@ -41,7 +41,7 @@ BEGIN {
 		die "can't find .tesserae.conf!";
 	}
 
-	$lib = catdir($lib, 'TessPerl');	
+	$tesslib = catdir($tesslib, 'TessPerl');	
 }
 
 # load Tesserae-specific modules
@@ -61,6 +61,10 @@ our $VERSION   = 0.01;
 our @ISA       = qw(Exporter);
 our @EXPORT    = ();
 our @EXPORT_OK = ();
+
+# diagnostic
+
+print STDERR "loading module Default\n";
 
 #
 # scoring subroutine
