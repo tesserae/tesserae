@@ -117,7 +117,7 @@ def standardize(lang, lemma):
 		lemma = lemma.replace('\\', '/')
 		lemma = tesslang.beta_to_uni(lemma)
 	
-	lemma = unicodedata.normalize('NFC', lemma)
+	lemma = unicodedata.normalize('NFKD', lemma)
 	lemma = lemma.lower()	
 	lemma = pat.clean[lang].sub('', lemma)
 	

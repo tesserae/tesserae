@@ -119,6 +119,7 @@ div#footer
 	background : #e1e6c6;
 	height: 12em;
 	text-align: left;
+	border-top: 1px solid black;
 }
 
 div#footer_content

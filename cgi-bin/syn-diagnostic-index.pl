@@ -1,0 +1,430 @@
+#!/usr/bin/env perl
+
+#
+# This is a template for how Tesserae scripts should begin.
+#
+# Please fill in documentation notes in POD below.
+#
+# Don't forget to modify the COPYRIGHT section as follows:
+#  - name of the script where it says "The Original Code is"
+#  - your name(s) where it says "Contributors"
+#
+
+=head1 NAME
+
+name.pl	- do something
+
+=head1 SYNOPSIS
+
+name.pl [options] ARG1 [, ARG2, ...]
+
+=head1 DESCRIPTION
+
+A more complete description of what this script does.
+
+=head1 OPTIONS AND ARGUMENTS
+
+=over
+
+=item I<ARG1>
+
+Description of what ARG1 does.
+
+=item B<--option>
+
+Description of what --option does.
+
+=item B<--help>
+
+Print usage and exit.
+
+=back
+
+=head1 KNOWN BUGS
+
+=head1 SEE ALSO
+
+=head1 COPYRIGHT
+
+University at Buffalo Public License Version 1.0.
+The contents of this file are subject to the University at Buffalo Public License Version 1.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://tesserae.caset.buffalo.edu/license.txt.
+
+Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
+
+The Original Code is name.pl.
+
+The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
+
+Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
+
+Contributor(s):
+
+Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
+
+=cut
+
+use strict;
+use warnings;
+
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}
+	
+	$lib = catdir($lib, 'TessPerl');
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
+use CGI qw/:standard/;
+use Storable;
+use utf8;
+
+binmode STDOUT, 'utf8';
+binmode STDERR, 'utf8';
+
+# initialize some variables
+
+my $target   = 'homer.iliad';
+my @feature  = qw/trans1 trans2/;
+my $html     = 0;
+my $help     = 0;
+
+#
+# check for cgi interface
+#
+
+my $cgi = CGI->new() || die "$!";
+
+my $no_cgi = defined($cgi->request_method()) ? 0 : 1;
+
+#
+# get user options
+#
+
+if ($no_cgi) {
+	
+	GetOptions(
+		'target=s'  => \$target,
+		'feature=s' => \@feature,
+		'help'      => \$help,
+		'html'      => \$html
+	);
+
+	# print usage if the user needs help
+
+	if ($help) {
+
+		pod2usage(1);
+	}
+}
+else {
+	
+	print header('-charset'=>'utf-8', '-type'=>'text/html');
+
+	$target = $cgi->param('target') || $target;
+	$html = 1;
+}
+
+print_header();
+
+my %index = %{load_lex($target)};
+my %hits = %{check_hits()};
+export_lex();
+
+print_footer();
+
+
+#
+# get the list of words for the target text
+#
+
+sub load_lex {
+	
+	my $target = shift;
+
+	my $file;
+
+	if ($target eq '*') {
+
+		$file = catfile($fs{data}, 'common', 'grc.stem.freq');
+	}
+	else {
+
+		$file = catfile($fs{data}, 'v3', 'grc', $target, $target . '.freq_stop_stem');
+	}
+
+	return Tesserae::stoplist_hash($file);
+}
+
+
+#
+# check stored translation feature data 
+#
+
+sub check_hits {
+		
+	if ($no_cgi) {
+	
+		print STDERR "Loading feature data\n";
+	}
+
+	if ($html) {
+	
+		print "<div class=\"summary\">\n";
+		print "<table>\n";
+	}
+
+	my %hits;
+	
+	for my $feature (@feature) {
+		
+		my $file = catfile($fs{data}, 'common', join('.', 'grc', $feature, 'cache'));
+		
+		unless (-s $file) {
+		
+			die "Can't locate featureset $feature!";
+		}
+
+		my %candidates = %{retrieve($file)};
+		
+		if ($no_cgi) {
+			
+			print STDERR "$feature has " . scalar(keys %candidates) . " keys\n";
+		}
+	
+		my $count = 0;
+		
+		for my $token (keys %index) {
+		
+			if (defined $candidates{$token}) {
+			
+				$hits{$token}{$feature} = scalar(@{$candidates{$token}});
+				$count ++;
+			}
+		}
+		  
+		my $rate = sprintf("%.0f", 100 * $count / scalar(keys %index));
+		
+		if ($html) {
+		
+			print "<tr><td>$feature</td><td>$rate\%</td>\n";
+		}
+		else {
+		
+			print "$feature: $rate\n"; 
+		}
+	}
+	
+	if ($html) {
+	
+		print "</table>\n";
+		print "</div>\n";
+	}
+	
+	return \%hits;
+}
+
+
+#
+# page header
+#
+
+sub print_header {
+
+	if ($html) {
+
+		print <<END_HEAD;
+<html>
+	<head>
+		<style type="text/css">
+			tr {
+				padding: 4px 3px;
+			}
+ 			a {
+				text-decoration: none;
+			}
+			a:link, a:visited {
+				color: #0000B0;
+			}
+			div.summary {
+				margin-bottom:10px;
+			}
+		</style>
+	</head>
+	<body>
+	<div>
+END_HEAD
+
+		print select_list($target);
+	}
+	else {
+	
+		print "Lexicon for $target\n";
+	}
+}
+
+sub print_footer {
+
+	if ($html) {
+
+		print <<END_FOOT;
+	</div>
+</html>
+END_FOOT
+	}
+}
+
+
+#
+# draw the index
+#
+
+sub export_lex {
+
+	if ($html) {
+		
+		print "<div class=\"index\"><table>\n";
+		print "<tr><th>freq(\%)</th><th>stem</th><th>$feature[0]</th><th>$feature[1]</th></tr>\n";	 
+	}
+				
+	for my $token (sort {$index{$b} <=> $index{$a}} keys %index) {
+	
+		my $template;
+	
+		my $freq = sprintf("%.2f", 100 * $index{$token});
+	
+		if ($html) {
+			
+			print "<td>$freq</td>";
+			print "<td>";
+			print "<a href=\"$url{cgi}/syn-diagnostic-lookup.pl?query=$token\" target=\"right\">";
+			print $token;
+			print '</a>';
+			print '</td>';
+			
+			for my $feature (@feature) {
+			
+				print "<td>";
+				if ($hits{$token}{$feature}) {
+				
+					print chr(10003);
+				}
+				print "</td>";
+			}
+			
+			print '</tr>';
+			print "\n";
+		}
+		else {
+		
+			print "$freq\t$token";
+			
+			for my $feature (@feature) {
+			
+				print "\t";
+				print "X" if $hits{$token}{$feature};
+			}
+			
+			print "\n";
+		}
+	}
+	
+	if ($html) {
+		print "</div></table>\n";
+	}
+}
+
+sub select_list {
+	
+	my $target = shift;
+	
+	my $list;
+	
+	for my $name (@{Tesserae::get_textlist('grc', -sort=>1)}) {
+	
+		my $display = $name;
+		$display =~ s/_/ /g;
+		$display =~ s/\./—/;
+		$display =~ s/\./ /g;
+		$display =~ s/\b([a-z])/uc($1)/ge;
+	
+		my $selected = '';
+		$selected = ' selected="selected"' if $name eq $target;
+	
+		$list .= "<option value=\"$name\"$selected>$display</option>\n";
+	}
+	
+	my $html=<<END;
+	
+	<form action="$url{cgi}/syn-diagnostic-index.pl" target="left" method="post" id="Form1">
+
+		<select name="target">
+			<option value="*">Full Corpus</option>
+			$list
+		</select>
+		
+		<input type=\"submit\" value=\"Load\"></td></tr>
+	</form>
+
+END
+	
+	return $html;	
+}

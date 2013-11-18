@@ -1,8 +1,18 @@
 #!/usr/bin/env perl
 
+#
+# This is a template for how Tesserae scripts should begin.
+#
+# Please fill in documentation notes in POD below.
+#
+# Don't forget to modify the COPYRIGHT section as follows:
+#  - name of the script where it says "The Original Code is"
+#  - your name(s) where it says "Contributors"
+#
+
 =head1 NAME
 
-syn-test.pl - diagnostic tools for synonym dictionaries
+name.pl	- do something
 
 =head1 SYNOPSIS
 
@@ -41,13 +51,13 @@ The contents of this file are subject to the University at Buffalo Public Licens
 
 Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
 
-The Original Code is syn-test.pl.
+The Original Code is name.pl.
 
 The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
 
 Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
 
-Contributor(s): Chris Forstall, James Gawley
+Contributor(s):
 
 Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
 
@@ -105,9 +115,9 @@ BEGIN {
 		}
 		
 		die "can't find .tesserae.conf!\n";
-	}	
+	}
 	
-	$lib = catdir($lib, 'TessPerl');	
+	$lib = catdir($lib, 'TessPerl');
 }
 
 # load Tesserae-specific modules
@@ -123,79 +133,77 @@ use Pod::Usage;
 
 # load additional modules necessary for this script
 
+use CGI qw/:standard/;
 use Storable;
-use Unicode::Normalize;
 use utf8;
+
+binmode STDOUT, 'utf8';
+binmode STDERR, 'utf8';
 
 # initialize some variables
 
-my $help    = 0;
-my $feature = 'trans1';
-my $target  = 'homer.iliad';
+my $target   = 'homer.iliad';
+my @feature  = qw/trans1 trans2/;
+my $html     = 0;
+my $help     = 0;
 
+#
+# check for cgi interface
+#
+
+my $cgi = CGI->new() || die "$!";
+
+my $no_cgi = defined($cgi->request_method()) ? 0 : 1;
+
+#
 # get user options
-
-GetOptions(
-	'feature=s' => \$feature,
-	'target=s'  => \$target,
-	'help'      => \$help
-);
-
 #
-# print usage if the user needs help
-#
-# you could also use perldoc name.pl
+
+if ($no_cgi) {
 	
-if ($help) {
+	GetOptions(
+		'target=s'  => \$target,
+		'feature=s' => \@feature,
+		'help'      => \$help,
+		'html'      => \$html
+	);
 
-	pod2usage(1);
-}
+	# print usage if the user needs help
 
-binmode STDOUT, ':utf8';
+	if ($help) {
 
-#
-#
-#
-
-my $file_stem  = catfile($fs{data}, 'common', 'grc.stem.cache');
-my $file_trans = catfile($fs{data}, 'common', "grc.$feature.cache");
-
-my %stem = %{retrieve($file_stem)};
-my %trans = %{retrieve($file_trans)};
-
-my $lang = Tesserae::lang($target);
-
-my $file_base = catfile($fs{data}, 'v3', $lang, $target, $target);
-
-my $file_index_word  = $file_base . ".index_word";
-my $file_index_stem  = $file_base . ".index_stem";
-
-my %index_word = %{retrieve($file_index_word)};
-my %index_stem = %{retrieve($file_index_stem)};
-my %index_trans;
-
-
-
-print "translation dictionary has " . scalar(keys %trans) . " entries\n";
-print "$target has " . scalar(keys %index_word) . " words\n";
-print "$target has " . scalar(keys %index_stem) . " stems\n";
-
-my %count;
-
-for my $stem (keys %index_stem) {
-		
-	if (defined $trans{$stem}) {
-		push @{$count{yes}}, $stem;
-	}
-	else {
-		push @{$count{no}}, $stem;
+		pod2usage(1);
 	}
 }
+else {
+	
+	print header('-charset'=>'utf-8', '-type'=>'text/html');
 
-print "Found:\n";
-
-for (keys %count) {
-
-	print join("\t", $_, scalar(@{$count{$_}})) . "\n";
+	$target     = $cgi->param('target')   || $target;
+	$feature[0] = $cgi->param('feature1') || $feature[0];
+	$feature[1] = $cgi->param('feature2') || $feature[1];
+	$html = 1;
 }
 
+print <<END;
+
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="author" content="Neil Coffee, Jean-Pierre Koenig, Shakthi Poornima, Chris Forstall, Roelant Ossewaarde">
+		<meta name="keywords" content="intertext, text analysis, classics, university at buffalo, latin">
+		<meta name="description" content="Intertext analyzer for Latin texts">
+		<link href="$url{css}/style.css" rel="stylesheet" type="text/css"/>
+		<link href="$url{image}/favicon.ico" rel="shortcut icon"/>
+
+		<title>Tesserae</title>
+
+	</head>
+
+	<frameset cols="40%,60%">
+		<frame name="left" src="$url{cgi}/syn-diagnostic-index.pl?target=$target;feature1=$feature[0];feature2=$feature[1]' ?>">
+		<frame name="right" src="">
+	</frameset>
+</html>
+
+END

@@ -153,7 +153,9 @@
 				</tr>
 			</table>
 		</div>
-		<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>
+		<div style="text-align:center; padding:20px;">
+			<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit" style=""/>
+		</div>
 	</form>
 </div>
 
