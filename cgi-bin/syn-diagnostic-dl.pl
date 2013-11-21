@@ -136,6 +136,7 @@ use Pod::Usage;
 use CGI qw/:standard/;
 use Storable;
 use utf8;
+use DBI;
 use Encode;
 
 binmode STDOUT, 'utf8';
@@ -143,12 +144,8 @@ binmode STDERR, 'utf8';
 
 # initialize some variables
 
-my $target   = 'homer.iliad';
-my $query;
-my @feature  = qw/trans1 trans2/;
-my $auth;
-my $html     = 0;
-my $help     = 0;
+my $sep  = "\t";
+my $help = 0;
 
 #
 # check for cgi interface
@@ -165,12 +162,8 @@ my $no_cgi = defined($cgi->request_method()) ? 0 : 1;
 if ($no_cgi) {
 	
 	GetOptions(
-		'target=s'  => \$target,
-		'feature=s' => \@feature,
-		'query=s'   => \$query,
-		'auth=s'    => \$auth,
-		'help'      => \$help,
-		'html'      => \$html
+		'sep=s' => \$sep,
+		'help'  => \$help
 	);
 
 	# print usage if the user needs help
@@ -182,49 +175,87 @@ if ($no_cgi) {
 }
 else {
 	
-	print header('-charset'=>'utf-8', '-type'=>'text/html');
-
-	$target     = $cgi->param('target')   || $target;
-	$query      = $cgi->param('query');
-	$feature[0] = $cgi->param('feature1') || $feature[0];
-	$feature[1] = $cgi->param('feature2') || $feature[1];
- 	$auth       = $cgi->param('auth');
-	$html = 1;
+	print header('-charset'=>'utf-8', '-type'=>'text/plain');
+	
+	$sep = $cgi->param('sep') || $sep;
 }
 
-unless (grep {/^$auth$/} qw/cf jg nc am kc/) { $auth = undef }
+my $dbh = init_db();
+print_table();
 
-my $auth_ = defined $auth ? ";auth=$auth" : "";
+#
+# subroutines
+#
 
-if (defined $query) {
+#
+# connect to database
+#
 
-	$query = Tesserae::standardize('grc', decode('utf8', $query));
-	$query = "$url{cgi}/syn-diagnostic-lookup.pl?target=$target;query=$query;feature1=$feature[0];feature2=$feature[1]$auth_";
+sub init_db {
+
+	# connect to database
+
+	my $file_db = catfile($fs{tmp}, 'syn-diagnostic.db');
+	
+	my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
+
+	# check to make sure table exists
+	
+	my $sth = $dbh->prepare(
+		'select name from sqlite_master where type="table";'
+	);
+	
+	$sth->execute;
+	
+	my $exists = 0;
+
+	while (my $table = $sth->fetchrow_arrayref) {
+		
+		if ($table->[0] eq 'results') {
+		
+			$exists = 1;
+		}
+	}
+		
+	# create it if it doesn't
+	
+	unless ($exists) {
+
+		die "table results doesn't exist!";
+	}
+
+	return $dbh;
 }
-else {
 
-	$query = "";
+#
+# see which words already have entries
+#
+
+sub print_table {
+	
+	my $aref = $dbh->selectall_arrayref('select * from results;');
+	
+	print join($sep, qw/
+		greek
+		freq
+		pos
+		trans_1a
+		trans_1b
+		trans_2a
+		trans_2b
+		valid_1a
+		valid_1b
+		valid_2a
+		valid_2b
+		auth/
+	);
+	
+	print "\n";
+	
+	for my $row (@$aref) {
+
+		my @row = @$row;
+		$row[0] = decode('utf8', $row[0]);
+		print join($sep, @row) . "\n";
+	}
 }
-
-print <<END;
-
-<html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="author" content="Neil Coffee, Jean-Pierre Koenig, Shakthi Poornima, Chris Forstall, Roelant Ossewaarde">
-		<meta name="keywords" content="intertext, text analysis, classics, university at buffalo, latin">
-		<meta name="description" content="Intertext analyzer for Latin texts">
-		<link href="$url{css}/style.css" rel="stylesheet" type="text/css"/>
-		<link href="$url{image}/favicon.ico" rel="shortcut icon"/>
-
-		<title>Tesserae</title>
-
-	</head>
-
-	<frameset cols="40%,60%">
-		<frame name="left" src="$url{cgi}/syn-diagnostic-index.pl?target=$target;feature1=$feature[0];feature2=$feature[1]$auth_">
-		<frame name="right" src="$query">
-	</frameset>
-</html>
-
-END

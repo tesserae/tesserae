@@ -136,6 +136,8 @@ use Pod::Usage;
 use CGI qw/:standard/;
 use Storable;
 use utf8;
+use DBI;
+use Encode;
 
 binmode STDOUT, 'utf8';
 binmode STDERR, 'utf8';
@@ -144,6 +146,7 @@ binmode STDERR, 'utf8';
 
 my $target   = 'homer.iliad';
 my @feature  = qw/trans1 trans2/;
+my $auth;
 my $html     = 0;
 my $help     = 0;
 
@@ -164,6 +167,7 @@ if ($no_cgi) {
 	GetOptions(
 		'target=s'  => \$target,
 		'feature=s' => \@feature,
+		'auth=s'    => \$auth,
 		'help'      => \$help,
 		'html'      => \$html
 	);
@@ -179,9 +183,15 @@ else {
 	
 	print header('-charset'=>'utf-8', '-type'=>'text/html');
 
-	$target = $cgi->param('target') || $target;
+	$target     = $cgi->param('target')   || $target;
+	$feature[0] = $cgi->param('feature1') || $feature[0];
+	$feature[1] = $cgi->param('feature2') || $feature[1];	
+	$auth       = $cgi->param('auth');
 	$html = 1;
 }
+
+my $dbh = init_db();
+my %done = %{check_done()};
 
 print_header();
 
@@ -304,6 +314,9 @@ sub print_header {
 			a:link, a:visited {
 				color: #0000B0;
 			}
+			a.done {
+				color:grey;
+			}
 			div.summary {
 				margin-bottom:10px;
 			}
@@ -313,7 +326,7 @@ sub print_header {
 	<div>
 END_HEAD
 
-		print select_list($target);
+		print select_list($target) unless $auth;
 	}
 	else {
 	
@@ -353,9 +366,19 @@ sub export_lex {
 	
 		if ($html) {
 			
+			my $auth_;
+			my $flag = '';
+			
+			if ($done{$token}) {
+				 $flag = ' class="done"';
+			}
+			else {
+				$auth_ = $auth ? ";auth=$auth" : "";
+			}
+			
 			print "<td>$freq</td>";
 			print "<td>";
-			print "<a href=\"$url{cgi}/syn-diagnostic-lookup.pl?query=$token\" target=\"right\">";
+			print "<a$flag href=\"$url{cgi}/syn-diagnostic-lookup.pl?query=$token$auth_\" target=\"right\">";
 			print $token;
 			print '</a>';
 			print '</td>';
@@ -427,4 +450,90 @@ sub select_list {
 END
 	
 	return $html;	
+}
+
+#
+# connect to database
+#
+
+sub init_db {
+
+	# connect to database
+
+	my $file_db = catfile($fs{tmp}, 'syn-diagnostic.db');
+	
+	my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
+
+	# check to make sure table exists
+	
+	my $sth = $dbh->prepare(
+		'select name from sqlite_master where type="table";'
+	);
+	
+	$sth->execute;
+	
+	my $exists = 0;
+
+	while (my $table = $sth->fetchrow_arrayref) {
+		
+		if ($table->[0] eq 'results') {
+		
+			$exists = 1;
+		}
+	}
+		
+	# create it if it doesn't
+	
+	unless ($exists) {
+		
+		my $sth = $dbh->prepare(
+			'create table results (
+				grc   varchar(40),
+				freq  real,
+				pos   char(5),
+				la_1a varchar(22),
+				la_1b varchar(22),
+				la_2a varchar(22),
+				la_2b varchar(22),
+				v_1a  int,
+				v_1b  int,
+				v_2a  int,
+				v_2b  int,
+				auth char(2)
+			);'
+		);
+		
+		$sth->execute;
+	}
+
+	return $dbh;
+}
+
+#
+# see which words already have entries
+#
+
+sub check_done {
+
+	my %done;
+	
+	if ($auth) {
+	
+		print STDERR "checking validation progress\n" if $no_cgi;
+
+		my $aref = $dbh->selectall_arrayref('select * from results;');
+	
+		for my $row (@$aref) {
+	
+			my $grc = $row->[0];
+			
+			$grc = Tesserae::standardize('grc', decode('utf8', $grc));
+			
+			if ($grc) {
+				$done{$grc} = 1;
+			}
+		}
+	}
+	
+	return \%done;
 }

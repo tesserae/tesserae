@@ -124,6 +124,7 @@ use Pod::Usage;
 # load additional modules necessary for this script
 
 use CGI qw/:standard/;
+use DBI;
 use Storable;
 use utf8;
 use Encode;
@@ -133,10 +134,12 @@ binmode STDERR, 'utf8';
 
 # initialize some variables
 
+my $target   = 'homer.iliad';
 my $query;
-my $html   = 0;
-my $help   = 0;
 my @feature  = qw/trans1 trans2/;
+my $auth;
+my $html     = 0;
+my $help     = 0;
 
 #
 # check for cgi interface
@@ -155,6 +158,8 @@ if ($no_cgi) {
 	GetOptions(
 		'query=s'   => \$query,
 		'feature=s' => \@feature,
+		'target=s'  => \$target,
+		'auth=s'    => \$auth,
 		'help'      => \$help,
 		'html'      => \$html
 	);
@@ -174,7 +179,9 @@ else {
 
 	$query      = $cgi->param('query');
 	$feature[0] = $cgi->param('feature1') || $feature[0];
-	$feature[1] = $cgi->param('feature2') || $feature[1];
+	$feature[1] = $cgi->param('feature2') || $feature[1];	
+	$target     = $cgi->param('target')   || $target;
+	$auth       = $cgi->param('auth');
 	$html = 1;
 }
 
@@ -185,6 +192,11 @@ $query = Tesserae::standardize('grc', decode('utf8', $query));
 #
 
 my %candidates = %{load_candidates()};
+
+my $dbh = init_db();
+my %done = %{check_done()};
+
+if ($done{$query}) { $auth = undef }
 
 #
 # print the output page
@@ -218,7 +230,9 @@ sub load_def {
 					
 					my ($head, $def_) = split(/::/, $rec);
 					
-					$head = Tesserae::standardize('grc', $head);
+					my $lang = is_greek($head) ? 'grc' : 'la';
+					
+					$head = Tesserae::standardize($lang, $head);
 					
  					if ($head eq $token) {
 					
@@ -318,8 +332,8 @@ sub print_template {
 	
 	print format_query($query, $html);
 	
-	print_results($feature[0], $query, $html);
-	print_results($feature[1], $query, $html);
+	print_results(0, $query, $html);
+	print_results(1, $query, $html);
 	
 	print html_footer() if $html;
 }
@@ -330,22 +344,55 @@ sub print_template {
 
 sub html_header {
 
+	my $form_head = '';
+	
+	if ($auth) {
+		
+		my %freq = load_lex($target);
+		
+		my $freq = sprintf("%.5f", $freq{$query});
+	
+		$form_head = "<form action=\"$url{cgi}/syn-diagnostic-submit.pl\" method=\"POST\" target=\"_top\">\n"		
+	              . "<input type=\"hidden\" name=\"auth\"     value=\"$auth\"       />\n"
+					  . "<input type=\"hidden\" name=\"query\"    value=\"$query\"      />\n"
+					  . "<input type=\"hidden\" name=\"feature1\" value=\"$feature[0]\" />\n"
+					  . "<input type=\"hidden\" name=\"feature2\" value=\"$feature[1]\" />\n"
+					  . "<input type=\"hidden\" name=\"target\"   value=\"$target\"     />\n";
+	}
+
 	return <<END_HEAD;
 <html>
 	<head>
 		<title>Query Results</title>
 		<style type="text/css">
 			div.query {
+				position: relative;
 				border-bottom: 1px solid black;
 			}
+			div.feature {
+				border-bottom: 1px solid black;	
+			}
 			div.result {
-				border-bottom: 1px solid black;
+				position: relative;
 			}
 			div.head {
 				font-weight: bold;
 			}
 			div.def {
 				padding-bottom: 10px;
+			}
+			div.input {
+			
+				position:absolute;
+				top: 0px;
+				right: 0px;
+				width: 100px;
+				text-transform: uppercase;
+				font-size: 90%;
+			}
+			div.submit {
+				
+				text-align: right;
 			}
 			h1 {
 				font-size: 100%;
@@ -356,12 +403,16 @@ sub html_header {
 	</head>
 	<body>
 	<div class="container">
+		$form_head
 END_HEAD
 }
 
 sub html_footer {
 	
+	my $form_foot = $auth ? '<div class="submit"><input type="submit" value="Submit" /></div></form>' : '';
+	
 	return <<END_FOOT;
+		$form_foot
 	</div>
 	</body>
 </html>
@@ -378,11 +429,35 @@ sub format_query {
 	
 	my $def = load_def($query);
 	
+	my $template = "";
+	
 	if ($html) {
 		
-		return <<END_HTML;
+		my $set_pos = '';
+		
+		if ($auth) {
+			
+			$set_pos = <<END_SELECT;
+			<div class="input">
+				<select name="pos">
+					<option value="noun">noun</option>
+					<option value="verb">verb</option>
+					<option value="ptcl">particle</option>					
+					<option value="conj">conjunction</option>
+					<option value="prep">preposition</option>
+					<option value="adjt">adjective</option>					
+					<option value="pron">pronoun</option>
+					<option value="advb">adverb</option>
+					<option value="unkn">ambiguous</option>
+				</select>
+			</div>
+END_SELECT
+		}
+		
+ 		$template .= <<END_HTML;
 		<div class="query">
 			<div class="head">$query</div>
+			$set_pos
 			<div class="def">
 				$def
 			</div>
@@ -391,11 +466,13 @@ END_HTML
 	}
 	else {
 		
-		return <<END_TEXT;
+ 		$template .= <<END_TEXT;
 	query: $query
 	definition: $def
 END_TEXT
 	}
+	
+	return $template;
 }
 
 
@@ -405,30 +482,57 @@ END_TEXT
 
 sub print_results {
 	
-	my ($feature, $query, $html) = @_;
+	my ($f, $query, $html) = @_;
 	
 	if ($html) {
 		
-		print "<div class=\"result\">\n";
-		print "<h1>$feature</h1>\n";
+		print "<div class=\"feature\">\n";
+		print "<h1>$feature[$f]</h1>\n";
 	}
 	else {
 
-		print "$feature:\n";
+		print "$feature[$f]:\n";
 	}
 	
-	for my $res (@{get_candidates($feature, $query)}) {
-
-		my $def = load_def($res);
+	my @candidate = @{get_candidates($feature[$f], $query)};
 	
-		if ($html) {
+	for my $i (0,1) {
 		
-			print "<div class=\"head\">$res</div>\n";
-			print "<div class=\"def\">$def</div>\n";
+		my $head = '';
+		my $def  = '';
+		
+		if (defined $candidate[$i]) {
+		
+			$head = $candidate[$i];
+			$def  = load_def($head);
+		}
+
+		if ($html) {
+			
+			print "<div class=\"result\">\n";
+			print "<div class=\"head\">$head</div>\n";
+						
+			if ($auth) {
+			
+				my $subscript = sprintf("%d%s", $f + 1, $i ? 'b' : 'a');
+				my $value = $head || 'NULL';
+			
+ 				print "<div class=\"input\">\n";
+				print "<input type=\"hidden\"   name=\"la_$subscript\" value=\"$value\">\n";
+	
+				if ($head) {
+					print "<input type=\"checkbox\" name=\"v_$subscript\">valid</input>\n";
+				}
+				
+				print "</div>\n";
+			}
+
+			print "<div class=\"def\">$def</div>\n";			
+			print "</div>\n";
 		}
 		else {
 		
-			print "$res: $def\n";
+			print "$head: $def\n" if $head;
 		}
 	}
 		
@@ -438,4 +542,95 @@ sub print_results {
 	}
 	
 	print "\n";
+}
+
+#
+# get the list of words for the target text
+#
+
+sub load_lex {
+	
+	my $target = shift;
+
+	my $file;
+
+	if ($target eq '*') {
+
+		$file = catfile($fs{data}, 'common', 'grc.stem.freq');
+	}
+	else {
+
+		$file = catfile($fs{data}, 'v3', 'grc', $target, $target . '.freq_stop_stem');
+	}
+
+	return Tesserae::stoplist_hash($file);
+}
+
+#
+# connect to database
+#
+
+sub init_db {
+
+	# connect to database
+
+	my $file_db = catfile($fs{tmp}, 'syn-diagnostic.db');
+	
+	my $dbh = DBI->connect("dbi:SQLite:dbname=$file_db", "", "");
+
+	# check to make sure table exists
+	
+	my $sth = $dbh->prepare(
+		'select name from sqlite_master where type="table";'
+	);
+	
+	$sth->execute;
+	
+	my $exists = 0;
+
+	while (my $table = $sth->fetchrow_arrayref) {
+		
+		if ($table->[0] eq 'results') {
+		
+			$exists = 1;
+		}
+	}
+		
+	# create it if it doesn't
+	
+	unless ($exists) {
+
+		die "table results doesn't exist!";
+	}
+
+	return $dbh;
+}
+
+#
+# see which words already have entries
+#
+
+sub check_done {
+
+	my %done;
+	
+	if ($auth) {
+	
+		print STDERR "checking validation progress\n" if $no_cgi;
+
+		my $aref = $dbh->selectall_arrayref('select * from results;');
+	
+		for my $row (@$aref) {
+	
+			my $grc = $row->[0];
+			
+			$grc = Tesserae::standardize('grc', decode('utf8', $grc));
+			
+			if ($grc) {
+				$done{$grc} = 1;
+			}
+		}
+	}
+	
+	return \%done;
 }
