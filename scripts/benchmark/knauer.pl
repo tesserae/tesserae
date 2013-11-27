@@ -139,14 +139,49 @@ use utf8;
 
 my $help = 0;
 
-my @alpha = split(//, 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ');
-
-my %convert;
-
-for my $i (1..24) {
-
-	$convert{$alpha[$i-1]} = $i;
-}
+my %convert = (
+	Α => 1,
+	Β => 2,
+	Γ => 3,
+	Δ => 4,
+	Ε => 5,
+	Ζ => 6,
+	Η => 7,
+	Θ => 8,
+	Ι => 9,
+	Κ => 10,
+	Λ => 11,
+	Μ => 12,
+	Ν => 13,
+	Ξ => 14,
+	Ο => 15,
+	Π => 16,
+	Ρ => 17,
+	Σ => 18,
+	Τ => 19,
+	Υ => 20,
+	Φ => 21,
+	Χ => 22,
+	Ψ => 23,
+	Ω => 24,
+	
+	A => 1,
+	B => 2,
+	D => 4,
+	E => 5,
+	Z => 6,
+	H => 7,
+	I => 9,
+	K => 10,
+	M => 12,
+	N => 13,
+	O => 15,
+	P => 17,
+	T => 19,
+	Y => 20,
+	X => 22
+);
+	
 
 # get user options
 
@@ -188,9 +223,12 @@ while (my $line = <$fh>) {
 
 		$field[3] = $convert{$field[3]};
 	}
+	elsif ( int($field[3]) eq $field[3] ) {
+	
+	}
 	else {
 		
-		print STDERR "! convert($field[3]) = $convert{$field[3]} \n";
+		print STDERR "! convert($field[3]) undefined \n";
 	}
 	
 	@field = map { $_ or "" } @field;
