@@ -60,6 +60,7 @@ def get_results(q, n, c, file, filter):
 	row = [q]
 		
 	if (q in by_word):
+		
 		q_id = by_word[q]
 						
 		# query the similarity matrix
@@ -135,8 +136,8 @@ def main():
 	parser.add_argument('-f', '--feature', metavar="FEAT", default='trans2', type=str,
 			help = 'Name of feature dictionary to create')
 	parser.add_argument('-c', '--cutoff', metavar='C', default=None, type=float,
-			help = 'Similarity threshold for synonymy (range: 0-1).')
-	
+			help = 'Similarity threshold for synonymy (range: 0-1)')
+		
 	opt = parser.parse_args()
 	
 	if opt.translate not in [1, 2]:
@@ -229,11 +230,9 @@ def main():
 	for q in by_word:
 		pr.advance()
 		
-		q = unicodedata.normalize('NFC', q)
-			
-		if opt.translate and is_greek(q) == (opt.translate - 1):
+		if opt.translate and (is_greek(q) == opt.translate - 1):
 			continue
-
+		
 		get_results(q, opt.results, opt.cutoff, file_output, opt.translate)
 
 

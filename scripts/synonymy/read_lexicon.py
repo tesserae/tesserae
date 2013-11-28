@@ -106,23 +106,6 @@ class pat:
 	}
 
 
-def standardize(lang, lemma):
-	'''Standardize orthography of greek and latin words'''
-		
-	if lang == 'la':
-		lemma = lemma.replace('j', 'i')
-		lemma = lemma.replace('v', 'u')
-	
-	if lang == 'grc':
-		lemma = lemma.replace('\\', '/')
-		lemma = tesslang.beta_to_uni(lemma)
-	
-	lemma = unicodedata.normalize('NFKD', lemma)
-	lemma = lemma.lower()	
-	lemma = pat.clean[lang].sub('', lemma)
-	
-	return(lemma)
-
 
 def mo_beta2uni(mo):
 	'''A wrapper for tesslang.beta_to_uni that takes match objects'''
@@ -194,6 +177,11 @@ def parse_XML_dictionaries(langs, quiet):
 			
 			lemma, entry = m.group(1, 2)
 			
+			# standardize the headword
+			
+			lemma = pat.clean[lang].sub('', lemma)
+			lemma = tesslang.standardize(lang, lemma)
+			
 			# remove elements on the stoplist
 			
 			for stop in pat.stop:
@@ -203,11 +191,7 @@ def parse_XML_dictionaries(langs, quiet):
 			# in foreign tags
 			
 			entry = pat.foreign.sub(mo_beta2uni, entry)
-			
-			# standardize the headword
-			
-			lemma = standardize(lang, lemma)
-			
+						
 			# extract strings marked as translations of the headword
 			
 			def_strings = pat.definition[lang].findall(entry)
@@ -227,6 +211,7 @@ def parse_XML_dictionaries(langs, quiet):
 				defs[lemma] = def_strings
 	
 	if not quiet:
+		print 'Read {0} entries'.format(len(defs))
 		print 'Flattening entries with multiple definitions'
 	
 	pr = progressbar.ProgressBar(len(defs), quiet)
@@ -251,6 +236,58 @@ def parse_XML_dictionaries(langs, quiet):
 	return(defs)
 
 
+def parse_stem_dict(lang, quiet):
+	'''parse the csv stem dictionaries of Helma Dik'''
+	
+	filename = os.path.join(fs['data'], 'common', lang + '.lexicon.csv')
+	
+	f = open(filename, 'r')
+	
+	if not quiet:
+		print 'Reading lexicon {0}'.format(filename)
+		
+	pr = progressbar.ProgressBar(os.stat(filename).st_size, quiet)
+	
+	try: 
+		f = codecs.open(filename, encoding='utf_8')
+	except IOError as err:
+		print "Can't read {0}: {1}".format(filename, str(err))
+		sys.exit(1)
+		
+	pos = dict()
+	heads = dict()
+	
+	for line in f:
+		pr.advance(len(line.encode('utf-8')))
+		
+		line = line.strip().lower().replace('"', '')
+		
+		try:
+			token, code, lemma = line.split(',')
+		except ValueError:
+			continue
+		
+		lemma = tesslang.standardize(lang, lemma)
+		
+		if len(code) == 10:	
+			if lemma in pos:
+				pos[lemma].append(code[:2])
+			else:
+				pos[lemma] = [code[:2]]
+				
+		heads[lemma] = 1
+	
+	success = 0
+	
+	for lemma in heads:
+		if lemma in pos:
+			success += 1
+	
+	print 'pos success; {0}%'.format(100 * success / len(heads))
+	
+	return(pos)
+
+
 def bag_of_words(defs, stem_flag, quiet):
 	'''convert dictionary definitions into bags of words'''
 	
@@ -268,13 +305,10 @@ def bag_of_words(defs, stem_flag, quiet):
 	for lemma in defs:
 		pr.advance()
 		
-		defs[lemma] = [standardize('any', w) 
+		defs[lemma] = [tesslang.standardize('any', w) 
 							for w in pat.clean['any'].split(defs[lemma]) 
 							if not w.isspace() and w != '']
 				
-#		if stem_flag:
-#			defs[lemma] = [stem(w) for w in defs[lemma]]
-		
 		if len(defs[lemma]) > 0:
 			for d in defs[lemma]:
 				if d in count:
@@ -380,6 +414,8 @@ def main():
 				help='Perform LSI with N topics')
 	parser.add_argument('-q', '--quiet', action='store_const', const=1,
 				help='Print less info')
+	parser.add_argument('-m', '--match', action='store_const', const=1,
+				help = 'Restrict candidates to Tesserae stem dictionary')
 	
 	opt = parser.parse_args()
 	quiet = opt.quiet
@@ -397,6 +433,30 @@ def main():
 	# convert to bag of words
 	
 	defs = bag_of_words(defs, opt.stem, opt.quiet)
+	
+	# (optional) utilize information from stem dictionary
+	
+	stem_pos = dict()
+	
+	if opt.match == 1:
+		# get part of speech data
+		
+		stem_pos = dict(parse_stem_dict('la', opt.quiet), **parse_stem_dict('grc', opt.quiet))
+		
+		write_dict(stem_pos, 'pos', opt.quiet)
+		
+		# limit synonym dictionary to members of stem dictionary
+		
+		print 'restricting synonym dictionary to extisting stem index'
+
+		lost_keys = []
+
+		for lemma in defs:
+			if lemma not in stem_pos:
+				lost_keys.append(lemma)
+		
+		for lemma in lost_keys:
+			del defs[lemma]
 	
 	# write_dict(defs, 'bow_defs')
 	

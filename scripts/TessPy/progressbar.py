@@ -11,7 +11,7 @@ class ProgressBar:
 		self._prev = 0
 		self._current = 0
 		self.done = 0
-		self._prec = 0.0001
+		self._prec = 0.00001
 	
 	def advance(self, step=1):
 		self._current = self._current + step
@@ -31,7 +31,7 @@ class ProgressBar:
 	
 	def prprint(self):
 		if not self._quiet:
-			print '\r{0:3d}% done'.format(100 * self._current / self._total),
+			print '\r{0:3.1f}% done'.format(100 * self._current / self._total),
 			sys.stdout.flush()
 		
 	def finish(self):
