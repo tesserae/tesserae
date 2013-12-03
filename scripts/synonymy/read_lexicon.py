@@ -104,7 +104,8 @@ class pat:
 		'la': re.compile(r'[^a-z]', re.U),
 		'grc': re.compile(r'[\^_]', re.U)
 	}
-
+	
+	number = re.compile(r'[0-9]', re.U)
 
 
 def mo_beta2uni(mo):
@@ -180,18 +181,19 @@ def parse_XML_dictionaries(langs, quiet):
 			# standardize the headword
 			
 			lemma = pat.clean[lang].sub('', lemma)
+			lemma = pat.number.sub('', lemma)
 			lemma = tesslang.standardize(lang, lemma)
-			
+						
 			# remove elements on the stoplist
 			
 			for stop in pat.stop:
 				entry = stop.sub('', entry)
-			
+						
 			# transliterate betacode to unicode chars
 			# in foreign tags
 			
 			entry = pat.foreign.sub(mo_beta2uni, entry)
-						
+												
 			# extract strings marked as translations of the headword
 			
 			def_strings = pat.definition[lang].findall(entry)
@@ -199,17 +201,17 @@ def parse_XML_dictionaries(langs, quiet):
 			# drop empty defs
 			
 			def_strings = [d for d in def_strings if not d.isspace()]
-			
+									
 			# skip lemmata for which no translation can be extracted
 			
 			if def_strings is None:
 				continue
 							
-			if lemma in defs and defs[lemma] is not None:
-				defs[lemma] = defs[lemma].append(def_strings)
+			if lemma in defs and defs[lemma] is not None:					
+				defs[lemma].extend(def_strings)
 			else:
 				defs[lemma] = def_strings
-	
+		
 	if not quiet:
 		print 'Read {0} entries'.format(len(defs))
 		print 'Flattening entries with multiple definitions'
@@ -229,11 +231,66 @@ def parse_XML_dictionaries(langs, quiet):
 	
 	if not quiet:
 		print 'Lost {0} empty definitions'.format(len(empty_keys))
-	
+		
 	for k in empty_keys:
 		del defs[k]
-	
+		
 	return(defs)
+
+
+def parse_stop_list(lang, name, quiet):
+	'''read frequency table'''
+	
+	# open stoplist file
+	
+	filename = None
+	
+	if name == '*':
+		filename = os.path.join(fs['data'], 'common', lang + '.stem.freq')
+	else:
+		filename = os.path.join(fs['data'], 'v3', lang, name, name + '.freq_stop_stem')
+		
+	if not quiet:
+		print 'Reading stoplist {0}'.format(filename)
+		
+	pr = progressbar.ProgressBar(os.stat(filename).st_size, quiet)
+	
+	try:
+		f = codecs.open(filename, encoding='utf_8')
+	except IOError as err:
+		print "Can't read {0}: {1}".format(filename, str(err))
+		sys.exit(1)
+		
+	# read stoplist header to get total token count
+	
+	head = f.readline()
+	
+	m = re.compile('#\s+count:\s+(\d+)', re.U).match(head)
+	
+	if m is None:
+		print "Can't find header in {0}".format(filename)
+		sys.exit(1)
+		
+	total = int(m.group(1))
+	
+	pr.advance(len(head.encode('utf-8')))
+	
+	# read the individual token counts, divide by total
+	
+	freq = dict()
+	
+	for line in f:
+		
+		lemma, count = line.split('\t')
+		
+		lemma = tesslang.standardize(lang, lemma)
+		lemma = pat.number.sub('', lemma)
+		
+		freq[lemma] = float(count)/total
+		
+		pr.advance(len(line.encode('utf-8')))
+	
+	return(freq)
 
 
 def parse_stem_dict(lang, quiet):
@@ -245,7 +302,7 @@ def parse_stem_dict(lang, quiet):
 	
 	if not quiet:
 		print 'Reading lexicon {0}'.format(filename)
-		
+	
 	pr = progressbar.ProgressBar(os.stat(filename).st_size, quiet)
 	
 	try: 
@@ -266,8 +323,9 @@ def parse_stem_dict(lang, quiet):
 			token, code, lemma = line.split(',')
 		except ValueError:
 			continue
-		
+			
 		lemma = tesslang.standardize(lang, lemma)
+		lemma = pat.number.sub('', lemma)
 		
 		if len(code) == 10:	
 			if lemma in pos:
@@ -276,13 +334,13 @@ def parse_stem_dict(lang, quiet):
 				pos[lemma] = [code[:2]]
 				
 		heads[lemma] = 1
-	
+		
 	success = 0
 	
 	for lemma in heads:
 		if lemma in pos:
 			success += 1
-	
+			
 	print 'pos success; {0}%'.format(100 * success / len(heads))
 	
 	return(pos)
@@ -414,8 +472,8 @@ def main():
 				help='Perform LSI with N topics')
 	parser.add_argument('-q', '--quiet', action='store_const', const=1,
 				help='Print less info')
-	parser.add_argument('-m', '--match', action='store_const', const=1,
-				help = 'Restrict candidates to Tesserae stem dictionary')
+	parser.add_argument('-m', '--match', choices=['tess','dik'], default=None,
+				help = "Restrict candidates to Tesserae's stems or to Helma Dik's")
 	
 	opt = parser.parse_args()
 	quiet = opt.quiet
@@ -438,7 +496,27 @@ def main():
 	
 	stem_pos = dict()
 	
-	if opt.match == 1:
+	if opt.match == 'tess':
+		# get part of speech data
+		
+ 		freq = dict(parse_stop_list('la', '*', opt.quiet), **parse_stop_list('grc', '*', opt.quiet))
+		
+		write_dict(freq, 'freq', opt.quiet)
+		
+		# limit synonym dictionary to members of stem dictionary
+		
+		print 'restricting synonym dictionary to extisting stem index'
+		
+		lost_keys = []
+
+		for lemma in defs:
+			if lemma not in freq:
+				lost_keys.append(lemma)
+		
+		for lemma in lost_keys:
+			del defs[lemma]
+		
+	if opt.match == 'dik':
 		# get part of speech data
 		
 		stem_pos = dict(parse_stem_dict('la', opt.quiet), **parse_stem_dict('grc', opt.quiet))
@@ -448,9 +526,9 @@ def main():
 		# limit synonym dictionary to members of stem dictionary
 		
 		print 'restricting synonym dictionary to extisting stem index'
-
+		
 		lost_keys = []
-
+		
 		for lemma in defs:
 			if lemma not in stem_pos:
 				lost_keys.append(lemma)

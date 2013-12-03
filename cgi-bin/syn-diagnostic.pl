@@ -134,6 +134,7 @@ use Pod::Usage;
 # load additional modules necessary for this script
 
 use CGI qw/:standard/;
+use CGI::Session;
 use Storable;
 use utf8;
 use Encode;
@@ -155,6 +156,7 @@ my $help     = 0;
 #
 
 my $cgi = CGI->new() || die "$!";
+my $session;
 
 my $no_cgi = defined($cgi->request_method()) ? 0 : 1;
 
@@ -182,28 +184,43 @@ if ($no_cgi) {
 }
 else {
 	
-	print header('-charset'=>'utf-8', '-type'=>'text/html');
+	$session = CGI::Session->new(undef, $cgi, {Directory => '/tmp'});
+	my $cookie = $cgi->cookie(CGISESSID => $session->id );
 
-	$target     = $cgi->param('target')   || $target;
-	$query      = $cgi->param('query');
-	$feature[0] = $cgi->param('feature1') || $feature[0];
-	$feature[1] = $cgi->param('feature2') || $feature[1];
- 	$auth       = $cgi->param('auth');
+	print header(-encoding=>"utf8");
+	
+	$target     = $cgi->param('target')   || $session->param('target')   || $target;
+	$query      = $cgi->param('query')    || $session->param('query');
+	$feature[0] = $cgi->param('feature1') || $session->param('feature1') || $feature[0];
+	$feature[1] = $cgi->param('feature2') || $session->param('feature2') || $feature[1];
+ 	$auth       = $cgi->param('auth')     || $session->param('auth');
 	$html = 1;
 }
 
-unless (grep {/^$auth$/} qw/cf jg nc am kc/) { $auth = undef }
+unless (defined $auth and grep {/^$auth$/} qw/cf jg nc am kc/) { 
+	$auth = undef;
 
-my $auth_ = defined $auth ? ";auth=$auth" : "";
+	unless ($no_cgi) {
+		$session->clear('auth');
+	}
+}
 
 if (defined $query) {
 
 	$query = Tesserae::standardize('grc', decode('utf8', $query));
-	$query = "$url{cgi}/syn-diagnostic-lookup.pl?target=$target;query=$query;feature1=$feature[0];feature2=$feature[1]$auth_";
 }
 else {
+}
 
-	$query = "";
+unless ($no_cgi) {
+
+	$session->param('target',   $target);
+	$session->param('feature1', $feature[0]);
+	$session->param('feature2', $feature[1]);
+	$session->param('query',    $query);
+	$session->param('auth',     $auth);
+	
+	$session->flush();
 }
 
 print <<END;
@@ -222,8 +239,8 @@ print <<END;
 	</head>
 
 	<frameset cols="40%,60%">
-		<frame name="left" src="$url{cgi}/syn-diagnostic-index.pl?target=$target;feature1=$feature[0];feature2=$feature[1]$auth_">
-		<frame name="right" src="$query">
+		<frame name="left" src="$url{cgi}/syn-diagnostic-index.pl">
+		<frame name="right" src="$url{cgi}/syn-diagnostic-lookup.pl">
 	</frameset>
 </html>
 

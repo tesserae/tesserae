@@ -66,6 +66,14 @@ def get_results(q, n, c, file, filter):
 		# query the similarity matrix
 		
 		sims = index[corpus[q_id]]
+		
+		# apply distribution model
+		
+		if opt.match is True:
+			
+		
+		# sort results
+		
 		sims = sorted(enumerate(sims), key=lambda item: -item[1])
 				
 		# filter results

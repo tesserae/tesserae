@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 """
-Does something.
+Export the pickled English defs.
 
-Longer description of what this program does.
+Create a plain-text version of the English definitions, readable by
+the Perl scripts that underlie syn-diagnostic.
 """
 
 # modules necessary to read config file,
@@ -102,7 +103,10 @@ def export_dict(defs, name, quiet):
 	pr = progressbar.ProgressBar(len(defs), quiet)
 	
 	for head in defs:
-				
+		
+		if len(head) < 1:
+			continue
+		
 		if head[0] != keychar:
 			keychar = head[0]
 			
@@ -128,7 +132,7 @@ def main():
 	#
 	
 	parser = argparse.ArgumentParser(
-			description='Do something')
+			description='Export English definitions')
 	parser.add_argument('-q', '--quiet', action='store_const', const=1,
 			help = "Don't print status messages")
 	
