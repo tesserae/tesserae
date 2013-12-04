@@ -48,7 +48,6 @@
 							<select name="feature">
 								<option value="word">exact form only</option>
 								<option value="stem" selected="selected">lemma</option>
-								<option value="syn">lemma + synonyms</option>
 							</select>
 						</td>
 					</tr>
