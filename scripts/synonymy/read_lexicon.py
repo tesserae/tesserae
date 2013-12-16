@@ -474,6 +474,8 @@ def main():
 				help='Print less info')
 	parser.add_argument('-m', '--match', choices=['tess','dik'], default=None,
 				help = "Restrict candidates to Tesserae's stems or to Helma Dik's")
+	parser.add_argument('-n', '--nsims', metavar='N', type=int,
+				help = "Only calculate top N similarities")
 	
 	opt = parser.parse_args()
 	quiet = opt.quiet
@@ -626,7 +628,7 @@ def main():
 	
 	dir_calc = os.path.join(fs['data'], 'synonymy', 'sims')
 	
-	index = similarities.Similarity(dir_calc, corpus_final, len(corpus_final))
+	index = similarities.Similarity(dir_calc, corpus_final, len(corpus_final), opt.nsims)
 	
 	file_index = os.path.join(fs['data'], 'synonymy', 'gensim.index')
 	

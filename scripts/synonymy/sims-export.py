@@ -16,6 +16,8 @@ import sys
 import codecs
 import unicodedata
 import argparse
+import re
+import math
 
 def read_pointer():
 	'''look for .tesserae.conf; return lib path'''
@@ -23,7 +25,7 @@ def read_pointer():
 	dir = os.path.dirname(sys.argv[0])
 	lib = None
 	pointer = os.path.join(dir, '.tesserae.conf')
-
+	
 	while not os.access(pointer, os.R_OK):
 		
 		if dir == os.path.sep:
@@ -37,7 +39,7 @@ def read_pointer():
 	
 	lib = f.readline().strip()
 	
-	return lib
+	return(lib)
 
 sys.path.append(read_pointer())
 
@@ -47,74 +49,187 @@ from TessPy import tesslang
 
 from gensim import corpora, models, similarities
 
-by_word  = dict()
+#
+# global variables
+#
+
+by_word  = {}
 corpus   = []
 by_id    = []
 index    = []
-full_def = dict()
+full_def = {}
+rank     = {}
 
+number = re.compile(r'[0-9]', re.U)
 
-def get_results(q, n, c, file, filter):
+#
+# functions
+#
+
+def get_results(q):
 	"""test query q against the similarity matrix"""
-		
-	row = [q]
-		
-	if (q in by_word):
-		
-		q_id = by_word[q]
-						
-		# query the similarity matrix
-		
-		sims = index[corpus[q_id]]
-		
-		# apply distribution model
-		
-		if opt.match is True:
-			
-		
-		# sort results
-		
-		sims = sorted(enumerate(sims), key=lambda item: -item[1])
 				
-		# filter results
+	q_id = by_word[q]
+					
+	sims = index[corpus[q_id]]
+	
+	for i in range(0,len(sims)):
+		r_id, score = sims[i]
 		
-		for pair in sims:	
-			r_id, score = pair
+		r = by_id[r_id]
+		
+		sims[i] = (r, score)
+		
+	return(sims)
+
+
+def filter_results(sims, q, mode):
+	'''filter out query stem and optionally query language'''
+	
+	ok = []
+	
+	for pair in sims:	
+		r, score = pair
+		
+		# results to skip: 
+		#	- wrong language, or
+		#   - result == query
+		
+		if mode > 0:
+			if is_greek(r) != (mode - 1):
+				continue
+		else:
+			if r == q:
+				continue
+		
+		ok.append(pair)
+	
+	return(ok)
+
+
+def apply_freq_diff(sims, q):
+	'''discount scores according to rank difference between q and r'''
+	
+	for i in range(0, len(sims)):
+		r, score = sims[i]
+		
+		score = score - math.fabs(rank[q] - rank[r])/10
+		
+		sims[i] = (r, score)
+	
+	return(sims)	
+
+def cull(sims, n, c):
+	'''sort results, take either top n or all above score cutoff c'''
+		
+	sims = sorted(sims, key=lambda item: -item[1])
+		
+	if c is not None:
+		ok = []
+
+		for pair in sims:
+			r, score = pair
 			
-			r = by_id[r_id]
-			
-			# results to skip: 
-			#	- wrong language, or
-			#   - result == query
-			
-			if filter:
-				if is_greek(r) != (filter - 1):
-					continue
-			else:
-				if r == q:
-					continue
-			
-			# conditions to quit checking:
-			#   - score below cutoff, or
-			#   - top n already returned
-			
-			if c is not None:
-				if score < c:
-					break
-				if len(row) > 12:
-					break
-			else:
-				if len(row) > n:
-					break
-			
-			row.append(r)
-			
-		if len(row) > 1:
-										
-			if file is not None:
-				file.write(u','.join(row) + '\n')
-			else:
-				print u','.join(row)
+			if score < c:
+				break
+		
+			ok.append(pair)
+		
+		sims = ok
+
+	if len(sims) > n:
+		sims = sims[:n]
+
+	return(sims)
+
+def export_row(file, q, sims):
+	'''write a row to the output file'''
+	
+	row = [q]
+	
+	for pair in sims:
+		r, score = pair
+		
+		row.append(r)
+	
+	if file is not None:
+		file.write(u','.join(row) + '\n')
+	else:
+		print u','.join(row)
+
+
+def parse_stop_list(lang, name, quiet):
+	'''read frequency table'''
+	
+	# open stoplist file
+	
+	filename = None
+	
+	if name == '*':
+		filename = os.path.join(fs['data'], 'common', lang + '.stem.freq')
+	else:
+		filename = os.path.join(fs['data'], 'v3', lang, name, name + '.freq_stop_stem')
+		
+	if not quiet:
+		print 'Reading stoplist {0}'.format(filename)
+		
+	pr = progressbar.ProgressBar(os.stat(filename).st_size, quiet)
+	
+	try: 
+		f = codecs.open(filename, encoding='utf_8')
+	except IOError as err:
+		print "Can't read {0}: {1}".format(filename, str(err))
+		sys.exit(1)
+		
+	# read stoplist header to get total token count
+	
+	head = f.readline()
+	
+	m = re.compile('#\s+count:\s+(\d+)', re.U).match(head)
+	
+	if m is None:
+		print "Can't find header in {0}".format(filename)
+		sys.exit(1)
+		
+	total = int(m.group(1))
+	
+	pr.advance(len(head.encode('utf-8')))
+	
+	# read the individual token counts, divide by total
+	
+	rank = {}
+	n = 1
+	
+	for line in f:
+		lemma, count = line.split('\t')
+		
+		lemma = tesslang.standardize(lang, lemma)
+		lemma = number.sub('', lemma)
+		
+		rank[lemma] = math.log(n)
+		
+		n += 1
+		
+		pr.advance(len(line.encode('utf-8')))
+		
+	return(rank)
+
+
+def load_dict(filename, quiet):
+	'''load a dictionary previously saved with pickle'''
+	
+	file_dict = os.path.join(fs['data'], 'synonymy', filename)
+	
+	if not quiet:
+		print 'Reading ' + file_dict
+		
+	f = open(file_dict, 'r')
+	
+	dict_ = pickle.load(f)
+	
+	f.close()
+	
+	return(dict_)
 
 
 def is_greek(form):
@@ -145,63 +260,38 @@ def main():
 			help = 'Name of feature dictionary to create')
 	parser.add_argument('-c', '--cutoff', metavar='C', default=None, type=float,
 			help = 'Similarity threshold for synonymy (range: 0-1)')
+	parser.add_argument('-w', '--weighted', action='store_const', const=1,
+			help = 'Weight results by rank difference from query')
+	parser.add_argument('-q', '--quiet', action='store_const', const=1,
+			help = "Don't print status messages to stderr")
 		
 	opt = parser.parse_args()
 	
 	if opt.translate not in [1, 2]:
 		opt.translate = 0
-	
-	quiet = 0
-		
+			
 	#
-	# read the text-only defs
-	#
-	
-	file_dict = os.path.join(fs['data'], 'synonymy', 'full_defs.pickle')
-	
-	if not quiet:
-		print 'Reading ' + file_dict
-
-	f = open(file_dict, 'r')
-	
-	# store the defs
-	
-	global full_def
-	
-	full_def = pickle.load(f)
-	
-	f.close()
-	
-	#
-	# load data created by calc-matrix.py
+	# load data created by read_lexicon.py
 	#
 		
+	# the text-only defs
+		
+	# global full_def
+	# 
+	# full_def = load_dict('full_defs.pickle', opt.quiet)
+			
 	# the index by word
 	
 	global by_word
 	
-	file_lookup_word = os.path.join(fs['data'], 'synonymy', 'lookup_word.pickle')
-	
-	if not quiet:
-		print 'Loading index ' + file_lookup_word
-	
-	f = open(file_lookup_word, 'r')
-	by_word = pickle.load(f)
-	f.close()
+	by_word = load_dict('lookup_word.pickle', opt.quiet)
 	
 	# the index by id
 	
 	global by_id
 	
-	file_lookup_id = os.path.join(fs['data'], 'synonymy', 'lookup_id.pickle')
-	
-	if not quiet:
-		print 'Loading index ' + file_lookup_id
-	
-	f = open(file_lookup_id, 'r')
-	by_id = pickle.load(f)
-	f.close()
-	
+	by_id = load_dict('lookup_id.pickle', opt.quiet)
+		
 	# the corpus
 	
 	global corpus
@@ -211,6 +301,9 @@ def main():
 	else:
 		file_corpus = os.path.join(fs['data'], 'synonymy', 'gensim.corpus_lsi.mm')
 	
+	if not opt.quiet:
+		print 'Loading corpus ' + file_corpus
+	
 	corpus = corpora.MmCorpus(file_corpus)
 	
 	# the similarities index
@@ -219,20 +312,31 @@ def main():
 	
 	file_index = os.path.join(fs['data'], 'synonymy', 'gensim.index')
 	
-	if not quiet:		
+	if not opt.quiet:		
 		print 'Loading similarity index ' + file_index
 	
 	index = similarities.Similarity.load(file_index)
+
+	# optional: consider frequency distribution
 	
- 	if not quiet:
+	global rank
+	
+	if opt.weighted == 1:
+		rank = dict(parse_stop_list('la', '*', opt.quiet), **parse_stop_list('grc', '*', opt.quiet))
+
+	#
+	# determine translation candidates, write output
+	#
+	
+ 	if not opt.quiet:
 		print 'Exporting dictionary'
 	
 	filename_csv = os.path.join(fs['data'], 'synonymy', opt.feature + '.csv')
 	
 	file_output = codecs.open(filename_csv, 'w', encoding='utf_8')
 	
-	pr = progressbar.ProgressBar(len(by_word), quiet)
-	
+	pr = progressbar.ProgressBar(len(by_word), opt.quiet)
+		
 	# take each headword in turn as a query
 	
 	for q in by_word:
@@ -240,8 +344,30 @@ def main():
 		
 		if opt.translate and (is_greek(q) == opt.translate - 1):
 			continue
+			
+		if (q not in by_word):
+			continue
+			
+		# query the similarity matrix
 		
-		get_results(q, opt.results, opt.cutoff, file_output, opt.translate)
+		sims = get_results(q)
+		
+		# filter out query word, query language
+		
+		sims = filter_results(sims, q, opt.translate)
+		
+		# optional: apply distribution difference metric
+		
+		if opt.weighted == 1:
+			sims = apply_freq_diff(sims, q)
+			
+		# keep only the best results, top n or above cutoff
+		
+		sims = cull(sims, opt.results, opt.cutoff)
+		
+		# print row
+		
+		export_row(file_output, q, sims)
 
 
 if __name__ == '__main__':

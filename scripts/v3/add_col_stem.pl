@@ -12,27 +12,40 @@
 
 =head1 NAME
 
-name.pl	- do something
+add_col_stem.pl - index additional feature sets
 
 =head1 SYNOPSIS
 
-name.pl [options] ARG1 [, ARG2, ...]
+add_col_stem.pl [options] FILES
 
 =head1 DESCRIPTION
 
-A more complete description of what this script does.
+Indexes additional feature sets for texts in the Tesserae corpus. To be run after
+add_column.pl. By default, it adds the stem featureset for every text specified;
+alternate featuresets can be selected using the --feature option.
 
 =head1 OPTIONS AND ARGUMENTS
 
 =over
 
-=item I<ARG1>
+=item I<FILES>
 
-Description of what ARG1 does.
+The list of files to index.
 
-=item B<--option>
+=item B<--feature> I<FEATURE>
 
-Description of what --option does.
+Index the I<FEATURE> feature set. Multiple feature sets can be selected by using
+the flag more than once. The default is 'stem'. If a feature set other than 'stem'
+is specified, then 'stem' must also be specified explicitly if you want to create 
+a stem index too.
+
+=item B<--parallel> I<N>
+
+Allow I<N> processes to run in parallel. Requires Parallel::ForkManager.
+
+=item B<--quiet>
+
+Suppress (at least some) debugging and progress messages.
 
 =item B<--help>
 
@@ -51,13 +64,13 @@ The contents of this file are subject to the University at Buffalo Public Licens
 
 Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
 
-The Original Code is name.pl.
+The Original Code is add_col_stem.pl.
 
 The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
 
 Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
 
-Contributor(s):
+Contributor(s): Chris Forstall
 
 Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
 
@@ -147,7 +160,7 @@ my $override_parallel = Tesserae::check_mod("Parallel::ForkManager");
 
 my $help    = 0;
 my $quiet   = 0;
-my $feature = 'stem';
+my @feature;
 
 #
 # These are for parallel processing
@@ -161,7 +174,7 @@ my $pm;
 GetOptions(
 	'help'            => \$help,
 	'quiet'           => \$quiet,
-	'feature=s'       => \$feature,
+	'feature=s'       => \@feature,
 	'parallel=i'      => \$max_processes
 );
 
@@ -173,6 +186,10 @@ if ($help) {
 }
 
 binmode STDOUT, ':utf8';
+
+# default feature set is stem
+
+@feature = ('stem') unless @feature;
 
 #
 # initialize parallel processing
@@ -217,28 +234,32 @@ for my $file (@files) {
 	my $file_index_word = catfile($fs{data}, 'v3', $lang, $file, "$file.index_word");
 	
 	my %index_word = %{retrieve($file_index_word)};
-	my %index_feat;
 	
-	for my $form (keys %index_word) {
+	for my $feature (@feature) {
+		
+		my %index_feat;
+	
+		for my $form (keys %index_word) {
 			
-		for my $feat (@{Tesserae::feat($lang, $feature, $form)}) {
+			for my $feat (@{Tesserae::feat($lang, $feature, $form)}) {
 				
-			push @{$index_feat{$feat}}, @{$index_word{$form}};
+				push @{$index_feat{$feat}}, @{$index_word{$form}};
+			}
 		}
-	}
 	
-	for my $feat (keys %index_feat) {
+		for my $feat (keys %index_feat) {
 		
-		$index_feat{$feat} = Tesserae::uniq($index_feat{$feat});
-	}
+			$index_feat{$feat} = Tesserae::uniq($index_feat{$feat});
+		}
 
-	my $file_index = catfile($fs{data}, 'v3', $lang, $file, "$file.index_$feature");
+		my $file_index = catfile($fs{data}, 'v3', $lang, $file, "$file.index_$feature");
 	
-	print STDERR "Writing index $file_index\n" unless $quiet;
-	nstore \%index_feat, $file_index;
+		print STDERR "Writing index $file_index\n" unless $quiet;
+		nstore \%index_feat, $file_index;
 		
-	Tesserae::write_freq_stop($file, $feature, \%index_feat, $quiet);
-	Tesserae::write_freq_score($file, $feature, \%index_word, $quiet);
+		Tesserae::write_freq_stop($file, $feature, \%index_feat, $quiet);
+		Tesserae::write_freq_score($file, $feature, \%index_word, $quiet);
+	}
 	
 	$pm->finish if $max_processes;	
 }
@@ -252,32 +273,25 @@ $pm->wait_all_children if $max_processes;
 sub check_feature_dep {
 
 	my $ref = shift;
-	
-	if (defined $Tesserae::feature_dep{$feature}) {
 
-		my @file = @$ref;
-		my @file_ok;
+	my @file = @$ref;	
+	my %file_ok = map {($_, 1)} @file;
+	
+	for my $feature (@feature) {
+	
+		next unless defined $Tesserae::feature_dep{$feature};
 
 		for my $file (@file) {
-	
+
 			my $file_dep = catfile($fs{data}, 'v3', Tesserae::lang($file), $file, "$file.index_$Tesserae::feature_dep{$feature}");
-	
-			if (-e $file_dep) {
-			
-				push @file_ok, $file;
-			}
-			else {
-				
-				warn "Skipping $file: can't find required $Tesserae::feature_dep{$feature} index.";
-				next;
+
+			unless (-e $file_dep) {
+		
+				$file_ok{$file} = 0
 			}
 		}
-		
-		return \@file_ok;
 	}
-	else {
-		
-		return $ref;
-	}
+	
+	return [grep { $file_ok{$_} } @file];
 }
 

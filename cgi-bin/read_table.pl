@@ -311,7 +311,7 @@ if ($help) {
 
 unless (defined $score_basis)  { 
 	
-	$score_basis = $Tesserae::feature_score{$feature};
+	$score_basis = $Tesserae::feature_score{$feature} || 'word';
 }
 
 # html header
