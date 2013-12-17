@@ -399,13 +399,15 @@ table.input
 	width : 570px;
 }
 
-table.input th, table.input td {
-  font-size : 77%;
-  font-family : arial, helvetica, sans-serif;
-  background : none;	 
-  padding : 5px;	
-  margin : 0px 0px 0px 10px;
+table.input th {
+	font-size:120%;
+	vertical-align: top; 
+	width: 200px;
+	overflow: hidden;
+}
 
+table.input td {
+	overflow: hidden;
 }
 
 table.output {
@@ -452,4 +454,9 @@ td.pr_spacer {
 	height:0px;
 	padding:0px;
 	margin:0px;
+}
+
+table.fulltext {
+
+	font-size:100%;
 }

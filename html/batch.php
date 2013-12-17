@@ -2,6 +2,18 @@
 <?php include "nav_search.php"; ?>
 
 		</div>
+		<style type="text/css">
+			table.input th {
+				font-size: 1.2em;
+				vertical-align: top; 
+				width: 200px;
+				overflow: hidden;
+			}
+			table.input td {
+				overflow: hidden;
+			}
+		</style>
+
 		
 		<div id="main">
 			
@@ -23,7 +35,7 @@
 
 				<table class="input">
 					<tr>
-						<td><span class="h2">Source:</span></td>
+						<th>Source:</th>
 						<td>
 							<select name="source" ID="source" multiple="true">
 								<?php include $fs_html.'/textlist.la.r.php'; ?>
@@ -31,37 +43,38 @@
 						</td>
 					</tr>
 					<tr>
-						<td><span class="h2">Target:</span></td>
+						<th>Target:</th>
 						<td>
 							<select name="target" ID="target" multiple="true">
 								<?php include $fs_html.'/textlist.la.r.php'; ?>
 							</select>
 						</td>
 					</tr>
+				</table>
+				<table class="input">
 					<tr>
-						<td><span class="h2">Unit:</span></td>
+						<th>Unit:</th>
 						<td>
 							<input type="checkbox" name="unit" value="line" checked="checked">line</input>
 							<input type="checkbox" name="unit" value="phrase">phrase</input>
 						</td>
 					</tr>
 					<tr>
-						<td><span class="h2">Feature:</span></td>
+						<th>Feature:</th>
 						<td>
 							<input type="checkbox" name="feature" value="word">exact form only</input>
 							<input type="checkbox" name="feature" value="stem" checked="checked">lemma</input>
-							<input type="checkbox" name="feature" value="syn">lemma + synonyms</input>
 							<input type="checkbox" name="feature" value="3gr">character 3-grams</input>
 						</td>
 					</tr>
 					<tr>
-						<td><span class="h2">Number of stop words:</span></td>
+						<th>Number of stop words:</th>
 						<td>
 							<input name="stop" size="80" maxlength="80" value="10"/>
 						</td>
 					</tr>
 					<tr>
-						<td><span class="h2">Stoplist basis:</span></td>
+						<th>Stoplist basis:</th>
 						<td>
 							<input type="checkbox" name="stbasis" value="corpus">corpus</input>
 							<input type="checkbox" name="stbasis" value="target">target</input>
@@ -70,13 +83,21 @@
 						</td>
 					</tr>
 					<tr>
-						<td><span class="h2">Maximum distance:</span></td>
+						<th>Score basis:</th>
+						<td>
+							<input type="checkbox" name="score" value="word">word</input>
+							<input type="checkbox" name="score" value="stem">stem</input>
+							<input type="checkbox" name="score" value="feature">feature</input>							
+						</td>
+					</tr>
+					<tr>
+						<th>Maximum distance:</th>
 						<td>
 							<input name="dist" size="80" maxlength="80" value="999"/>
 						</td>
 					</tr>
 					<tr>
-						<td><span class="h2">Distance metric:</span></td>
+						<th>Distance metric:</th>
 						<td>
 							<input type="checkbox" name="dibasis" value="span">span</input>
 							<input type="checkbox" name="dibasis" value="span-target">span-target</input>
@@ -87,14 +108,15 @@
 						</td>
 					</tr>
 					<tr>
-						<td><span class="h2">Score cutoff:</span></td>
+						<th>Score cutoff:</th>
 						<td>
 							<input name="cutoff" size="80" maxlength="80" value="0"/>
 						</td>
 					</tr>
 				</table>
-				
-				<input type="submit" value="Prepare" ID="btnSubmit" NAME="btnSubmit" onclick="return validateForm()" method="post"/>
+				<div style="text-align:center; padding:20px;">
+					<input type="submit" value="Prepare" ID="btnSubmit" NAME="btnSubmit" onclick="return validateForm()" method="post"/>
+				</div>
 			</form>
 		</div>
 		

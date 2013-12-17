@@ -16,6 +16,18 @@
 
 		<title>Tesserae</title>
 
+		<style type="text/css">
+			table.input th {
+				font-size: 1.2em;
+				vertical-align: top; 
+				width: 200px;
+				overflow: hidden;
+			}
+			table.input td {
+				overflow: hidden;
+			}
+		</style>
+		
 	</head>
 	<body>
 
