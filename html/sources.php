@@ -17,6 +17,14 @@
 					<th>Added by</th>
 				</tr>
 				<tr>
+					<td>Anonymous</td>
+					<td>Laudes Domini</td>
+					<td><a href="http://www.divusangelus.it/texts/sec4dc/laudesdomini.htm">Divus Angelus</a></td>
+					<td>Pieter Van Der Weijden, ed. <i>Laudes domini: Tekst, vertaling en commentaar</i>. Amsterdam: H. J. Paris, 1967.</td>
+					<td>Vincent Hunink</td>
+				</tr>
+				
+				<tr>
 					<td>Achilles Tatius</td>
 					<td>Leucippe et Clitophon</td>
 					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0665">Perseus</a></td>
@@ -127,7 +135,6 @@
 					<td>Ammianus Marcellinus. With An English Translation. John C. Rolfe, PhD, Litt.D. Cambridge. Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd. 1935-1940.</td>
 					<td>Katherine Roache</td>
 				</td>
-
 				<tr>
 					<td>Antiphon</td>
 					<td>Against the Stepmother for Poisoning</td>

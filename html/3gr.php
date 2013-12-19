@@ -1,7 +1,14 @@
+<?php
+	$lang = 'la';
+	$default_t = 'vergil.georgics.part.1';	
+?>
+
 <?php include "first.php"; ?>
 <?php include "nav_search.php"; ?>
 
 		</div>
+
+<script src="<?php echo $url_html . '/tesserae.js' ?>"></script>
 		
 		<div id="main">
 			
@@ -15,24 +22,20 @@
 
 				<table class="input">
 					<tr>
-						<td><span class="h2">Target:</span></td>
+						<th>Target:</th>
 						<td>
+							<select name="target_auth" onchange="populate_work('la','target')">
+							</select><br />
+							<select name="target_work" onchange="populate_part('la','target')">
+							</select><br />
 							<select name="target">
-								<?php include $fs_html.'/textlist.la.r.php'; ?>
 							</select>
 						</td>
 					</tr>
+				</table>
+				<table class="input">
 					<tr>
-						<td><span class="h2">Unit:</span></td>
-						<td>
-							<select name="unit">
-								<option value="line">line</option>
-								<option value="phrase" disabled="disabled">phrase</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td><span class="h2">Number of n-grams to calculate:</span></td>
+						<th>N-grams to calculate:</th>
 						<td>
 							<select name="top">
 								<option value="10" selected="selected">10</option>
@@ -48,9 +51,21 @@
 					</tr>
 				</table>
 				
-				<input type="submit" name="submit" value="Compare Texts" />
+				<div style="text-align:center; padding:20px;">
+					<input type="submit" name="submit" value="Calculate" />
+				</div>
 			</form>
 		</div>
+		<div style="visibility:hidden">
+				<select id="la_texts">
+					<?php include $fs_html.'/textlist.la.r.php'; ?>
+				</select>
+		</div>
+
+		<script type="text/javascript">
+			populate_author('la', 'target');
+			set_defaults({'target':'la'}, {'target':'vergil.georgics.part.1'});
+		</script>
 
 		<?php include "last.php"; ?>
 

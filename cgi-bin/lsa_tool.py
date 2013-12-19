@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 
+# modules necessary to read config file,
+# parse command-line arguments
+
+import os
+import sys
+import argparse
+
+# read config
+
 def read_pointer():
 	'''look for .tesserae.conf; return lib path'''
 	
@@ -22,18 +31,40 @@ def read_pointer():
 	
 	return lib
 
+sys.path.append(read_pointer())
+
+
+#
+# Tesserae-specific modules
+#
+
+from TessPy.tesserae import fs, url
+from TessPy import progressbar
+from TessPy import tesslang
+
+
+#
+# additional modules for this script
+#
+
 import string
-import os
 import cgi, cgitb
 
-# importing the 'tesserae' module will read local config
-# and add necessary local python libraries
-#   -- without this gensim won't be found on sophia
-
-sys.path.append(read_pointer())
-from tesserae import fs, url
-
 from gensim import corpora, models, similarities
+
+#
+# global variables
+#
+
+
+#
+# functions
+#
+
+
+#
+# main
+#
 
 form = cgi.FieldStorage() 
 args_c = form.getvalue('dropdown')

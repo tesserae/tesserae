@@ -1,0 +1,59 @@
+ID	NAME	SORT	BIRTH	BIRTH_CERT	DEATH	DEATH_CERT
+1	Ammianus	Ammianus	330	0	395	0
+2	Apuleius Madaurensis	Apuleius Madaurensis 	125	0	170	0
+3	Augustine	Augustine	354	0	430	0
+4	Ausonius	Ausonius	399	0	399	1
+5	Boethius	Boethius	480	0	524	0
+6	Gaius Iulius Caesar	Caesar Julius	-100	1	-44	1
+7	C. Iul. Caes. Augustus Octavianus	Caesar Augustus	-63	1	14	0
+8	Gaius Valerius Catullus	Catullus	-84	1	-54	1
+9	Aulus Cornelius Celsus	Celsus		0		0
+10	Marcus Tullius Cicero	Cicero Marcus	-106	1	-43	1
+11	Claudian	Claudian	370	0	404	0
+12	L. Iunius Moderatus Columella	Columella		0	50	0
+13	Corippus	Corippus		0		0
+14	Quintus Curtius Rufus	Curtius Rufus	99	0	99	0
+15	Annius Florus	Florus	99	0	99	0
+16	Aulus Gellius	Gellius	125	0	199	0
+17	Glass	Glass		0		0
+18	Quintus Horatius Flaccus	Horace	-65	1	-8	1
+19	Homerus Latinus	Homerus Latinus	99	0	99	0
+20	Jerome	Jerome	347	0	420	0
+21	Decimus Iunius Iuvenalis	Juvenal	199	0	199	0
+22	Juvencus	Juvencus	299	0	299	0
+23	Titus Livius	Livy	-59	1	17	0
+24	Marcus Annaeus Lucanus	Lucan	39	0	65	0
+25	Titus Lucretius Carus	Lucretius	-94	1	-51	1
+26	Marcus Manilius	Manilius	99	0	99	0
+27	Marcus Mincuius Felix	Mincuius		0		0
+28	Marcus Valerius Martialis	Martial	38	0	104	0
+29	Cornelius Nepos	Nepos	-110	1	-24	1
+30	Publius Ovidius Naso	Ovid	-43	1	17	0
+31	Paulus Quaestor	Paul Deacon		0		0
+32	Aulus Persius Flaccus	Persius	34	0	62	0
+33	Petronius	Petronius	99	0	66	0
+34	Titus Maccius Plautus	Plautus	-254	1	-184	1
+35	Gaius Plinius Secundus	Pliny Elder	23	0	79	0
+36	C. Plinius Caecilius Secundus	Pliny Younger	61	0	112	0
+37	Sextus Propertius	Propertius	47	1	-2	1
+38	Aurelius Clemens Prudentius	Prudentius	348	0	406	0
+39	Q Cicero	Cicero Quintus		0		0
+40	Marcus Fabius Quintilianus	Quintilian	35	0	99	0
+41	Rutilius	Rutilius		0		0
+42	Gaius Sallustius Crispus	Sallust	-86	1	-35	1
+43	Scriptores Hisoriae Augustae	Scriptores Hisoriae Augustae	117	0	284	0
+44	Lucius Annaeus Seneca iunior	Seneca Younger	1	0	65	0
+45	Lucius Annaeus Seneca senior	Seneca Elder	-50	1	40	0
+46	Maurus Servius Honoratus	Servius	399	0	399	0
+47	Silius Italicus	Silius	26	0	102	0
+48	Publius Papinius Statius	Statius	50	0	96	0
+49	Gaius Suetonius Tranquillus	Suetonius	70	0	130	0
+50	Cornelius Tacitus	Tacitus	56	0	118	0
+51	Didascaliae et Per. in Terentium	Terence		0	-159	1
+52	Tertullian	Tertullian	160	0	240	0
+53	Albius Tibullus	Tibullus	-48	1	-19	1
+54	Valerius Maximus	Valerius Maximus		0		0
+55	Gaius Valerius Flaccus	Valerius Flaccus		0		0
+56	Venerable Bede	Bede		0		0
+57	Publius Vergilius Maro	Vergil	-70	1	-19	1
+58	Marcus Vitruvius Pollio	Vitruvius	-70	0	-14	0

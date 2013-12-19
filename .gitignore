@@ -31,7 +31,7 @@ data/common/*.idf_text
 data/common/temp-lang
 data/v3/*
 data/v1/*
-data/bench/rec.cache
+data/bench/*.cache
 data/lsa/*
 html/textlist.*
 

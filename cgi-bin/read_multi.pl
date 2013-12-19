@@ -127,7 +127,9 @@ BEGIN {
 		}
 		
 		die "can't find .tesserae.conf!\n";
-	}	
+	}
+	
+	$lib = catdir($lib, 'TessPerl');	
 }
 
 # load Tesserae-specific modules
@@ -673,7 +675,7 @@ sub print_html {
 		
 		print "          <td>\n";
 		print "            <a href=\"javascript:;\""
-		    . " onclick=\"window.open(link='$url{cgi}/context2.pl?target=$target;unit=$unit;id=$unit_id_target', "
+		    . " onclick=\"window.open(link='$url{cgi}/context.pl?target=$target;unit=$unit;id=$unit_id_target', "
 		    . " 'context', 'width=520,height=240')\">";
 		print "$abbr{$target} $unit_target[$unit_id_target]{LOCUS}";
 		print "            </a>\n";
@@ -703,7 +705,7 @@ sub print_html {
 		
 		print "          <td>\n";
 		print "            <a href=\"javascript:;\""
-		    . " onclick=\"window.open(link='$url{cgi}/context2.pl?target=$source;unit=$unit;id=$unit_id_source', "
+		    . " onclick=\"window.open(link='$url{cgi}/context.pl?target=$source;unit=$unit;id=$unit_id_source', "
 		    . " 'context', 'width=520,height=240')\">";
 		print "$abbr{$source} $unit_source[$unit_id_source]{LOCUS}";
 		print "            </a>\n";
@@ -1175,7 +1177,7 @@ sub format_multi_html {
 			my $locus_other   = $multi{$other}{$unit_id_target}{$unit_id_source}{$unit_id_other}{LOCUS};
 			my $score_other   = sprintf("%i", $multi{$other}{$unit_id_target}{$unit_id_source}{$unit_id_other}{SCORE});
 
-			my $a = "<a href=\"javascript:;\" onclick=\"window.open(link='$url{cgi}/context2.pl?target=$other;unit=$unit;id=$unit_id_other',  'context', 'width=520,height=240')\">$locus_other ($score_other)</a>";
+			my $a = "<a href=\"javascript:;\" onclick=\"window.open(link='$url{cgi}/context.pl?target=$other;unit=$unit;id=$unit_id_other',  'context', 'width=520,height=240')\">$locus_other ($score_other)</a>";
 			
 			push @a, $a;
 		}

@@ -136,7 +136,9 @@ BEGIN {
 		}
 		
 		die "can't find .tesserae.conf!\n";
-	}	
+	}
+
+	$lib = catdir($lib, 'TessPerl');
 }
 
 # load Tesserae-specific modules
@@ -387,21 +389,6 @@ my @token_target   = @{ retrieve( "$path_target.token"    ) };
 my @unit_target    = @{ retrieve( "$path_target.${unit}" ) };
 my %index_target   = %{ retrieve( "$path_target.index_$feature" ) };
 
-
-#
-# if the featureset is synonyms, get the parameters used
-# to create the synonym dictionary for debugging purposes
-#
-
-my $max_heads = "NA";
-my $min_similarity = "NA";
-
-if ( $feature eq "syn" ) { 
-
-	my $file_param = catfile($fs{data}, 'common', "$lang{$target}.syn.cache.param");
-
-	($max_heads, $min_similarity) = @{ retrieve($file_param) };
-}
 
 #
 # output
@@ -664,7 +651,7 @@ sub print_html {
 		
 		print "          <td>\n";
 		print "            <a href=\"javascript:;\""
-		    . " onclick=\"window.open(link='$url{cgi}/context2.pl?target=$utarget;unit=$unit;id=$unit_id_target', "
+		    . " onclick=\"window.open(link='$url{cgi}/context.pl?target=$utarget;unit=$unit;id=$unit_id_target', "
 		    . " 'context', 'width=520,height=240')\">";
 		print "$abbr{$target} $unit_target[$unit_id_target]{LOCUS}";
 		print "            </a>\n";
@@ -694,7 +681,7 @@ sub print_html {
 		
 		print "          <td>\n";
 		print "            <a href=\"javascript:;\""
-		    . " onclick=\"window.open(link='$url{cgi}/context2.pl?target=$usource;unit=$unit;id=$unit_id_source', "
+		    . " onclick=\"window.open(link='$url{cgi}/context.pl?target=$usource;unit=$unit;id=$unit_id_source', "
 		    . " 'context', 'width=520,height=240')\">";
 		print "$abbr{$source} $unit_source[$unit_id_source]{LOCUS}";
 		print "            </a>\n";
@@ -908,9 +895,8 @@ sub print_xml {
 	
 		word => "Exact matching only.",
 		stem => "Stem matching enabled.  Forms whose stem is ambiguous will match all possibilities.",
-		syn  => "Stem + synonym matching.  This search is still in development.  Note that stopwords may match on less-common synonyms.  max_heads=$max_heads; min_similarity=$min_similarity"
-	
-		);
+		syn  => "Stem + synonym matching.  This search is still in development.  Note that stopwords may match on less-common synonyms."
+	);
 
 	print STDERR "writing results\n" unless $quiet;
 
@@ -926,7 +912,7 @@ sub print_xml {
 	source="$source" target="$target" unit="$unit" feature="$feature" 
 	sessionID="$session" stop="$stop" stbasis="$stoplist_basis"
 	maxdist="$max_dist" dibasis="$distance_metric" cutoff="$cutoff" version="3">
-	<comments>V3 results. $feature_notes{$feature}</comments>
+	<comments>V3 results. $meta{COMMENT}</comments>
 	<commonwords>$commonwords</commonwords>
 END
 

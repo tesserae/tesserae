@@ -51,6 +51,8 @@ BEGIN {
 		
 		die "can't find .tesserae.conf!\n";
 	}	
+	
+	$lib = catdir($lib, 'TessPerl');	
 }
 
 # load Tesserae-specific modules
@@ -88,7 +90,8 @@ if ($help) {
 
 # languages to install by default
 
-my @inst_lang = @ARGV ? @ARGV : qw/la/;
+my @inst_lang    = qw/la grc/;
+my @inst_feature = qw/stem 3gr/;
 
 #
 # build dictionaries
@@ -96,12 +99,8 @@ my @inst_lang = @ARGV ? @ARGV : qw/la/;
 
 print STDERR "building dictionaries\n";
 
-for (qw/build-stem-cache.pl patch-stem-cache.pl build-syn-cache.pl/) {
-
-	my $script = catfile($fs{perl}, $_);
-
-	do_cmd("perl $script");
-}
+do_cmd("perl " . catfile($fs{script}, 'build-stem-cache.pl '. join(" ", @inst_lang)));
+do_cmd("perl " . catfile($fs{script}, 'patch-stem-cache.pl'));
 
 print STDERR "done\n\n";
 
@@ -113,10 +112,17 @@ print STDERR "adding texts\n";
 
 for my $lang (@inst_lang) {
 
-	my $script = catfile($fs{perl}, 'v3', 'add_column.pl');
+	my $script = catfile($fs{script}, 'v3', 'add_column.pl');
 	my $texts  = catfile($fs{text}, $lang, '*');
 	
 	do_cmd("perl $script $texts");
+
+	for my $feature (@inst_feature) {
+		
+		$script = catfile($fs{script}, 'v3', 'add_col_stem.pl --feat $feature');
+	
+		do_cmd("perl $script $texts");
+	}
 }
 
 print STDERR "done\n\n";
@@ -127,27 +133,27 @@ print STDERR "done\n\n";
 {
 	print "calculating corpus-wide frequencies\n";
 	
-	my $script = catfile($fs{perl}, 'v3', 'corpus-stats.pl');
+	my $script = catfile($fs{script}, 'v3', 'corpus-stats.pl');
+	
+	my $features = join(" ", map {"--feat $_"} @inst_feature);
 	
 	my $langs = join(" ", @inst_lang);
 	
-	do_cmd("perl $script $langs");
+	do_cmd("perl $script $features $langs");
 	
 	print STDERR "done\n\n";
 }
 
 #
-# calculate tf-idf
+# create drop-down lists
 #
 
 {
-	print STDERR "calculating inverse document frequencies\n";
-	
-	my $script = catfile($fs{perl}, 'tf-idf.pl');
-	
-	do_cmd("perl $script");
-	
-	print STDERR "done\n\n";
+
+	my $script = catfile($fs{script}, 'textlist.pl');
+	my $langs = join(" ", @inst_lang);
+
+	do_cmd("perl $script $langs");
 }
 
 #

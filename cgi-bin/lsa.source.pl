@@ -56,7 +56,9 @@ BEGIN {
 		}
 		
 		die "can't find .tesserae.conf!\n";
-	}	
+	}
+	
+	$lib = catdir($lib, 'TessPerl');	
 }
 
 # load Tesserae-specific modules
@@ -155,10 +157,9 @@ print STDERR "lsa returned " . scalar(keys %lsa) . " phrases above threshold $th
 my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
-# language of input texts
+# language of input text
 
-my $file_lang = catfile($fs{data}, 'common', 'lang');
-my %lang = %{retrieve($file_lang)};
+my $lang = Tesserae::lang($source);
 
 #
 # source and target data
@@ -169,7 +170,7 @@ if ($no_cgi) {
 	print STDERR "loading $source\n" unless ($quiet);
 }
 
-my $file = catfile($fs{data}, 'v3', $lang{$source}, $source, $source);
+my $file = catfile($fs{data}, 'v3', $lang, $source, $source);
 
 my @token = @{retrieve("$file.token")};
 my @line  = @{retrieve("$file.line")};	
@@ -221,9 +222,9 @@ $table .= "</table>\n";
 my $file_frame = catfile($fs{html}, 'frame.fullscreen.php');
 my $frame = `php -f $file_frame`;
 
-# add some style into the head
+# add some stuff into the head
 
-my $style = "
+my $head_insert = "
 		<style style=\"text/css\">
 			a {
 				text-decoration: none;
@@ -231,9 +232,10 @@ my $style = "
 			a:hover {
 				color: #888;
 			}
-		</style>\n";
+		</style>
+		<script src=\"$url{html}/tesserae.js\"></script>\n";
 
-$frame =~ s/<!--head-->/$style/;
+$frame =~ s/<!--head-->/$head_insert/;
 
 #
 # create navigation
@@ -241,7 +243,7 @@ $frame =~ s/<!--head-->/$style/;
 
 # read drop down list
 
-open (FH, "<:utf8", catfile($fs{html}, "textlist.$lang{$source}.r.php"));
+open (FH, "<:utf8", catfile($fs{html}, "textlist.$lang.r.php"));
 my $menu_source;
 
 while (<FH>) { 
@@ -250,11 +252,6 @@ while (<FH>) {
 }
 
 close FH;
-
-# mark the current text as selected
-
-$menu_source =~ s/ selected=\"selected\"//g;
-$menu_source =~ s/value="$source"/value="$source" selected="selected"/;
 
 # topics menu
 
@@ -271,7 +268,7 @@ for (my $n = 5; $n <= 50; $n += 5) {
 
 my $nav = "
 		<form action=\"$url{cgi}/lsa.pl\" method=\"POST\" target=\"_top\">
-		<table>
+		<table class=\"input\">
 			<tr>
 				<td><a href=\"$url{html}/experimental.php\" target=\"_top\">Back to Tesserae</a></td>
 			</tr>
@@ -281,26 +278,43 @@ my $nav = "
 				</td>
 			</tr>
 			<tr>
-				<td style=\"text-align:left\">Source:</td>
+				<th>Source:</th>
 				<td>
+					<select name=\"source_auth\" onchange=\"populate_work('$lang', 'source')\">
+					</select><br />
+					<select name=\"source_work\" onchange=\"populate_part('$lang', 'source')\">
+					</select><br />
 					<select name=\"source\">
-						$menu_source
 					</select>
-				</td>
-				<td>
-					<input type=\"submit\" name=\"submit\" value=\"Change\" />
 				</td>
 			</tr>
 			<tr>
-				<td style=\"text-align:left\">Number of Topics:</td>
-				<td style=\"text-align:left\">
+				<th>Number of Topics:</th>
+				<td>
 					<select name=\"topics\">
 						$menu_topics
 					</select>
 				</td>
 			</tr>
+			<tr>
+				<th></th>
+				<td>
+					<input type=\"submit\" value=\"Change\" ID=\"btnSubmit\" NAME=\"btnSubmit\" />
+				</td>
+			</tr>
 		</table>
-		</form>\n";
+		</form>
+		<div style=\"visibility:hidden;\">
+			<select id=\"la_texts\">
+				$menu_source
+			</select>
+		</div>
+		
+		<script language=\"javascript\">
+			populate_author('$lang', 'source');
+			set_defaults({'source':'$lang'}, {'source':'$source'});
+		</script>
+		\n";
 
 $frame =~ s/<!--navigation-->/$nav/;
 

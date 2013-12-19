@@ -23,6 +23,9 @@
 
 		<div id="header"> 
 		
+			<div style="position:fixed; top:0; right:0; z-index=100; color:red; font-size:1.1em">
+				develop
+			</div>
 			<div id="header_image">
 				<a href="<?php echo $url_html ?>">
 					<img src="<?php echo $url_image . "/Tesserae.png" ?>" alt="Tesserae" width="300">

@@ -119,6 +119,7 @@ div#footer
 	background : #e1e6c6;
 	height: 12em;
 	text-align: left;
+	border-top: 1px solid black;
 }
 
 div#footer_content
@@ -161,9 +162,10 @@ div.footer_icon_left
 }
 
 
-div#footer img
+div#footer img.logo_wide
 {
-	max-height: 50px;
+	max-width: 200px;
+	padding: 5px;
 }
 
 div#results_sort table
@@ -398,13 +400,15 @@ table.input
 	width : 570px;
 }
 
-table.input th, table.input td {
-  font-size : 77%;
-  font-family : arial, helvetica, sans-serif;
-  background : none;	 
-  padding : 5px;	
-  margin : 0px 0px 0px 10px;
+table.input th {
+	font-size:120%;
+	vertical-align: top; 
+	width: 200px;
+	overflow: hidden;
+}
 
+table.input td {
+	overflow: hidden;
 }
 
 table.output {
@@ -451,4 +455,9 @@ td.pr_spacer {
 	height:0px;
 	padding:0px;
 	margin:0px;
+}
+
+table.fulltext {
+
+	font-size:100%;
 }

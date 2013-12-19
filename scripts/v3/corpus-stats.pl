@@ -106,7 +106,9 @@ BEGIN {
 		}
 		
 		die "can't find .tesserae.conf!\n";
-	}	
+	}
+	
+	$lib = catdir($lib, 'TessPerl');	
 }
 
 # load Tesserae-specific modules
@@ -126,17 +128,20 @@ use Storable qw(nstore retrieve);
 
 # initialize some variables
 
+my @feature = qw/word/;
+my @lang;
 my $help = 0;
+my $quiet = 0;
 
 # get user options
 
 GetOptions(
-	'help'  => \$help);
+	'help'      => \$help,
+	'quiet'     => \$quiet,
+	'feature=s' => \@feature
+);
 
-#
 # print usage if the user needs help
-#
-# you could also use perldoc name.pl
 	
 if ($help) {
 
@@ -153,8 +158,6 @@ binmode STDERR, ':utf8';
 # specify language to parse at cmd line
 #
 
-my @lang;
-
 for (@ARGV) {
 
 	$_ = lc($_);
@@ -166,6 +169,9 @@ for (@ARGV) {
 	}
 }
 
+print STDERR "lang: " . join(" ", @lang) . "\n" unless $quiet;
+print STDERR "feature: " . join(" ", @feature) . "\n" unless $quiet;
+
 #
 # main loop
 #
@@ -175,7 +181,7 @@ for (@ARGV) {
 # use the cached stem dictionary
 #
 
-for my $lang(@lang) {
+for my $lang (@lang) {
 	
 	# get a list of all the word counts
 
@@ -192,7 +198,7 @@ for my $lang(@lang) {
 	
 		print STDERR "checking $text:";
 		
-		for my $feature (qw/word stem syn 3gr/) {
+		for my $feature (@feature) {
 		
 			my $file_index = catfile($fs{data}, 'v3', $lang, $text, "$text.index_$feature");
 
@@ -215,7 +221,7 @@ for my $lang(@lang) {
 	# after the whole corpus is tallied,	
 	# convert counts to frequencies and save
 	
-	for my $feature (qw/word stem syn 3gr/) {
+	for my $feature (@feature) {
 	
 		next unless defined $count{$feature};
 

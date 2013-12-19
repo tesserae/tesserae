@@ -186,15 +186,15 @@
 1	1	"bella per emathios plus quam civilia campos iusque datum sceleri canimus populumque potentem in sua victrici conversum visceradextra cognatasque acies et rupto foedere regni certatum totisconcussi viribus orbis in commune nefas infestisque obvia signis signa pares aquilas et pila minantia pilis"	12	928	"consurgunt gemitu rutuli totusque remugit mons circum et vocem late nemora alta remittunt ille humilis supplexque oculos dextramque precantem protendens equidem merui nec deprecor inquit"	2	
 1	2	"2 canimus"	1	1	"1.1 cano"	5	"V"
 1	2	"1.2 iusque datum sceleri"	6	852	"6.852 pacique imponere morem"	4	"R"
-1	3	"3 uiscera"	6	833	"6.833 uiscera"	5	"H,TB,V,R"
-1	4	"4-5 rupto foedere regni / certatum totis concussi viribus orbis"	11	313	"11.313 toto certatum est corpore regni"	5	"TB,R"
+1	3	"3 uiscera"	6	833	"6.833 uiscera"	5	"H;TB;V;R"
+1	4	"4-5 rupto foedere regni / certatum totis concussi viribus orbis"	11	313	"11.313 toto certatum est corpore regni"	5	"TB;R"
 1	4	"4-5 rupto foedere regni / certatum totis concussi viribus orbis"	11	321	"11.321-2 foederis aequas / dicamus leges sociosque in regna vocamus"	3	"TB"
-1	5	"5 certatum . . . orbis"	7	222	"7.222-4 concurrerit orbis"	3	"TB, R"
+1	5	"5 certatum . . . orbis"	7	222	"7.222-4 concurrerit orbis"	3	"TB; R"
 1	5	"5 totis concussi uiribus "	12	528	"12.528 totis in uolnera uiribus"	4	
 1	6	"1.6-7 signis / signa . . . pila minantia pilis"	4	628	"4.628-9 litora litoribus . . . / . . . arma armis"	5	"R"
-1	7	"7 pares . . . pila"	6	826	"6.826 paribus . . . armis"	5	"V,R"
-1	8	"8 quis furor"	2	42	"2.42 quae tanta insania"	5	"TB,V,R"
-1	8	"1.8 quis furor"	5	670	"5.670 quis furor iste nouus"	5	"TB,V,R"
+1	7	"7 pares . . . pila"	6	826	"6.826 paribus . . . armis"	5	"V;R"
+1	8	"8 quis furor"	2	42	"2.42 quae tanta insania"	5	"TB;V;R"
+1	8	"1.8 quis furor"	5	670	"5.670 quis furor iste nouus"	5	"TB;V;R"
 1	8	"quis furor o cives quae tantalicentia ferri gentibus invisis latium praebere cruorem"	5	796	"quod superest oro liceat dare tuta per undas vela tibi liceatlaurentem attingere thybrim"	2	
 1	8	"quis furor o cives quae tantalicentia ferri gentibus invisis latium praebere cruorem"	7	315	"at trahere atque moras tantis licet addere rebus at licetamborum populos exscindere regum"	2	
 1	8	"8 licentia ferri"	7	461	"7.461 amor ferri"	4	"TB"
@@ -209,7 +209,7 @@
 1	10	"cumque superba foret babylon spolianda tropaeis ausoniis umbraque erraret crassus inultabella geri placuit nullos habitura triumphos"	2	438	"hic vero ingentem pugnam ceu cetera nusquam bella forentnulli tota morerentur in urbe"	2	
 1	10	"cumque superba foret babylon spolianda tropaeis ausoniis umbraque erraret crassus inultabella geri placuit nullos habituratriumphos"	11	335	"consulite in medium et rebus succurrite fessis tum drances idem infensus quem gloria turni obliqua invidia stimulisque agitabat amaris largus opum et lingua melior sed frigida bellodextera consiliis habitus non futilis auctor seditione potens (genus huic materna superbum nobilitas dabat incertum de patre ferebat) surgit et his onerat dictis atque aggerat iras"	2	
 1	10	"cumque superba foret babylon spolianda tropaeis ausoniisumbraque erraret crassus inulta bella geri placuit nullos habitura triumphos"	12	206	"ut sceptrum hoc (dextra sceptrum nam forte gerebatnumquam fronde levi fundet virgulta nec umbras cum semel in silvis imo de stirpe recisum matre caret posuitque comas et bracchia ferro olim arbos nunc artificis manus aere decoro inclusit patribusque dedit gesture latinis talibus inter se firmabant foedera dictis conspectu in medio procerum"	2	
-1	11	"11 umbraque erraret Crassus inulta"	6	328	"6.328-30 unburied souls fly about on shore of Hades for 100 years"	4	"V,R"
+1	11	"11 umbraque erraret Crassus inulta"	6	328	"6.328-30 unburied souls fly about on shore of Hades for 100 years"	4	"V;R"
 1	12	"12 bella . . . nullos habitura triumphos"	8	714	"8.714 triplici . . . triumpho"	4	"TB"
 1	13	"heu quantum terrae potuitpelagique parari hoc quem civiles hauserunt sanguine dextrae unde venit titan et nox ubi sidera condit quaque dies medius flagrantibus aestuat horis et qua bruma rigens ac nescia vere remitti adstringit scythico glacialem frigore pontum"	1	97	"mene iliacis occumbere campis non potuisse tuaque animamhanc effundere dextra saevus ubi aeacidae telo iacet hector ubi ingens sarpedon ubi tot simois correpta sub undis scuta virum galeasque et fortia corpora volvit talia iactanti stridens aquilone procella velum adversa ferit fluctusque ad sidera tollit"	2	
 1	13	"heu quantum terrae potuitpelagique parari hoc quem civiles hauserunt sanguine dextrae undevenit titan et nox ubi sidera condit quaque dies medius flagrantibus aestuat horis et qua bruma rigens ac nescia vere remitti adstringit scythico glacialem frigore pontum"	1	242	"antenor potuit mediis elapsus achivis illyricos penetrare sinus atque intima tutus regna liburnorum et fontem superare timaviunde per ora novem vasto cum murmure montis it mare proruptum et pelago premit arva sonanti"	2	
@@ -272,14 +272,14 @@
 1	19	"sub iuga iam seres iam barbarus isset araxes et gens si qua iacet nascenti conscia nilo"	8	147	"nos si pellant nihil afore credunt quin omnem hesperiam penitus sua sub iuga mittant et mare quod supra teneant quodque adluit infra"	2	
 1	21	"tunc si tantus amor belli tibi roma nefandi totum sub latias leges cum miseris orbem in te verte manus"	1	453	"namque sub ingenti lustrat dum singula templo reginam opperiens dum quae fortuna sit urbi artificumque manus inter se operumque laborem miratur videt iliacas ex ordine pugnasbellaque iam fama totum volgata per orbem atridas priamumque et saevum ambobus achillem"	1	
 1	21	"tunc si tantus amor belli tibi roma nefandi totum sub latias leges cummiseris orbem in te verte manus"	1	715	"ille ubi complexu aeneae colloque pependit et magnum falsi implevit genitoris amorem reginam petit haec oculis haec pectore toto haeret et interdum gremio fovet inscia dido insidat quantus miserae deus"	1	
-1	21	"1.21 si tantus amor belli tibi Roma nefandi"	2	10	"2.10 tantus amor casus cognoscere nostros"	3	"V,R"
+1	21	"1.21 si tantus amor belli tibi Roma nefandi"	2	10	"2.10 tantus amor casus cognoscere nostros"	3	"V;R"
 1	21	"tunc si tantus amor belli tibi roma nefandi totum sub latias leges cum miseris orbem in te verte manus"	2	438	"hic vero ingentem pugnam ceu cetera nusquam bella forent nulli tota morerentur in urbe"	1	
 1	21	"tunc si tantus amor belli tibi roma nefandi totum sub latias leges cum miseris orbem in te verte manus"	4	618	"nec cum se sub leges pacis iniquae tradiderit regno aut optata luce fruatur sed cadat ante diem mediaque inhumatus harena"	2	
 1	21	"tunc si tantus amor belli tibi roma nefandi totum sub latias leges cum miseris orbem in te verte manus"	5	583	"inde alios ineunt cursus aliosque recursus adversi spatiis alternosque orbibus orbes impediunt pugnaeque cient simulacra sub armis"	2	
 1	21	"tunc si tantus amor belli tibi roma nefandi totum sub latias leges cummiseris orbem in te verte manus"	5	623	"o miserae quas non manus inquit achaca bello traxerit ad letum patriae sub moenibus"	1	
 1	21	"tunc si tantus amor belli tibi roma nefandi totum sub latias leges cummiseris orbem in te verte manus"	5	654	"at matres primo ancipites oculisque malignis ambiguae spectare rates miserum inter amorem praesentis terrae fatisque vocantia regna cum dea se paribus per caelum sustulit alis ingentemque fuga secuit sub nubibus arcum"	2	
 1	21	"tunc si tantus amor belli tibi romanefandi totum sub latias leges cum miseris orbem in te verte manus"	6	24	"hic crudelis amor tauri suppostaque furto pasipha mixtumque genus prolesque biformis minotaurus inest veneris monumenta nefandae"	4	
-1	21	"1.21 si tantus amor belli tibi Roma nefandi"	6	133	"6.133 si tantus amor menti"	3	"V,R"
+1	21	"1.21 si tantus amor belli tibi Roma nefandi"	6	133	"6.133 si tantus amor menti"	3	"V;R"
 1	21	"tunc si tantus amor belli tibi roma nefandi totum sub latias leges cum miseris orbem in te verte manus"	6	832	"ne pueri ne tanta animis adsuescite bella neu patriae validas in viscera vertite vires"	3	
 1	21	"tunc si tantus amor belli tibi roma nefandi totum sub latias leges cum miseris orbem in te verte manus"	7	41	"dicam horrida bella dicam acies actosque animis in funera reges tyrrhenamque manum totamque sub arma coactam hesperiam"	2	
 1	21	"tunc si tantus amor belli tibi roma nefandi totum sub latias leges cum miseris orbem in te verte manus"	7	62	"tum regina deum caelo delapsa morantis impulit ipsa manuportas et cardine verso belli ferratos rumpit saturnia postes"	2	
@@ -313,7 +313,7 @@
 1	21	"tunc si tantus amor belli tibi roma nefandi totum sub latias leges cummiseris orbem in te verte manus"	12	513	"ille talon tanaimque neci fortemque cethegum tris uno congressu et maestum mittit oniten nomen echionium matrisque genus peridiae hic fratres lycia missos et apollinis agris et iuvenem exosum nequiquam bella menoeten arcada piscosae cui circum flumina lernae ars fuerat pauperque domus nec nota potentum munera conductaque pater tellure serebat"	2	
 1	21	"1.21 si tantus amor belli tibi Roma nefandi"	12	572	"12.572 belli . . . nefandi"	5	"R"
 1	21	"tunc si tantus amor belli tibi roma nefandi totum sub latias leges cum miseris orbem in te verte manus"	12	821	"cum iam conubis pacem felicibus esto component cum iamleges et foedera iungent ne vetus indigenas nomen mutare latinos neu troas fieri iubeas teucrosque vocari aut vocem mutare viros aut vertere vestem"	2	
-1	22	"22 totum sub Latias leges cum miseris orbem"	4	231	"4.231 totum sub leges mitteret orbem"	5	"TB,V,R"
+1	22	"22 totum sub Latias leges cum miseris orbem"	4	231	"4.231 totum sub leges mitteret orbem"	5	"TB;V;R"
 1	23	"nondum tibi defuit hostis"	2	375	"vos celsis nunc primum a navibus itis dixit et extemplo neque enim responsa dabantur fida satis sensit medios delapsus inhostis"	2	
 1	23	"nondum tibi defuit hostis"	12	264	"vos unanimi densete catervas et regem vobis pugna defendite raptum dixit et adversos telum contorsit in hostis procurrens"	2	
 1	24	"at nunc semirutis pendent quodmoenia tectis urbibus italiae lapsisque ingentia muris saxa iacent nulloque domus custode tenentur rarus et antiquis habitator in urbibus errat horrida quoddumis multosque inarata per annos hesperia est desuntque manus poscentibus arvis non tu pyrrhe ferox nec tantis cladibus auctor poenus erit"	1	5	"multa quoque et bello passus dum conderet urbeminferretque deos latio genus unde latinum albanique patres atque altae moenia romae"	4	
@@ -422,16 +422,16 @@
 1	24	"at nunc semirutis pendent quod moenia tectis urbibus italiae lapsisque ingentia muris saxa iacent nulloque domus custode tenentur rarus et antiquis habitator in urbibus errat horrida quod dumis multosque inarata per annos hesperia est desuntque manus poscentibus arvis non tu pyrrhe ferox nec tantis cladibus auctor poenus erit"	12	689	"disiecta per agmina turnus sic urbis ruit ad muros ubi plurimafuso sanguine terra madet striduntque hastilibus aurae significatque manu et magno simul incipit ore"	2	
 1	24	"at nunc semirutis pendent quodmoenia tectis urbibus italiae lapsisque ingentia muris saxa iacent nulloque domus custodetenentur rarus et antiquis habitator in urbibus errat horrida quod dumis multosque inarata per annos hesperia est desuntque manus poscentibus arvis non tu pyrrhe ferox nec tantis cladibus auctor poenus erit"	12	704	"iam vero et rutuli certatim et troes et omnes convertere oculos itali quique alta tenebant moenia quique imos pulsabant arietemuros armaque deposuere umeris"	2	
 1	25	"1.25-6 ingentia . . . / saxa"	6	616	"6.616 saxum ingens"	3	"R"
-1	25	"25-6 lapsis . . . muris"	8	355	"8.355 disiectis . . . muris"	4	"H,TB"
+1	25	"25-6 lapsis . . . muris"	8	355	"8.355 disiectis . . . muris"	4	"H;TB"
 1	25	"1.25-6 ingentia . . . / saxa"	10	127	"10.127 ingens . . . saxum"	3	"R"
 1	25	"1.25-6 ingentia . . . / saxa"	12	531	"12.531 ingentis . . . saxi"	3	"R"
 1	25	"1.25-6 ingentia . . . / saxa"	12	896	"12.896-7 saxum . . . ingens"	3	"R"
 1	27	"27 urbibus errat"	1	578	"1.578 urbibus errat"	4	"V"
 1	27	"27 rarus . . . habitator"	8	98	"8.98-9 rara domorum / tecta"	3	"TB"
 1	28	"28 multosque inarata per annos"	7	60	"7.60 multosque metu seruata per annos"	4	
-1	28	"28 horrida . . . dumis"	8	348	"8.348 siluestribus horrida dumis"	5	"TB,V,R"
+1	28	"28 horrida . . . dumis"	8	348	"8.348 siluestribus horrida dumis"	5	"TB;V;R"
 1	28	"1.28 horrida . . . dumis"	9	381	"9.381-2 dumis . . . / horrida"	5	"R"
-1	29	"29 desuntque manus poscentibus aruis"	11	379	"11.379 bella manus poscunt"	5	"V,R"
+1	29	"29 desuntque manus poscentibus aruis"	11	379	"11.379 bella manus poscunt"	5	"V;R"
 1	32	"alta sedent civilis vulneradextrae"	1	34	"vix e conspectu siculae telluris in altum vela dabant laeti et spumas salis aere ruebant cum iuno aeternum servans sub pectore volnus haec secum"	1	
 1	32	"alta sedent civilis vulnera dextrae"	4	186	"luce sedet custos aut summi culmine tecti turribus aut altis et magnas territat urbes"	1	
 1	32	"alta sedent civilis vulneradextrae"	4	683	"date volnera lymphis abluam et extremus si quis super halitus errat ore legam sic fata gradus evaserat altos semianimemque sinu germanam amplexa fovebat cum gemitu atque atros siccabat veste cruores"	1	
@@ -465,7 +465,7 @@
 1	33	"quodsi non aliam venturo fata neroni invenere viam magnoqueaeterna parantur regna deis coelumque suo servire tonanti non nisi saevorum potuit post bella gigantum"	3	106	"centum urbes habitant magnas uberrima regna"	1	
 1	33	"quodsi non aliam venturo fata neroni invenere viam magnoqueaeterna parantur regna deis coelumque suo servire tonanti non nisi saevorum potuit post bella gigantum"	3	107	"maximus unde pater si rite audita recordor teucrus rhoeteas primum est advectus in oras optavitque locum regno"	1	
 1	33	"quodsi non aliam venturo fata neroni invenere viam magnoque aeterna parantur regna deis coelumque suo servire tonanti non nisi saevorum potuit post bella gigantum"	3	247	"bellum etiam pro caede boum stratisque iuvencis laomedontiadae bellumne inferre paratis et patrio harpyias insontis pellere regno"	1	
-1	33	"33-4 fata Neroni / inuenere uiam"	3	395	"3.395 fata uiam inuenient"	5	"TB,V,R"
+1	33	"33-4 fata Neroni / inuenere uiam"	3	395	"3.395 fata uiam inuenient"	5	"TB;V;R"
 1	33	"quodsi non aliam venturo fataneroni invenere viam magnoque aeterna parantur regna deis coelumque suo servire tonanti non nisi saevorum potuit post bella gigantum"	3	494	"nos alia ex aliis in fata vocamur"	1	
 1	33	"quodsi non aliam venturo fata neroni invenere viam magnoque aeterna parantur regna deiscoelumque suo servire tonanti non nisi saevorum potuit post bella gigantum"	3	528	"di maris et terrae tempestatumque potentes ferte viam ventofacilem et spirate secundi crebrescunt optatae aurae portusque patescit iam propior templumque adparet in arce minervae"	1	
 1	33	"quodsi non aliam venturo fata neroni invenere viam magnoque aeterna parantur regna deis coelumque suo servire tonanti non nisi saevorum potuit post bellagigantum"	4	86	"non coeptae adsurgunt turres non arma iuventus exercet portusve aut propugnacula bello tuta parant"	1	
@@ -510,7 +510,7 @@
 1	33	"quodsi non aliam venturo fataneroni invenere viam magnoque aeterna parantur regna deis coelumque suo servire tonanti non nisi saevorum potuit post bellagigantum"	9	642	"iure omnia bella gente sub assaraci fato ventura resident nec te troia capit simul haec effatus ab alto aethere se misit spirantis dimovet auras ascaniumque petit"	3	
 1	33	"quodsi non aliam venturo fata neroni invenere viam magnoqueaeterna parantur regna deis coelumque suo servire tonanti non nisi saevorum potuit post bella gigantum"	9	722	"pandarus ut fuso germanum corpore cernit et quo sit fortuna loco qui casus agat res portam vi magna converso cardine torquet obnixus latis umeris multosque suorum moenibus exclusos duro in certamine linquit"	2	
 1	33	"quodsi non aliam venturo fata neroni invenere viam magnoque aeterna parantur regna deis coelumque suo servire tonanti non nisi saevorum potuit post bella gigantum"	9	816	"ille suo cum gurgite flavo accepit venientem ac mollibus extulit undis et laetum sociis abluta caede remisit"	2	
-1	33	"33-4 fata Neroni / inuenere uiam"	10	113	"10.113 fata uiam inuenient"	5	"H,TB,V,R"
+1	33	"33-4 fata Neroni / inuenere uiam"	10	113	"10.113 fata uiam inuenient"	5	"H;TB;V;R"
 1	33	"quodsi non aliam venturo fata neroni invenere viam magnoque aeterna parantur regna deiscoelumque suo servire tonanti non nisi saevorum potuit post bella gigantum"	10	175	"tertius ille hominum divomque interpres asilas cui pecudum fibrae caeli cui sidera parent et linguae volucrum et praesagi fulminis ignes mille rapit densos acie atque horrentibus hastis"	2	
 1	33	"quodsi non aliam venturo fata neroni invenere viam magnoque aeterna parantur regna deis coelumque suo servire tonanti non nisi saevorum potuit post bellagigantum"	10	411	"sed bellis acer halaesus tendit in adversos seque in suaconligit arma"	2	
 1	33	"quodsi non aliam venturo fataneroni invenere viam magnoqueaeterna parantur regna deis coelumque suo servire tonanti non nisi saevorum potuit post bella gigantum"	10	438	"mox illos sua fata manent maiore sub hoste"	2	
@@ -536,7 +536,7 @@
 1	33	"quodsi non aliam venturo fata neroni invenere viam magnoque aeterna parantur regna deiscoelumque suo servire tonanti non nisi saevorum potuit post bellagigantum"	12	776	"tum vero amens formidine turnus faune precor miserere inquit tuque optima ferrum terra tene colui vestros si semper honores quos contra aeneadae bello fecere profanos dixit opemque dei non cassa in vota vocavit"	1	
 1	33	"quodsi non aliam venturo fata neroni invenere viam magnoque aeterna parantur regna deiscoelumque suo servire tonanti non nisi saevorum potuit post bellagigantum"	12	849	"hae iovis ad solium saevique in limine regis adparent acuuntque metum mortalibus aegris siquando letum horrificum morbosque deum rex molitur meritas aut belloterritat urbes"	2	
 1	34	"34 inuenere uiam "	7	297	"7.297 inuenere uiam"	4	
-1	38	"38 mercede"	7	317	"7.317 mercede"	5	"TB,V,R"
+1	38	"38 mercede"	7	317	"7.317 mercede"	5	"TB;V;R"
 1	40	"ultima funesta concurrant proeliamunda"	12	57	"scilicet exspectem libeat dum proelia turno nostra pati rursusque velit concurrere victus"	2	
 1	41	"his caesar perusina fames mutinaeque labores accedant fatis"	1	238	"hoc equidem occasum troiae tristisque ruinas solabar fatiscontraria fata rependens"	2	
 1	41	"his caesar perusina fames mutinaeque labores accedant fatis"	2	1	"sed si tantus amor casus cognoscere nostros et breviter troiae supremum audire laborem quamquam animus meminisse horret luctuque refugit incipiamfracti bello fatisquerepulsi ductores danaum tot iam labentibus annis instar montis equum divina palladis arte aedificant sectaque intexunt abiete costas"	1	
@@ -626,7 +626,7 @@
 1	58	"pars aetheris illa sereni tota vacet nullaeque obstent a caesare nubes"	8	426	"his informatum manibus iam parte polita fulmen erat totogenitor quae plurima caelo deicit in terras pars inperfecta manebat"	2	
 1	58	"pars aetheris illa sereni tota vacet nullaeque obstent a caesare nubes"	8	528	"arma inter nubem caeli regione serena per sudum rutilare vident et pulsa tonare"	3	
 1	58	"pars aetheris illa sereni tota vacet nullaeque obstent a caesare nubes"	12	251	"adrexere animos itali cunctaeque volucres convertunt clamore fugam mirabile visu aetheraque obscurant pennis hostemque per auras facta nube premunt donec vi victus et ipso pondere defecit praedamque ex unguibus ales proiecit fluvio penitusque in nubila fugit"	3	
-1	60	"60 positis armis (on Nero)"	1	291	"1.291 positis mitescent saecula bellis on Augustus"	5	"TB,V,R"
+1	60	"60 positis armis (on Nero)"	1	291	"1.291 positis mitescent saecula bellis on Augustus"	5	"TB;V;R"
 1	60	"tunc genus humanum positis sibi consulat armis inque vicem gens omnis amet"	1	542	"si genus humanum et mortalia temnitis arma at sperate deos memores fandi atque nefandi"	4	
 1	60	"tunc genus humanum positis sibi consulat armis inque vicem gens omnis amet"	6	24	"hic crudelis amor tauri suppostaque furto pasipha mixtumquegenus prolesque biformis minotaurus inest veneris monumenta nefandae"	2	
 1	60	"tunc genus humanum positis sibi consulat armis inque vicem gens omnis amet"	8	51	"arcades his oris genus a pallante profectum qui regem euandrum comites qui signa secuti delegere locum et posuerein montibus urbem pallantis proavi de nomine pallanteum"	2	
@@ -636,18 +636,18 @@
 1	60	"tunc genus humanum positis sibi consulat armis inque vicem gens omnis amet"	11	884	"nec sociis aperire viam nec moenibus audent accipere orantis oriturque miserrima caedes defendentum armis aditus inquearma ruentum"	1	
 1	60	"tunc genus humanum positis sibiconsulat armis inque vicem gens omnis amet"	12	222	"quem simul ac iuturna soror crebrescere vidit sermonem et volgi variare labantia corda in medias acies formam adsimulata camerti cui genus a proavis ingens clarumque paternae nomen erat virtutis et ipse acerrimus armis in medias dat sese acies haud nescia rerum rumoresque serit varios ac talia fatur"	1	
 1	60	"tunc genus humanum positis sibi consulat armis inque vicem gensomnis amet"	12	838	"hinc genus ausonio mixtum quod sanguine surget supra homines supra ire deos pietate videbis nec gens ulla tuos aeque celebrabit honores adnuit his iuno et mentem laetata retorsit"	2	
-1	61	"61-2 pax . . . / compescat limina Iani"	1	294	"1.294 claudentur Belli portae"	4	"TB,V,R"
+1	61	"61-2 pax . . . / compescat limina Iani"	1	294	"1.294 claudentur Belli portae"	4	"TB;V;R"
 1	61	"61 inque uicem "	12	502	"12.502 inque uicem"	2	
-1	62	"62 limina Iani"	7	610	"7.607-13 limine Ianus"	5	"V,R"
+1	62	"62 limina Iani"	7	610	"7.607-13 limine Ianus"	5	"V;R"
 1	62	"1.62 ferrea belligeri"	7	622	"7.623 belli ferratos"	5	"R"
 1	63	"1.63-4 pectore . . . / accipio"	4	530	"4.530-1 pectore . . . / accipit"	4	"R"
 1	63	"nec si te pectore vates accipio cirrhaea velim secreta moventem sollicitare deum bacchumque avertere nysa"	7	251	"nec purpura regem picta movet nec sceptra movent priameia tantum quantum in conubio natae thalamoque moratur et veteris fauni voluit sub pectore sortem hunc illum fatis externa ab sede profectum portendi generum paribusque in regna vocari auspiciis huic progeniem virtute futuram egregiam et totum quae viribus occupet orbem"	1	
 1	63	"1.63-4 pectore . . . / accipio"	9	276	"9.276-7 pectore . . . / accipio"	4	"R"
-1	64	"64 secreta mouentem"	1	262	"1.262 fatorum arcana movebo"	3	"V,R"
+1	64	"64 secreta mouentem"	1	262	"1.262 fatorum arcana movebo"	3	"V;R"
 1	66	"tu satis ad dandas romana in carmina vires"	4	625	"exoriare aliquis nostris ex ossibus ultor qui face dardanios ferroque sequare colonos nunc olim quocumque dabunt se tempore vires"	3	
 1	66	"tu satis ad dandas romana in carmina vires"	5	414	"his ego suetus dum melior vires sanguis dabat aemula necdum temporibus geminis canebat sparsa senectus"	3	
 1	66	"tu satis ad dandas romana in carmina vires"	5	455	"tum pudor incendit vires et conscia virtus praecipitemquedaren ardens agit aequore toto nunc dextra ingeminans ictus nunc ille sinistra"	1	
-1	67	"67 fert animus causas tantarum expromere rerum"	1	8	"1.8 Musa mihi causas memora"	5	"V,R"
+1	67	"67 fert animus causas tantarum expromere rerum"	1	8	"1.8 Musa mihi causas memora"	5	"V;R"
 1	67	"fert animus causas tantarum expromere rerum immensumque aperitur opus quid in armafurentem impulerit populum quid pacem excusserit orbi"	1	148	"ac veluti magno in populo cum saepe coorta est seditio saevitque animis ignobile volgus iamque faces et saxa volant---furor arma ministrat"	2	
 1	67	"fert animus causas tantarum expromere rerum immensumque aperitur opus quid in armafurentem impulerit populum quid pacem excusserit orbi"	2	668	"arma viri ferte arma"	2	
 1	67	"fert animus causas tantarum expromere rerum immensumque aperitur opus quid in arma furentem impulerit populum quidpacem excusserit orbi"	3	462	"vade age et ingentem factis fer ad aethera troiam quaepostquam vates sic ore effatus amico est dona dehinc auro gravia sectoque elephanto imperat ad navis ferri stipatque carinis ingens argentum dodonaeosque lebetas loricam consertam hamis auroque trilicem et conum insignis galeae cristasque comantis arma neoptolemi"	1	
@@ -664,7 +664,7 @@
 1	67	"fert animus causas tantarum expromere rerum immensumque aperitur opus quid in arma furentem impulerit populum quidpacem excusserit orbi"	11	677	"procul ornytus armis ignotis et equo venator iapyge fertur cuipellis latos umeros erepta iuvenco pugnatori operit caput ingens oris hiatus et malae texere lupi cum dentibus albis agrestisque manus armat sparus"	1	
 1	67	"fert animus causas tantarum expromere rerum immensumqueaperitur opus quid in armafurentem impulerit populum quid pacem excusserit orbi"	11	884	"nec sociis aperire viam nec moenibus audent accipere orantis oriturque miserrima caedes defendentum armis aditus inquearma ruentum"	2	
 1	68	"68 immensum aperitur opus"	3	275	"3.275 aperitur Apollo"	2	"H"
-1	68	"68 immensum aperitur opus"	7	45	"7.45 maius opus moueo"	5	"V,R"
+1	68	"68 immensum aperitur opus"	7	45	"7.45 maius opus moueo"	5	"V;R"
 1	70	"invida fatorum series summisquenegatum stare diu"	2	541	"sed iura fidemque supplicis erubuit corpusque exsangue sepulchro reddidit hectoreum meque in mea regna remisit sicfatus senior telumque imbelle sine ictu coniecit rauco quod protinus aere repulsum e summo clipei nequiquam umbone pependit"	1	
 1	70	"invida fatorum series summisquenegatum stare diu"	3	654	"vos animam hanc potius quocumque absumite leto vix ea fatuserat summo cum monte videmus ipsum inter pecudes vasta se mole moventem pastorem polyphemum et litora nota petentem monstrum horrendum informe ingens cui lumen ademptum"	1	
 1	70	"invida fatorum series summisquenegatum stare diu"	8	652	"in summo custos tarpeiae manlius arcis stabat pro templo et capitolia celsa tenebat romuleoque recens horrebat regia culmo"	2	
@@ -673,10 +673,10 @@
 1	72	"sic quum compage soluta saeculatot mundi suprema coegerit hora anticum repetent iterum chaos omnia"	2	1	"sed si tantus amor casus cognoscere nostros et breviter troiae supremum audire laborem quamquam animus meminisse horret luctuque refugit incipiamfracti bello fatisque repulsi ductores danaum tot iam labentibus annis instar montis equum divina palladis arte aedificant sectaque intexunt abiete costas"	2	
 1	72	"sic quum compage soluta saecula tot mundi suprema coegerit hora anticum repetent iterum chaos omnia"	9	247	"di patrii quorum semper sub numine troia est non tamen omnino teucros delere paratis cum talis animos iuvenum et tam certa tulistis pectora sic memorans umeros dextrasque tenebat amborum et voltum lacrimis atque ora rigabat"	1	
 1	72	"sic quum compage soluta saecula tot mundi suprema coegerit hora anticum repetent iterum chaos omnia"	10	224	"agnoscunt longe regem lustrantque choreis quarum quae fandi doctissima cymodocea pone sequens dextra puppim tenet ipsaque dorso eminet ac laeva tacitis subremigat undis tum sicignarum adloquitur"	1	
-1	75	"75-6 ignea astra"	4	352	"4.352 astra ignea"	3	"V,R"
+1	75	"75-6 ignea astra"	4	352	"4.352 astra ignea"	3	"V;R"
 1	80	"1.80 turbabit foedera"	12	633	"12.633 foedera turbasti"	5	"R"
 1	81	"laetis hunc numina rebus crescendi posuere modum"	1	731	"iuppiter hospitibus nam te dare iura loquuntur hunc laetumtyriisque diem troiaque profectis esse velis nostrosque huiusmeminisse minores"	2	
-1	81	"81 laetis . . . rebus"	2	783	"2.783 res laetae"	5	"V,R"
+1	81	"81 laetis . . . rebus"	2	783	"2.783 res laetae"	5	"V;R"
 1	81	"laetis hunc numina rebus crescendi posuere modum"	3	63	"nam simul expletus dapibus vinoque sepultus cervicem inflexam posuit iacuitque per antrum immensus saniem eructans et frusta cruento per somnum commixta mero nos magna precati numina sortitique vices una undique circum fundimur et telo lumen terebramus acuto--- ingens quod torva solum sub fronte latebat argolici clipei aut phoebeae lampadis instar--- et tandem laeti sociorum ulciscimur umbras"	2	
 1	82	"nec gentibus ullis commodat in populum terrae pelagique potentem invidiam fortuna suam"	3	493	"vivite felices quibus est fortuna peracta iam sua"	2	
 1	82	"nec gentibus ullis commodat in populum terrae pelagique potentem invidiam fortuna suam"	7	239	"sed nos fata deum vestras exquirere terras imperiis egeresuis"	2	
@@ -689,7 +689,7 @@
 1	84	"1.84 causa malorum"	4	169	"4.169-70 malorum / causa"	3	"R"
 1	84	"tu caussa malorum facta tribus dominis communis roma nec umquam in turbam missi feralia foedera regni"	6	93	"causa mali tanti coniunx iterum hospita teucris externique iterum thalami"	3	
 1	84	"1.84 causa malorum"	7	481	"7.481-2 laborum / causa"	3	"R"
-1	84	"84 causa malorum"	11	361	"11.361 causa malorum"	5	"V,R"
+1	84	"84 causa malorum"	11	361	"11.361 causa malorum"	5	"V;R"
 1	84	"tu caussa malorum facta tribus dominis communis roma nec umquam in turbam missi feralia foedera regni"	11	477	"nec non ad templum summasque ad palladis arces subvehitur magna matrum regina caterva dona ferens iuxtaque comes lavinia virgo causa mali tanti oculos deiecta decoros"	3	
 1	84	"1.84 causa malorum"	12	600	"12.600 causa malorum"	3	"R"
 1	87	"o male concordes nimiaque cupidine caeci quid miscere iuvatvires orbemque tenere in medio"	1	49	"ducit amazonidum lunatis agmina peltis penthesilea furensmediisque in milibus ardet aurea subnectens exsertae cingula mammae bellatrix audetque viris concurrere virgo"	2	
@@ -775,7 +775,7 @@
 1	93	"nec gentibus ullis credite nec longe fatorum exempla petantur"	8	498	"retinet longaevus haruspex fata canens o maeoniae delecta iuventus flos veterum virtusque virum quos iustus in hostem fert dolor et merita accendit mezentius ira nulli fas italo tantam subiungere gentem"	1	
 1	93	"nec gentibus ullis credite neclonge fatorum exempla petantur"	9	642	"iure omnia bella gente sub assaraci fato ventura resident necte troia capit simul haec effatus ab alto aethere se misit spirantis dimovet auras ascaniumque petit"	1	
 1	96	"96 tanti tellus pontusque furoris "	5	788	"5.788 tanti sciat illa furoris"	2	
-1	97	"97 exiguum dominos commisit asylum"	8	342	"8.342 lucum . . . quem Romulus acer asylum / rettulit"	4	"V,R"
+1	97	"97 exiguum dominos commisit asylum"	8	342	"8.342 lucum . . . quem Romulus acer asylum / rettulit"	4	"V;R"
 1	99	"nam sola futuri crassus erat belli medius mora"	1	745	"quid tantum oceano properent se tinguere soles hiberni vel quae tardis mora noctibus obstet"	1	
 1	99	"nam sola futuri crassus erat belli medius mora"	2	701	"iam iam nulla mora est"	1	
 1	99	"nam sola futuri crassus erat belli medius mora"	3	453	"hic tibi ne qua morae fuerint dispendia tanti--- quamvis increpitent socii et vi cursus in altum vela vocet possisque sinus implere secundos--- quin adeas vatem precibusque oracula poscas ipsa canat vocemque volens atque ora resolvat"	1	
@@ -862,7 +862,7 @@
 1	110	"110 totum continet orbem "	7	258	"7.258 totum quae uiribus occupet orbem"	4	
 1	111	"nam pignora iuncti sanguinis et diro ferales omine tedas abstulitad manes parcarum iulia saeva intercepta manu"	2	192	"sin manibus vestris vestram ascendisset in urbem ultro asiam magno pelopea ad moenia bello venturam et nostros ea fatamanere nepotes talibus insidiis periurique arte sinonis credita res captique dolis lacrimisque coactis quos neque tydides nec larisaeus achilles non anni domuere decem non mille carinae"	2	
 1	111	"nam pignora iuncti sanguinis et diro ferales omine tedas abstulit ad manes parcarum iulia saeva intercepta manu"	8	485	"mortua quin etiam iungebat corpora vivis componensmanibusque manus atque oribus ora tormenti genus et sanie taboque fluentis complexu in misero longa sic morte necabat"	2	
-1	111	"1.111 non cepit fortuna duos"	9	644	"9.644 nec . . . capit"	3	"H,R"
+1	111	"1.111 non cepit fortuna duos"	9	644	"9.644 nec . . . capit"	3	"H;R"
 1	112	"1.112 ferales omine taedas"	7	71	"7.71 castis . . . Taedis"	4	"R"
 1	112	"1.112 ferales omine taedas"	7	322	"7.322 funestaeque . . . taedae"	4	"R"
 1	114	"quodsi tibi fata dedissent maiores in luce moras tu sola furentes inde virum poteras atque hinc retinere parentem armatasque manus excusso iungere ferro ut generos mediae soceris iunxere sabinae"	1	1	"arma virumque cano troiae qui primus ab oris italiam fatoprofugus laviniaque venit litora multum ille et terris iactatus et alto vi superum saevae memorem iunonis ob iram"	2	
@@ -955,7 +955,7 @@
 1	114	"quodsi tibi fata dedissent maiores in luce moras tu sola furentes inde virum poteras atque hinc retinere parentem armatasquemanus excusso iungere ferro ut generos mediae soceris iunxere sabinae"	10	827	"arma quibus laetatus habe tua teque parentum manibus et cineri siqua est ea cura remitto"	1	
 1	114	"quodsi tibi fata dedissent maiores in luce moras tu sola furentes inde virum poteras atque hinc retinere parentem armatasque manus excusso iungere ferro ut generos mediae soceris iunxere sabinae"	10	879	"haec via sola fuit qua perdere posses"	2	
 1	114	"quodsi tibi fata dedissent maioresin luce moras tu sola furentes inde virum poteras atque hinc retinere parentem armatasque manus excusso iungere ferro ut generos mediae soceris iunxere sabinae"	11	45	"non haec evandro de te promissa parenti discedens dederamcum me complexus euntem mitteret in magnum imperium metuensque moneret acris esse viros cum dura proelia gente"	2	
-1	114	"114 fata dedissent"	11	112	"11.112 sedemque dedissent"	3	"V,R"
+1	114	"114 fata dedissent"	11	112	"11.112 sedemque dedissent"	3	"V;R"
 1	114	"quodsi tibi fata dedissent maiores in luce moras tu sola furentes inde virum poteras atque hinc retinere parentem armatasque manus excusso iungere ferro ut generos mediae soceris iunxere sabinae"	11	152	"non haec o palla dederas promissa parenti cautius ut saevo velles te credere marti"	2	
 1	114	"quodsi tibi fata dedissent maiores in luce moras tu sola furentes inde virum poteras atque hinc retinere parentem armatasque manus excusso iungere ferro ut generos mediae soceris iunxere sabinae"	11	324	"sin alios finis aliamque capessere gentem est animuspossuntque solo decedere nostro"	2	
 1	114	"quodsi tibi fata dedissent maiores in luce moras tu sola furentes inde virum poteras atque hinc retinere parentem armatasque manus excusso iungere ferro utgeneros mediae soceris iunxeresabinae"	11	352	"unum etiam donis istis quae plurima mitti dardanidis dicique iubes unum optime regum adicias nec te ullius violentia vincat quin natam egregio genero dignisque hymenaeis des pater et pacem hanc aeterno foedere iungas"	2	
@@ -1012,7 +1012,7 @@
 1	132	"totus popularibus auris impelli plausuque sui gaudere theatri"	6	81	"ostia iamque domus patuere ingentia centum sponte suavatisque ferunt responsa per auras"	2	
 1	132	"totus popularibus auris impelli plausuque sui gaudere theatri"	6	205	"quale solet silvis brumali frigore viscum fronde virere nova quod non sua seminat arbos et croceo fetu teretis circumdare truncos talis erat species auri frondentis opaca ilice sic leni crepitabat brattea vento"	2	
 1	132	"totus popularibus auris impelli plausuque sui gaudere theatri"	6	494	"atque hic priamiden laniatum corpore toto deiphobum videt et lacerum crudeliter ora ora manusque ambas populataque tempora raptis auribus et truncas inhonesto volnere nares"	2	
-1	132	"132 popularibus auris"	6	816	"6.816 popularibus auris"	5	"V,R"
+1	132	"132 popularibus auris"	6	816	"6.816 popularibus auris"	5	"V;R"
 1	132	"totus popularibus auris impelli plausuque sui gaudere theatri"	7	98	"externi venient generi qui sanguine nostrum nomen in astra ferant quorumque a stirpe nepotes omnia sub pedibus qua sol utrumque recurrens aspicit oceanum vertique regique videbunt haec responsa patris fauni monitusque silenti nocte datos non ipse suo premit ore latinus sed circum late volitans iam fama per urbes ausonias tulerat cum laomedontia pubes gramineo ripae religavit ab aggere classem"	1	
 1	132	"totus popularibus auris impelli plausuque sui gaudere theatri"	8	518	"arcadas huic equites bis centum robora pubis lecta dabo totidemque suo tibi nomine pallas vix ea fatus erat defixiqueora tenebant aeneas anchisiades et fidus achates multaque dura suo tristi cum corde putabant ni signum caelo cytherea dedisset aperto"	1	
 1	132	"totus popularibus auris impelli plausuque sui gaudere theatri"	8	675	"in medio classis aeratas actia bella cernere erat totumqueinstructo marte videres fervere leucaten auroque effulgere fluctus"	2	
@@ -1029,7 +1029,7 @@
 1	135	"stat magni nominis umbra"	3	63	"nam simul expletus dapibus vinoque sepultus cervicem inflexam posuit iacuitque per antrum immensus saniem eructans et frusta cruento per somnum commixta mero nosmagna precati numina sortitique vices una undique circum fundimur et telo lumen terebramus acuto--- ingens quod torva solum sub fronte latebat argolici clipei aut phoebeae lampadis instar--- et tandem laeti sociorum ulciscimur umbras"	2	
 1	135	"stat magni nominis umbra"	6	618	"phlegyasque miserrimus omnis admonet et magna testatur voce per umbras"	2	
 1	135	"1.135 stat magni nominis umbra "	7	412	"7.412 magnum nomen "	5	"R"
-1	135	"135 nominis umbra"	11	223	"11.223 magnum nomen"	5	"V,R"
+1	135	"135 nominis umbra"	11	223	"11.223 magnum nomen"	5	"V;R"
 1	136	"qualis frugifero quercus sublimis in agro exuvias veteres populi sacrataque gestans dona ducum nec iam validis radicibus haerenspondere fixa suo est"	1	357	"tum celerare fugam patriaque excedere suadet auxiliumque viae veteres tellure recludit thesauros ignotum argenti ponduset auri"	2	
 1	136	"qualis frugifero quercus sublimisin agro exuvias veteres populi sacrataque gestans dona ducum nec iam validis radicibus haerens pondere fixa suo est"	1	415	"ipsa paphum sublimis abit sedesque revisit laeta suas ubi templum illi centumque sabaeo ture calent arae sertisque recentibus halant"	2	
 1	136	"qualis frugifero quercus sublimis in agro exuvias veteres populi sacrataque gestans dona ducum nec iam validis radicibus haerens pondere fixa suo est"	2	274	"ei mihi qualis erat quantum mutatus ab illo hectore qui reditexuvias indutus achilli vel danaum phrygios iaculatus puppibus ignis squalentem barbam et concretos sanguine crinis volneraque illa gerens quae circum plurima muros accepit patrios"	3	
@@ -1037,7 +1037,7 @@
 1	136	"qualis frugifero quercus sublimis in agro exuvias veteres populi sacrataque gestans dona ducum nec iam validis radicibus haerens pondere fixa suo est"	3	469	"sunt et sua dona parenti"	3	
 1	136	"1.136 quercus sublimis"	3	680	"3.680 aeriae quercus"	5	"R"
 1	136	"qualis frugifero quercus sublimis in agro exuvias veteres populi sacrataque gestans dona ducum nec iam validis radicibus haerens pondere fixa suo est"	4	68	"uritur infelix dido totaque vagatur urbe furens qualis coniecta cerva sagitta quam procul incautam nemora inter cresia fixitpastor agens telis liquitque volatile ferrum nescius"	2	
-1	136	"1.136-43 quercus . . . nec iam ualidis radicibus . . . frondes . . . robore"	4	441	"4.441-6 ualidam cum robore quercum . . . frondes . . . radice"	5	"V,R"
+1	136	"1.136-43 quercus . . . nec iam ualidis radicibus . . . frondes . . . robore"	4	441	"4.441-6 ualidam cum robore quercum . . . frondes . . . radice"	5	"V;R"
 1	136	"qualis frugifero quercus sublimis in agro exuvias veteres populi sacrataque gestans dona ducum nec iam validis radicibus haerens pondere fixa suo est"	5	53	"annua vota tamen sollemnisque ordine pompas exsequerer strueremque suis altaria donis"	2	
 1	136	"qualis frugifero quercus sublimis in agro exuvias veteres populi sacrataque gestans dona ducum nec iam validis radicibus haerens pondere fixa suo est"	6	205	"quale solet silvis brumali frigore viscum fronde virere nova quod non sua seminat arbos et croceo fetu teretis circumdare truncos talis erat species auri frondentis opaca ilice sic leni crepitabat brattea vento"	2	
 1	136	"qualis frugifero quercus sublimis in agro exuvias veteres populi sacrataque gestans dona ducumnec iam validis radicibus haerens pondere fixa suo est"	7	199	"sive errore viae seu tempestatibus acti qualia multa mari nautae patiuntur in alto fluminis intrastis ripas portuque sedetis ne fugite hospitium neve ignorate latinos saturni gentem haud vinclo nec legibus aequam sponte sua veterisquedei se more tenentem"	2	
@@ -1052,7 +1052,7 @@
 1	136	"qualis frugifero quercus sublimis in agro exuvias veteres populi sacrataque gestans dona ducum nec iam validis radicibus haerens pondere fixa suo est"	12	4	"poenorum qualis in arvis saucius ille gravi venantum vulnere pectus tum demum movet arma leo gaudetque comantis excutiens cervice toros fixumque latronis inpavidus frangit telum et fremit ore cruento"	2	
 1	136	"qualis frugifero quercus sublimis in agro exuvias veteres populi sacrataque gestans dona ducum nec iam validis radicibus haerens pondere fixa suo est"	12	391	"iamque aderat phoebo ante alios dilectus iapyx iasides acri quondam cui captus amore ipse suas artes sua munera laetus apollo augurium citharamque dabat celerisque sagittas"	2	
 1	137	"137 quercus exuuias sacrataque gestans / dona ducum"	10	423	"10.421-3 haec arma exuuiasque uiri tua quercus habebit"	4	"R"
-1	137	"137 quercus exuuias sacrataque gestans / dona ducum"	11	5	"11.5-8 ingentem quercum . . . Mezenti ducis exuuias"	5	"H,R"
+1	137	"137 quercus exuuias sacrataque gestans / dona ducum"	11	5	"11.5-8 ingentem quercum . . . Mezenti ducis exuuias"	5	"H;R"
 1	138	"138 dona ducum nec iam ualidis "	2	49	"2.49 dona ferentis sic fatus ualidis"	2	
 1	138	"1.138-40 haerens // . . . frondibus"	4	445	"4.445 frondes / haeret"	5	"R"
 1	138	"1.138 dona ducum"	11	6	"11.6 consituit . . . arma"	4	"R"
@@ -1287,7 +1287,7 @@
 1	183	"iam gelidas caesar cursu superaverat alpes ingentesqueanimo motus bellumque futurum ceperat"	12	346	"parte alia media eumedes in proelia fertur antiqui proles bellopraeclara dolonis nomine avum referens animo manibusque parentem qui quondam castra ut danaum speculator adiret ausus pelidae pretium sibi poscere currus"	2	
 1	183	"iam gelidas caesar cursu superaverat alpes ingentesqueanimo motus bellumque futurumceperat"	12	438	"tu facito mox cum matura adoleverit aetas sis memor et teanimo repetentem exempla tuorum et pater aeneas et avunculus excitet hector haec ubi dicta dedit portis sese extulitingens telum immane manu quatiens"	2	
 1	184	"1.184 motus . . . /ceperat"	4	297	"4.297 excepit"	3	"R"
-1	184	"184 bellumque futurum"	9	642	"9.642-3 bella / . . . uentura"	3	"TB,R"
+1	184	"184 bellumque futurum"	9	642	"9.642-3 bella / . . . uentura"	3	"TB;R"
 1	185	"ut ventum est parvi rubiconis ad undas ingens visa duci patriaetrepidantis imago clara per obscuram vultu moestissima noctem turrigero canos effundens vertice crines caesarie lacera nudisque adstare lacertis et gemitu permixta loqui"	1	48	"et quisquam numen iunonis adoret praeterea aut supplex aris imponet honorem talia flammato secum dea corde volutans nimborum in patriam loca feta furentibus austris aeoliam venit"	2	
 1	185	"ut ventum est parvi rubiconis ad undas ingens visa duci patriae trepidantis imago clara per obscuram vultu moestissima noctem turrigero canos effundens vertice crines caesarie lacera nudisque adstare lacertis et gemitu permixta loqui"	1	305	"at pius aeneas per noctem plurima volvens ut primum lux alma data est exire locosque explorare novos quas vento accesserit oras qui teneant nam inculta videt hominesne feraene quaerere constituit sociisque exacta referre classem in convexo nemorum sub rupe cavata arboribus clausam circum atque horrentibus umbris occulit"	2	
 1	185	"ut ventum est parvi rubiconis ad undas ingens visa duci patriaetrepidantis imago clara per obscuram vultu moestissima noctem turrigero canos effundens vertice crines caesarie lacera nudisque adstare lacertis et gemitu permixta loqui"	1	619	"atque equidem teucrum memini sidona venire finibus expulsum patriis nova regna petentem auxilio beli"	2	
@@ -1337,22 +1337,22 @@
 1	185	"ut ventum est parvi rubiconis ad undas ingens visa duci patriaetrepidantis imago clara per obscuram vultu moestissima noctem turrigero canos effundens vertice crines caesarie lacera nudisque adstare lacertis et gemitu permixta loqui"	11	891	"ipsae de muris summo certamine matres monstrat amor verus patriae ut videre camillam tela manu trepidae iaciunt ac robore duro stipitibus ferrum sudibusque imitantur obustis praecipites primaeque mori pro moenibus ardent"	2	
 1	185	"ut ventum est parvi rubiconis ad undas ingens visa duci patriaetrepidantis imago clara per obscuram vultu moestissimanoctem turrigero canos effundens vertice crines caesarie lacera nudisque adstare lacertis et gemitu permixta loqui"	12	43	"miserere parentis longaevi quem nunc maestum patria ardea longe dividit haudquaquam dictis violentia turni flectitur"	2	
 1	185	"1.185 uentum est"	12	739	"12.739 ventumst"	2	"R"
-1	186	"186-7 uisa . . . / clara per obscuram uultu maestissima noctem"	2	270	"2.270 ante oculos maestissimus Hector / uisus adesse"	4	"TB,V,R"
+1	186	"186-7 uisa . . . / clara per obscuram uultu maestissima noctem"	2	270	"2.270 ante oculos maestissimus Hector / uisus adesse"	4	"TB;V;R"
 1	186	"1.186 ingens visa duci patriae trepidantis imago"	2	772	"2.772-3 infelix simulacrum atque ipsius umbra Creusae / visa mihi ante oculos et nota maior imago"	3	"R"
 1	186	"1.186 imago "	5	636	"5.636 nam mihi Cassandrae per somnum vatis imago"	3	"R"
 1	186	"1.186 visa . . . patriae . . . imago"	5	722	"5.722 visa . . . facies . . . Parentis"	4	"R"
-1	187	"187 clara per obscuram uultu maestissima noctem "	2	589	"2.589-90 clara.../...pura per noctem in luce"	3	"TB,V,R"
+1	187	"187 clara per obscuram uultu maestissima noctem "	2	589	"2.589-90 clara.../...pura per noctem in luce"	3	"TB;V;R"
 1	188	"1.188 effundens crines / caerie lacera nudisque lacertis"	2	277	"2.277 squalentem barbam et concretos sanguine crintis/ uulneraque illa gerens"	5	"R"
 1	190	"1.190 gemitu permixta loqui"	2	288	"2.288 sed grauiter gemitus imo de pectore ducens "	5	"R"
 1	190	"1.190 quo tenditis "	9	781	"9.781 quo tenditis "	5	"R"
 1	191	"si iure venitis si cives huc usque licet"	1	551	"quassatam ventis liceat subducere classem et silvis aptare trabes et stringere remos"	1	
 1	191	"191 uiri"	2	668	"2.668 uiri"	5	"V"
 1	191	"si iure venitis si cives huc usque licet"	3	253	"italiam cursu petitis ventisque vocatis ibitis italiam portusque intrare licebit"	1	
-1	191	"191 iure"	9	642	"9.642 iure"	3	"TB,R"
+1	191	"191 iure"	9	642	"9.642 iure"	3	"TB;R"
 1	192	"1.192 perculit horror / membra ducis "	3	30	"3.30 horror / membra "	3	"R"
 1	193	"riguere comae gressusquecoercens languor in extrema tenuit vestigia ripa"	1	401	"perge modo et qua te ducit via dirige gressum dixit et avertens rosea cervice refulsit ambrosiaeque comae divinum vertice odorem spiravere pedes vestis defluxit ad imos et vera incessu patuit dea"	2	
-1	193	"193 riguere comae"	2	774	"2.774 steterunt comae"	5	"V,R"
-1	193	"193 riguere comae"	3	48	"3.48 steterunt comae"	5	"V,R"
+1	193	"193 riguere comae"	2	774	"2.774 steterunt comae"	5	"V;R"
+1	193	"193 riguere comae"	3	48	"3.48 steterunt comae"	5	"V;R"
 1	193	"1.193 riguere comae"	4	280	"4.280 horrore comae"	3	"R"
 1	193	"1.193 gressum que coercens "	6	389	"6.389 comprime gressum"	3	"R"
 1	193	"1.193 riguere comae"	12	868	"12.868 horrore comae"	3	"R"
@@ -1369,11 +1369,11 @@
 1	195	"o magnae qui moenia prospicis urbis tarpeia de rupe tonans phrygiique penates gentis iuleae et rapti secreta quirini et residens celsa latialis iuppiter alba vestalesque foci summique o numinis instar roma fave coeptis"	2	192	"sin manibus vestris vestram ascendisset in urbem ultro asiammagno pelopea ad moenia bello venturam et nostros ea fata manere nepotes talibus insidiis periurique arte sinonis credita res captique dolis lacrimisque coactis quos neque tydides nec larisaeus achilles non anni domuere decem non mille carinae"	2	
 1	195	"o magnae qui moenia prospicis urbis tarpeia de rupe tonans phrygiique penates gentis iuleae et rapti secreta quirini et residens celsa latialis iuppiter alba vestalesque foci summique onuminis instar roma fave coeptis"	2	241	"o patria o divom domus ilium et incluta bello moeniadardanidum quater ipso in limine portae substitit atque utero sonitum quater arma dedere"	2	
 1	195	"o magnae qui moenia prospicis urbis tarpeia de rupe tonans phrygiique penates gentis iuleae et rapti secreta quirini et residens celsa latialis iuppiter alba vestalesque foci summique onuminis instar roma fave coeptis"	2	281	"o lux dardaniae spes o fidissima teucrum quae tantae tenuere morae"	2	
-1	195	"195 magnae moenia"	2	294	"2.294-5 moenia . . . / magna"	4	"TB,V,R"
+1	195	"195 magnae moenia"	2	294	"2.294-5 moenia . . . / magna"	4	"TB;V;R"
 1	195	"o magnae qui moenia prospicis urbis tarpeia de rupe tonans phrygiique penates gentis iuleae et rapti secreta quirini et residens celsa latialis iuppiter alba vestalesque foci summique o numinis instar roma fave coeptis"	2	298	"diverso interea miscentur moenia luctu et magis atque magis quamquam secreta parentis anchisae domus arboribusque obtecta recessit clarescunt sonitus armorumque ingruit horror"	2	
 1	195	"o magnae qui moenia prospicisurbis tarpeia de rupe tonans phrygiique penates gentis iuleae et rapti secreta quirini et residens celsa latialis iuppiter alba vestalesque foci summique o numinis instar roma fave coeptis"	3	5	"si quando thybrim vicinaque thybridis arva intraro gentiquemeae data moenia cernam cognatas urbes olim populosque propinquos epiro hesperia quibus idem dardanus auctor atque idem casus unam faciemus utramque troiam animis"	2	
 1	195	"o magnae qui moenia prospicis urbis tarpeia de rupe tonans phrygiique penates gentis iuleae et rapti secreta quirini et residens celsa latialis iuppiter alba vestalesque foci summique o numinis instar roma fave coeptis"	3	19	"sacra dionaeae matri divisque ferebam auspicibus coeptorumoperum superoque nitentem caelicolum regi mactabam in litore taurum"	1	
-1	195	"195 magnae moenia"	3	159	"3.159-60 moenia . . . / magna"	4	"TB,V,R"
+1	195	"195 magnae moenia"	3	159	"3.159-60 moenia . . . / magna"	4	"TB;V;R"
 1	195	"o magnae qui moenia prospicisurbis tarpeia de rupe tonans phrygiique penates gentis iuleae et rapti secreta quirini et residens celsa latialis iuppiter albavestalesque foci summique o numinis instar roma fave coeptis"	3	392	"alba solo recubans albi circum ubera nati is locus urbis erit requies ea certa laborum"	2	
 1	195	"o magnae qui moenia prospicisurbis tarpeia de rupe tonans phrygiique penates gentis iuleae et rapti secreta quirini et residens celsa latialis iuppiter alba vestalesque foci summique o numinis instar roma fave coeptis"	4	186	"luce sedet custos aut summi culmine tecti turribus aut altis etmagnas territat urbes"	2	
 1	195	"o magnae qui moenia prospicisurbis tarpeia de rupe tonans phrygiique penates gentis iuleae et rapti secreta quirini et residens celsa latialis iuppiter alba vestalesque foci summique o numinis instar roma fave coeptis"	4	409	"quosve dabas gemitus cum litora fervere late prospiceres arce ex summa totumque videres misceri ante oculos tantis clamoribus aequor"	2	
@@ -1408,7 +1408,7 @@
 1	195	"o magnae qui moenia prospicis urbis tarpeia de rupe tonans phrygiique penates gentis iuleae et rapti secreta quirini et residens celsa latialis iuppiter alba vestalesque foci summique o numinis instar roma fave coeptis"	12	669	"ut primum discussae umbrae et lux reddita menti ardentis oculorum orbes ad moenia torsit turbidus eque rotis magnamrespexit ad urbem"	2	
 1	196	"196 Phrygii . . . penates"	2	293	"2.293 Troia Penates"	3	"TB"
 1	196	"1.196 Phrygiique penates "	3	148	"3.148 Phrygiique Penates"	5	"R"
-1	200	"200 faue coeptis"	9	625	"9.625 Juppiter omnipotens audacibus adnue coeptis"	3	"TB,R"
+1	200	"200 faue coeptis"	9	625	"9.625 Juppiter omnipotens audacibus adnue coeptis"	3	"TB;R"
 1	200	"1.200 Roma fave coeptis"	10	461	"10.461 te precor Alcide coeptis ingentibus adsis"	3	"R"
 1	201	"en adsum victor terraque mariquecaesar ubique tuus liceat modo nunc quoque miles"	1	223	"et iam finis erat cum iuppiter aethere summo despiciens marevelivolum terrasque iacentis litoraque et latos populos sic vertice caeli constitit et libyae defixit lumina regnis"	2	
 1	201	"en adsum victor terraque mariquecaesar ubique tuus liceat modo nunc quoque miles"	1	234	"certe hinc romanos olim volventibus annis hinc fore ductores revocato a sanguine teucri qui mare qui terras omni dicione tenerent pollicitus quae te genitor sententia vertit"	2	
@@ -1444,14 +1444,14 @@
 1	205	"sicut squalentibus arvisaestiferae libyes viso leo comminus hoste subsedit dubius totam dum colligit iram"	10	74	"te quoque fata prospectant paria atque eadem mox arvatenebis ad quae subridens mixta mezentius ira"	2	
 1	205	"sicut squalentibus arvis aestiferae libyes viso leocomminus hoste subsedit dubius totam dum colligit iram"	10	723	"impastus stabula alta leo ceu saepe peragrans suadet enim vesana fames si forte fugacem conspexit capream aut surgentem in cornua cervum gaudet hians immane comasque arrexit et haeret visceribus super accumbens lavit inproba taeter ora cruor sic ruit in densos alacer mezentius hostis"	3	
 1	205	"sicut squalentibus arvis aestiferae libyes viso leo comminus hoste subsedit dubiustotam dum colligit iram"	11	346	"det libertatem fandi flatusque remittat cuius ob auspicium infaustum moresque sinistros (dicam equidem licet arma mihi mortemque minetur) lumina tot cecidisse ducum totamquevidemus consedisse urbem luctu dum troia temptat castra fugae fidens et caelum territat armis"	2	
-1	205	"205-12 leo ///...erexitque iubam /...infremuit lancea"	12	4	"12.4-9 leo comantis / excutiens ceruice toros / telum et fremit"	5	"TB,V,R"
+1	205	"205-12 leo ///...erexitque iubam /...infremuit lancea"	12	4	"12.4-9 leo comantis / excutiens ceruice toros / telum et fremit"	5	"TB;V;R"
 1	205	"sicut squalentibus arvisaestiferae libyes viso leo comminus hoste subsedit dubius totam dum colligit iram"	12	68	"hunc oro sine me furere ante furorem dixit et e curru saltum dedit ocius arvis perque hostis per tela ruit maestamque sororem deserit ac rapido cursu media agmina rumpit"	2	
 1	205	"sicut squalentibus arvisaestiferae libyes viso leo comminus hoste subsedit dubius totam dum colligit iram"	12	895	"di me terrent et iuppiter hostis nec plura effatus saxum circumspicit ingens saxum antiquum ingens campo quod forte iacebat limes agro positus litem ut discerneret arvis"	2	
 1	206	"206 leo comminus "	10	454	"10.454 comminus utque leo"	3	
 1	207	"207 iram mox ubi se saeuae "	1	4	"1.4 saeuae memorem iunonis ob iram"	2	
 1	207	"1.207 subsedit dubius "	9	792	"9.792 ceu saeuum turba leonem / cum telis premit infensis . . . / retro redit haud aliter retro dubius uestigia Turnus"	3	"R"
 1	208	"mox ubi se saevae stimulavit verbere caudae erexitque iubas vasto et grave murmur hiatu infremuit"	1	97	"mene iliacis occumbere campis non potuisse tuaque animam hanc effundere dextra saevus ubi aeacidae telo iacet hector ubiingens sarpedon ubi tot simois correpta sub undis scuta virum galeasque et fortia corpora volvit talia iactanti stridens aquilone procella velum adversa ferit fluctusque ad sidera tollit"	2	
-1	209	"209 uasto . . . hiatu"	6	237	"6.237 uastoque . . . hiatu"	3	"V,R"
+1	209	"209 uasto . . . hiatu"	6	237	"6.237 uastoque . . . hiatu"	3	"V;R"
 1	210	"1.210 et uasto graue murmur hiatu / infremuit"	1	296	"1.296 fremet horridus ore cruento"	3	"R"
 1	210	"tum torta levis si lancea mauri haereat aut latum subeant venabula pectus per ferrum tanti securus vulneris exit"	1	312	"ipse uno graditur comitatus achate bina manu lato crispans hastilia ferro"	2	
 1	210	"tum torta levis si lancea mauri haereat aut latum subeant venabula pectus per ferrum tantisecurus vulneris exit"	2	718	"me bello e tanto digressum et caede recenti attrectare nefas donec me flumine vivo abluero haec fatus latos umeros subiectaque colla veste super fulvique insternor pelle leonis succedoque oneri"	2	
@@ -1487,13 +1487,13 @@
 1	223	"caesar ut adversam superato gurgite ripam attigit hesperiae vetitis et constitit arvis"	5	82	"non licuit fines italos fataliaque arva nec tecum ausonium (quicumque est) quaerere thybrim dixerat haec adytis cum lubricus anguis ab imis septem ingens gyros septena volumina traxit amplexus placide tumulum lapsusque per aras caeruleae cui terga notae maculosus et auro squamam incendebat fulgor ceu nubibus arcus mille iacit varios adversosole colores"	2	
 1	223	"caesar ut adversam superato gurgite ripam attigit hesperiae vetitis et constitit arvis"	7	659	"collis aventini silva quem rhea sacerdos furtivum partu sub luminis edidit oras mixta deo mulier postquam laurentia victor geryone extincto tirynthius attigit arva tyrrhenoque boves in flumine lavit hiberas"	2	
 1	223	"caesar ut adversam superatogurgite ripam attigit hesperiae vetitis et constitit arvis"	8	57	"ipse ego te ripis et recto flumine ducam adversum remissuperes subvectus ut amnem"	2	
-1	224	"1.224 Hesperiae . . . aruis"	3	171	"3.171 Dictea negat tibi Iuppiter arva"	5	"TB,R"
+1	224	"1.224 Hesperiae . . . aruis"	3	171	"3.171 Dictea negat tibi Iuppiter arva"	5	"TB;R"
 1	224	"1.224 Hesperiae . . . aruis"	4	355	"4.355 Hesperiae . . . aruis"	5	"R"
 1	224	"224 constitit (Caesar)"	8	381	"8.381 Rutulorum constitit oris"	3	"V"
-1	225	"225-6 pacem . . . / . . . foedera"	12	202	"12.202 pacem . . . foedera"	4	"TB,R"
+1	225	"225-6 pacem . . . / . . . foedera"	12	202	"12.202 pacem . . . foedera"	4	"TB;R"
 1	226	"1.226 procul hinc iam foedera sunto "	4	624	"4.624 foedera sunto "	5	"R"
-1	226	"226 te Fortuna sequor"	10	49	"10.49 quacumque uiam dederit Fortuna sequatur"	3	"TB,R"
-1	226	"226 te Fortuna sequor"	12	435	"12.435-6 disce . . . / fortunam ex aliis"	5	"TB,R"
+1	226	"226 te Fortuna sequor"	10	49	"10.49 quacumque uiam dederit Fortuna sequatur"	3	"TB;R"
+1	226	"226 te Fortuna sequor"	12	435	"12.435-6 disce . . . / fortunam ex aliis"	5	"TB;R"
 1	227	"227 bello sic fatus noctis tenebris rapit "	9	363	"9.363 bello rutuli pugnaque potiti haec rapit"	2	
 1	227	"227 utendum est iudice bello"	12	79	"12.79 nostro dirimamus sanguine bellum"	4	"TB"
 1	228	"sic fatus noctis tenebris rapit agmina ductor impiger et tortobalearis verbere fundae ocior et missa parthi post terga sagitta"	7	378	"ceu quondam torto volitans sub verbere turbo quem pueri magno in gyro vacua atria circum intenti ludo exercent"	3	
@@ -1502,7 +1502,7 @@
 1	228	"228 noctis tenebris rapit "	9	397	"9.397 noctis subito turbante tumultu oppressum rapit"	2	
 1	228	"1.228 sic fatus"	10	535	"10.35 sic fatus"	2	"R"
 1	228	"sic fatus noctis tenebris rapitagmina ductor impiger et torto balearis verbere fundae ocior et missa parthi post terga sagitta"	10	494	"haud illi stabunt aeneia parvo hospitia et laevo pressit pede talia fatus exanimem rapiens immania pondera baltei impressumque nefas una sub nocte iugali caesa manus iuvenum foede thalamique cruenti quae clonus eurytides multo caelaverat auro"	2	
-1	228	"228 rapit agmina"	12	450	"12.450 rapit agmen"	3	"V,R"
+1	228	"228 rapit agmina"	12	450	"12.450 rapit agmen"	3	"V;R"
 1	230	"230 Parthi post terga sagitta"	12	856	"12.856 sagitta / Parthus"	4	"V"
 1	231	"ignes solis lucifero fugiebant astra relicto iamque dies primos belli visura tumultus exoritur"	2	73	"iamque propinquabam portis omnemque videbar evasisse viam subito cum creber ad auris visus adesse pedum sonitus genitorque per umbram prospiciens"	2	
 1	231	"ignes solis lucifero fugiebant astra relicto iamque dies primos belli visura tumultus exoritur"	3	306	"ut me conspexit venientem et troa circum arma amens viditmagnis exterrita monstris deriguit visu in medio calor ossareliquit"	2	
@@ -1598,7 +1598,7 @@
 1	245	"1.245 celsus medio conspectus in agmine Caesar "	8	587	"8.587 ipse agmine Pallas / it medio chlamyde et pictis conspectus in armis"	4	"R"
 1	246	"246 gelidus . . . artus"	3	259	"3.259 gelidus . . . sanguis"	3	"V"
 1	246	"246 metu gelidus "	5	395	"5.395 metu sed enim gelidus"	2	
-1	246	"246 occupat artus"	7	446	"7.446 occupat artus"	3	"V,R"
+1	246	"246 occupat artus"	7	446	"7.446 occupat artus"	3	"V;R"
 1	246	"1.246 gelidos pauor occupat artus "	11	424	"11.424 occupat artus "	3	"R"
 1	247	"1.247 uoluunt in pectore "	7	254	"7.254 uoluit sub pectore "	3	"R"
 1	248	"o male vicinis haec moenia condita gallis o tristi damnata loco"	1	198	"o socii---neque enim ignari sumus ante malorum--- o passi graviora dabit deus his quoque finem"	2	
@@ -1664,7 +1664,7 @@
 1	261	"noctis gelidas lux solverat umbras"	8	342	"hinc lucum ingentem quem romulus acer asylum rettulit etgelida monstrat sub rupe lupercal parrhasio dictum panos de more lycaei"	2	
 1	261	"261 quies noctis "	8	407	"8.407 quies medio iam noctis"	2	
 1	261	"261 noctis gelidas lux soluerat umbras "	9	411	"9.411 noctis diuerberat umbras"	2	
-1	261	"261 gelidas . . . umbras"	11	210	"11.210 gelidam . . . umbram"	3	"V,R"
+1	261	"261 gelidas . . . umbras"	11	210	"11.210 gelidam . . . umbram"	3	"V;R"
 1	262	"ecce faces belli dubiaeque in proelia menti urgentes addunt stimulos cunctasque pudoris rumpunt fata moras"	2	1	"sed si tantus amor casus cognoscere nostros et breviter troiae supremum audire laborem quamquam animus meminisse horret luctuque refugit incipiamfracti bello fatisquerepulsi ductores danaum tot iam labentibus annis instar montis equum divina palladis arte aedificant sectaque intexunt abiete costas"	2	
 1	262	"ecce faces belli dubiaeque in proelia menti urgentes addunt stimulos cunctasque pudoris rumpunt fata moras"	2	192	"sin manibus vestris vestram ascendisset in urbem ultro asiam magno pelopea ad moenia bello venturam et nostros ea fatamanere nepotes talibus insidiis periurique arte sinonis credita res captique dolis lacrimisque coactis quos neque tydides nec larisaeus achilles non anni domuere decem non mille carinae"	2	
 1	262	"ecce faces belli dubiaeque in proelia menti urgentes addunt stimulos cunctasque pudoris rumpunt fata moras"	2	651	"nos contra effusi lacrimis coniunxque cresa ascaniusque omnisque domus ne vertere secum cuncta pater fatoqueurguenti incumbere vellet"	2	
@@ -1767,7 +1767,7 @@
 1	297	"utque satis trepidum turba coeunte tumultum composuitvultu dextraque silentia iussit"	10	821	"at vero ut voltum vidit morientis et ora ora modis anchisiades pallentia miris ingemuit miserans graviter dextramque tetendit et mentem patriae subiit pietatis imago"	2	
 1	297	"utque satis trepidum turbacoeunte tumultum composuit vultu dextraque silentia iussit"	11	292	"coeant in foedera dextrae qua datur"	2	
 1	297	"utque satis trepidum turbacoeunte tumultum composuit vultu dextraque silentia iussit"	11	857	"tune etiam telis moriere dianae dixit et aurata volucrem threissa sagittam deprompsit pharetra cornuque infensa tetendit et duxit longe donec curvata coirent inter se capita et manibus iam tangeret aequis laeva aciem ferri dextra nervoque papillam"	2	
-1	299	"1.299 bellorum o socii qui mille pericula Martis"	1	198	"1.198-9 O socii (neque enim ignari sumus ante malorum)"	4	"V,R"
+1	299	"1.299 bellorum o socii qui mille pericula Martis"	1	198	"1.198-9 O socii (neque enim ignari sumus ante malorum)"	4	"V;R"
 1	299	"bellorum o socii qui mille pericula martis mecum ait experti decimo iam vincitis anno hoc cruor aretois meruit diffusus in arvis vulneraque et mortes hiemesque sub alpibus actae"	1	389	"perge modo atque hinc te reginae ad limina perfer namque tibi reduces socios classemque relatam nuntio et in tutum versis aquilonibus actam ni frustra augurium vani docuere parentes"	2	
 1	299	"bellorum o socii qui mille periculamartis mecum ait experti decimo iam vincitis anno hoc cruor aretois meruit diffusus in arvis vulneraque et mortes hiemesque sub alpibus actae"	2	44	"sic martem indomitum danaosque ad tecta ruentis cernimus obsessumque acta testudine limen"	2	
 1	299	"bellorum o socii qui mille pericula martis mecum ait experti decimo iam vincitis anno hoc cruor aretois meruit diffusus in arvis vulneraque et mortes hiemesque sub alpibus actae"	2	192	"sin manibus vestris vestram ascendisset in urbem ultro asiam magno pelopea ad moenia bello venturam et nostros ea fata manere nepotes talibus insidiis periurique arte sinonis credita res captique dolis lacrimisque coactis quos neque tydides nec larisaeus achilles non anni domuere decem non mille carinae"	2	
@@ -1910,7 +1910,7 @@
 1	327	"utque ferae tigres numquam posuere furorem quas nemore hyrcano matrum dum lustrasequuntur altus caesorum pavit cruor armentorum"	3	368	"quidve sequens tantos possim superare labores hic helenuscaesis primum de more iuvencis exorat pacem divom vittasque resolvit sacrati capitis meque ad tua limina phoebe ipse manu multo suspensum numine ducit atque haec deinde canit divino ex ore sacerdos"	1	
 1	327	"utque ferae tigres numquam posuere furorem quas nemore hyrcano matrum dum lustrasequuntur altus caesorum pavit cruor armentorum"	3	645	"tertia iam lunae se cornua lumine complent cum vitam in silvis inter deserta ferarum lustra domosque traho vastosque ab rupe cyclopas prospicio sonitumque pedum vocemque tremesco"	4	
 1	327	"utque ferae tigres numquam posuere furorem quas nemore hyrcano matrum dum lustrasequuntur altus caesorum pavit cruor armentorum"	4	151	"postquam altos ventum in montis atque invia lustra ecce feraesaxi deiectae vertice caprae decurrere iugis"	2	
-1	327	"327 tigres . . . / . . . nemore Hyrcano"	4	367	"4.367 Hyrcanaeque . . . tigres"	3	"V,R"
+1	327	"327 tigres . . . / . . . nemore Hyrcano"	4	367	"4.367 Hyrcanaeque . . . tigres"	3	"V;R"
 1	327	"utque ferae tigres numquam posuere furorem quas nemore hyrcano matrum dum lustra sequuntur altus caesorum pavit cruor armentorum"	5	327	"iamque fere spatio extremo fessique sub ipsam finem adventabant levi cum sanguine nisus labitur infelix caesis utforte iuvencis fusus humum viridisque super madefecerat herbas"	1	
 1	327	"utque ferae tigres numquam posuere furorem quas nemore hyrcano matrum dum lustra sequuntur altus caesorum pavit cruor armentorum"	6	179	"itur in antiquam silvam stabula alta ferarum"	2	
 1	327	"utque ferae tigres numquamposuere furorem quas nemore hyrcano matrum dum lustra sequuntur altus caesorum pavit cruor armentorum"	6	608	"hic quibus invisi fratres dum vita manebat pulsatusve parens et fraus innexa clienti aut qui divitiis soli incubuere repertis nec partem posuere suis (quae maxima turba est) quique ob adulterium caesi quique arma secuti impia nec veriti dominorum fallere dextras inclusi poenam exspectant"	2	
@@ -1927,7 +1927,7 @@
 1	330	"sic et sullanum solito tibi lambereferrum durat magne sitis"	8	709	"illam inter caedes pallentem morte futura fecerat ignipotens undis et iapyge ferri contra autem magno maerentem corpore nilum pandentemque sinus et tota veste vocantem caeruleum in gremium latebrosaque flumina victos"	2	
 1	330	"sic et sullanum solito tibi lambere ferrum durat magne sitis"	11	169	"quin ego non alio digner te funere palla quam pius aeneas [et quam magni phryges et quam tyrrhenique duces tyrrhenum exercitus omnis] magna tropaea ferunt quos dat tua dextera leto"	2	
 1	331	"1.331-2 semel . . . / . . . fauces "	9	63	"9.63 collecta . . . / . . . fauces "	4	"R"
-1	333	"333 tamen used without preceding ""although"""	3	341	"3.341 tamen used without preceding ""although"""	2	"V,R"
+1	333	"333 tamen used without preceding ""although"""	3	341	"3.341 tamen used without preceding ""although"""	2	"V;R"
 1	334	"334 improbe"	2	356	"2.356 improba (one word no strong relation)"	2	"V"
 1	334	"ex hoc te iam improbe regno ille tuus saltem doceat discedere sulla"	12	183	"cesserit ausonio si fors victoria turno convenit evandri victos discedere ad urbem cedet iulus agris nec post arma ulla rebelles aeneadae referent ferrove haec regna lacessent sin nostrum adnuerit nobis victoria martem (ut potius reor et potius di numine firment) non ego nec teucris italos parere iubebo nec mihi regna peto"	2	
 1	336	"post cilicasne vagos et lassi pontica regis proelia barbarico vix consummata veneno ultima pompeio dabitur provincia caesar quod non victrices aquilas deponere iussus paruerim"	1	6	"sed pater omnipotens speluncis abdidit atris hoc metuens molemque et montis insuper altos imposuit regemque deditqui foedere certo et premere et laxas sciret dare iussus habenas"	2	
@@ -1955,7 +1955,7 @@
 1	340	"mihi si merces erepta laborum est his saltem longi non cumduce praemia belli reddantur"	12	436	"nunc te mea dextera bello defensum dabit et magna interpraemia ducet"	2	
 1	344	"quae rura dabuntur quae noster veteranus aret"	4	211	"femina quae nostris errans in finibus urbem exiguam pretio posuit cui litus arandum cuique loci leges dedimus conubia nostra reppulit ac dominum aenean in regna recepit"	1	
 1	344	"quae rura dabuntur quae noster veteranus aret"	9	263	"bina dabo argento perfecta atque aspera signis pocula devicta genitor quae cepit arisba et tripodas geminos auri duo magna talenta cratera antiquum quem dat sidonia dido"	2	
-1	345	"1.345 quae moenia fessis "	3	85	"3.85 da moenia fessis "	5	"V,R"
+1	345	"1.345 quae moenia fessis "	3	85	"3.85 da moenia fessis "	5	"V;R"
 1	345	"quae moenia fessis"	5	715	"longaevosque senes ac fessas aequore matres et quidquid tecum invalidum metuensque pericli est delige et his habeant terris sine moenia fessi"	4	
 1	347	"347 tollite iampridem uictricia tollite signa"	2	103	"2.103 iamdudum sumite poenas"	3	"H"
 1	348	"arma tenenti omnia dat qui iustanegat"	1	507	"iura dabat legesque viris operumque laborem partibus aequabat iustis aut sorte trahebat"	2	
@@ -1991,9 +1991,9 @@
 1	353	"pietas patriique penatesquamquam caede feras mentesanimosque tumentes frangunt"	11	2	"aeneas quamquam et sociis dare tempus humandis praecipitant curae turbataque funere mens est vota deum primo victor solvebat eoo"	2	
 1	353	"pietas patriique penates quamquam caede feras mentes animosque tumentes frangunt"	11	593	"post ego nube cava miserandae corpus et arma inspoliataferam tumulo patriaeque reponam dixit"	1	
 1	354	"354-5 animosque tumentes frangunt"	1	202	"1.202 reuocate animos"	5	"V"
-1	354	"1.354 caede feras mentes animosque tumentes"	6	49	"6.49 rabie fera corda tument"	3	"V,R"
+1	354	"1.354 caede feras mentes animosque tumentes"	6	49	"6.49 rabie fera corda tument"	3	"V;R"
 1	355	"1.355 diro ferri reuocantur amore "	6	721	"6.721 lucis . . . cupido "	3	"R"
-1	355	"1.355 diro ferri reuocantur amore "	7	461	"7.461 saevit amor ferri et scelerata insania bello"	5	"H,R"
+1	355	"1.355 diro ferri reuocantur amore "	7	461	"7.461 saevit amor ferri et scelerata insania bello"	5	"H;R"
 1	356	"summi tunc munera pili laelius emeritique gerens insignia doni servati civis referentem praemia quercum"	5	196	"hoc vincite cives et prohibete nefas olli certamine summoprocumbunt"	2	
 1	356	"summi tunc munera pili laelius emeritique gerens insignia doni servati civis referentem praemia quercum"	7	68	"externum cernimus inquit adventare virum et partis petere agmen easdem partibus ex isdem et summa dominarier arce praeterea castis adolet dum altaria taedis et iuxta genitorem adstat lavinia virgo visa (nefas) longis comprendere crinibus ignem [atque omnem ornatum flamma crepitante cremari] regalisque accensa comas accensa coronam insignemgemmis tum fumida lumine fulvo involvi ac totis volcanum spargere tectis"	2	
 1	356	"summi tunc munera pili laelius emeritique gerens insignia doni servati civis referentem praemia quercum"	7	655	"post hos insignem palma per gramina currum victoresque ostentat equos satus hercule pulchro pulcher aventinus clipeoque insigne paternum centum angues cinctamque geritserpentibus hydram"	2	
@@ -2026,8 +2026,8 @@
 1	366	"366 bello duc age per scythiae populos "	7	693	"7.693 populos desuetaque bello"	1	
 1	366	"usque adeo miserum est civili vincere bello"	8	374	"dum bello argolici vastabant pergama reges debita casurasque inimicis ignibus arces non ullum auxilium miseris non arma rogavi artis opisque tuae nec te carissime coniunx incassumve tuos volui exercere labores quamvis et priami deberem plurima natis et durum aeneae flevissem saepe laborem"	2	
 1	366	"usque adeo miserum est civili vincere bello"	12	26	"me me duce ferrum corripite o miseri quos improbus advenabello territat invalidas ut aves et litora vestra vi populat"	2	
-1	366	"1.366 usque adeo miserum est ciuili uincere bello"	12	646	"12.646 usque adeone mori miserum est "	5	"V,R"
-1	367	"367 inhospita Syrtis"	4	41	"4.41 inhospita Syrtis"	4	"V,R"
+1	366	"1.366 usque adeo miserum est ciuili uincere bello"	12	646	"12.646 usque adeone mori miserum est "	5	"V;R"
+1	367	"367 inhospita Syrtis"	4	41	"4.41 inhospita Syrtis"	4	"V;R"
 1	367	"1.367 duc age"	6	343	"6.343 dic age "	2	"R"
 1	369	"1.369 post terga relinqueret "	2	57	"2.57 post terga reuinctum "	2	"R"
 1	369	"haec manus ut vitum post terga relinqueret orbem oceani tumidasremo compescuit undas"	8	86	"thybris ea fluvium quam longa est nocte tumentem leniit et tacita refluens ita substitit unda mitis ut in morem stagni placidaeque paludis sterneret aequor aquis remo ut luctamen abesset"	2	
@@ -2115,7 +2115,7 @@
 1	388	"1.388 it . . . clamor "	9	664	"9.664 it clamor"	4	"R"
 1	388	"1.388 it . . . clamor "	11	192	"11.192 it clamor"	4	"R"
 1	388	"it tantus ad aethera clamorquantus piniferae boreas cum thracius ossae rupibus incubuit curvato robore pressae fit sonus aut rursus redeuntis in aetherasilvae"	12	251	"adrexere animos itali cunctaeque volucres convertunt clamorefugam mirabile visu aetheraque obscurant pennis hostemque per auras facta nube premunt donec vi victus et ipso pondere defecit praedamque ex unguibus ales proiecit fluvio penitusque in nubila fugit"	2	
-1	388	"1.388 it . . . clamor "	12	409	"12.409 it clamor"	4	"V,R"
+1	388	"1.388 it . . . clamor "	12	409	"12.409 it clamor"	4	"V;R"
 1	388	"388 tantus ad aethera clamor "	12	621	"12.621 tantus diuersa clamor"	3	
 1	389	"1.389 Boreas . . . Thracius "	10	350	"10.350 tris quoque Threicios Boreae"	3	"R"
 1	390	"1.390 rupibus incubuit "	1	84	"1.84 incubuere mari "	2	"R"
@@ -2416,14 +2416,14 @@
 1	466	"caesar ut immensae collecto robore vires audendi maiorafidem fecere per omnem spargitur italiam vicinaque moeniacomplet"	9	194	"si tibi quae posco promittunt (nam mihi facti fama sat est) tumulo videor reperire sub illo posse viam ad muros et moeniapallantea obstipuit magno laudum percussus amore euryalus"	2	
 1	466	"caesar ut immensae collecto robore vires audendi maiorafidem fecere per omnem spargitur italiam vicinaque moeniacomplet"	9	216	"neu matri miserae tanti sim causa doloris quae te sola puer multis e matribus ausa persequitur magni nec moenia curat acestae ille autem"	2	
 1	466	"caesar ut immensae collecto robore vires audendi maiora fidem fecere per omnemspargitur italiam vicinaque moenia complet"	9	801	"sed manus e castris propere coit omnis in unum nec contravires audet saturnia iuno sufficere ariam caelo nam iuppiter irim demisit germanae haud mollia iussa ferentem ni turnus cedat teucrorum moenibus altis"	2	
-1	467	"1.467 audendi maiora "	10	811	"10.811 maioraque . . . Audes"	3	"V,R"
-1	467	"467 audendi maiora"	12	814	"12.814 maiora audere probaui"	3	"V,R"
+1	467	"1.467 audendi maiora "	10	811	"10.811 maioraque . . . Audes"	3	"V;R"
+1	467	"467 audendi maiora"	12	814	"12.814 maiora audere probaui"	3	"V;R"
 1	468	"1.468 uicinaque moenia conplet"	9	39	"9.39 moenia complent "	3	"R"
-1	468	"468 moenia conplet"	11	140	"11.140 moenia replet"	2	"TB,R"
+1	468	"468 moenia conplet"	11	140	"11.140 moenia replet"	2	"TB;R"
 1	469	"vana quoque ad veros accessit fama timores irrupitque animos populi clademque futuram intulit et velox properantis nuntia belli innumeras solvit falsa in praeconia linguas"	1	389	"perge modo atque hinc te reginae ad limina perfer namque tibi reduces socios classemque relatam nuntio et in tutum versis aquilonibus actam ni frustra augurium vani docuere parentes"	2	
 1	469	"vana quoque ad veros accessit fama timores irrupitque animos populi clademque futuram intulit et velox properantis nuntia belli innumeras solvit falsa in praeconia linguas"	2	81	"fando aliquod si forte tuas pervenit ad auris belidae nomen palamedis et incluta fama gloria quem falsa sub proditione pelasgi insontem infando indicio quia bella vetabat demisere neci nunc cassum lumine lugent"	2	
-1	469	"469 fama + context"	4	173	"4.173 fama + context"	4	"TB,R"
-1	469	"1.469-71 fama . . . / . . . /. . . velox . . . nuntia belli"	4	188	"4.188 ficti . . . nuntia veri"	3	"TB,V,R"
+1	469	"469 fama + context"	4	173	"4.173 fama + context"	4	"TB;R"
+1	469	"1.469-71 fama . . . / . . . /. . . velox . . . nuntia belli"	4	188	"4.188 ficti . . . nuntia veri"	3	"TB;V;R"
 1	469	"vana quoque ad veros accessit fama timores irrupitque animospopuli clademque futuram intulit et velox properantis nuntia belli innumeras solvit falsa in praeconia linguas"	6	69	"sic equidem ducebam animo rebarque futurum tempora dinumerans nec me mea cura fefellit"	2	
 1	469	"vana quoque ad veros accessit fama timores irrupitque animos populi clademque futuram intulit et velox properantis nuntia belli innumeras solvit falsa in praeconia linguas"	7	44	"sed te victa situ verique effeta senectus o mater curis nequiquam exercet et arma regum inter falsa vatem formidine ludit"	2	
 1	469	"vana quoque ad veros accessitfama timores irrupitque animospopuli clademque futuram intulit et velox properantis nuntia belli innumeras solvit falsa in praeconia linguas"	7	79	"namque fore inlustrem fama fatisque canebant ipsam sedpopulo magnum portendere bellum"	2	
@@ -2497,7 +2497,7 @@
 1	481	"hunc inter rhenum populos alpesque iacentes finibus arctoispatriaque a sede revulsos pone sequi iussamque feris a gentibus urbem romano spectante rapi"	11	881	"nec miseram effugiunt mortem sed limine in ipso moenibus inpatriis atque inter tuta domorum confixi exspirant animas"	2	
 1	481	"hunc inter rhenum populos alpesque iacentes finibus arctoispatriaque a sede revulsos pone sequi iussamque feris a gentibus urbem romano spectante rapi"	12	735	"fama est praecipitem cum prima in proelia iunctos conscendebat equos patrio mucrone relicto dum trepidat ferrum aurigae rapuisse metisci"	2	
 1	483	"1.483 pone sequi "	10	226	"10.226 pone sequens "	2	"R"
-1	484	"1.484-5 quisque pauendo / dat uires famae "	4	175	"4.175 uirisque adquirit eundo"	3	"TB,V,R"
+1	484	"1.484-5 quisque pauendo / dat uires famae "	4	175	"4.175 uirisque adquirit eundo"	3	"TB;V;R"
 1	484	"sic quisque pavendo dat viresfamae"	4	625	"exoriare aliquis nostris ex ossibus ultor qui face dardanios ferroque sequare colonos nunc olim quocumque dabunt se tempore vires"	2	
 1	484	"sic quisque pavendo dat viresfamae"	5	414	"his ego suetus dum melior vires sanguis dabat aemula necdum temporibus geminis canebat sparsa senectus"	2	
 1	484	"sic quisque pavendo dat viresfamae"	5	455	"tum pudor incendit vires et conscia virtus praecipitemquedaren ardens agit aequore toto nunc dextra ingeminans ictus nunc ille sinistra"	2	
@@ -2527,14 +2527,14 @@
 1	493	"credas aut tecta nefandas corripuisse faces aut iam quatiente ruina nutantes penderedomos"	5	392	"ubi fama per omnem trinacriam et spolia illa tuis pendentiatectis ille sub haec"	2	
 1	493	"credas aut tecta nefandas corripuisse faces aut iam quatiente ruina nutantes penderedomos"	7	278	"aurea pectoribus demissa monilia pendent tecti auro fulvum mandunt sub dentibus aurum"	2	
 1	493	"credas aut tecta nefandas corripuisse faces aut iam quatiente ruina nutantes penderedomos"	7	335	"tu potes unanimos armare in proelia fratres atque odiis versare domos tu verbera tectis funereasque inferre faces tibi nomina mille mille nocendi artes"	3	
-1	493	"493 credas"	8	691	"8.691 credas"	2	"V,R"
+1	493	"493 credas"	8	691	"8.691 credas"	2	"V;R"
 1	493	"493-8 agmina . . . faces . . . ruit"	11	142	"11.142-3 ruere et . . . / funereas rapuere faces"	5	"TB"
-1	493	"493 credas"	11	528	"11.528 uelis "	2	"V,R"
+1	493	"493 credas"	11	528	"11.528 uelis "	2	"V;R"
 1	493	"493 tecta nefandas corripuisse faces "	12	656	"12.656 faces ad tecta"	3	
 1	495	"sic turba per urbem praecipiti lymphata gradu velut unica rebus spes foret adflictis patriosexcedere muros inconsulta ruit"	2	577	"scilicet haec spartam incolumis patriasque mycenas aspiciet partoque ibit regina triumpho coniugiumque domumque patres natosque videbit iliadum turba et phrygiis comitata ministris"	2	
-1	495	"495-6 turba per urbem / praecipiti lymphata gradu"	4	300	"4.300-1 totamque incensa per urbem / bacchatur"	4	"TB,R"
+1	495	"495-6 turba per urbem / praecipiti lymphata gradu"	4	300	"4.300-1 totamque incensa per urbem / bacchatur"	4	"TB;R"
 1	495	"1.495 turba per urbem "	4	666	"4.666 fama per urbem "	3	"R"
-1	495	"1.495 turba per urbem / praecipiti lymphata gradu"	7	377	"7.377 furit lymphata per urbem "	3	"TB,V,R"
+1	495	"1.495 turba per urbem / praecipiti lymphata gradu"	7	377	"7.377 furit lymphata per urbem "	3	"TB;V;R"
 1	495	"sic turba per urbem praecipitilymphata gradu velut unica rebus spes foret adflictis patrios excedere muros inconsulta ruit"	7	406	"postquam visa satis primos acuisse furores consiliumque omnemque domum vertisse latini protinus hinc fuscis tristis dea tollitur alis audacis rutuli ad muros quam dicitur urbemacrisioneis danae fundasse colonis praecipiti delata noto"	2	
 1	495	"1.495 turba per urbem"	8	554	"8.554 volgata per urbem "	3	"R"
 1	495	"1.495 turba per urbem"	8	665	"8.665 sacra per urbem "	3	"R"
@@ -2706,8 +2706,8 @@
 1	522	"tum ne qua futuri spes saltem trepidas mentes levet addita fatipeioris manifesta fides saperique minaces prodigiis terras implerunt aethera pontum"	9	279	"seu pacem seu bella geram tibi maxima rerum verborumquefides contra quem talia fatur euryalus"	2	
 1	522	"tum ne qua futuri spes saltem trepidas mentes levet addita fatipeioris manifesta fides saperique minaces prodigiis terras implerunt aethera pontum"	10	501	"nescia mens hominum fati sortisque futurae et servare modum rebus sublata secundis"	3	
 1	523	"523 spes saltem trepidas mentes leuet addita "	10	263	"10.263 spes addita"	2	
-1	524	"524 manifesta fides"	2	309	"2.309 manifesta fides"	4	"V,R"
-1	524	"524 manifesta fides"	3	375	"3.375 manifesta fides"	4	"V,R"
+1	524	"524 manifesta fides"	2	309	"2.309 manifesta fides"	4	"V;R"
+1	524	"524 manifesta fides"	3	375	"3.375 manifesta fides"	4	"V;R"
 1	524	"1.524-5 superi . . . / prodigiis terras inplerunt "	10	101	"10.101-3 deum alta silescit / et tremefacta solo tellus silet arduus aether / tum Zephyri posuere premit placida aequora pontus "	3	"R"
 1	526	"ignota obscurae viderunt sideranoctes ardentemque polumflaminis coeloque volantes obliquas per inane faces crinemque timendi sideris etterris nutantem regna cometen"	1	607	"in freta dum fluvii current dum montibus umbrae lustrabunt convexa polus dum sidera pascet semper honos nomenque tuum laudesque manebunt quae me cumque vocant terrae sic fatus amicum ilionea petit dextra laevaque serestum post alios fortemque gyan fortemque cloanthum"	2	
 1	526	"ignota obscurae viderunt sideranoctes ardentemque polum flaminis coeloque volantes obliquas per inane faces crinemque timendi sideris et terris nutantem regna cometen"	3	203	"tris adeo incertos caeca caligine soles erramus pelago totidem sine sidere noctes"	3	
@@ -3024,7 +3024,7 @@
 1	584	"haec propter placuit tuscos demore vetusto acciri vates"	10	83	"aeneae magni dextra cadis increpat ultro cunctantis socios et terra sublevat ipsum sanguine turpantem comptos de morecapillos"	2	
 1	584	"1.584-8 haec propter placuit Tuscos de more uetusto / acciri uates. Quorum qui maximus aeuo / Arruns incoluit desertae moenia Lucae / fulminis edoctus motus uenasque calentis / fibrarum et montitus errantus in aere pinnae "	10	175	"10.175-7 tertius ille hominum diuumque interpres Asilas / cui pecudumfibrae caeli cui sidera parent / et linguae uolucrum et pragesagi fulminis ignes "	3	"R"
 1	584	"haec propter placuit tuscos demore vetusto acciri vates"	11	34	"circum omnis famulumque manus troianaque turba et maestum iliades crinem de more solutae"	2	
-1	584	"584 de more uetusto"	11	142	"11.142 de more uetusto"	3	"V,R"
+1	584	"584 de more uetusto"	11	142	"11.142 de more uetusto"	3	"V;R"
 1	584	"haec propter placuit tuscos demore vetusto acciri vates"	11	891	"ipsae de muris summo certamine matres monstrat amor verus patriae ut videre camillam tela manu trepidae iaciunt ac robore duro stipitibus ferrum sudibusque imitantur obustis praecipites primaeque mori pro moenibus ardent"	1	
 1	585	"quorum qui maximus aevo aruns incoluit desertae moenia lucae fulminis edoctus motus venasque calentes fibrarum et monitus volitantis in aere pennae monstra iubet primum nullo quae semine discors protulerat natura rapi sterilique nefandos ex utero fetus infaustis urere flammis"	1	71	"sunt mihi bis septem praestanti corpore nymphae quarumquae forma pulcherrima deiopea conubio iungam stabili propriamque dicabo omnis ut tecum meritis pro talibus annos exigat et pulchra faciat te prole parentem aeolus haec contra"	2	
 1	585	"quorum qui maximus aevo aruns incoluit desertae moenia lucae fulminis edoctus motus venasque calentes fibrarum et monitus volitantis in aere pennae monstra iubet primum nullo quae semine discors protulerat natura rapi sterilique nefandos ex utero fetus infaustis urere flammis"	1	384	"ipse ignotus egens libyae deserta peragro europa atque asia pulsus nec plura querentem passa venus medio sic interfata dolore est"	2	
@@ -3065,7 +3065,7 @@
 1	585	"quorum qui maximus aevo aruns incoluit desertae moenia lucae fulminis edoctus motus venasque calentes fibrarum et monitus volitantis in aere pennae monstra iubet primum nullo quae semine discors protulerat natura rapi sterilique nefandos ex utero fetus infaustis urere flammis"	12	669	"ut primum discussae umbrae et lux reddita menti ardentis oculorum orbes ad moenia torsit turbidus eque rotis magnamrespexit ad urbem"	2	
 1	586	"1.586 Aruns"	11	759	"11.759 Arruns"	3	"R"
 1	587	"1.587-8 uenasque calentis / fibrarum "	10	176	"10.176 fibrae caeli "	3	"R"
-1	588	"588 errantis in aere pinnae"	3	361	"3.361 praepetis omina pennae"	4	"H,V"
+1	588	"588 errantis in aere pinnae"	3	361	"3.361 praepetis omina pennae"	4	"H;V"
 1	589	"1.589-90 monstra . . . quae . . . / protulerat natura "	9	120	"9.120 mirabile monstrum"	3	"R"
 1	591	"1.591 infaustis urere flammis "	2	37	"2.37 praecipitare iubent subiectisque urere flammis "	3	"R"
 1	591	"1.591 infaustis urere flammis "	5	635	"5.635 infaustas exurite puppis "	3	"R"
@@ -3093,7 +3093,7 @@
 1	599	"1.599 fata deum "	6	376	"6.376 fata deum "	2	"R"
 1	599	"1.599 fata deum "	7	239	"7.239 fata deum"	2	"R"
 1	599	"1.599 fata deum"	7	584	"7.584 fata deum"	2	"R"
-1	604	"604 tollens apicem generoso uertice"	8	664	"8.664 lanigeros apices"	3	"V,R"
+1	604	"604 tollens apicem generoso uertice"	8	664	"8.664 lanigeros apices"	3	"V;R"
 1	605	"dumque illi effusam longis anfractibus urbem circueunt aruns dispersos fulminis ignes colligit et terrae moesto cum murmure condit datque locisnomen sacris"	1	247	"hic tamen ille urbem patavi sedesque locavit teucrorum et genti nomen dedit armaque fixit troia"	3	
 1	605	"dumque illi effusam longis anfractibus urbem circueunt aruns dispersos fulminis ignescolligit et terrae moesto cum murmure condit datque locis nomen sacris"	1	522	"o regina novam cui condere iuppiter urbem iustitiaque deditgentis frenare superbas troes te miseri ventis maria omnia vecti oramus prohibe infandos a navibus ignis parce pio generi et propius res aspice nostras"	2	
 1	605	"dumque illi effusam longis anfractibus urbem circueunt aruns dispersos fulminis ignes colligit et terrae moesto cum murmure condit datque locis nomen sacris"	1	607	"in freta dum fluvii current dum montibus umbrae lustrabunt convexa polus dum sidera pascet semper honos nomenque tuum laudesque manebunt quae me cumque vocant terrae sic fatus amicum ilionea petit dextra laevaque serestum post alios fortemque gyan fortemque cloanthum"	2	
@@ -3187,7 +3187,7 @@
 1	631	"631 fas superi "	2	779	"2.779 fas aut ille sinit superi"	2	
 1	631	"vix fas superi quaecumquemonetis prodere me populis"	3	654	"vos animam hanc potius quocumque absumite leto vix ea fatuserat summo cum monte videmus ipsum inter pecudes vasta se mole moventem pastorem polyphemum et litora nota petentem monstrum horrendum informe ingens cui lumen ademptum"	2	
 1	631	"vix fas superi quaecumque monetis prodere me populis"	7	691	"at messapus equum domitor neptunia proles quem neque fasigni cuiquam nec sternere ferro iam pridem resides populosdesuetaque bello agmina in arma vocat subito ferrumque retractat"	2	
-1	632	"632-3 litaui . . . sacrum"	4	50	"4.50 sacrisque litatis"	3	"V,R"
+1	632	"632-3 litaui . . . sacrum"	4	50	"4.50 sacrisque litatis"	3	"V;R"
 1	632	"1.632 nec enim "	6	28	"6.28 sed enim "	2	"R"
 1	632	"neque enim tibi summe litavi iuppiter hoc sacrum"	6	245	"et summas carpens media inter cornua saetas ignibus imponitsacris libamina prima voce vocans hecaten caeloque ereboque potentem"	2	
 1	632	"1.632 nec enim "	8	84	"8.84 tibi enim "	2	"R"
@@ -3294,7 +3294,7 @@
 1	673	"1.673 pauidam . . . plebem"	8	349	"8.349 iam tum religio pavidos terrebat agrestis / dira loci"	3	"R"
 1	674	"1.674-6 qualis . . . Edonis . . . rapitur matrona per urbem "	4	300	"4.300 f. totamque incensa per urbem / bacchatur qualis commostis excita sacris / Thyias ubi audito simulant trieterica Baccho / orgia nocturnusque uocat clamore Cithaeron"	5	"R"
 1	674	"674 qualis uertice pindi edonis ogygio decurrit "	5	212	"5.212 decurrit aperto qualis"	2	
-1	674	"674 sed maiora premunt"	10	375	"10.375 numina nulla premunt"	3	"H,R"
+1	674	"674 sed maiora premunt"	10	375	"10.375 numina nulla premunt"	3	"H;R"
 1	676	"1.676 rapitur matrona per urbem "	4	68	"4.68 uritur infelix Dido totaque uagatur / urbe furens "	5	"R"
 1	676	"1.676 rapitur matrona per urbem "	4	666	"4.666 concussam bacchatur Fama per urbem "	5	"R"
 1	676	"talis et attonitam rapitur matrona per urbem vocibus his prodens urgentem pectora phoebum"	5	409	"tum senior talis referebat pectore voces"	2	
