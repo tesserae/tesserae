@@ -86,7 +86,7 @@
 						<th>Score basis:</th>
 						<td>
 							<input type="checkbox" name="score" value="word">word</input>
-							<input type="checkbox" name="score" value="stem">stem</input>
+							<input type="checkbox" name="score" value="stem" checked="checked">stem</input>
 							<input type="checkbox" name="score" value="feature">feature</input>							
 						</td>
 					</tr>
