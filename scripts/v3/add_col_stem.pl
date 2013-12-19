@@ -39,6 +39,11 @@ the flag more than once. The default is 'stem'. If a feature set other than 'ste
 is specified, then 'stem' must also be specified explicitly if you want to create 
 a stem index too.
 
+=item B<--use-lingua-stem>
+
+Use the Porter stemmer in CPAN package Lingua::Stem to stem tokens, rather than
+a built-in Tesserae stem dictionary.
+
 =item B<--parallel> I<N>
 
 Allow I<N> processes to run in parallel. Requires Parallel::ForkManager.
@@ -160,6 +165,7 @@ my $override_parallel = Tesserae::check_mod("Parallel::ForkManager");
 
 my $help    = 0;
 my $quiet   = 0;
+my $use_lingua_stem = 0;
 my @feature;
 
 #
@@ -175,6 +181,7 @@ GetOptions(
 	'help'            => \$help,
 	'quiet'           => \$quiet,
 	'feature=s'       => \@feature,
+	'use-lingua-stem' => \$use_lingua_stem,
 	'parallel=i'      => \$max_processes
 );
 
@@ -206,6 +213,15 @@ if ($max_processes and $override_parallel) {
 if ($max_processes) {
 
 	$pm = Parallel::ForkManager->new($max_processes);
+}
+
+#
+# initialize stemmer
+#
+
+if ($use_lingua_stem) {
+
+	Tesserae::initialize_lingua_stem();
 }
 
 #

@@ -849,7 +849,7 @@ sub process_file_list {
 
 sub porter {
 
-	my ($lang, $form) = @_;
+	my ($lang, $form, %opt) = @_;
 	
 	$lang = ($lang eq 'en' ? 'EN-UK' : uc($lang));
 	
@@ -863,7 +863,7 @@ sub porter {
 
 sub chr_ngrams {
 
-	my ($lang, $form) = @_;
+	my ($lang, $form, %opt) = @_;
 	
 	# set n to 1 less than the n you want:
 	# e.g., n=2 produces 3-grams.
@@ -884,5 +884,17 @@ sub chr_ngrams {
 	}
 	
 	return [keys %ngram];
+}
+
+sub initialize_lingua_stem {
+
+	if ($override_stemmer) {
+	
+		print STDERR "Tesserae can't find Lingua::Stem. Falling back to stem dictionary if one exists\n";
+	}
+	else {
+	
+		$feature_override{'stem'} = $feature_override{'porter'};
+	}
 }
 1;
