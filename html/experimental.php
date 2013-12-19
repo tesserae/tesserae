@@ -54,6 +54,12 @@
 					and compares the results against our 3000-parallel benchmark set.
 				</p>
 
+				<h2><a href="<?php echo $url_cgi.'/syn-diagnostic.pl'; ?>">Greek-Latin dictionary diagnostic tool</a></h2>
+
+				<p>
+					Compares the two translation feature sets against the lexicon for a given Greek text,
+					shows purported translations for those Greek stems that have them in either feature set.
+				</p>
 			</div>
 		
 			<?php include "last.php"; ?>
