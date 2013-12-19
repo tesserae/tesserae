@@ -323,6 +323,7 @@ sub print_header {
 		print <<END_HEAD;
 <html>
 	<head>
+		<link href="$url{css}/style.css" rel="stylesheet" type="text/css" />
 		<style type="text/css">
 			tr {
 				padding: 4px 3px;
@@ -339,9 +340,15 @@ sub print_header {
 			div.summary {
 				margin-bottom:10px;
 			}
+			div.back {
+				padding:3px 3px 8px 3px;
+			}
 		</style>
 	</head>
 	<body>
+	<div class="back">
+		<a style="color:grey;" href="$url{html}/experimental.php">Back to Tesserae</a>
+	</div>
 	<div>
 END_HEAD
 
@@ -459,7 +466,7 @@ sub select_list {
 			$list
 		</select>
 		
-		<input type=\"submit\" value=\"Load\"></td></tr>
+		<input type=\"submit\" value=\"Load\">
 	</form>
 
 END

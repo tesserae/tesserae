@@ -381,6 +381,7 @@ sub html_header {
 <html>
 	<head>
 		<title>Query Results</title>
+		<link href="$url{css}/style.css" rel="stylesheet" type="text/css" />
 		<style type="text/css">
 			div.query {
 				position: relative;
