@@ -162,9 +162,10 @@ div.footer_icon_left
 }
 
 
-div#footer img
+div#footer img.logo_wide
 {
-	max-height: 50px;
+	max-width: 200px;
+	padding: 5px;
 }
 
 div#results_sort table
