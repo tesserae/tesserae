@@ -197,7 +197,7 @@ if ($no_cgi) {
 }
 else {
 	
-	$session = CGI::Session->new(undef, $cgi, {Directory => '/tmp'});
+	$session = CGI::Session->new(undef, $cgi, {Directory => '/tmp'}, {name=>'syn-diagnostic'});
 	
 	print $session->header('-charset'=>'utf-8', '-type'=>'text/html');
 
@@ -347,7 +347,7 @@ sub print_header {
 	</head>
 	<body>
 	<div class="back">
-		<a style="color:grey;" href="$url{html}/experimental.php">Back to Tesserae</a>
+		<a style="color:grey;" href="$url{html}/experimental.php" target="_top">Back to Tesserae</a>
 	</div>
 	<div>
 END_HEAD

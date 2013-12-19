@@ -190,7 +190,7 @@ if ($no_cgi) {
 }
 else {
 	
-	$session = CGI::Session->new(undef, $cgi, {Directory => '/tmp'});
+	$session = CGI::Session->new(undef, $cgi, {Directory => '/tmp'}, {name=>'syn-diagnostic'});
 	
 	print $session->header('-charset'=>'utf-8', '-type'=>'text/html');
 

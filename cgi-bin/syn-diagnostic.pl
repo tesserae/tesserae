@@ -184,8 +184,7 @@ if ($no_cgi) {
 }
 else {
 	
-	$session = CGI::Session->new(undef, $cgi, {Directory => '/tmp'});
-	my $cookie = $cgi->cookie(CGISESSID => $session->id );
+	$session = CGI::Session->new(undef, $cgi, {Directory => '/tmp'}, {name=>'syn-diagnostic'});
 
 	print header(-encoding=>"utf8");
 	
