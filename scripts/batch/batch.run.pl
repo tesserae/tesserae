@@ -824,7 +824,11 @@ sub parse_config {
 		
 			$pname = lc($1);
 			next;
-		}	
+		}
+		
+		# remove titles after part numbers
+		
+		$l =~ s/(\.part\..+?)\..*/$1.*/;
 		
 		# look for range syntax
 		
@@ -936,11 +940,15 @@ sub validate {
 		my @pass;
 		my @all = @{Tesserae::get_textlist($lang, -sort=>1)};
 
+		print STDERR "debug: all=" . join("\n", @all) . "\n";
+
 		for my $val (@{$param{$pname}}) {
 		
 			$val =~ s/\./\\./g;
 			$val =~ s/\*/.*/g;
 			$val = "^$val\$";
+			
+			print STDERR "debug: val=$val\n";
 			
 			push @pass, (grep { /$val/ } @all);
 		}
