@@ -152,7 +152,7 @@ use File::Path qw(mkpath rmtree);
 
 # approximate size of samples in characters
 
-my %size = (target => 500, source => 1000);
+my %size = (target => 1000, source => 500);
 my $help;
 
 # check for cmd line options
@@ -170,14 +170,6 @@ if ($help) {
 	pod2usage(1);
 }
 
-# language database
-
-my $file_lang = catfile($fs{data}, 'common', 'lang');
-my %lang = %{retrieve($file_lang)};
-
-# stem dictionary
-
-my %stem;
 my $lang = shift(@ARGV) or pod2usage(1);
 
 # global variables hold working data
@@ -311,20 +303,3 @@ sub sample {
 	return ($sample, $lpos, $rpos);
 }
 
-sub stems {
-
-	my $form = shift;
-	
-	my @stems;
-	
-	if (defined $stem{$form}) {
-	
-		@stems = @{$stem{$form}};
-	}
-	else {
-	
-		@stems = ($form);
-	}
-	
-	return \@stems;
-}
