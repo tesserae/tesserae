@@ -259,7 +259,7 @@ my $nav = <<END_FORM;
 				</td>
 			</tr>
 			<tr>
-				<th>Source:</th>
+				<th>Target:</th>
 				<td>
 					<select name="target_auth" onchange="populate_work('$lang', 'target')">
 					</select><br />
