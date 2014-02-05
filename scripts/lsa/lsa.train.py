@@ -113,11 +113,11 @@ def main():
 		
 		documents = []
 		
-		listing = os.listdir(os.path.join(dir_source, 'source'))
+		listing = os.listdir(os.path.join(dir_source, 'target'))
 		listing = [sample for sample in listing if not sample.startswith('.')]
 		
 		for sample in sorted(listing):
-		   f = open(os.path.join(dir_source, 'source', sample))
+		   f = open(os.path.join(dir_source, 'target', sample))
 		   documents.append(f.read())
 		
 		# load stop list, hapax legomena
