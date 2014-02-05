@@ -178,7 +178,7 @@ my %lang = %{retrieve($file_lang)};
 # stem dictionary
 
 my %stem;
-my $lang = shift(@ARGV) or pod2usage(1);
+my $lang = 'la'; # shift(@ARGV) or pod2usage(1);
 
 # global variables hold working data
 
@@ -187,7 +187,7 @@ my @phrase;
 
 # read files to process from cmd line args
 
-my @texts = @{Tesserae::get_textlist($lang)};
+my @texts = ('vergil.aeneid'); # @{Tesserae::get_textlist($lang)};
 
 for my $name (@texts) {
 		
@@ -303,7 +303,7 @@ sub sample {
 	
 	for (@tokens) {
 	
-		push @stems, @{stems($token[$_]{FORM})};
+		push @stems, @{Tesserae::feat($lang, 'stem', $token[$_]{FORM})};
 	}
 		
 	my $sample = join(" ", @stems)  . "\n";

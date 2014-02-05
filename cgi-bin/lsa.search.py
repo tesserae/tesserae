@@ -131,16 +131,16 @@ def main():
 	# load data from training program
 	#
 	
-	logging.info("source=" + source)
+	logging.info("target=" + target)
 	
 	# dictionary
 	
-	file_dict = os.path.join(dir_source, 'dictionary')
+	file_dict = os.path.join(dir_target, 'dictionary')
 	dictionary = corpora.Dictionary.load(file_dict)
 	
 	# corpus
 	
-	file_corpus = os.path.join(dir_source, 'corpus.mm')
+	file_corpus = os.path.join(dir_target, 'corpus.mm')
 	corpus = corpora.MmCorpus(file_corpus)
 	
 	# create lsi model
@@ -151,14 +151,15 @@ def main():
 	# load query
 	#
 	
-	logging.info("target=" + target + "; unit id=" + str(unit_id))
+	logging.info("source=" + source + "; unit id=" + str(unit_id))
 	
-	listing = os.listdir(os.path.join(dir_target, 'target'))
+	listing = os.listdir(os.path.join(dir_source, 'source'))
 	listing = [sample for sample in listing if not sample.startswith('.')]
+        listing.sort()
 	
-	f = open(os.path.join(dir_target, 'target', listing[unit_id]))
+	f = open(os.path.join(dir_source, 'source', listing[unit_id]))
 	doc = f.read()
-	
+
 	vec_bow = dictionary.doc2bow(doc.lower().split())
 	
 	vec_lsi = lsi[vec_bow] # convert the query to LSI space
