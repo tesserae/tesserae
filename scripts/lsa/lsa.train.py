@@ -60,6 +60,28 @@ from gensim import corpora, models, similarities
 # functions
 #
 
+def loadStopList(filename, n):
+
+	# load stop list, hapax legomena
+	
+	print " - loading stop list of {0} words".format(n)
+	
+	f = open(filename, 'r')
+	
+	stoplist  = []
+	
+	for i, rec in enumerate(f.read().splitlines()):
+	
+		if rec.startswith('#'):
+			continue
+	
+		form = rec.split()[0]
+	
+		if i < n: 
+			stoplist.append(form)
+	
+	return(stoplist)
+
 
 #
 # main
@@ -82,65 +104,49 @@ def main():
 				help='print less info')
 
 	opt = parser.parse_args()
+
+	# lsa-specific stoplist
+	
+	stoplist = loadStopList(os.path.join(fs['data'], 'common', opt.lang + '.lsa.stop'), opt.stop)
 	
 	#
 	# read files given as cmd line args
 	#
 	
-	sources = []
+	names = []
 	
 	for file in opt.files:
 	
 		# strip path and extension to get file name
 		
 		if file.endswith('.tess'):
-			sources.append(os.path.basename(file)[0:-5])
+			names.append(os.path.basename(file)[0:-5])
 		else:
 			if os.path.isdir(file):
 				for file_part in os.listdir(file):
 					if file_part.endswith('.tess'):
-						sources.append(file_part[0:-5])
+						names.append(file_part[0:-5])
 			continue
 	
-	for source in sources:
+	# create LSI model from training set
 	
-		file_stoplist = os.path.join(fs['data'], 'common', opt.lang + '.stem.freq')
-		dir_source   = os.path.join(fs['data'], 'lsa', opt.lang, source)
+	for name in names:
+	
+		dir_base  = os.path.join(fs['data'], 'lsa', opt.lang, name)
 	
 		# read in sample files
 	
-		print "reading " + source
+		print "reading " + name
 		
 		documents = []
 		
-		listing = os.listdir(os.path.join(dir_source, 'source'))
+		listing = os.listdir(os.path.join(dir_base, 'large'))
 		listing = [sample for sample in listing if not sample.startswith('.')]
 		
 		for sample in sorted(listing):
-		   f = open(os.path.join(dir_source, 'source', sample))
+		   f = open(os.path.join(dir_base, 'large', sample), 'r')
 		   documents.append(f.read())
-		
-		# load stop list, hapax legomena
-		
-		print " - loading stop list of {0} words".format(opt.stop)
-		
-		f = open(file_stoplist)
-		
-		stoplist  = []
-		
-		for i, rec in enumerate(f.read().splitlines()):
-		
-			if rec.startswith('#'):
-				continue
-		
-			form, count = rec.split()
-		
-			if i < opt.stop: 
-				stoplist.append(form)
-				
-			elif count == 1:
-				stoplist.append(form)
-		
+										
 		# remove stop words and tokenize
 		
 		print " - removing stop words and hapax legomena"
@@ -156,21 +162,21 @@ def main():
 		
 		print " - exporting dictionary"
 		
-		file_dict = os.path.join(dir_source, 'dictionary')
+		file_dict = os.path.join(dir_base, 'dictionary')
 		dictionary.save(file_dict)
 		
 		# build gensim corpus
 		
-		print " - converting to bag-of-words corpus"
+		print " - converting to bag-of-words"
 		
-		corpus = [dictionary.doc2bow(text) for text in texts]
+		training = [dictionary.doc2bow(text) for text in texts]
 		
 		# save corpus
 		
-		print " - exporting corpus"
+		print " - exporting training set"
 		
-		file_corpus = os.path.join(dir_source, 'corpus.mm')
-		corpora.MmCorpus.serialize(file_corpus, corpus)
+		file_training = os.path.join(dir_base, 'training.mm')
+		corpora.MmCorpus.serialize(file_training, training)
 
 #
 # stuff to execute

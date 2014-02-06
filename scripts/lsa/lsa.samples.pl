@@ -16,16 +16,13 @@ lsa.samples.pl - create training set for lsa
 
 =head1 SYNOPSIS
 
-lsa.samples.pl [options] LANG
+lsa.samples.pl [options] FILES
 
 =head1 DESCRIPTION
 
-Searches for a corpus of texts in the language subdirectory specified by LANG. Breaks each
-text up into a series of equally-sized samples to use as input data for the LSA search
-tool.  Two series of samples are created from each text: one, B<source> to use as the 
-documents to be matched, and another, B<target> to use as the queries.  By default the 
-source samples are larger than the target samples, but you can change this using the 
-I<--source> and I<--target> options at the command line.  
+Breaks each text up into series of roughly equally-sized samples to use as input 
+data for the LSA search tool.  Two series of samples are created from each text: 
+a larger one, used for training, and a smaller one, from which queries are drawn.
 
 Training is done on the source set using I<lsa.train.py>.
 
@@ -33,19 +30,19 @@ Training is done on the source set using I<lsa.train.py>.
 
 =over
 
-=item I<LANG>
+=item I<FILES>
 
-Language to process.
+The list of files to index.
 
-=item B<--source> I<SIZE>
+=item B<--large> I<SIZE>
 
-Create 'source' samples (training set) using approximately I<SIZE> characters of the 
-original text for each sample.
+Create 'large' samples (training set) using approximately I<SIZE> characters of the 
+original text for each sample. Default is 1000.
 
-=item B<--target> I<SIZE>
+=item B<--small> I<SIZE>
 
-Create 'target' samples (query set) using approximately I<SIZE> characters of the 
-original text for each sample.
+Create 'small' samples (query set) using approximately I<SIZE> characters of the 
+original text for each sample. Default is 500.
 
 =item B<--help>
 
@@ -152,15 +149,15 @@ use File::Path qw(mkpath rmtree);
 
 # approximate size of samples in characters
 
-my %size = (target => 500, source => 1000);
+my %size = (large => 1000, small => 500);
 my $help;
 
 # check for cmd line options
 
 GetOptions(
-	'target=i' => \$size{target},
-	'source=i' => \$size{source},
-	'help'     => \$help
+	'large=i' => \$size{large},
+	'small=i' => \$size{small},
+	'help'    => \$help
 	);
 
 # print usage if the user needs help
@@ -170,26 +167,25 @@ if ($help) {
 	pod2usage(1);
 }
 
-# language database
-
-my $file_lang = catfile($fs{data}, 'common', 'lang');
-my %lang = %{retrieve($file_lang)};
-
-# stem dictionary
-
-my %stem;
-my $lang = shift(@ARGV) or pod2usage(1);
-
 # global variables hold working data
 
+my $lang;
 my @token;
 my @phrase;
 
-# read files to process from cmd line args
+# get texts to process from command-line args
 
-my @texts = @{Tesserae::get_textlist($lang)};
+my @files = map { glob } @ARGV;
 
-for my $name (@texts) {
+my @names = @{Tesserae::process_file_list(\@files)};
+
+# process each text in turn
+
+for my $name (@names) {
+	
+	# set language
+	
+	$lang = Tesserae::lang($name);
 		
 	# load text from v3 database
 	
@@ -204,7 +200,7 @@ for my $name (@texts) {
 	
 	print STDERR "$name\n";
 	
-	for my $mode (qw/source target/) {
+	for my $mode (qw/small large/) {
 
 		print STDERR "$mode:\n";
 
@@ -303,7 +299,7 @@ sub sample {
 	
 	for (@tokens) {
 	
-		push @stems, @{stems($token[$_]{FORM})};
+		push @stems, @{Tesserae::feat($lang, 'stem', $token[$_]{FORM})};
 	}
 		
 	my $sample = join(" ", @stems)  . "\n";
@@ -311,20 +307,3 @@ sub sample {
 	return ($sample, $lpos, $rpos);
 }
 
-sub stems {
-
-	my $form = shift;
-	
-	my @stems;
-	
-	if (defined $stem{$form}) {
-	
-		@stems = @{$stem{$form}};
-	}
-	else {
-	
-		@stems = ($form);
-	}
-	
-	return \@stems;
-}
