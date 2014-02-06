@@ -99,7 +99,7 @@ my $quiet = 0;
 my $target    = 'lucan.bellum_civile.part.1';
 my $source    = 'vergil.aeneid.part.1';
 my $unit_id   = 0;
-my $topics    = 15;
+my $topics    = 10;
 my $threshold = 0.5;
 
 #
@@ -318,7 +318,7 @@ sub getBounds {
 	
 	my $phrase_id = shift;
 	
-	my @bounds = @{retrieve(catfile($fs{data}, 'lsa', $lang, $target, 'bounds.target'))};
+	my @bounds = @{retrieve(catfile($fs{data}, 'lsa', $lang, $target, 'bounds.small'))};
 
 	return @{$bounds[$phrase_id]};
 }

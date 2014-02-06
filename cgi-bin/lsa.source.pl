@@ -105,7 +105,7 @@ my $target = 'lucan.bellum_civile.part.1';
 my $source = 'vergil.aeneid.part.1';
 my $unit_id = 0;
 my $threshold = .5;
-my $topics = 15;
+my $topics = 10;
 
 #
 # command-line arguments
@@ -341,28 +341,16 @@ sub getLSA {
 
 	my ($target, $source, $unit_id, $topics, $threshold) = @_;
 	
-	# my $browser  = LWP::UserAgent->new;
-	#  	my $response = $browser->post(
-	#  		"$url{cgi}/lsa.search.py",
-	#  		[
-	#  			'target'  => $target,
-	#  			'source'  => $source,
-	#  			'unit_id' => $unit_id,
-	#  			'topics'  => $topics,
-	#  			'submit'  => 'SUBMIT'
-	#  		],
-	#  	);
-	#  
-	#  	my $results = $response->content;
-
 	my $script = catfile($fs{cgi}, 'lsa.search.py');
 	my $cmd = join(" ", 
 		$script,
-		'-t' => $target,
-		'-s' => $source,
+		'-q' => $target,
+		'-c' => $source,
 		'-i' => $unit_id,
 		'-n' => $topics
 	);
+	
+	print STDERR "$cmd\n" unless $quiet;
 	
 	my $results = `$cmd`;
 

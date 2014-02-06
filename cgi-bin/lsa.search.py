@@ -73,12 +73,12 @@ def main():
 	# set params
 	#
 	
-	target = 'lucan.bellum_civile.part.1'
-	source = 'vergil.aeneid.part.1'
+	query  = 'lucan.bellum_civile.part.1'
+	corpus = 'vergil.aeneid.part.1'
 	lang   = 'la'
 	
 	unit_id  = 0
-	topics   = 15
+	topics   = 10
 	
 	#
 	# look for user options
@@ -92,10 +92,10 @@ def main():
 		
 		form = cgi.FieldStorage() 
 		
-		target  = form.getvalue('target', 'lucan.bellum_civile.part.1')
-		source  = form.getvalue('source', 'vergil.aeneid.part.1')
+		query   = form.getvalue('query', 'lucan.bellum_civile.part.1')
+		corpus  = form.getvalue('corpus', 'vergil.aeneid.part.1')
 		unit_id = int(form.getvalue('unit_id', 0))
-		topics  = int(form.getvalue('topics', 15))
+		topics  = int(form.getvalue('topics', 10))
 	
 		# print header
 		
@@ -108,56 +108,56 @@ def main():
 	
 		parser = argparse.ArgumentParser(description='Do an LSA search on two Tesserae texts.')
 	
-		parser.add_argument('-s', '--source', required=True, help="source text")
-		parser.add_argument('-t', '--target', required=True, help="target text")
+		parser.add_argument('-c', '--corpus', required=True, help="text from which results are drawn")
+		parser.add_argument('-q', '--query', required=True, help="text from which query is drawn")
 		parser.add_argument('-l', '--lang',   type=str, default='la', help="language")
-		parser.add_argument('-i', '--unit-id', type=int, default=0,  help="phrase id in the target text")
-		parser.add_argument('-n', '--topics',  type=int, default=15, help="number of topics")
+		parser.add_argument('-i', '--unit-id', type=int, default=0,  help="phrase id in the query text")
+		parser.add_argument('-n', '--topics',  type=int, default=10, help="number of topics")
 	
 		args=parser.parse_args()
 	
-		source  = args.source
-		target  = args.target
+		corpus  = args.corpus
+		query   = args.query
 		unit_id = args.unit_id
 		topics  = args.topics
 		lang    = args.lang
 	
 	# set paths
 	
-	dir_source = os.path.join(fs['data'], 'lsa', lang, source)
-	dir_target = os.path.join(fs['data'], 'lsa', lang, target)
+	dir_corpus = os.path.join(fs['data'], 'lsa', lang, corpus)
+	dir_query = os.path.join(fs['data'], 'lsa', lang, query)
 
 	#
 	# load data from training program
 	#
 	
-	logging.info("target=" + target)
+	logging.info("corpus=" + corpus)
 	
 	# dictionary
 	
-	file_dict = os.path.join(dir_target, 'dictionary')
+	file_dict = os.path.join(dir_corpus, 'dictionary')
 	dictionary = corpora.Dictionary.load(file_dict)
 	
 	# corpus
 	
-	file_corpus = os.path.join(dir_target, 'corpus.mm')
-	corpus = corpora.MmCorpus(file_corpus)
+	file_training = os.path.join(dir_corpus, 'training.mm')
+	training = corpora.MmCorpus(file_training)
 	
 	# create lsi model
 	
-	lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=topics)
+	lsi = models.LsiModel(training, id2word=dictionary, num_topics=topics)
 
 	#
 	# load query
 	#
 	
-	logging.info("source=" + source + "; unit id=" + str(unit_id))
+	logging.info("query=" + query + "; unit id=" + str(unit_id))
 	
-	listing = os.listdir(os.path.join(dir_source, 'source'))
+	listing = os.listdir(os.path.join(dir_query, 'small'))
 	listing = [sample for sample in listing if not sample.startswith('.')]
         listing.sort()
 	
-	f = open(os.path.join(dir_source, 'source', listing[unit_id]))
+	f = open(os.path.join(dir_query, 'small', listing[unit_id]))
 	doc = f.read()
 
 	vec_bow = dictionary.doc2bow(doc.lower().split())
@@ -168,7 +168,7 @@ def main():
 	# calculate similarities
 	#
 	
-	index = similarities.MatrixSimilarity(lsi[corpus])
+	index = similarities.MatrixSimilarity(lsi[training])
 	
 	sims = index[vec_lsi] 
 	sims = sorted(enumerate(sims), key=lambda item: -item[1])

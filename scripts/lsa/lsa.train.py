@@ -128,6 +128,8 @@ def main():
 						names.append(file_part[0:-5])
 			continue
 	
+	# create LSI model from training set
+	
 	for name in names:
 	
 		dir_base  = os.path.join(fs['data'], 'lsa', opt.lang, name)
@@ -138,11 +140,11 @@ def main():
 		
 		documents = []
 		
-		listing = os.listdir(os.path.join(dir_base, 'target'))
+		listing = os.listdir(os.path.join(dir_base, 'large'))
 		listing = [sample for sample in listing if not sample.startswith('.')]
 		
 		for sample in sorted(listing):
-		   f = open(os.path.join(dir_base, 'target', sample), 'r')
+		   f = open(os.path.join(dir_base, 'large', sample), 'r')
 		   documents.append(f.read())
 										
 		# remove stop words and tokenize
@@ -165,16 +167,16 @@ def main():
 		
 		# build gensim corpus
 		
-		print " - converting to bag-of-words corpus"
+		print " - converting to bag-of-words"
 		
-		corpus = [dictionary.doc2bow(text) for text in texts]
+		training = [dictionary.doc2bow(text) for text in texts]
 		
 		# save corpus
 		
-		print " - exporting corpus"
+		print " - exporting training set"
 		
-		file_corpus = os.path.join(dir_base, 'corpus.mm')
-		corpora.MmCorpus.serialize(file_corpus, corpus)
+		file_training = os.path.join(dir_base, 'training.mm')
+		corpora.MmCorpus.serialize(file_training, training)
 
 #
 # stuff to execute
