@@ -95,7 +95,7 @@ def main():
 		target  = form.getvalue('target', 'lucan.bellum_civile.part.1')
 		source  = form.getvalue('source', 'vergil.aeneid.part.1')
 		unit_id = int(form.getvalue('unit_id', 0))
-		topics  = int(form.getvalue('num_topics', 15))
+		topics  = int(form.getvalue('topics', 15))
 	
 		# print header
 		
