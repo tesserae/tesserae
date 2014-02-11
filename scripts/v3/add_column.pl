@@ -608,7 +608,8 @@ sub get_abbr {
 	
 	my %file = %$ref;
 	
-	my %abbr;
+	my $file_abbr = catfile($fs{data}, 'common', 'abbr');	
+	my %abbr = %{retrieve($file_abbr)};
 	
 	print STDERR "Getting abbreviations from file tags\n" unless $quiet;
 	
@@ -645,8 +646,6 @@ sub get_abbr {
 	
 		$abbr{$name} = $choice[0] if $choice[0];
 	}
-	
-	my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 	
 	print STDERR "Writing $file_abbr\n";
 	
