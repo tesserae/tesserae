@@ -355,13 +355,8 @@ if ($batch eq 'all') {
 
 # abbreviations of canonical citation refs
 
-my $file_abbr = "$fs{data}/common/abbr";
-my %abbr = %{ retrieve($file_abbr) };
-
-# language of input texts
-
-my $file_lang = "$fs{data}/common/lang";
-my %lang = %{retrieve($file_lang)};
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
+my %abbr = %{retrieve($file_abbr)};
 
 # read source text
 
@@ -370,7 +365,7 @@ unless ($quiet) {
 	print STDERR "reading source data\n";
 }
 
-my $path_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source);
+my $path_source = catfile($fs{data}, 'v3', Tesserae::lang($source), $source, $source);
 
 my @token_source   = @{ retrieve( "$path_source.token"    ) };
 my @unit_source    = @{ retrieve( "$path_source.${unit}" ) };
@@ -383,7 +378,7 @@ unless ($quiet) {
 	print STDERR "reading target data\n";
 }
 
-my $path_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target);
+my $path_target = catfile($fs{data}, 'v3', Tesserae::lang($target), $target, $target);
 
 my @token_target   = @{ retrieve( "$path_target.token"    ) };
 my @unit_target    = @{ retrieve( "$path_target.${unit}" ) };
