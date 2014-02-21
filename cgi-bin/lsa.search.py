@@ -48,7 +48,6 @@ from TessPy import tesslang
 #
 
 import string
-import cgi, cgitb
 import logging
 from gensim import corpora, models, similarities
 
@@ -69,69 +68,37 @@ from gensim import corpora, models, similarities
 
 def main():
 
-	#
-	# set params
-	#
-	
-	query  = 'lucan.bellum_civile.part.1'
-	corpus = 'vergil.aeneid.part.1'
-	lang   = 'la'
-	
-	unit_id  = 0
-	topics   = 10
-	
-	#
-	# look for user options
-	#
-	
 	if 'REQUEST_METHOD' in os.environ:
-	
-		# web interface
-	
-		cgitb.enable()
 		
-		form = cgi.FieldStorage() 
-		
-		query   = form.getvalue('query', 'lucan.bellum_civile.part.1')
-		corpus  = form.getvalue('corpus', 'vergil.aeneid.part.1')
-		unit_id = int(form.getvalue('unit_id', 0))
-		topics  = int(form.getvalue('topics', 10))
-	
 		# print header
 		
 		print "Content-type:text/plain"
 		print
 
-	else:
-		
-		# command line interface
+	#
+	# look for user options
+	#
 	
-		parser = argparse.ArgumentParser(description='Do an LSA search on two Tesserae texts.')
-	
-		parser.add_argument('-c', '--corpus', required=True, help="text from which results are drawn")
-		parser.add_argument('-q', '--query', required=True, help="text from which query is drawn")
-		parser.add_argument('-l', '--lang',   type=str, default='la', help="language")
-		parser.add_argument('-i', '--unit-id', type=int, default=0,  help="phrase id in the query text")
-		parser.add_argument('-n', '--topics',  type=int, default=10, help="number of topics")
-	
-		args=parser.parse_args()
-	
-		corpus  = args.corpus
-		query   = args.query
-		unit_id = args.unit_id
-		topics  = args.topics
-		lang    = args.lang
+	parser = argparse.ArgumentParser(description='Do an LSA search on two Tesserae texts.')
+
+	parser.add_argument('-c', '--corpus', required=True, help="text from which results are drawn")
+	parser.add_argument('-q', '--query', required=True, help="text from which query is drawn")
+	parser.add_argument('-l', '--lang',   type=str, default='la', help="language")
+	parser.add_argument('-i', '--unit_id', type=int, default=0,  help="phrase id in the query text")
+	parser.add_argument('-n', '--topics',  type=int, default=10, help="number of topics")
+
+	args=parser.parse_args()
 	
 	# set paths
 	
-	dir_corpus = os.path.join(fs['data'], 'lsa', lang, corpus)
-	dir_query = os.path.join(fs['data'], 'lsa', lang, query)
+	dir_corpus = os.path.join(fs['data'], 'lsa', args.lang, args.corpus)
+	dir_query = os.path.join(fs['data'], 'lsa', args.lang, args.query)
 
 	#
 	# load data from training program
 	#
 	
-	logging.info("corpus=" + corpus)
+	logging.info("corpus=" + args.corpus)
 	
 	# dictionary
 	
@@ -145,19 +112,19 @@ def main():
 	
 	# create lsi model
 	
-	lsi = models.LsiModel(training, id2word=dictionary, num_topics=topics)
+	lsi = models.LsiModel(training, id2word=dictionary, num_topics=args.topics)
 
 	#
 	# load query
 	#
 	
-	logging.info("query=" + query + "; unit id=" + str(unit_id))
+	logging.info("query=" + args.query + "; unit id=" + str(args.unit_id))
 	
 	listing = os.listdir(os.path.join(dir_query, 'small'))
 	listing = [sample for sample in listing if not sample.startswith('.')]
         listing.sort()
 	
-	f = open(os.path.join(dir_query, 'small', listing[unit_id]))
+	f = open(os.path.join(dir_query, 'small', listing[args.unit_id]))
 	doc = f.read()
 
 	vec_bow = dictionary.doc2bow(doc.lower().split())
