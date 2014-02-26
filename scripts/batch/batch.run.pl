@@ -940,7 +940,7 @@ sub validate {
 		my @pass;
 		my @all = @{Tesserae::get_textlist($lang, -sort=>1)};
 
-		print STDERR "debug: all=" . join("\n", @all) . "\n";
+		print STDERR "debug: all=" . join("\n", @all) . "\n" if $verbose > 1;
 
 		for my $val (@{$param{$pname}}) {
 		
@@ -948,7 +948,7 @@ sub validate {
 			$val =~ s/\*/.*/g;
 			$val = "^$val\$";
 			
-			print STDERR "debug: val=$val\n";
+			print STDERR "debug: val=$val\n" if $verbose > 1;
 			
 			push @pass, (grep { /$val/ } @all);
 		}
