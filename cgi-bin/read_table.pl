@@ -382,16 +382,6 @@ END
 my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
-# $lang sets the language of input texts
-# - necessary for finding the files, since
-#   the tables are separate.
-# - one day, we'll be able to set the language
-#   for the source and target independently
-# - choices are "grc" and "la"
-
-my $file_lang = catfile($fs{data}, 'common', 'lang');
-my %lang = %{retrieve($file_lang)};
-
 # if web input doesn't seem to be there, 
 # then check command line arguments
 
@@ -480,7 +470,8 @@ unless ($quiet) {
 
 	print STDERR "target=$target\n";
 	print STDERR "source=$source\n";
-	print STDERR "lang=$lang{$target};\n";
+	print STDERR "lang(target)=" . Tesserae::lang($target) . ";\n";
+	print STDERR "lang(source)=" . Tesserae::lang($source) . ";\n";		
 	print STDERR "feature=$feature\n";
 	print STDERR "unit=$unit\n";
 	print STDERR "stopwords=$stopwords\n";
@@ -498,14 +489,12 @@ unless ($quiet) {
 
 # token frequencies from the target text
 
-my $file_freq_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target . ".freq_score_" . $score_basis);
-
+my $file_freq_target = select_file_freq($target) . ".freq_score_" . $score_basis;
 my %freq_target = %{Tesserae::stoplist_hash($file_freq_target)};
 
 # token frequencies from the target text
 
-my $file_freq_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source . ".freq_score_" . $score_basis);
-
+my $file_freq_source = select_file_freq($source) . ".freq_score_" . $score_basis;
 my %freq_source = %{Tesserae::stoplist_hash($file_freq_source)};
 
 #
@@ -527,7 +516,7 @@ unless ($quiet) {
 	print STDERR "reading source data\n";
 }
 
-my $file_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source);
+my $file_source = catfile($fs{data}, 'v3', Tesserae::lang($source), $source, $source);
 
 my @token_source   = @{ retrieve("$file_source.token") };
 my @unit_source    = @{ retrieve("$file_source.$unit") };
@@ -538,7 +527,7 @@ unless ($quiet) {
 	print STDERR "reading target data\n";
 }
 
-my $file_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target);
+my $file_target = catfile($fs{data}, 'v3', Tesserae::lang($target), $target, $target);
 
 my @token_target   = @{ retrieve("$file_target.token") };
 my @unit_target    = @{ retrieve("$file_target.$unit") };
@@ -975,33 +964,30 @@ sub load_stoplist {
 	
 	if ($stoplist_basis eq "target") {
 		
-		my $file = catfile($fs{data}, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
-		
+		my $file = select_file_freq($target) . '.freq_stop_' . $feature;
 		%basis = %{Tesserae::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "source") {
 		
-		my $file = catfile($fs{data}, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
+		my $file = select_file_freq($source) . '.freq_stop_' . $feature;
 
 		%basis = %{Tesserae::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "corpus") {
 
-		my $file = catfile($fs{data}, 'common', $lang{$target} . '.' . $feature . '.freq');
+		my $file = catfile($fs{data}, 'common', Tesserae::lang($target) . '.' . $feature . '.freq');
 		
 		%basis = %{Tesserae::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "both") {
 		
-		my $file_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
-		
+		my $file_target = select_file_freq($target) . '.freq_stop_' . $feature;
 		%basis = %{Tesserae::stoplist_hash($file_target)};
 		
-		my $file_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
-		
+		my $file_source = select_file_freq($source) . '.freq_stop_' . $feature;
 		my %basis2 = %{Tesserae::stoplist_hash($file_source)};
 		
 		for (keys %basis2) {
@@ -1177,4 +1163,33 @@ sub write_multi_list {
 	}
 	
 	close FH;
+}
+
+# choose the frequency file for a text
+
+sub select_file_freq {
+
+	my $name = shift;
+	
+	if ($name =~ /\.part\./) {
+	
+		my $origin = $name;
+		$origin =~ s/\.part\..*//;
+		
+		if (defined $abbr{$origin} and defined Tesserae::lang($origin)) {
+		
+			$name = $origin;
+		}
+	}
+	
+	my $lang = Tesserae::lang($name);
+	my $file_freq = catfile(
+		$fs{data}, 
+		'v3', 
+		$lang, 
+		$name, 
+		$name
+	);
+	
+	return $file_freq;
 }
