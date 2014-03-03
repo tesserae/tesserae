@@ -212,14 +212,6 @@ my $stopwords = 10;
 
 my $stoplist_basis = "corpus";
 
-# apply the scoring team filter?
-
-my $filter = 0;
-
-# minimium frequency for interesting words
-
-my $interest = 0.008;
-
 # output file
 
 my $file_results = "tesresults";
@@ -291,7 +283,6 @@ GetOptions(
 			'distance=i'   => \$max_dist,
 			'dibasis=s'    => \$distance_metric,
 			'cutoff=f'     => \$cutoff,
-			'filter'       => \$filter,
 			'score=s'      => \$score_basis,
 			'benchmark'    => \$bench,
 			'no-cgi'       => \$no_cgi,
@@ -403,7 +394,6 @@ else {
 	$max_dist        = $query->param('dist')         || $max_dist;
 	$distance_metric = $query->param('dibasis')      || $distance_metric;
 	$cutoff          = $query->param('cutoff')       || $cutoff;
-	$filter          = defined($query->param('filter')) ? $query->param('filter') : $filter;
 	$score_basis     = $query->param('score')        || $score_basis;
 	$frontend        = $query->param('frontend')     || $frontend;
 	$multi_cutoff    = $query->param('mcutoff')      || $multi_cutoff;
@@ -489,12 +479,12 @@ unless ($quiet) {
 
 # token frequencies from the target text
 
-my $file_freq_target = select_file_freq($target) . ".freq_score_" . $score_basis;
+my $file_freq_target = select_file_freq($target) . ".freq_score_" . $feature;
 my %freq_target = %{Tesserae::stoplist_hash($file_freq_target)};
 
-# token frequencies from the target text
+# token frequencies from the source text
 
-my $file_freq_source = select_file_freq($source) . ".freq_score_" . $score_basis;
+my $file_freq_source = select_file_freq($source) . ".freq_score_" . $feature;
 my %freq_source = %{Tesserae::stoplist_hash($file_freq_source)};
 
 #
@@ -532,7 +522,6 @@ my $file_target = catfile($fs{data}, 'v3', Tesserae::lang($target), $target, $ta
 my @token_target   = @{ retrieve("$file_target.token") };
 my @unit_target    = @{ retrieve("$file_target.$unit") };
 my %index_target   = %{ retrieve("$file_target.index_$feature" ) };
-
 
 #
 #
@@ -589,7 +578,7 @@ for my $key (keys %index_source) {
 	for my $token_id_target ( @{$index_target{$key}} ) {
 
 		my $unit_id_target = $token_target[$token_id_target]{uc($unit) . '_ID'};
-
+		
 		for my $token_id_source ( @{$index_source{$key}} ) {
 
 			my $unit_id_source = $token_source[$token_id_source]{uc($unit) . '_ID'};
@@ -717,16 +706,6 @@ for my $unit_id_target (keys %match_target) {
 			next;
 		}
 		
-		#
-		# filter based on scoring team's algorithm
-		#
-		
-		if ($filter and not score_team($match_target{$unit_id_target}{$unit_id_source}, $match_source{$unit_id_target}{$unit_id_source})) {
-		
-			delete $match_target{$unit_id_target}{$unit_id_source};
-			delete $match_source{$unit_id_target}{$unit_id_source};
-			next;			
-		}
 		
 		#
 		# calculate the score
@@ -779,8 +758,7 @@ my %match_meta = (
 	DIBASIS   => $distance_metric,
 	SESSION   => $session,
 	CUTOFF    => $cutoff,
-	FILTER    => $filter,
-	SCORE     => $score_basis,
+	SCBASIS   => $score_basis,
 	COMMENT   => $feature_notes{$feature},
 	VERSION   => $Tesserae::VERSION,
 	TOTAL     => $total_matches
@@ -1087,63 +1065,6 @@ sub score_default {
 	return $score;
 }
 
-sub score_team {
-
-	# the parallel to check
-	
-	my ($match_t_ref, $match_s_ref) = @_;
-
-	my %match_target = %$match_t_ref;
-	my %match_source = %$match_s_ref;
-	
-	# count interesting words in three categories
-	
-	my @cat   = (0, 0, 0);
-	my @level = (0.0004, 0.0008, 0.0018);
-	
-	# start with a "reject" policy
-	
-	my $score = 0;
-	
-	# check all the tokens in the target phrase
-	
-	for my $token_id_target (keys %match_target ) {
-		
-		for (0..2) {
-		
-			if ($freq_target{$token_target[$token_id_target]{FORM}} < $level[$_]) {
-			
-				$cat[$_]++;
-			}
-		}
-	}
-	
-	# and the source phrase
-	
-	for my $token_id_source ( keys %match_source ) {
-		
-		for (0..2) {
-		
-			if ($freq_source{$token_source[$token_id_source]{FORM}} < $level[$_]) { 
-			
-				$cat[$_]++; 
-			}
-		}
-	}
-	
-	# get the number of exact matches
-	
-	my $exact_match = exact_match(\%match_target, \%match_source);
-	
-	# promote parallel to "keep" if it meets the criteria
-	
-	if (($cat[2] > 0) or ($cat[1] > 1) or ($cat[0] > 0 and $exact_match > 0 ))  {
-
-		$score = 1;
-	}
-	
-	return $score;
-}
 
 # save the list of multi-text searches to session file
 
