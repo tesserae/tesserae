@@ -113,7 +113,7 @@ BEGIN {
 
 	$lib = catdir($lib, 'TessPerl');	
 }
-
+open (OUTPUT, ">scoring.results.tsv") or die "$!";
 # load Tesserae-specific modules
 
 use lib $lib;
@@ -820,9 +820,11 @@ sub encapsulate_phrase {
 sub read_bench {
 
 	my $file = shift;
-	
+	print STDERR "\nFILE BEING CALLED: $file";
+
 	my @bench = @{retrieve($file)};
-	
+	for (0..3) {print STDERR "\n'bench' array position $_: $bench[$_]\n"};
+
 	my $pr = ProgressBar->new(scalar(@bench), $quiet);
 	
 	for (@bench) {
@@ -830,20 +832,22 @@ sub read_bench {
 		$pr->advance();
 	
 		my %rec = %$_;
-		
+
 		my %opt = (
-			target      => 'lucan.bellum_civile.part.1',
-			target_loc  => join('.', $rec{BC_BOOK}, $rec{BC_LINE}),
-			target_text => $rec{BC_TXT},
-			source      => 'vergil.aeneid',
-			source_loc  => join('.', $rec{AEN_BOOK}, $rec{AEN_LINE}),
-			source_text => $rec{AEN_TXT},
-			auth        => $rec{AUTH},
-			type        => $rec{SCORE},
-			target_unit => $rec{BC_PHRASEID},
-			source_unit => $rec{AEN_PHRASEID}
-		);
 		
+		
+			target      => 'lucan.bellum_civile.part.1',
+			target_loc  => $rec{target_loc},
+			target_text => $rec{target_text},
+			source      => 'vergil.aeneid',
+			source_loc  => $rec{source_loc},
+			source_text => $rec{source_text},
+#			auth        => $rec{auth},
+			type        => $rec{score},
+			target_unit => $rec{target_unit},
+			source_unit => $rec{source_unit}
+		);
+			
 		$_ = Parallel->new(%opt);
 	}
 	
@@ -953,7 +957,7 @@ sub export {
 	
 	my @header = (@fields, map {lc} @plugins);
 	
-	print join("\t", @header) . "\n";
+	print OUTPUT join("\t", @header) . "\n";
 	
 	my $pr = ProgressBar->new(scalar(@bench), $q);
 	
@@ -963,7 +967,7 @@ sub export {
 		
 		next unless defined $p->get('type');
 		
-		my $score = $p->get('score');
+		my $score = $p->get('score'); #These look like previously stored scores. Are they?
 		
 		unless (defined $score) {
 			
@@ -971,8 +975,17 @@ sub export {
 		}
 		
 		my @scores = map {defined $_ ? $_ : 'NA'} @$score;
+			for (0..$#scores) {
+				if ($scores[$_] eq 'NA') {
+					print STDERR "\nUndefined score. Contents of anonymous hash:";
+					for my $key (keys (%{$p})) {
+						print "\n\t$key \t => \t ${$p}{$key}";
+					}
+				
+				}
 			
-		print join("\t", 
+			}
+		print OUTPUT join("\t", 
 			$p->dump(
 				select => [qw/target source type auth/],
 				join   => ';',
@@ -981,6 +994,6 @@ sub export {
 			@scores
 		);
 				
-		print "\n";
+		print OUTPUT "\n";
 	}
 }
