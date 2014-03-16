@@ -182,11 +182,6 @@ my $split_punct = qr/(.*"?$phrase_delimiter"?)(\s*)(.*)/;
 # initialize some parameters
 # 
 
-my %abbr;
-my $file_abbr = catfile($fs{data},'common', 'abbr');
-	
-if ( -s $file_abbr )	{  %abbr = %{retrieve($file_abbr)} }
-
 # these are for optional use of Lingua::Stem
 
 my $use_lingua_stem = 0;
@@ -609,7 +604,7 @@ sub get_abbr {
 	my %file = %$ref;
 	
 	my $file_abbr = catfile($fs{data}, 'common', 'abbr');	
-	my %abbr = %{retrieve($file_abbr)};
+	my %abbr = %{retrieve($file_abbr)} if -s $file_abbr;
 	
 	print STDERR "Getting abbreviations from file tags\n" unless $quiet;
 	
