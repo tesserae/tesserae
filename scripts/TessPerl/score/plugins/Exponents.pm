@@ -122,7 +122,7 @@ sub score {
 		print STDERR "score: score/distance=" . sprintf("%.2f", $score/$distance). "\n";
 		print STDERR "score: log(score/distance)=" . sprintf("%.2f", log($score/$distance)). "\n";
 	}
-	$score = $score * $score * $score * $score * $score * $score * $score * $score * $score * $score; #Weeee! Exponents!
+	$score = $score * $score; #Weeee! Exponents!
 	$score = sprintf("%.3f", log($score/$distance));
 
 	return $score;

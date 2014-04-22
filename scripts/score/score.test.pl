@@ -251,14 +251,14 @@ for my $plugin (@plugins) {
 			print STDERR "ok\n";
 		}
 		else {
-		
-			print STDERR "failed\n";
+			
+			print STDERR "$plugin failed to evaluate.";
 		}
 	}
 	else {
 
 		print STDERR "failed\n";
-		warn "Invalid plugin: $plugin";
+		warn "Nonexistant plugin: $plugin";
 	}
 }
 
@@ -536,19 +536,31 @@ for my $unit_id_target (keys %match_target) {
 		#
 		# package up the match for export to modules
 		#
-				
+		my @phrases = ($unit_id_target, $unit_id_source);
+#		print STDERR "Phrases: " . join (' ', @phrases);				
+#		for (350..360){
+#		print STDERR "Anonymous hash # $_:\n......\n";
+#		for my $key (%{$token_target[$_]}){
+
+#		print STDERR "\n\t$key \t=>\t${$token_target[$_]}{$key}";
+#		}
+		
+#		my $useless = <STDIN>;
+#		}
+		
+#		print STDERR "Target tokens: " . join (' ', @token_source);						
 		my $mat =[
 			encapsulate_phrase(
 				$match_target{$unit_id_target}{$unit_id_source},
 				$unit_target[$unit_id_target],				
 				\@token_target,
-				\%freq_target
+				\%freq_target			
 			),
 			encapsulate_phrase(
 				$match_source{$unit_id_target}{$unit_id_source},
 				$unit_source[$unit_id_source],				
 				\@token_source,
-				\%freq_source
+				\%freq_source			
 			)
 		];
 		
@@ -562,7 +574,7 @@ for my $unit_id_target (keys %match_target) {
 		
 		for my $plugin (@plugins) {
 			
-			push @score, $plugin->score($mat);
+			push @score, $plugin->score($mat, \@phrases);
 		}
 												
 		# save calculated score, matched words, etc.
@@ -789,10 +801,14 @@ sub load_stoplist {
 
 sub encapsulate_phrase {
 
-	my ($ref_match, $ref_unit, $ref_token, $ref_freq) = @_;
+	my ($ref_match, $ref_unit, $ref_token, $ref_freq) = @_; #references to the info passed in lines 543-554
+
+	
 	
 	my @token_id = @{$ref_unit->{TOKEN_ID}};
+
 	
+
 	my @match;
 	my @token;
 	my @freq;
@@ -810,7 +826,7 @@ sub encapsulate_phrase {
 		}
 	}
 	
-	return (\@token, \@freq, \@match);
+	return (\@token, \@freq, \@match); 
 }
 
 #
