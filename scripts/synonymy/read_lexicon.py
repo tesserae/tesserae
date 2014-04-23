@@ -130,7 +130,7 @@ def write_dict(defs, name, quiet):
 def read_dict(name, quiet):
 	'''Load a copy of the dictionary in pickle format'''
 	
-	f = open(os.path.join('data', name + '.pickle'), 'r')
+	f = open(os.path.join('data', 'synonymy', name + '.pickle'), 'r')
 		
 	if not quiet:
 		print "Loading dictionary from {0}".format(f.name)
@@ -231,10 +231,10 @@ def parse_XML_dictionaries(langs, quiet):
 	
 	if not quiet:
 		print 'Lost {0} empty definitions'.format(len(empty_keys))
-		
+
 	for k in empty_keys:
 		del defs[k]
-		
+
 	return(defs)
 
 
@@ -391,7 +391,7 @@ def bag_of_words(defs, stem_flag, quiet):
 	
 	if not quiet:
 		print 'Lost {0} empty definitions'.format(len(empty_keys))
-	
+		
 	for k in empty_keys:
 		del defs[k]
 	

@@ -464,7 +464,7 @@ sub check_mod {
 		
 	if ($@) {
 	
-		print STDERR "Error loading $m:\n$!\n";
+		# print STDERR "Error loading $m:\n$!\n";
 		$failed = 1;
 	}
 	
