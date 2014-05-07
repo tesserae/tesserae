@@ -49,6 +49,10 @@ Allow up to N processes to run in parallel.  Requires Parallel::ForkManager.
 
 Don't print messages to STDERR.
 
+=item B<--texts>
+
+Take a list of texts from the command line, e.g. texts/la/cicero* to process all of Cicero and nothing else.
+
 =item B<--help>
 
 Print usage and exit.
@@ -193,6 +197,10 @@ my $stemmer;
 
 my $quiet = 0;
 
+# don't expect a user-defined list of texts
+
+my $textlist = 0;
+
 #
 # command-line options
 #
@@ -202,7 +210,8 @@ GetOptions(
 	'parallel=i'      => \$max_processes,
 	'quiet'           => \$quiet,
 	'use-lingua-stem' => \$use_lingua_stem,
-	'help'            => \$help);
+	'help'            => \$help,
+	'texts'            => \$textlist);
 
 #
 # print usage if the user needs help
@@ -287,9 +296,21 @@ else {
 
 # get the list of texts to index
 
-my @corpus = @{Tesserae::get_textlist($lang, -no_part => 1)};
-@corpus = grep { ! /vulgate/ } @corpus;
-
+#if the user specifies, limit the texts to a user-defined list
+my @corpus;
+if ($textlist) {
+	@corpus = map { glob } @ARGV;
+	#the results of the above have to be trimmed to resemble the usual text list.	
+	for (0..$#corpus){
+		$corpus[$_] =~ s/texts\/$lang\///;
+		$corpus[$_] =~ s/\.tess$//;		
+	}
+	@corpus = grep { ! /vulgate/ } @corpus;
+}
+else {
+	@corpus = @{Tesserae::get_textlist($lang, -no_part => 1)};
+	@corpus = grep { ! /vulgate/ } @corpus;
+}
 # the giant index
 
 print STDERR "indexing " . scalar(@corpus) . " texts...\n";
