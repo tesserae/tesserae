@@ -217,7 +217,7 @@ for my $lang (@inst_lang) {
 
 	for my $feature (@inst_feature) {
 		
-		$script = catfile($fs{script}, 'v3', 'add_col_stem.pl --feat $feature');
+		$script = catfile($fs{script}, 'v3', "add_col_stem.pl --feat $feature");
 	
 		do_cmd("perl $script $texts");
 	}
