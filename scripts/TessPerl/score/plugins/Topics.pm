@@ -76,12 +76,15 @@ sub score {
 	
 	my @token_target = @{$match->[0]};
 	my @freq_target  = @{$match->[1]};
-	my @match_target = @{$match->[2]};	
-	my @token_source = @{$match->[3]};
-	my @freq_source  = @{$match->[4]};	
-	my @match_source = @{$match->[5]};
+	my @match_target = @{$match->[2]};
+	my $mark_target  = $match->[3];
+	my @token_source = @{$match->[4]};
+	my @freq_source  = @{$match->[5]};	
+	my @match_source = @{$match->[6]};
 	my @phrase = @{$phrases};
+
 	my $target_phrase = $phrase[0];
+
 
 	#load the LSA data
 	my @gensim;
@@ -154,19 +157,19 @@ sub score {
 #	print "\nTarget phrase: $target_phrase";
 #	print "\nLSA score: $gensim[$target_phrase]";
 	my $genmod = ($gensim[$target_phrase] * 10);
-	if ($genmod > 7) {
-		$genmod = $genmod - 7;
-		$genmod = int($genmod + 0.5);		
-#		$score = $genmod + $score;
+	if ($score > 7) {
+		$genmod = $genmod - 6.5;
+#		$genmod = int($genmod + 0.5);		
+		$score = $genmod + $score;
 	}
 
-		if ($penalty > 2) {
-	$score = $score - ($penalty / 2);
-	}
+#		if ($penalty > 2) {
+#	$score = $score - ($penalty / 2);
+#	}
 #	print "\nGenmod: $genmod";
 #	print "\nPost genmod: $score";
 #	my $useless = <STDIN>;	
-	$score--;
+	#$score--;
 	return $score;
 }
 
@@ -176,15 +179,16 @@ sub score {
 
 sub dist {
 
-	my ($match, $metric, $debug) = @_;
+	my ($match, $metric, $phrases, $debug) = @_;
 
 	my @token_target = @{$match->[0]};
 	my @freq_target  = @{$match->[1]};
-	my @match_target = @{$match->[2]};	
-	my @token_source = @{$match->[3]};
-	my @freq_source  = @{$match->[4]};	
-	my @match_source = @{$match->[5]};
-
+	my @match_target = @{$match->[2]};
+	my $mark_target  = $match->[3];
+	my @token_source = @{$match->[4]};
+	my @freq_source  = @{$match->[5]};	
+	my @match_source = @{$match->[6]};
+	
 	my @target_id = sort {$a <=> $b} @match_target;
 	my @source_id = sort {$a <=> $b} @match_source;
 

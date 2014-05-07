@@ -1,4 +1,4 @@
-package Default;
+package Signposts;
 
 use strict;
 use Exporter;
@@ -64,7 +64,7 @@ our @EXPORT_OK = ();
 
 # diagnostic
 
-print STDERR "loading module Default\n";
+print STDERR "loading module Signpost\n";
 
 #
 # scoring subroutine
@@ -83,9 +83,6 @@ sub score {
 	my @match_source = @{$match->[6]};
 	my @phrase = @{$phrases};
 
-#	print join (' ', @token_target) . "\n\n\n" . join (' ', @freq_target) . "\n\n\n" . join (' ', @match_target) . "\n\n\n" . join (' ', @token_source) . "\n\n\n" . join (' ', @freq_source) . "\n\n\n" . join (' ', @match_source) . "\n\n\n" . join (' ', @phrase) . "\n\n\n";
-
-	
 	if ($debug) { print STDERR "\n" }
 	
 	my $distance = dist($match, 'freq', $debug);
@@ -130,6 +127,10 @@ sub score {
 
 	$score = sprintf("%.3f", log($score/$distance));
 
+	$score = ($mark_target + $score);
+#	if ($mark_target > 0){ print STDERR "\n$mark_target"};
+
+
 	return $score;
 }
 
@@ -148,7 +149,6 @@ sub dist {
 	my @token_source = @{$match->[4]};
 	my @freq_source  = @{$match->[5]};	
 	my @match_source = @{$match->[6]};
-	
 	my @target_id = sort {$a <=> $b} @match_target;
 	my @source_id = sort {$a <=> $b} @match_source;
 

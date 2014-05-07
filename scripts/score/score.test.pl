@@ -116,6 +116,7 @@ BEGIN {
 open (OUTPUT, ">scoring.results.tsv") or die "$!";
 # load Tesserae-specific modules
 
+
 use lib $lib;
 use Tesserae;
 use Parallel;
@@ -131,8 +132,34 @@ use Pod::Usage;
 use Storable qw(nstore retrieve);
 use File::Path qw(mkpath rmtree);
 use Encode;
-
+#gonna need the dictionary
+my %la_dictionary = %{retrieve("data/common/la.stem.cache")};
 binmode STDERR, 'utf8';
+
+		#I want to be able to lemmatize
+		my %lemma_hash = %{retrieve ('data/v3/la/lucan.bellum_civile.part.1/lucan.bellum_civile.part.1.index_stem')};
+	my @signs = ('dico', 'fero', 'lego', 'memoro', 'miror', 'miro', 'loquor', 'for', 'sileo', 'illudo', 'conloquor', 'colloquor');	
+#	print join (' ', @signs) . "\n";
+	my @flagged_IDs;
+	foreach my $key (keys %lemma_hash) {#go through the hash from the index_stem file, one lemma at a time
+#		print $key;
+#		print $lemma_hash{$key}->[0];		
+		my @new = @{$lemma_hash{$key}};
+		for (0..$#new) {								#load the array of token id#s at that lemma (key), go through one token id # at a time
+			my $temp_tok_id = $new[$_]; 				#give the id number into a temporary variable for clarity
+					for (0..$#signs){#go through our homebrewed list of signpost words
+						if ($signs[$_] eq $key) {#if the lemma which corresponds to the current token from the match phrase matches one of the words in our list...
+#							print "HOLY SHIT IT WORKS. \t" . $signs[$_] . $key;#celebrate.
+#							my $useless = <STDIN>;
+							push (@flagged_IDs, $temp_tok_id);
+						}
+					}
+		}
+	}
+
+
+
+
 
 #
 # set some parameters
@@ -537,6 +564,23 @@ for my $unit_id_target (keys %match_target) {
 		# package up the match for export to modules
 		#
 		my @phrases = ($unit_id_target, $unit_id_source);
+
+
+#		for (0..$#token_target) {
+#		my @lemma = $la_dictionary{$token_target[$_]};
+#			foreach my $sign (@signs) {
+#				foreach my $lem (@lemma) {
+#					if ($lem eq $sign) { 
+#						print STDERR "\nGot one!\t$lem, $sign";
+#						my $useless = <STDIN>;
+#					}
+#				}
+#			}
+#		}		
+		
+	
+		
+		
 #		print STDERR "Phrases: " . join (' ', @phrases);				
 #		for (350..360){
 #		print STDERR "Anonymous hash # $_:\n......\n";
@@ -549,6 +593,9 @@ for my $unit_id_target (keys %match_target) {
 #		}
 		
 #		print STDERR "Target tokens: " . join (' ', @token_source);						
+
+
+
 		my $mat =[
 			encapsulate_phrase(
 				$match_target{$unit_id_target}{$unit_id_source},
@@ -563,6 +610,7 @@ for my $unit_id_target (keys %match_target) {
 				\%freq_source			
 			)
 		];
+		
 		
 		#
 		# calculate scores
@@ -802,12 +850,19 @@ sub load_stoplist {
 sub encapsulate_phrase {
 
 	my ($ref_match, $ref_unit, $ref_token, $ref_freq) = @_; #references to the info passed in lines 543-554
-
-	
-	
 	my @token_id = @{$ref_unit->{TOKEN_ID}};
 
-	
+
+	my $mark = 0;
+	for (0..$#token_id){
+		my $current_token = $token_id[$_];
+		for (0..$#flagged_IDs) {
+			if ($flagged_IDs[$_] == $current_token) {
+				$mark++;
+			}
+		}
+	}
+
 
 	my @match;
 	my @token;
@@ -825,8 +880,9 @@ sub encapsulate_phrase {
 			push @match, $#token;
 		}
 	}
+#	if ($mark > 0) {print "\nMatching phrase: " . join (' ', @token);}
 	
-	return (\@token, \@freq, \@match); 
+	return (\@token, \@freq, \@match, $mark); 
 }
 
 #
@@ -836,10 +892,10 @@ sub encapsulate_phrase {
 sub read_bench {
 
 	my $file = shift;
-	print STDERR "\nFILE BEING CALLED: $file";
+#	print STDERR "\nFILE BEING CALLED: $file";
 
 	my @bench = @{retrieve($file)};
-	for (0..3) {print STDERR "\n'bench' array position $_: $bench[$_]\n"};
+#	for (0..3) {print STDERR "\n'bench' array position $_: $bench[$_]\n"};
 
 	my $pr = ProgressBar->new(scalar(@bench), $quiet);
 	
@@ -993,9 +1049,9 @@ sub export {
 		my @scores = map {defined $_ ? $_ : 'NA'} @$score;
 			for (0..$#scores) {
 				if ($scores[$_] eq 'NA') {
-					print STDERR "\nUndefined score. Contents of anonymous hash:";
+					#print STDERR "\nUndefined score. Contents of anonymous hash:";
 					for my $key (keys (%{$p})) {
-						print "\n\t$key \t => \t ${$p}{$key}";
+#						print "\n\t$key \t => \t ${$p}{$key}";
 					}
 				
 				}
