@@ -129,13 +129,14 @@ use Storable;
 
 my $help = 0;
 my $feature = 'word';
-my $unit = 'line';
+my $unit = 'phrase';
 
 # get user options
 
 GetOptions(
 	'help'  => \$help,
-	'feature=s' => \$feature
+	'feature=s' => \$feature,
+	'unit=s' => \$unit
 );
 
 # print usage if the user needs help
