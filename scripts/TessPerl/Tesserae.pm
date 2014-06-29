@@ -897,4 +897,27 @@ sub initialize_lingua_stem {
 		$feature_override{'stem'} = $feature_override{'porter'};
 	}
 }
+
+sub get_base {
+
+	my $text = shift;
+	
+	my $lang = lang($text);
+	
+	unless ($lang) {
+	
+		print STDERR "Can't find language for $text. Have you run add_column.pl?\n";
+		return undef;
+	}
+	
+	my $base = catfile($fs{data}, 'v3', $lang, $text, $text);
+	
+	unless (-e "$base.token") {
+	
+		print STDERR "Can't find token data for $text. Have you run add_column.pl?\n";
+		return undef;
+	}
+	
+	return $base;
+}
 1;
