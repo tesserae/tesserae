@@ -212,14 +212,6 @@ my $stopwords = 10;
 
 my $stoplist_basis = "corpus";
 
-# apply the scoring team filter?
-
-my $filter = 0;
-
-# minimium frequency for interesting words
-
-my $interest = 0.008;
-
 # output file
 
 my $file_results = "tesresults";
@@ -291,7 +283,6 @@ GetOptions(
 			'distance=i'   => \$max_dist,
 			'dibasis=s'    => \$distance_metric,
 			'cutoff=f'     => \$cutoff,
-			'filter'       => \$filter,
 			'score=s'      => \$score_basis,
 			'benchmark'    => \$bench,
 			'no-cgi'       => \$no_cgi,
@@ -382,16 +373,6 @@ END
 my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
-# $lang sets the language of input texts
-# - necessary for finding the files, since
-#   the tables are separate.
-# - one day, we'll be able to set the language
-#   for the source and target independently
-# - choices are "grc" and "la"
-
-my $file_lang = catfile($fs{data}, 'common', 'lang');
-my %lang = %{retrieve($file_lang)};
-
 # if web input doesn't seem to be there, 
 # then check command line arguments
 
@@ -413,7 +394,6 @@ else {
 	$max_dist        = $query->param('dist')         || $max_dist;
 	$distance_metric = $query->param('dibasis')      || $distance_metric;
 	$cutoff          = $query->param('cutoff')       || $cutoff;
-	$filter          = defined($query->param('filter')) ? $query->param('filter') : $filter;
 	$score_basis     = $query->param('score')        || $score_basis;
 	$frontend        = $query->param('frontend')     || $frontend;
 	$multi_cutoff    = $query->param('mcutoff')      || $multi_cutoff;
@@ -480,7 +460,8 @@ unless ($quiet) {
 
 	print STDERR "target=$target\n";
 	print STDERR "source=$source\n";
-	print STDERR "lang=$lang{$target};\n";
+	print STDERR "lang(target)=" . Tesserae::lang($target) . ";\n";
+	print STDERR "lang(source)=" . Tesserae::lang($source) . ";\n";		
 	print STDERR "feature=$feature\n";
 	print STDERR "unit=$unit\n";
 	print STDERR "stopwords=$stopwords\n";
@@ -498,14 +479,12 @@ unless ($quiet) {
 
 # token frequencies from the target text
 
-my $file_freq_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target . ".freq_score_" . $score_basis);
-
+my $file_freq_target = select_file_freq($target) . ".freq_score_" . $feature;
 my %freq_target = %{Tesserae::stoplist_hash($file_freq_target)};
 
-# token frequencies from the target text
+# token frequencies from the source text
 
-my $file_freq_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source . ".freq_score_" . $score_basis);
-
+my $file_freq_source = select_file_freq($source) . ".freq_score_" . $feature;
 my %freq_source = %{Tesserae::stoplist_hash($file_freq_source)};
 
 #
@@ -527,7 +506,7 @@ unless ($quiet) {
 	print STDERR "reading source data\n";
 }
 
-my $file_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source);
+my $file_source = catfile($fs{data}, 'v3', Tesserae::lang($source), $source, $source);
 
 my @token_source   = @{ retrieve("$file_source.token") };
 my @unit_source    = @{ retrieve("$file_source.$unit") };
@@ -538,12 +517,11 @@ unless ($quiet) {
 	print STDERR "reading target data\n";
 }
 
-my $file_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target);
+my $file_target = catfile($fs{data}, 'v3', Tesserae::lang($target), $target, $target);
 
 my @token_target   = @{ retrieve("$file_target.token") };
 my @unit_target    = @{ retrieve("$file_target.$unit") };
 my %index_target   = %{ retrieve("$file_target.index_$feature" ) };
-
 
 #
 #
@@ -600,7 +578,7 @@ for my $key (keys %index_source) {
 	for my $token_id_target ( @{$index_target{$key}} ) {
 
 		my $unit_id_target = $token_target[$token_id_target]{uc($unit) . '_ID'};
-
+		
 		for my $token_id_source ( @{$index_source{$key}} ) {
 
 			my $unit_id_source = $token_source[$token_id_source]{uc($unit) . '_ID'};
@@ -728,16 +706,6 @@ for my $unit_id_target (keys %match_target) {
 			next;
 		}
 		
-		#
-		# filter based on scoring team's algorithm
-		#
-		
-		if ($filter and not score_team($match_target{$unit_id_target}{$unit_id_source}, $match_source{$unit_id_target}{$unit_id_source})) {
-		
-			delete $match_target{$unit_id_target}{$unit_id_source};
-			delete $match_source{$unit_id_target}{$unit_id_source};
-			next;			
-		}
 		
 		#
 		# calculate the score
@@ -790,8 +758,7 @@ my %match_meta = (
 	DIBASIS   => $distance_metric,
 	SESSION   => $session,
 	CUTOFF    => $cutoff,
-	FILTER    => $filter,
-	SCORE     => $score_basis,
+	SCBASIS   => $score_basis,
 	COMMENT   => $feature_notes{$feature},
 	VERSION   => $Tesserae::VERSION,
 	TOTAL     => $total_matches
@@ -975,33 +942,30 @@ sub load_stoplist {
 	
 	if ($stoplist_basis eq "target") {
 		
-		my $file = catfile($fs{data}, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
-		
+		my $file = select_file_freq($target) . '.freq_stop_' . $feature;
 		%basis = %{Tesserae::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "source") {
 		
-		my $file = catfile($fs{data}, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
+		my $file = select_file_freq($source) . '.freq_stop_' . $feature;
 
 		%basis = %{Tesserae::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "corpus") {
 
-		my $file = catfile($fs{data}, 'common', $lang{$target} . '.' . $feature . '.freq');
+		my $file = catfile($fs{data}, 'common', Tesserae::lang($target) . '.' . $feature . '.freq');
 		
 		%basis = %{Tesserae::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "both") {
 		
-		my $file_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
-		
+		my $file_target = select_file_freq($target) . '.freq_stop_' . $feature;
 		%basis = %{Tesserae::stoplist_hash($file_target)};
 		
-		my $file_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
-		
+		my $file_source = select_file_freq($source) . '.freq_stop_' . $feature;
 		my %basis2 = %{Tesserae::stoplist_hash($file_source)};
 		
 		for (keys %basis2) {
@@ -1101,63 +1065,6 @@ sub score_default {
 	return $score;
 }
 
-sub score_team {
-
-	# the parallel to check
-	
-	my ($match_t_ref, $match_s_ref) = @_;
-
-	my %match_target = %$match_t_ref;
-	my %match_source = %$match_s_ref;
-	
-	# count interesting words in three categories
-	
-	my @cat   = (0, 0, 0);
-	my @level = (0.0004, 0.0008, 0.0018);
-	
-	# start with a "reject" policy
-	
-	my $score = 0;
-	
-	# check all the tokens in the target phrase
-	
-	for my $token_id_target (keys %match_target ) {
-		
-		for (0..2) {
-		
-			if ($freq_target{$token_target[$token_id_target]{FORM}} < $level[$_]) {
-			
-				$cat[$_]++;
-			}
-		}
-	}
-	
-	# and the source phrase
-	
-	for my $token_id_source ( keys %match_source ) {
-		
-		for (0..2) {
-		
-			if ($freq_source{$token_source[$token_id_source]{FORM}} < $level[$_]) { 
-			
-				$cat[$_]++; 
-			}
-		}
-	}
-	
-	# get the number of exact matches
-	
-	my $exact_match = exact_match(\%match_target, \%match_source);
-	
-	# promote parallel to "keep" if it meets the criteria
-	
-	if (($cat[2] > 0) or ($cat[1] > 1) or ($cat[0] > 0 and $exact_match > 0 ))  {
-
-		$score = 1;
-	}
-	
-	return $score;
-}
 
 # save the list of multi-text searches to session file
 
@@ -1177,4 +1084,33 @@ sub write_multi_list {
 	}
 	
 	close FH;
+}
+
+# choose the frequency file for a text
+
+sub select_file_freq {
+
+	my $name = shift;
+	
+	if ($name =~ /\.part\./) {
+	
+		my $origin = $name;
+		$origin =~ s/\.part\..*//;
+		
+		if (defined $abbr{$origin} and defined Tesserae::lang($origin)) {
+		
+			$name = $origin;
+		}
+	}
+	
+	my $lang = Tesserae::lang($name);
+	my $file_freq = catfile(
+		$fs{data}, 
+		'v3', 
+		$lang, 
+		$name, 
+		$name
+	);
+	
+	return $file_freq;
 }

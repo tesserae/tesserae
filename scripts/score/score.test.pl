@@ -113,8 +113,9 @@ BEGIN {
 
 	$lib = catdir($lib, 'TessPerl');	
 }
-
+open (OUTPUT, ">scoring.results.tsv") or die "$!";
 # load Tesserae-specific modules
+
 
 use lib $lib;
 use Tesserae;
@@ -131,8 +132,34 @@ use Pod::Usage;
 use Storable qw(nstore retrieve);
 use File::Path qw(mkpath rmtree);
 use Encode;
-
+#gonna need the dictionary
+my %la_dictionary = %{retrieve("data/common/la.stem.cache")};
 binmode STDERR, 'utf8';
+
+		#I want to be able to lemmatize
+		my %lemma_hash = %{retrieve ('data/v3/la/lucan.bellum_civile.part.1/lucan.bellum_civile.part.1.index_stem')};
+	my @signs = ('dico', 'fero', 'lego', 'memoro', 'miror', 'miro', 'loquor', 'for', 'sileo', 'illudo', 'conloquor', 'colloquor');	
+#	print join (' ', @signs) . "\n";
+	my @flagged_IDs;
+	foreach my $key (keys %lemma_hash) {#go through the hash from the index_stem file, one lemma at a time
+#		print $key;
+#		print $lemma_hash{$key}->[0];		
+		my @new = @{$lemma_hash{$key}};
+		for (0..$#new) {								#load the array of token id#s at that lemma (key), go through one token id # at a time
+			my $temp_tok_id = $new[$_]; 				#give the id number into a temporary variable for clarity
+					for (0..$#signs){#go through our homebrewed list of signpost words
+						if ($signs[$_] eq $key) {#if the lemma which corresponds to the current token from the match phrase matches one of the words in our list...
+#							print "HOLY SHIT IT WORKS. \t" . $signs[$_] . $key;#celebrate.
+#							my $useless = <STDIN>;
+							push (@flagged_IDs, $temp_tok_id);
+						}
+					}
+		}
+	}
+
+
+
+
 
 #
 # set some parameters
@@ -251,14 +278,14 @@ for my $plugin (@plugins) {
 			print STDERR "ok\n";
 		}
 		else {
-		
-			print STDERR "failed\n";
+			
+			print STDERR "$plugin failed to evaluate.";
 		}
 	}
 	else {
 
 		print STDERR "failed\n";
-		warn "Invalid plugin: $plugin";
+		warn "Nonexistant plugin: $plugin";
 	}
 }
 
@@ -536,21 +563,54 @@ for my $unit_id_target (keys %match_target) {
 		#
 		# package up the match for export to modules
 		#
-				
+		my @phrases = ($unit_id_target, $unit_id_source);
+
+
+#		for (0..$#token_target) {
+#		my @lemma = $la_dictionary{$token_target[$_]};
+#			foreach my $sign (@signs) {
+#				foreach my $lem (@lemma) {
+#					if ($lem eq $sign) { 
+#						print STDERR "\nGot one!\t$lem, $sign";
+#						my $useless = <STDIN>;
+#					}
+#				}
+#			}
+#		}		
+		
+	
+		
+		
+#		print STDERR "Phrases: " . join (' ', @phrases);				
+#		for (350..360){
+#		print STDERR "Anonymous hash # $_:\n......\n";
+#		for my $key (%{$token_target[$_]}){
+
+#		print STDERR "\n\t$key \t=>\t${$token_target[$_]}{$key}";
+#		}
+		
+#		my $useless = <STDIN>;
+#		}
+		
+#		print STDERR "Target tokens: " . join (' ', @token_source);						
+
+
+
 		my $mat =[
 			encapsulate_phrase(
 				$match_target{$unit_id_target}{$unit_id_source},
 				$unit_target[$unit_id_target],				
 				\@token_target,
-				\%freq_target
+				\%freq_target			
 			),
 			encapsulate_phrase(
 				$match_source{$unit_id_target}{$unit_id_source},
 				$unit_source[$unit_id_source],				
 				\@token_source,
-				\%freq_source
+				\%freq_source			
 			)
 		];
+		
 		
 		#
 		# calculate scores
@@ -562,7 +622,7 @@ for my $unit_id_target (keys %match_target) {
 		
 		for my $plugin (@plugins) {
 			
-			push @score, $plugin->score($mat);
+			push @score, $plugin->score($mat, \@phrases);
 		}
 												
 		# save calculated score, matched words, etc.
@@ -789,10 +849,21 @@ sub load_stoplist {
 
 sub encapsulate_phrase {
 
-	my ($ref_match, $ref_unit, $ref_token, $ref_freq) = @_;
-	
+	my ($ref_match, $ref_unit, $ref_token, $ref_freq) = @_; #references to the info passed in lines 543-554
 	my @token_id = @{$ref_unit->{TOKEN_ID}};
-	
+
+
+	my $mark = 0;
+	for (0..$#token_id){
+		my $current_token = $token_id[$_];
+		for (0..$#flagged_IDs) {
+			if ($flagged_IDs[$_] == $current_token) {
+				$mark++;
+			}
+		}
+	}
+
+
 	my @match;
 	my @token;
 	my @freq;
@@ -809,8 +880,9 @@ sub encapsulate_phrase {
 			push @match, $#token;
 		}
 	}
+#	if ($mark > 0) {print "\nMatching phrase: " . join (' ', @token);}
 	
-	return (\@token, \@freq, \@match);
+	return (\@token, \@freq, \@match, $mark); 
 }
 
 #
@@ -820,9 +892,11 @@ sub encapsulate_phrase {
 sub read_bench {
 
 	my $file = shift;
-	
+#	print STDERR "\nFILE BEING CALLED: $file";
+
 	my @bench = @{retrieve($file)};
-	
+#	for (0..3) {print STDERR "\n'bench' array position $_: $bench[$_]\n"};
+
 	my $pr = ProgressBar->new(scalar(@bench), $quiet);
 	
 	for (@bench) {
@@ -830,20 +904,22 @@ sub read_bench {
 		$pr->advance();
 	
 		my %rec = %$_;
-		
+
 		my %opt = (
-			target      => 'lucan.bellum_civile.part.1',
-			target_loc  => join('.', $rec{BC_BOOK}, $rec{BC_LINE}),
-			target_text => $rec{BC_TXT},
-			source      => 'vergil.aeneid',
-			source_loc  => join('.', $rec{AEN_BOOK}, $rec{AEN_LINE}),
-			source_text => $rec{AEN_TXT},
-			auth        => $rec{AUTH},
-			type        => $rec{SCORE},
-			target_unit => $rec{BC_PHRASEID},
-			source_unit => $rec{AEN_PHRASEID}
-		);
 		
+		
+			target      => 'lucan.bellum_civile.part.1',
+			target_loc  => $rec{target_loc},
+			target_text => $rec{target_text},
+			source      => 'vergil.aeneid',
+			source_loc  => $rec{source_loc},
+			source_text => $rec{source_text},
+#			auth        => $rec{auth},
+			type        => $rec{score},
+			target_unit => $rec{target_unit},
+			source_unit => $rec{source_unit}
+		);
+			
 		$_ = Parallel->new(%opt);
 	}
 	
@@ -953,7 +1029,7 @@ sub export {
 	
 	my @header = (@fields, map {lc} @plugins);
 	
-	print join("\t", @header) . "\n";
+	print OUTPUT join("\t", @header) . "\n";
 	
 	my $pr = ProgressBar->new(scalar(@bench), $q);
 	
@@ -963,7 +1039,7 @@ sub export {
 		
 		next unless defined $p->get('type');
 		
-		my $score = $p->get('score');
+		my $score = $p->get('score'); #These look like previously stored scores. Are they?
 		
 		unless (defined $score) {
 			
@@ -971,8 +1047,17 @@ sub export {
 		}
 		
 		my @scores = map {defined $_ ? $_ : 'NA'} @$score;
+			for (0..$#scores) {
+				if ($scores[$_] eq 'NA') {
+					#print STDERR "\nUndefined score. Contents of anonymous hash:";
+					for my $key (keys (%{$p})) {
+#						print "\n\t$key \t => \t ${$p}{$key}";
+					}
+				
+				}
 			
-		print join("\t", 
+			}
+		print OUTPUT join("\t", 
 			$p->dump(
 				select => [qw/target source type auth/],
 				join   => ';',
@@ -981,6 +1066,6 @@ sub export {
 			@scores
 		);
 				
-		print "\n";
+		print OUTPUT "\n";
 	}
 }

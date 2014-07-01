@@ -193,6 +193,10 @@ my $stemmer;
 
 my $quiet = 0;
 
+# features to skip
+
+my %omit;
+
 #
 # command-line options
 #
@@ -245,46 +249,6 @@ if ($max_processes) {
 	$pm = Parallel::ForkManager->new($max_processes);
 }
 
-#		
-# get dictionaries
-#
-
-my %stem;
-my %syn;
-
-my $file_stem = catfile($fs{data}, 'common', $lang . '.stem.cache');
-my $file_syn  = catfile($fs{data}, 'common', $lang . '.syn.cache');
-
-my %omit;
-
-if (-r $file_stem or $use_lingua_stem) {
-		
-	if ($use_lingua_stem) {
-	
-		$stemmer = Lingua::Stem->new({-locale => $lang});
-	}
-	else {
-	
-		%stem = %{ retrieve($file_stem) };
-	}
-	
-	if (-r $file_syn) {
-
-		%syn = %{ retrieve($file_syn) };
-	}
-	else {
-		
-		print STDERR "Can't find syn dictionary!  Syn indexing disabled.\n" unless $quiet;
-		$omit{syn} = 1;
-	}
-}
-else {
-	
-	print STDERR "Can't find stem dictionary! Stem and syn indexing disabled.\n" unless $quiet;
-	$omit{stem} = 1;
-}
-
-
 # get the list of texts to index
 
 my @corpus = @{Tesserae::get_textlist($lang, -no_part => 1)};
@@ -316,22 +280,11 @@ for my $text (@corpus) {
 	
 		print STDERR "unit: $unit\ntext: $text\n";
 
-		# if the work is prose, the line index can be copied from phrase
+		# if the work is prose, don't bother indexing lines
 
 		if ($unit eq 'line' and Tesserae::check_prose_list($text)) {
 		
-			print STDERR "prose mode:\n";
-			
-			for (qw/word stem/) {
-			
-				my $index_phrase = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_phrase_$_");
-				my $index_line   = catfile($fs{data}, 'v3', $lang, $text, $text . ".multi_line_$_");
-				
-				print STDERR "  copying $index_phrase to $index_line\n";
-
-				copy($index_phrase, $index_line);
-			}
-			
+			print STDERR "prose text: skipping line index\n";
 			next;
 		}
 		
@@ -407,8 +360,8 @@ for my $text (@corpus) {
 					
 					next if $omit{stem};
 					
-					my @stems_a = @{stems($form_a)};
-					my @stems_b = @{stems($form_b)};
+					my @stems_a = @{Tesserae::feat($lang, 'stem', $form_a)};
+					my @stems_b = @{Tesserae::feat($lang, 'stem', $form_b)};
 					
 					for my $stem_a (@stems_a) {
 						
@@ -445,52 +398,11 @@ for my $text (@corpus) {
 
 			print STDERR "saving $file_index_stem\n";
 			nstore \%index_stem, $file_index_stem;	
-		}		
-	}	
+		}
+	}
 	
 	$prmanager->finish if $max_processes;
 }
 
 $prmanager->wait_all_children if $max_processes;
 
-sub stems {
-
-	my $form = shift;
-	
-	my @stems;
-	
-	if ($use_lingua_stem) {
-	
-		@stems = @{$stemmer->stem($form)};
-	}
-	elsif (defined $stem{$form}) {
-	
-		@stems = @{$stem{$form}};
-	}
-	else {
-	
-		@stems = ($form);
-	}
-	
-	return \@stems;
-}
-
-sub syns {
-
-	my $form = shift;
-	
-	my %syns;
-	
-	for my $stem (@{stems($form)}) {
-	
-		if (defined $syn{$stem}) {
-		
-			for (@{$syn{$stem}}) {
-			
-				$syns{$_} = 1;
-			}
-		}
-	}
-	
-	return [keys %syns];
-}

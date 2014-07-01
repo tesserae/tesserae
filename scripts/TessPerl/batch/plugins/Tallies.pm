@@ -57,7 +57,8 @@ sub get_tallies {
 	
 		for my $unit_id_source (keys %{$score{$unit_id_target}}) {
 		
-			$tally[$score{$unit_id_target}{$unit_id_source}]++;
+			my $score_round = sprintf('%.0f', $score{$unit_id_target}{$unit_id_source});
+			$tally[$score_round]++;
 		}
 	}
 	
