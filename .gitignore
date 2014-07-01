@@ -35,6 +35,11 @@ data/bench/*.cache
 data/lsa/*
 html/textlist.*
 
+#James' scripts and so forth
+scoring.results.tsv
+readable.txt
+readit.pl
+scripts/score/unscore.test.pl
 
 # OS generated files
 

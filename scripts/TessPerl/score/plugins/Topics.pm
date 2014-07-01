@@ -1,4 +1,4 @@
-package Default;
+package Topics;
 
 use strict;
 use Exporter;
@@ -64,7 +64,7 @@ our @EXPORT_OK = ();
 
 # diagnostic
 
-print STDERR "loading module Default\n";
+print STDERR "loading module Topics\n";
 
 #
 # scoring subroutine
@@ -83,20 +83,39 @@ sub score {
 	my @match_source = @{$match->[6]};
 	my @phrase = @{$phrases};
 
-#	print join (' ', @token_target) . "\n\n\n" . join (' ', @freq_target) . "\n\n\n" . join (' ', @match_target) . "\n\n\n" . join (' ', @token_source) . "\n\n\n" . join (' ', @freq_source) . "\n\n\n" . join (' ', @match_source) . "\n\n\n" . join (' ', @phrase) . "\n\n\n";
+	my $target_phrase = $phrase[0];
 
+
+	#load the LSA data
+	my @gensim;
+	open (LSA, "gensim.results.csv"), or die "$!";
+	while (<LSA>) { 
+#		print "\nCurrent line of gensim file: $_";
+		$_ =~ /^(\d+)\,0\.(\d+)/;
+#		print "\nSlice 1: $1.\tSlice 2: $2";
+		$gensim[$1] = "0.$2";
+	}
+	close LSA;
+	if ($debug) { print STDERR "Size of gensim array: " . scalar(@gensim); }
 	
-	if ($debug) { print STDERR "\n" }
+	
+	
+	if ($debug) { print STDERR "\n"; }
 	
 	my $distance = dist($match, 'freq', $debug);
 	
 	my $score = 0;
+	my $penalty = 0;
 		
 	for my $token_id_target (@match_target ) {
 									
 		# add the frequency score for this term
 		
 		$score += 1/$freq_target[$token_id_target];
+		
+		if ($freq_target[$token_id_target] > .0008) {
+		$penalty++;
+		}
 		
 		if ($debug) {
 			print STDERR "score: ";
@@ -112,6 +131,10 @@ sub score {
 		# add the frequency score for this term
 		
 		$score += 1/$freq_source[$token_id_source];
+		
+		if ($freq_source[$token_id_source] > .0008) {
+		$penalty++;
+		}
 		
 		if ($debug) {
 			print STDERR "score: ";
@@ -129,7 +152,24 @@ sub score {
 	}
 
 	$score = sprintf("%.3f", log($score/$distance));
+#	print "\nCurrent score: $score";
+	## Add one point for every tenth of the Gensim score above 0.5
+#	print "\nTarget phrase: $target_phrase";
+#	print "\nLSA score: $gensim[$target_phrase]";
+	my $genmod = ($gensim[$target_phrase] * 10);
+	if ($score > 7) {
+		$genmod = $genmod - 6.5;
+#		$genmod = int($genmod + 0.5);		
+		$score = $genmod + $score;
+	}
 
+#		if ($penalty > 2) {
+#	$score = $score - ($penalty / 2);
+#	}
+#	print "\nGenmod: $genmod";
+#	print "\nPost genmod: $score";
+#	my $useless = <STDIN>;	
+	#$score--;
 	return $score;
 }
 
@@ -139,7 +179,7 @@ sub score {
 
 sub dist {
 
-	my ($match, $metric, $debug) = @_;
+	my ($match, $metric, $phrases, $debug) = @_;
 
 	my @token_target = @{$match->[0]};
 	my @freq_target  = @{$match->[1]};

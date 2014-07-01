@@ -72,19 +72,14 @@ print STDERR "loading module Default\n";
 
 sub score {
 		
-	my ($package, $match, $phrases, $debug) = @_;
-	
+	my ($package, $match, $debug, $phrases) = @_;
+
 	my @token_target = @{$match->[0]};
 	my @freq_target  = @{$match->[1]};
-	my @match_target = @{$match->[2]};
-	my $mark_target  = $match->[3];
-	my @token_source = @{$match->[4]};
-	my @freq_source  = @{$match->[5]};	
-	my @match_source = @{$match->[6]};
-	my @phrase = @{$phrases};
-
-#	print join (' ', @token_target) . "\n\n\n" . join (' ', @freq_target) . "\n\n\n" . join (' ', @match_target) . "\n\n\n" . join (' ', @token_source) . "\n\n\n" . join (' ', @freq_source) . "\n\n\n" . join (' ', @match_source) . "\n\n\n" . join (' ', @phrase) . "\n\n\n";
-
+	my @match_target = @{$match->[2]};	
+	my @token_source = @{$match->[3]};
+	my @freq_source  = @{$match->[4]};	
+	my @match_source = @{$match->[5]};
 	
 	if ($debug) { print STDERR "\n" }
 	
@@ -143,12 +138,11 @@ sub dist {
 
 	my @token_target = @{$match->[0]};
 	my @freq_target  = @{$match->[1]};
-	my @match_target = @{$match->[2]};
-	my $mark_target  = $match->[3];
-	my @token_source = @{$match->[4]};
-	my @freq_source  = @{$match->[5]};	
-	my @match_source = @{$match->[6]};
-	
+	my @match_target = @{$match->[2]};	
+	my @token_source = @{$match->[3]};
+	my @freq_source  = @{$match->[4]};	
+	my @match_source = @{$match->[5]};
+
 	my @target_id = sort {$a <=> $b} @match_target;
 	my @source_id = sort {$a <=> $b} @match_source;
 
