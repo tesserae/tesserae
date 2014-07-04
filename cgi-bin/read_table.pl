@@ -408,12 +408,7 @@ else {
 	
 		die "read_table.pl called from web interface with no target";
 	}
-	
-	if ($score_basis eq 'feature') {
-	
-		$score_basis = $feature;
-	}
-	
+		
 	$quiet = 1;
 	
 	# how to redirect browser to results
@@ -454,6 +449,14 @@ if (Tesserae::check_prose_list($target) or Tesserae::check_prose_list($source)) 
 # $target = decode('utf8', $target);
 # $source = decode('utf8', $source);
 
+# if user selected 'feature' as score basis,
+# set it to whatever the feature is
+
+if ($score_basis =~ /^feat/) {
+
+	$score_basis = $feature;
+}
+
 # print all params for debugging
 
 unless ($quiet) {
@@ -479,12 +482,12 @@ unless ($quiet) {
 
 # token frequencies from the target text
 
-my $file_freq_target = select_file_freq($target) . ".freq_score_" . $feature;
+my $file_freq_target = select_file_freq($target) . ".freq_score_" . $score_basis;
 my %freq_target = %{Tesserae::stoplist_hash($file_freq_target)};
 
 # token frequencies from the source text
 
-my $file_freq_source = select_file_freq($source) . ".freq_score_" . $feature;
+my $file_freq_source = select_file_freq($source) . ".freq_score_" . $score_basis;
 my %freq_source = %{Tesserae::stoplist_hash($file_freq_source)};
 
 #
