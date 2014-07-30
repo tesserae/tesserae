@@ -146,9 +146,9 @@ my $help        = 0;
 my $quiet       = 0;
 my $max_results = 2;
 
-for qw(/la grc/) {
+for my $variable qw(/la grc/) {
 
-	$file{$_} = catfile($fs{data}, 'synonymy', "$_.nt_parallel.tess");
+	$file{$variable} = catfile($fs{data}, 'synonymy', "$variable.nt_parallel.tess");
 }
 
 # get user options
