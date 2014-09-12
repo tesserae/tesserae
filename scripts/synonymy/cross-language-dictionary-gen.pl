@@ -28,6 +28,18 @@ The Latin text.
 
 The name of the dictionary, which will be saved as 'data/synonymy/FEATURE.csv' Default is 'trans1'.
 
+=item B<--n> I<N>
+
+Return N results for each key; default is 2.
+
+=item B<--score>
+
+Export scores along with translation candidates.
+
+item B<--echo>
+
+Echo results to stderr.
+
 =item B<--help>
 
 Print usage and exit.
@@ -145,10 +157,12 @@ my $feature     = 'trans1';
 my $help        = 0;
 my $quiet       = 0;
 my $max_results = 2;
+my $export_scores = 0;
+my $echo = 0;
 
-for qw(/la grc/) {
+for my $lang qw/la grc/ {
 
-	$file{$_} = catfile($fs{data}, 'synonymy', "$_.nt_parallel.tess");
+	$file{$lang} = catfile($fs{data}, 'synonymy', "${lang}.nt_parallel.tess");
 }
 
 # get user options
@@ -158,6 +172,8 @@ GetOptions(
 	'la=s'      => \$file{la},
 	'grc=s'     => \$file{grc},
 	'n=i'       => \$max_results,
+	'score'     => \$export_scores,
+	'echo'      => \$echo,
 	'quiet'     => \$quiet,
 	'help'      => \$help
 );
@@ -329,13 +345,16 @@ print STDERR "Applying Bayes' theorem\n";
 
 my $it = 0;
 
+my $pr = ProgressBar->new(scalar(keys %{$tags{grc}}), $echo);
+
+
 foreach my $greek_key (keys %{$tags{grc}}) {
 	
 	$it++;
 	
 	my @latin_results = ();
 	
-	print STDERR "Iteration $it/$word_count{grc}:" unless $quiet;
+	print STDERR "Iteration $it/$word_count{grc}:" if $echo;
 
 	my %results = %{bayes($greek_key)};
 	
@@ -355,6 +374,11 @@ foreach my $greek_key (keys %{$tags{grc}}) {
 			
 		next if grep {$_ eq $latin_key} @{$stops{la}}[0..$stoplist_size-1];
 
+		if ($export_scores) {
+			
+			$latin_key = join(":", $latin_key, $results{$latin_key});
+		}
+
 		push (@latin_results, $latin_key);
 		
 		last if scalar(@latin_results) == $max_results;
@@ -362,8 +386,10 @@ foreach my $greek_key (keys %{$tags{grc}}) {
 
 	my $row = join(",", $greek_key, @latin_results) . "\n";
 
-	print STDERR $row unless $quiet;
+	print STDERR $row if $echo;
 	print OUTPUT $row;
+	
+	$pr->advance();
 }
 
 
