@@ -139,7 +139,7 @@ if ($help) {
 
 #Initialize filepath variables for the documents and scripts folders.
 my $scripts_folder = catfile($fs{script});
-my $doc_folder = catfile($fs{doc});
+my $doc_folder = catfile($fs{html});
 my $phpfile = catfile($fs{html}, 'help_scripts.php');
 
 #Make the string which will become the main help page.
@@ -222,8 +222,17 @@ foreach my $file (@file_array) {
 	}
 }
 
-foreach my $script (keys %toc) {
+
+#Create the index of documents
+
+open (IGNORE, '>>', "$scripts_folder/../.gitignore") or die $!;
+print IGNORE "# Automatically generated documentation files\n";
+foreach my $script (sort keys %toc) {
 	$php .= "\n<li><a href='$toc{$script}'>$script</a>\n";
+	
+	#Append the .gitignore file
+	print IGNORE "$toc{$script}\n";
+	
 }
 
 my $php2 = <<END;
