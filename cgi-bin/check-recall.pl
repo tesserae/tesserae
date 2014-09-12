@@ -545,7 +545,7 @@ sub html_no_table {
 
 sub info {
 		
-	my %sel_feature = (word => "", stem => "", syn=>"", '3gr' => "", trans1 => "", trans2 => "");
+	my %sel_feature = (word => "", stem => "", syn=>"", '3gr' => "", trans1 => "", trans2mws => "");
 	my %sel_stbasis = (corpus => "", target => "", source => "", both => "");
 	my %sel_dibasis = (span => "", span_target => "", span_source => "", 
                       freq => "", freq_target => "", freq_source => "");
@@ -569,11 +569,11 @@ sub info {
 	
 	if (Tesserae::lang($name{target}) eq Tesserae::lang($name{source})) {
 	
-		@feature_choices = qw/word stem syn 3gr/;
+		@feature_choices = qw/word stem syn 3gr syn_lem/;
 	}
 	else {
 	
-		@feature_choices = qw/trans1 trans2/;
+		@feature_choices = qw/trans1 trans2mws/;
 	}
 	
 	my $html_feature = join("\n", map { "<option value=\"$_\" $sel_feature{$_}>$_</option>" } @feature_choices);

@@ -7,13 +7,8 @@
 		'target' => 'vergil.georgics.part.1',
 		'source' => 'catullus.carmina'
 	);
-	$features = array(
-		'word' => 'exact word',
-		'stem' => 'lemma',
-		'syn'  => 'lemma + synonymys',
-		'3gr'  => 'character 3-gram'
-	);
-	$selected_feature = 'stem';
+
+	$selected_feature = 'syn_lem';
 ?>
 
 <?php include "first.php"; ?>
@@ -22,7 +17,7 @@
 </div>
 <div id="main">
 	
-	<h1>Latin Search</h1>
+	<h1>Lemma + Synonym Search</h1>
 	
 	<p>
 		For explanations of advanced features, see the 

@@ -9,7 +9,7 @@
 	);
 	$features = array(
 		'trans1' => 'parallel texts method',
-		'trans2' => 'dictionary method'
+		'trans2mws' => 'dictionary method'
 	);
 	$selected_feature = 'trans1';
 ?>

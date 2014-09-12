@@ -146,7 +146,7 @@ binmode STDERR, 'utf8';
 
 my $target   = 'homer.iliad';
 my $query;
-my @feature  = qw/trans1 trans2/;
+my @feature  = qw/trans1 trans2mws/;
 my $auth;
 my $html     = 0;
 my $help     = 0;
