@@ -105,6 +105,7 @@ my $term = Term::ReadLine->new('myterm');
 my %desc = (
 
 	base   => 'tesserae root',
+	doc   => 'documentation folder',	
 	cgi    => 'cgi executables',
 	css    => 'css stylesheets',
 	data   => 'internal data',
@@ -128,6 +129,7 @@ my $fs_base = abs_path(catdir($Bin, '..'));
 my %fs = (
 
 	cgi    => 'cgi-bin',
+	doc    => 'doc/html',	
 	data   => 'data',
 	html   => 'html',
 	script => 'scripts',
@@ -164,6 +166,7 @@ my $url_base = 'http://tesserae.caset.buffalo.edu';
 my %url = (
 
 	cgi   => $url_base . '/cgi-bin',
+	doc   => $url_base . '/doc/html',	
 	css   => $url_base . '/css',
 	html  => $url_base . '',
 	image => $url_base . '/images',
