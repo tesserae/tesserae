@@ -139,7 +139,7 @@ if ($help) {
 
 #Initialize filepath variables for the documents and scripts folders.
 my $scripts_folder = catfile($fs{script});
-my $doc_folder = catfile($fs{html});
+my $doc_folder = catfile($fs{doc});
 my $phpfile = catfile($fs{html}, 'help_scripts.php');
 
 #Make the string which will become the main help page.
