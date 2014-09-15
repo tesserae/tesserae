@@ -11,7 +11,7 @@ doc_gen.pl [options]
 
 =head1 DESCRIPTION
 
-This script should be run after configure.pl. It seeks out the script folder and all expected subdirectories looking for scripts with POD documentation in their headers. Then it creates a folder inside tesserae/doc/ where it stores HTML versions of these descriptions.
+This script should be run after configure.pl. It seeks out the /scripts folder and one layer of subdirectories looking for PERL scripts with POD documentation in their headers. Then it creates a folder inside tesserae/doc/ where it stores HTML versions of these descriptions.
 
 
 =head1 OPTIONS AND ARGUMENTS
@@ -139,19 +139,22 @@ if ($help) {
 
 #Initialize filepath variables for the documents and scripts folders.
 my $scripts_folder = catfile($fs{script});
-my $doc_folder = catfile($fs{doc});
+my $doc_folder = catfile($fs{html});
 my $phpfile = catfile($fs{html}, 'help_scripts.php');
 
-#Make the string which will become the main help page.
+################################################################################################################################################
+# The following block-of-text variables help create the help_scripts.php and various POD-derived .php pages.								   #
+################################################################################################################################################
+################################################################################################################################################
 my $php = <<END;
 <?php include "first.php"; ?>
-<?php include "nav_search.php"; ?>
+<?php include "nav_help.php"; ?>
 </div>
 <div id="main">
 
 	<h1>Code Documentation</h1>
 	<p>
-	This document is designed to help users of the home-version of Tesserae to install, use, and modify the tool as needed. The project code can be found at <a href="github.com/tesserae/tesserae">github.com/tesserae/tesserae</a>.
+	This document is designed to help users of the home-version of Tesserae to install, use, and modify the tool as needed. The project code can be found at <a href="http://www.github.com/tesserae/tesserae">github.com/tesserae/tesserae</a>.
 	</p>
 	<h2>Navigating the Folders</h2>
 	<p><b>cgi-bin:</b> This folder contains scripts that are read when finding and displaying search results online. The scripts read the user’s specified target and source text data, identify meaningful instances of intertextuality, and display the results online. These scripts make up the core part of a Tesserae search request. </p>
@@ -185,47 +188,6 @@ my $php = <<END;
 <p><b>scripts</b>:<ul>
 END
 
-
-#Initialize a hash which will contain the script names and the link addresses
-my %toc;
-
-#Glob the contents of the scripts folder
-my @file_array = <$scripts_folder/*>;
-
-foreach my $file (@file_array) {
-	if ($file =~ /\.pl$/) { #Make sure we're working on a PERL Script.
-	
-		my $html_file = $file;
-		$html_file =~ s/(.+)\/(.+)\.pl$/$2\.html/; #Regular expression creates the name of the PERL file
-	
-		#Use the terminal to call pod2html, which is included with PERL 5 distributions.
-		system ("pod2html --infile=$file --outfile=$doc_folder/$html_file --quiet");
-		
-		$toc{"$2.pl"} = "../doc/html/$html_file";
-	
-	}
-	if (-d $file) { #if the file is actually a directory, go through the directory but dump HTML files to the same doc folder.
-	
-		my @dir_contents = <$file/*>;
-	
-		foreach my $dir_file (@dir_contents) {
-	
-			if ($dir_file =~ /\.pl$/) { #Again, make sure we're working on a PERL Script.
-				my $html_file = $dir_file;
-				$html_file =~ s/(.+)\/(.+)\.pl$/$2\.html/;
-				system ("pod2html --infile=$dir_file --outfile=$doc_folder/$html_file --quiet");
-
-				$toc{"$2.pl"} = "../doc/html/$html_file";
-			}
-	
-		}
-	}
-}
-
-foreach my $script (keys %toc) {
-	$php .= "\n<li><a href='$toc{$script}'>$script</a>\n";
-}
-
 my $php2 = <<END;
 
 </ul></p>
@@ -242,7 +204,93 @@ my $php2 = <<END;
 <?php include "last.php"; ?>
 END
 
+my $new_head = <<END;
+<?php include "first.php"; ?>
+<?php include "nav_help.php"; ?>
+</div>
+<div id="main">
+END
+
+my $new_foot = <<END;
+</div>
+
+<?php include "last.php"; ?>
+END
+################################################################################################################################################
+################################################################################################################################################
+
+
+#Initialize a hash which will contain the script names and the link addresses
+my %toc;
+
+#Glob the contents of the scripts folder
+my @file_array = <$scripts_folder/*>;
+
+
+
+#Loop through the /scripts folder looking for PERL files. When directories are encountered, loop through those.
+foreach my $file (@file_array) {
+	if ($file =~ /\.pl$/) { #Make sure we're working on a PERL Script.
+	
+		my $html_file = $file;
+		$html_file =~ s/(.+)\/(.+)\.pl$/$2\.php/; #Regular expression creates the name of the PERL file
+	
+		#Use the terminal to call pod2html, which is included with PERL 5 distributions.
+		system ("pod2html --infile=$file --outfile=$doc_folder/$html_file --quiet");
+		
+		$toc{"$2.pl"} = "$html_file";
+		modfile ($doc_folder, $html_file);
+	}
+	if (-d $file) { #if the file is actually a directory, go through the directory but dump HTML files to the same doc folder.
+	
+		my @dir_contents = <$file/*>;
+	
+		foreach my $dir_file (@dir_contents) {
+	
+			if ($dir_file =~ /\.pl$/) { #Again, make sure we're working on a PERL Script.
+				my $html_file = $dir_file;
+				$html_file =~ s/(.+)\/(.+)\.pl$/$2\.php/;
+				system ("pod2html --infile=$dir_file --outfile=$doc_folder/$html_file --quiet");
+
+				$toc{"$2.pl"} = "$html_file";
+				
+				modfile ($doc_folder, $html_file);
+			}
+	
+		}
+	}
+}
+
+foreach my $script (sort keys %toc) {
+	$php .= "\n<li><a href='$toc{$script}'>$script</a>\n";
+}
+
+
+
 $php = $php . $php2;
 
 open (HELP, ">$phpfile") or die $!;
 print HELP $php;
+
+#
+# Trim the html tags off of a file and add the necessary php.
+#
+sub modfile {
+	my ($doc_folder, $html_file) = @_;
+	
+	open (FILE, "$doc_folder/$html_file") or die $!;
+	my $contents = $new_head;		
+	
+	
+	while (<FILE>) {
+		if ($_ =~ /<\/?(?:html|body|link|title|\?xml|head|meta|\!DOCTYPE)/) {
+			next;
+		}
+		$contents .= $_;
+	}
+	$contents .= $new_foot;
+
+	open (FILE, ">$doc_folder/$html_file") or die $!;
+	print FILE $contents;
+
+}
