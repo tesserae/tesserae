@@ -10,6 +10,14 @@
 			</p>
 			<table class="sources_page" style="font-size:0.8em">
 <tr>
+					<th>Author</th>
+					<th>Work</th>
+					<th>e-Source</th>
+					<th>Print Source</th>
+					<th>Added by</th>
+
+</tr>
+<tr>
 					<td>Achilles Tatius</td>
 					<td>Leucippe et Clitophon</td>
 					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0665">Perseus</a></td>
@@ -1849,13 +1857,6 @@ Recognovit brevique adnotatione critica instruxit
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0147">Perseus</a></td>
 	<td>B. Niese, <em>Flavii Iosephi opera</em>. Berlin: Weidmann, 1895.</td>
 	<td>Jessica Micceri</td>
-
-</tr><tr>
-					<th>Author</th>
-					<th>Work</th>
-					<th>e-Source</th>
-					<th>Print Source</th>
-					<th>Added by</th>
 
 </tr><tr>
 					<td>Florus</td>
