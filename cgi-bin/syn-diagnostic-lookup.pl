@@ -352,6 +352,7 @@ sub print_template {
 	
 	print_results(0, $query, $html);
 	print_results(1, $query, $html);
+	print_results(2, $query, $html);
 	
 	print html_footer() if $html;
 }
