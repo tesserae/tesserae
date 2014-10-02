@@ -158,7 +158,7 @@ binmode STDERR, 'utf8';
 # initialize some variables
 
 my $target   = 'homer.iliad';
-my @feature  = qw/trans1 trans2/;
+my @feature  = qw/trans1 trans2 trans2mws/;
 my $auth;
 my $query;
 my $html     = 0;
@@ -205,6 +205,7 @@ else {
 	$query      = $cgi->param('query')    || $session->param('query');
 	$feature[0] = $cgi->param('feature1') || $session->param('feature1') || $feature[0];
 	$feature[1] = $cgi->param('feature2') || $session->param('feature2') || $feature[1];
+	$feature[2] = $cgi->param('feature3') || $session->param('feature3') || $feature[2];
  	$auth       = $cgi->param('auth')     || $session->param('auth');
 	$html = 1;
 }
@@ -381,7 +382,7 @@ sub export_lex {
 	if ($html) {
 		
 		print "<div class=\"index\"><table>\n";
-		print "<tr><th>freq(\%)</th><th>stem</th><th>$feature[0]</th><th>$feature[1]</th></tr>\n";	 
+		print "<tr><th>freq(\%)</th><th>stem</th><th>$feature[0]</th><th>$feature[1]</th><th>$feature[2]</th></tr>\n";	 
 	}
 				
 	for my $token (sort {$index{$b} <=> $index{$a}} keys %index) {
@@ -517,10 +518,14 @@ sub init_db {
 				la_1b varchar(22),
 				la_2a varchar(22),
 				la_2b varchar(22),
+				la_3a varchar(22),
+				la_3b varchar(22),				
 				v_1a  int,
 				v_1b  int,
 				v_2a  int,
 				v_2b  int,
+				v_3a  int,
+				v_3b  int,
 				auth char(2)
 			);'
 		);
