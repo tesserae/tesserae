@@ -194,7 +194,7 @@ else {
 	$feature[1] = $cgi->param('feature2') || $feature[1];
 	$feature[2] = $cgi->param('feature3') || $feature[2];	
 
-	for (qw/1a 1b 2a 2b 2MWSa 2MWSb/) {
+	for (qw/1a 1b 2a 2b 3a 3b/) {
 	
 		$param{"la_$_"} = $cgi->param("la_$_");
 		$param{"v_$_"} = $cgi->param("v_$_");
