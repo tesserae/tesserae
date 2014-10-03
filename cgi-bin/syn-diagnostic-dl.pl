@@ -251,6 +251,8 @@ sub print_table {
 		valid_2b
 		valid_3a
 		valid_3b
+		valid_4a
+		valid_4b
 		auth/
 	);
 	

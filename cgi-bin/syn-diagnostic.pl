@@ -146,7 +146,7 @@ binmode STDERR, 'utf8';
 
 my $target   = 'homer.iliad';
 my $query;
-my @feature  = qw/trans1 trans2 trans2mws/;
+my @feature  = qw/trans1 trans2 trans2mws IBM/;
 my $auth;
 my $html     = 0;
 my $help     = 0;
@@ -193,6 +193,7 @@ else {
 	$feature[0] = $cgi->param('feature1') || $session->param('feature1') || $feature[0];
 	$feature[1] = $cgi->param('feature2') || $session->param('feature2') || $feature[1];
 	$feature[2] = $cgi->param('feature3') || $session->param('feature3') || $feature[2];	
+	$feature[3] = $cgi->param('feature4') || $session->param('feature4') || $feature[3];
  	$auth       = $cgi->param('auth')     || $session->param('auth');
 	$html = 1;
 }
@@ -218,6 +219,7 @@ unless ($no_cgi) {
 	$session->param('feature1', $feature[0]);
 	$session->param('feature2', $feature[1]);
 	$session->param('feature3', $feature[2]);	
+	$session->param('feature4', $feature[3]);
 	$session->param('query',    $query);
 	$session->param('auth',     $auth);
 	

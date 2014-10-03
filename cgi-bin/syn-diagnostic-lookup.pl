@@ -151,7 +151,7 @@ binmode STDERR, 'utf8';
 
 my $target   = 'homer.iliad';
 my $query;
-my @feature  = qw/trans1 trans2 trans2mws/;
+my @feature  = qw/trans1 trans2 trans2mws IBM/;
 my $auth;
 my $html     = 0;
 my $help     = 0;
@@ -179,7 +179,7 @@ if ($no_cgi) {
 		'html'      => \$html
 	);
 	
-	@feature = @feature[-3, -2,-1];
+	@feature = @feature[-4, -3, -2,-1];
 
 	# print usage if the user needs help
 
@@ -199,6 +199,7 @@ else {
 	$feature[0] = $cgi->param('feature1') || $session->param('feature1') || $feature[0];
 	$feature[1] = $cgi->param('feature2') || $session->param('feature2') || $feature[1];
 	$feature[2] = $cgi->param('feature3') || $session->param('feature3') || $feature[2];
+	$feature[3] = $cgi->param('feature4') || $session->param('feature4') || $feature[3];
  	$auth       = $cgi->param('auth')     || $session->param('auth');
 	$html = 1;
 }
@@ -353,6 +354,7 @@ sub print_template {
 	print_results(0, $query, $html);
 	print_results(1, $query, $html);
 	print_results(2, $query, $html);
+	print_results(3, $query, $html);	
 	
 	print html_footer() if $html;
 }
@@ -377,6 +379,7 @@ sub html_header {
 					  . "<input type=\"hidden\" name=\"feature1\" value=\"$feature[0]\" />\n"
 					  . "<input type=\"hidden\" name=\"feature2\" value=\"$feature[1]\" />\n"
 					  . "<input type=\"hidden\" name=\"feature3\" value=\"$feature[2]\" />\n"					  
+					  . "<input type=\"hidden\" name=\"feature4\" value=\"$feature[3]\" />\n"
 					  . "<input type=\"hidden\" name=\"target\"   value=\"$target\"     />\n";
 	}
 

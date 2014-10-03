@@ -144,7 +144,7 @@ binmode STDERR, 'utf8';
 
 # initialize some variables
 my $target   = 'homer.iliad';
-my @feature  = qw/trans1 trans2 trans2mws/;
+my @feature  = qw/trans1 trans2 trans2mws IBM/;
 my $auth;
 my $query;
 my $pos;
@@ -192,9 +192,10 @@ else {
 	$pos        = $cgi->param('pos');
 	$feature[0] = $cgi->param('feature1') || $feature[0];
 	$feature[1] = $cgi->param('feature2') || $feature[1];
-	$feature[2] = $cgi->param('feature3') || $feature[2];	
+	$feature[2] = $cgi->param('feature3') || $feature[2];
+	$feature[3] = $cgi->param('feature4') || $feature[3];			
 
-	for (qw/1a 1b 2a 2b 3a 3b/) {
+	for (qw/1a 1b 2a 2b 3a 3b 4a 4b/) {
 	
 		$param{"la_$_"} = $cgi->param("la_$_");
 		$param{"v_$_"} = $cgi->param("v_$_");
@@ -321,12 +322,16 @@ sub init_db {
 				la_2b varchar(22),
 				la_3a varchar(22),
 				la_3b varchar(22),
+				la_4a varchar(22),
+				la_4b varchar(22),
 				v_1a  int,
 				v_1b  int,
 				v_2a  int,
 				v_2b  int,
 				v_3a  int,
 				v_3b  int,
+				v_4a  int,
+				v_4b  int,
 				auth char(2)
 			);'
 		);
@@ -340,7 +345,7 @@ sub init_db {
 
 sub print_head {
 	
-	my $redirect = "$url{cgi}/syn-diagnostic.pl?target=$target;query=$query;feature1=$feature[0];feature2=$feature[1];feature3=$feature[2];auth=$auth";
+	my $redirect = "$url{cgi}/syn-diagnostic.pl?target=$target;query=$query;feature1=$feature[0];feature2=$feature[1];feature3=$feature[2];feature4=$feature[3];auth=$auth";
 	
 	print <<END;
 <html lang="en">
@@ -366,7 +371,7 @@ END
 
 sub print_foot {
 
-	my $redirect = "$url{cgi}/syn-diagnostic.pl?target=$target;query=$query;feature1=$feature[0];feature2=$feature[1];feature3=$feature[2];auth=$auth";
+	my $redirect = "$url{cgi}/syn-diagnostic.pl?target=$target;query=$query;feature1=$feature[0];feature2=$feature[1];feature3=$feature[2];feature4=$feature[3];auth=$auth";
 
 	print <<END;
 		</p>
