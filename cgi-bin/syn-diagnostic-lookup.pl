@@ -472,6 +472,7 @@ sub format_query {
 					<option value="adjt">adjective</option>					
 					<option value="pron">pronoun</option>
 					<option value="advb">adverb</option>
+					<option value="advb">name</option>
 					<option value="unkn">ambiguous</option>
 				</select>
 			</div>
