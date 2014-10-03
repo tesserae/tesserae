@@ -386,8 +386,8 @@ sub export_lex {
 		print "<tr><th>freq(\%)</th><th>stem</th><th>$feature[0]</th><th>$feature[1]</th><th>$feature[2]</th><th>$feature[3]</th></tr>\n";	 
 	}
 				
-	for my $token (sort {$index{$b} <=> $index{$a}} keys %index) {
-	
+	for my $token (sort keys %index) {
+#	To sort by frequency values reinstate this code:	"for my $token (sort {$index{$b} <=> $index{$a}} keys %index) {"
 		my $template;
 	
 		my $freq = sprintf("%.2f", 100 * $index{$token});
