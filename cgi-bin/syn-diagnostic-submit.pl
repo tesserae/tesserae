@@ -199,6 +199,7 @@ else {
 	
 		$param{"la_$_"} = $cgi->param("la_$_");
 		$param{"v_$_"} = $cgi->param("v_$_");
+		$param{"p_$_"} = $cgi->param("p_$_");
 	}
 
 	$html = 1;
