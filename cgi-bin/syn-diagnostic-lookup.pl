@@ -547,6 +547,7 @@ sub print_results {
 	
 				if ($head) {
 					print "<input type=\"checkbox\" name=\"v_$subscript\">valid</input>\n";
+					print "<input type=\"checkbox\" name=\"p_$subscript\">valid</input>\n";
 				}
 				
 				print "</div>\n";

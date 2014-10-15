@@ -387,7 +387,7 @@ sub export_lex {
 	}
 				
 	for my $token (sort keys %index) {
-#	To sort by frequency values reinstate this code:	"for my $token (sort {$index{$b} <=> $index{$a}} keys %index) {"
+#	To sort by frequency values reinstate this code:	"for my $token (sort {$index{$b} <=> $index{$a}} keys %index) {" –JG
 		my $template;
 	
 		my $freq = sprintf("%.2f", 100 * $index{$token});
@@ -525,12 +525,20 @@ sub init_db {
 				la_4b varchar(22),				
 				v_1a  int,
 				v_1b  int,
+				p_1a  int,
+				p_1b  int,				
 				v_2a  int,
 				v_2b  int,
+				p_2a  int,
+				p_2b  int,
 				v_3a  int,
 				v_3b  int,
+				p_3a  int,
+				p_3b  int,
 				v_4a  int,
 				v_4b  int,
+				p_4a  int,
+				p_4b  int,
 				auth char(2)
 			);'
 		);
