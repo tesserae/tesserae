@@ -245,6 +245,8 @@ sub print_table {
 		trans_2b
 		trans_3a
 		trans_3b
+		trans_4a
+		trans_4b
 		valid_1a
 		valid_1b
 		valid_2a
