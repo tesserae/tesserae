@@ -268,6 +268,10 @@ sub validate_input {
 	
  		$param{$_} = ($param{$_} ? 1 : 0);
 	}
+	for (grep {/^w_/} keys %param) {
+	
+ 		$param{$_} = ($param{$_} ? 1 : 0);
+	}	
 	for (grep {/^la_/} keys %param) {
 	
  		$param{$_} = 'NULL' unless defined $param{$_};
