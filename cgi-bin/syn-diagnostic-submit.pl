@@ -199,7 +199,7 @@ else {
 	
 		$param{"la_$_"} = $cgi->param("la_$_");
 		$param{"v_$_"} = $cgi->param("v_$_");
-		$param{"p_$_"} = $cgi->param("p_$_");
+		$param{"w_$_"} = $cgi->param("w_$_");
 	}
 
 	$html = 1;
@@ -333,14 +333,14 @@ sub init_db {
 				v_3b  int,
 				v_4a  int,
 				v_4b  int,
-				p_1a  int,
-				p_1b  int,				
-				p_2a  int,
-				p_2b  int,
-				p_3a  int,
-				p_3b  int,
-				p_4a  int,
-				p_4b  int,
+				w_1a  int,
+				w_1b  int,				
+				w_2a  int,
+				w_2b  int,
+				w_3a  int,
+				w_3b  int,
+				w_4a  int,
+				w_4b  int,
 				auth char(2)
 			);'
 		);
