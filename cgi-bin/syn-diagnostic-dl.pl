@@ -243,10 +243,26 @@ sub print_table {
 		trans_1b
 		trans_2a
 		trans_2b
+		trans_3a
+		trans_3b
+		trans_4a
+		trans_4b
 		valid_1a
 		valid_1b
 		valid_2a
 		valid_2b
+		valid_3a
+		valid_3b
+		valid_4a
+		valid_4b
+		pos_1a
+		pos_1b
+		pos_2a
+		pos_2b
+		pos_3a
+		pos_3b
+		pos_4a
+		pos_4b
 		auth/
 	);
 	
