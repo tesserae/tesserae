@@ -19,10 +19,66 @@ file in I<scripts/> and I<cgi-bin/>.
 
 =over
 
-=item B<--default>
+=item B<--fs_root> DIR
 
-Don't run interactively, just assume that everything is installed as it is in the Git
-repository.
+Set the root filesystem directory for Tesserae.
+
+=item B<--fs_cgi> DIR
+
+Set the filesystem location for cgi-bin.
+
+=item B<--fs_data> DIR
+
+Set the filesystem location for Tesserae's internal database.
+
+=item B<--fs_doc> DIR
+
+Set the filesystem location for documentation.
+
+=item B<--fs_html> DIR
+
+Set the filesystem location for the webroot.
+
+=item B<--fs_script> DIR
+
+Set the filesystem location for non-cgi scripts.
+
+=item B<--fs_text> DIR
+
+Set the filesystem location for text corpora.
+
+=item B<--fs_tmp> DIR
+
+Set the filesystem location for temporary files, including 
+web-based session data.
+
+=item B<--url_root> URL
+
+Set the webroot url.
+
+=item B<--url_cgi> URL
+
+Set the url for cgi-bin.
+
+=item B<--url_css> URL
+
+Set the url for the stylesheet directory.
+
+=item B<--url_doc> URL
+
+Set the filesystem location for documentation.
+
+=item B<--url_html> URL
+
+Set the url for html/php files.
+
+=item B<--url_image> URL
+
+Set the url for the image directory.
+
+=item B<--url_text> URL
+
+Set the url for text corpora.
 
 =item B<--help>
 
@@ -43,13 +99,13 @@ The contents of this file are subject to the University at Buffalo Public Licens
 
 Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
 
-The Original Code is name.pl.
+The Original Code is configure.pl.
 
 The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
 
 Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
 
-Contributor(s):
+Contributor(s): Chris Forstall, James Gawley
 
 Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
 
@@ -75,50 +131,8 @@ use Term::ReadLine;
 
 my $help  = 0;
 my $quiet = 0;
-my $mode  = 'interactive';
-
-# get user options
-
-GetOptions(
-	'default' => sub {$mode = 'default'},
-	'sophia'  => sub {$mode = 'sophia'},
-	'quiet'   => \$quiet,
-	'help'    => \$help);
-
-# print usage if the user needs help
-	
-if ($help) {
-
-	pod2usage(1);
-}
-
-#
-# set up terminal interface
-#
-
-my $term = Term::ReadLine->new('myterm');
-
-#
-# descriptions of the various directories
-#
-
-my %desc = (
-
-	base   => 'tesserae root',
-	doc   => 'documentation folder',	
-	cgi    => 'cgi executables',
-	css    => 'css stylesheets',
-	data   => 'internal data',
-	html   => 'web documents',
-	image  => 'images',
-	script => 'ancillary scripts',
-	text   => 'texts',
-	tmp    => 'session data',
-	xsl    => 'xsl stylesheets');
-
-#
-# filesystem paths
-#
+my $mode  = 'default';
+my @py_lib;
 
 #  assume tess root is parent of dir containing this script
 
@@ -128,50 +142,114 @@ my $fs_base = abs_path(catdir($Bin, '..'));
 
 my %fs = (
 
-	cgi    => 'cgi-bin',
-	doc    => 'doc/html',	
-	data   => 'data',
-	html   => 'html',
-	script => 'scripts',
-	text   => 'texts',
-	tmp    => 'tmp',
-	xsl    => 'xsl');
+	root   => $fs_base,
+	cgi    => catfile($fs_base, 'cgi-bin'),
+	data   => catfile($fs_base, 'data'),
+	doc    => catfile($fs_base, 'doc', 'html'),
+	html   => catfile($fs_base, 'html'),
+	script => catfile($fs_base, 'scripts'),
+	text   => catfile($fs_base, 'texts'),
+	tmp    => catfile($fs_base, 'tmp')
+);
 
-if ($mode eq 'sophia') {
-
-	$fs{html} = '';
-}
-
-# make sure directories are still where expected;
-# if not, ask for new locations
-
-print STDERR "Checking default paths...\n" unless $quiet;
-
-for (keys %fs) {
-
-	$fs{$_} = check_fs($_);
-}
-
-print STDERR "\n" unless $quiet;
-
-#
-# paths to important directories
-# for the web browswer
-#
-
-# default is the public Tesserae at UB
+# default URL is the public Tesserae at UB
 
 my $url_base = 'http://tesserae.caset.buffalo.edu';
 
 my %url = (
 
+	root  => $url_base,
 	cgi   => $url_base . '/cgi-bin',
-	doc   => $url_base . '/doc/html',	
 	css   => $url_base . '/css',
+	doc   => $url_base . '/doc/html',
 	html  => $url_base . '',
 	image => $url_base . '/images',
-	text  => $url_base . '/texts',
-	xsl   => $url_base . '/xsl');
+	text  => $url_base . '/texts'
+);
+
+# create options for setting individual paths
+
+my %pathoptions;
+
+for (keys %fs) {
+
+	$pathoptions{"fs_$_=s"} = \$fs{$_};
+}
+for (keys %url) {
+
+	$pathoptions{"url_$_=s"} = \$url{$_};
+}
+
+# get user options
+
+GetOptions(
+	'sophia'    => sub {$mode = 'sophia'},
+	'quiet'     => \$quiet,
+	'help'      => \$help,
+	'py_lib=s'  => \@py_lib,
+	%pathoptions
+);
+
+# print usage if the user needs help
+	
+if ($help) {
+
+	pod2usage(1);
+}
+
+# see whether fs{root}, url{root} have been changed,
+# propagate change across paths
+
+if ($fs{root} ne $fs_base) {
+
+	for (keys %fs) {
+	
+		$fs{$_} =~ s/^$fs_base/$fs{root}/;
+	}
+}
+
+if ($url{root} ne $url_base) {
+
+	for (keys %url) {
+	
+		$url{$_} =~ s/^$url_base/$url{root}/;
+	}
+}
+
+# fix any relative paths
+
+for (keys %fs) {
+
+	$fs{$_} =~ s/.*ROOT/$fs{root}/;
+}
+
+for (keys %url) {
+
+	$url{$_} =~ s/.*ROOT/$url{root}/;
+}
+
+
+#
+# descriptions of the various directories
+#
+
+my %desc = (
+	root   => 'tesserae root',
+	cgi    => 'cgi executables',
+	css    => 'css stylesheets',
+	data   => 'internal data',
+	doc    => 'documentation folder',		
+	html   => 'web documents',
+	image  => 'images',
+	script => 'ancillary scripts',
+	text   => 'texts',
+	tmp    => 'session data'
+);
+
+
+#
+# interactive config
+#
 
 if ($mode eq 'interactive') {
 
@@ -189,19 +267,6 @@ if ($mode eq 'interactive') {
 }
 
 #
-# additional search paths for local python modules
-#
-
-my @py_lib;
-
-if ($mode eq 'sophia') {
-
-	push @py_lib, '/usr/local/tesserae/lib/python2.6/site-packages/gensim-0.8.6-py2.6.egg';
-}
-
-print STDERR "Configuring local python libraries\n" unless $quiet;
-
-#
 # write config file
 #
 
@@ -209,69 +274,18 @@ print STDERR "writing tesserae.conf\n";
 
 write_config();
 
-#
-# write pointer to config for cgi-bin
-#
-
-write_pointer($fs{cgi});
-write_pointer($fs{script});
-
-#
-# create var definition files for php and xsl
-#
-
-create_php_defs(catfile($fs{html}, 'defs.php'));
-create_xsl_defs(catfile($fs{xsl},  'defs.xsl'));
 
 #
 # subroutines
 #
 
-sub check_fs {
-
-	my $key = shift;
-
-	# append the directory name to the assumed base tess dir
-
-	my $path = catdir($fs_base, $fs{$key});
-	
-	$path = abs_path($path);
-	
-	while (! -d $path) {
-	
-		my $message = 
-	
-			"Can't find default path for $desc{$key}:\n"
-			. "  $path doesn't exist or is not a directory\n"
-			. "Have you moved this directory?\n";
-
-		my $prompt = "Enter the new path, or nothing to quit: ";
-		
-		my $reply = $term->get_reply(
-
-			prompt   => $prompt,
-			print_me => $message) || "";
-				
-		$reply =~ /(\S+)/;
-		
-		if ($path = $1) {
-		
-			$path = abs_path($path);
-		}
-		else {
-		
-			print STDERR "Terminating.\n";
-			print STDERR "NB: Tesserae is not configured properly!\n";
-			exit;
-		}
-	}
-	
-	print STDERR "  Setting path for $desc{$key} to $path\n";
-	
-	return $path;
-}
-
 sub check_urls {
+
+	# set up terminal interface
+
+	my $term = Term::ReadLine->new('myterm');
+
+	# set length for descriptions
 
 	my $l = maxlen(@desc{keys %url}) + 1;
 	
@@ -434,81 +448,6 @@ sub write_config {
 	}
 	
 	close FH;
-}
-
-# write a pointer to the config file
-
-sub write_pointer {
-
-	my $dir = shift;
-	
-	my $file = catfile($dir, '.tesserae.conf');
-	
-	open (FH, ">", $file) or die "can't write $file: $!";
-	
-	print STDERR "writing $file\n" unless $quiet;
-	
-	print FH $fs{script} . "\n";
-	
-	close FH;
-}
-
-#
-# Create defs.xsl,
-#    containing system vars used by xsl files
-#
-
-sub create_xsl_defs {
-
-	my $file = shift;
-
-	open (FH, ">:utf8", $file) or die "can't create file $file: $!";
-	
-	print STDERR "writing $file\n";
-	
-	print FH <<END;
-	
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-
-	<xsl:variable name="url_cgi"   select="'$url{cgi}'" />
-	<xsl:variable name="url_css"   select="'$url{css}'" />
-	<xsl:variable name="url_html"  select="'$url{html}'" />
-	<xsl:variable name="url_image" select="'$url{image}'" />
-	<xsl:variable name="url_text"  select="'$url{text}'" />
-	
-</xsl:stylesheet>
-END
-
-	close FH;
-	return;
-}
-
-#
-# Create defs.php, 
-#   containing system vars used by php files
-#
-
-sub create_php_defs {
-
-	my $file = shift;
-
-	open (FH, ">:utf8", $file) or die "can't create file $file: $!";
-
-	print STDERR "writing $file\n";
-	
-	print FH <<END;
-		
-<?php \$url_html  = "$url{html}" ?>
-<?php \$url_css   = "$url{css}" ?>
-<?php \$url_cgi   = "$url{cgi}" ?>
-<?php \$url_image = "$url{image}" ?>
-<?php \$url_text  = "$url{text}" ?>
-<?php \$fs_html   = "$fs{html}" ?>
-
-END
-	
-	close FH;
-	return;
 }
 
 
