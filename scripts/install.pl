@@ -161,7 +161,6 @@ for my $key (keys %fs_orig) {
 
 write_pointer($fs{cgi});
 write_pointer($fs{script});
-<<<<<<< HEAD
 
 #
 # create var definition files for php
@@ -230,6 +229,7 @@ sub create_php_defs {
 	my $file = shift;
 
 	open (FH, ">:utf8", $file) or die "can't create file $file: $!";
+
 
 	print STDERR "writing $file\n";
 	

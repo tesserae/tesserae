@@ -197,15 +197,9 @@ if ($help) {
 
 print STDERR "building dictionaries\n";
 
-do_cmd(join(" ", 
-	$Tesserae::perl_path, 
-	Tesserae::escape_path(catfile($fs{script}, 'build-stem-cache.pl')),
-	@inst_lang
-	));
-do_cmd(join(" ",
-	$Tesserae::perl_path,
-	Tesserae::escape_path(catfile($fs{script}, 'patch-stem-cache.pl'))
-	));
+
+do_cmd("perl " . catfile($fs{script}, 'build-stem-cache.pl '. join(" ", @inst_lang)));
+do_cmd("perl " . catfile($fs{script}, 'patch-stem-cache.pl'));
 
 print STDERR "done\n\n";
 
@@ -216,21 +210,18 @@ print STDERR "done\n\n";
 print STDERR "adding texts\n";
 
 for my $lang (@inst_lang) {
+
+	my $script = catfile($fs{script}, 'v3', 'add_column.pl');
+	my $texts  = catfile($fs{text}, $lang, '*');
 	
-	do_cmd(join(" ",
-		$Tesserae::perl_path,
-		Tesserae::escape_path(catfile($fs{script}, 'v3', 'add_column.pl')),
-		Tesserae::escape_path(catfile($fs{text}, $lang, '*'))
-		));
+	do_cmd("perl $script $texts");
 
 	for my $feature (@inst_feature) {
 		
-		do_cmd(join(" ",
-			$Tesserae::perl_path,
-			Tesserae::escape_path(catfile($fs{script}, 'v3', 'add_col_stem.pl')),
-			"--feat $feature",
-			Tesserae::escape_path(catfile($fs{text}, $lang, '*'))
-			));		
+		$script = catfile($fs{script}, 'v3', "add_col_stem.pl --feat $feature");
+	
+		do_cmd("perl $script $texts");
+
 	}
 }
 
@@ -241,13 +232,14 @@ print STDERR "done\n\n";
 #
 {
 	print "calculating corpus-wide frequencies\n";
-		
-	do_cmd(join(" ",
-		$Tesserae::perl_path,
-		Tesserae::escape_path(catfile($fs{script}, 'v3', 'corpus-stats.pl')),
-		(map {"--feat $_"} @inst_feature),
-		@inst_lang
-		));
+
+	my $script = catfile($fs{script}, 'v3', 'corpus-stats.pl');
+	
+	my $features = join(" ", map {"--feat $_"} @inst_feature);
+	
+	my $langs = join(" ", @inst_lang);
+	
+	do_cmd("perl $script $features $langs");
 	
 	print STDERR "done\n\n";
 }
@@ -258,11 +250,10 @@ print STDERR "done\n\n";
 
 {
 
-	do_cmd(join(" ",
-		$Tesserae::perl_path,
-		Tesserae::escape_path(catfile($fs{script}, 'textlist.pl')),
-		@inst_lang
-		));
+	my $script = catfile($fs{script}, 'textlist.pl');
+	my $langs = join(" ", @inst_lang);
+
+	do_cmd("perl $script $langs");
 }
 
 #
@@ -279,3 +270,4 @@ sub do_cmd {
 	
 	return;
 }
+
