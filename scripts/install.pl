@@ -185,14 +185,12 @@ if ($^O ne 'VMS') {
 my $file_script = catfile($fs{script}, 'doc_gen.pl');
 `$secure_perl_path $file_script`;
 
-=======
-
 #
 # create var definition files for php
 #
 
 create_php_defs(catfile($fs{html}, 'defs.php'));
->>>>>>> patch install process
+
 
 #
 # subroutines
@@ -221,19 +219,11 @@ sub write_pointer {
 #
 
 sub create_php_defs {
-<<<<<<< HEAD
 
 	my $file = shift;
 
 	open (FH, ">:utf8", $file) or die "can't create file $file: $!";
 
-=======
-
-	my $file = shift;
-
-	open (FH, ">:utf8", $file) or die "can't create file $file: $!";
-
->>>>>>> patch install process
 	print STDERR "writing $file\n";
 	
 	print FH <<END;
