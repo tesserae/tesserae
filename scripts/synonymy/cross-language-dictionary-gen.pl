@@ -160,10 +160,9 @@ my $max_results = 2;
 my $export_scores = 0;
 my $echo = 0;
 
-for my $variable qw(/la grc/) {
+for my $lang qw/la grc/ {
 
-	$file{$variable} = catfile($fs{data}, 'synonymy', "$variable.nt_parallel.tess");
-	# The loop relied on the standard variable which threw an error. A local variable has been added to the loop.
+	$file{$lang} = catfile($fs{data}, 'synonymy', "${lang}.nt_parallel.tess");
 }
 
 # get user options
