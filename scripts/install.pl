@@ -193,6 +193,21 @@ create_php_defs(catfile($fs{html}, 'defs.php'));
 
 
 #
+# install documentation
+#
+
+# get perl path (copied from example at `perldoc perlvar`)
+my $secure_perl_path = $Config{perlpath};
+if ($^O ne 'VMS') {
+	$secure_perl_path .= $Config{_exe}
+	unless $secure_perl_path =~ m/$Config{_exe}$/i;
+}
+
+my $file_script = catfile($fs{script}, 'doc_gen.pl');
+`$secure_perl_path $file_script`;
+
+
+#
 # subroutines
 #
 
