@@ -142,13 +142,16 @@ def cull(sims, n, c):
 
 	return(sims)
 
-def export_row(file, q, sims):
+def export_row(file, q, sims, export_scores):
 	'''write a row to the output file'''
 	
 	row = [q]
 	
 	for pair in sims:
 		r, score = pair
+		
+		if export_scores == 1:
+			r = '{0}:{1}'.format(r, score)
 		
 		row.append(r)
 	
@@ -262,6 +265,8 @@ def main():
 			help = 'Similarity threshold for synonymy (range: 0-1)')
 	parser.add_argument('-w', '--weighted', action='store_const', const=1,
 			help = 'Weight results by rank difference from query')
+	parser.add_argument('--scores', action='store_const', const=1,
+			help = 'Export scores along with translations')
 	parser.add_argument('-q', '--quiet', action='store_const', const=1,
 			help = "Don't print status messages to stderr")
 		
@@ -367,7 +372,7 @@ def main():
 		
 		# print row
 		
-		export_row(file_output, q, sims)
+		export_row(file_output, q, sims, opt.scores)
 
 
 if __name__ == '__main__':
