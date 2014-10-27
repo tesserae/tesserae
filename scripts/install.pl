@@ -190,7 +190,6 @@ my $file_script = catfile($fs{script}, 'doc_gen.pl');
 
 create_php_defs(catfile($fs{html}, 'defs.php'));
 
-
 #
 # install documentation
 #
