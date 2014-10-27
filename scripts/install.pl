@@ -99,6 +99,8 @@ use Pod::Usage;
 
 # load additional modules necessary for this script
 
+use Config;
+
 # use File::Copy::Recursive qw/dircopy/;
 
 # initialize some variables
@@ -196,7 +198,6 @@ create_php_defs(catfile($fs{html}, 'defs.php'));
 my $file_script = catfile($fs{script}, 'doc_gen.pl');
 $file_script = Tesserae::escape_path($file_script);
 `$Tesserae::perl_path $file_script`;
-
 
 #
 # subroutines
