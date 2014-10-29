@@ -3763,6 +3763,13 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Rudra Chakraborty</td>
 
 </tr><tr>
+	<td>Pseudo-Quintilian</td>
+	<td>Major Declamations</td>
+	<td><a href="http://www.thelatinlibrary.com/quintilian/quintilian.decl.mai1.shtml">The Latin Library</a></td>
+	<td>L. Håkanson,<em>Declamationes XIX maiores Quintiliano falso ascriptae</em>. Stuttgart, 1982</td>
+	<td>James Gawley</td>
+
+</tr><tr>
 					<td>Q. Cicero</td>
 					<td>Essay on Running for Consul</td>
 					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0016">Perseus</a></td>
