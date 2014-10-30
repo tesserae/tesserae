@@ -2,7 +2,7 @@
 
 =head1 install.pl
 
-install.pl - run scripts to set up Tesserae database
+install.pl - install Tesserae
 
 =head1 SYNOPSIS
 
@@ -10,44 +10,17 @@ install.pl [options]
 
 =head1 DESCRIPTION
 
-This just runs a bunch of other Tesserae scripts that set up the
-feature dictionaries, add all the texts to the database, and build
-the dropdown menus for the (optional) web interface. You could do
-these things individually if you want to customize your install;
-this script is just provided to make "default" case setup easier.
+This script is to be run after configure.pl. Program components are
+moved from default locations to those specified in tesserae.conf.
+Pointer files back to tesserae.conf are placed in the newly-installed
+directories. 
+
+This script also generates defs.php, which is necessary for the web
+interface.
 
 =head1 OPTIONS AND ARGUMENTS
 
 =over
-
-=item B<--lang> LANG [--lang LANG2 ...]
-
-Languages to set up initially. Tesserae expects LANG to correspond
-to a subdirectory of I<texts/>, containing all the works in that
-language. The version of Tesserae on GitHub has a large number of
-texts in Greek (I<texts/grc>) and Latin (I<texts/la>), mostly from 
-Perseus, as well as a couple of experimental texts in English 
-(I<texts/en>), of diverse provenance. You can use the flag more
-than once to select multiple languages. The default setting is 
-B<--lang> la B<--lang> grc; i.e., if you don't specify a language
-at all you'll get both Greek and Latin by default. If your machine
-is slow and you don't care about, say, Greek, it's smart to use 
-the flag to specify only one language. See "Known Bugs" below if
-you're using English.
-
-=item B<--feature> FEAT [--feature FEAT2]
-
-The feature sets to install, in addition to exact word matching.
-Defaults to 'stem'. You probably don't want to mess around with 
-this; but see "Known Bugs" regarding English stem matching.
-
-=item B<--clean>
-
-Use scripts/v3/clean.pl to delete existing texts and feature
-dictionaries before installing texts. This will run clean.pl
-with the flags --text --dict LANG [LANG2 ...], for each of the
-languages specified using the B<--lang> option or for 'la' and 
-'grc' by default (see above).
 
 =item B<--help>
 
@@ -57,13 +30,8 @@ Print usage and exit.
 
 =head1 KNOWN BUGS
 
-English stem matching won't work out of the box, since there's no
-dictionary. You have to index for English stems separately, using
-Lingua::Stem, by running add_col_stem.pl with the --use-lingua flag.
-So if you run this script with the option '--lang en', turn off stem
-indexing by specifying '--feat ""' (i.e. nothing inside double-quotes) 
-or things might go poorly. Or just install the English texts yourself
-later.
+Doesn't actually move any files. If you want them installed other than
+in the default locations, you have to move them yourself.
 
 =head1 SEE ALSO
 
@@ -109,35 +77,10 @@ BEGIN {
 	
 	$lib = $Bin;
 	
-	my $oldlib = $lib;
+	unless (-e catfile($lib, 'tesserae.conf')) {
 	
-	my $pointer;
-			
-	while (1) {
-
-		$pointer = catfile($lib, '.tesserae.conf');
-	
-		if (-r $pointer) {
-		
-			open (FH, $pointer) or die "can't open $pointer: $!";
-			
-			$lib = <FH>;
-			
-			chomp $lib;
-			
-			last;
-		}
-									
-		$lib = abs_path(catdir($lib, '..'));
-		
-		if (-d $lib and $lib ne $oldlib) {
-		
-			$oldlib = $lib;			
-			
-			next;
-		}
-		
-		die "can't find .tesserae.conf!\n";
+		warn "Can't find tesserae.conf. Try running configure.pl";
+		die;
 	}
 	
 	$lib = catdir($lib, 'TessPerl');
@@ -156,35 +99,42 @@ use Pod::Usage;
 
 # load additional modules necessary for this script
 
+use Config;
+
+# use File::Copy::Recursive qw/dircopy/;
 
 # initialize some variables
 
 my $help = 0;
 my $clean = 0;
-my @inst_lang;
-my @inst_feature;
+my $quiet = 0;
 
+# locations as in the git repo
+
+my $fs_base = abs_path(catdir($Bin, '..'));
+
+my %fs_orig = (
+
+	root   => $fs_base,
+	cgi    => catfile($fs_base, 'cgi-bin'),
+	data   => catfile($fs_base, 'data'),
+	doc    => catfile($fs_base, 'doc', 'html'),
+	html   => catfile($fs_base, 'html'),
+	script => catfile($fs_base, 'scripts'),
+	text   => catfile($fs_base, 'texts'),
+	tmp    => catfile($fs_base, 'tmp')
+);
 
 # get user options
 
 GetOptions(
-	'lang=s'    => \@inst_lang,
-	'feature=s' => \@inst_feature,
-	'clean'     => \$clean,
-	'help'      => \$help
+	'quiet' => \$quiet,
+	'clean' => \$clean,
+	'help'  => \$help
 );
 
-# apply defaults if user didn't set any options
 
-@inst_lang    = qw/la grc/   unless @inst_lang;
-@inst_feature = qw/stem 3gr/ unless @inst_feature;
-
-@inst_feature = grep {/\S/} @inst_feature;
-
-#
 # print usage if the user needs help
-#
-# you could also use perldoc name.pl
 	
 if ($help) {
 
@@ -192,80 +142,96 @@ if ($help) {
 }
 
 #
-# build dictionaries
+# install 
 #
 
-print STDERR "building dictionaries\n";
+for my $key (keys %fs_orig) {
 
-do_cmd("perl " . catfile($fs{script}, 'build-stem-cache.pl '. join(" ", @inst_lang)));
-do_cmd("perl " . catfile($fs{script}, 'patch-stem-cache.pl'));
+	# print join(' => ', $fs_orig{$key}, $fs{$key}) . "\n";
 
-print STDERR "done\n\n";
-
-#
-# add texts
-#
-
-print STDERR "adding texts\n";
-
-for my $lang (@inst_lang) {
-
-	my $script = catfile($fs{script}, 'v3', 'add_column.pl');
-	my $texts  = catfile($fs{text}, $lang, '*');
+	if (defined($fs{$key}) and $fs{$key} ne $fs_orig{$key}) {
 	
-	do_cmd("perl $script $texts");
-
-	for my $feature (@inst_feature) {
+		# dircopy($fs_orig{$key}, $fs{$key});
 		
-		$script = catfile($fs{script}, 'v3', "add_col_stem.pl --feat $feature");
-	
-		do_cmd("perl $script $texts");
+		print STDERR "NB: Please copy $fs_orig{$key} => $fs{key} manually!\n";
 	}
 }
 
-print STDERR "done\n\n";
+#
+# write pointer to config for cgi-bin
+#
+
+write_pointer($fs{cgi});
+write_pointer($fs{script});
 
 #
-# calculate corpus stats
+# create var definition files for php
 #
-{
-	print "calculating corpus-wide frequencies\n";
-	
-	my $script = catfile($fs{script}, 'v3', 'corpus-stats.pl');
-	
-	my $features = join(" ", map {"--feat $_"} @inst_feature);
-	
-	my $langs = join(" ", @inst_lang);
-	
-	do_cmd("perl $script $features $langs");
-	
-	print STDERR "done\n\n";
+
+create_php_defs(catfile($fs{html}, 'defs.php'));
+
+#
+# install documentation
+#
+
+# get perl path (copied from example at `perldoc perlvar`)
+my $secure_perl_path = $Config{perlpath};
+if ($^O ne 'VMS') {
+	$secure_perl_path .= $Config{_exe}
+	unless $secure_perl_path =~ m/$Config{_exe}$/i;
 }
 
-#
-# create drop-down lists
-#
+my $file_script = catfile($fs{script}, 'doc_gen.pl');
+`$secure_perl_path $file_script`;
 
-{
-
-	my $script = catfile($fs{script}, 'textlist.pl');
-	my $langs = join(" ", @inst_lang);
-
-	do_cmd("perl $script $langs");
-}
 
 #
 # subroutines
 #
 
-sub do_cmd {
+# write a pointer to the config file
 
-	my $command = shift;
+sub write_pointer {
+
+	my $dir = shift;
 	
-	print STDERR "$command\n";
+	my $file = catfile($dir, '.tesserae.conf');
 	
-	print STDERR `$command`;
+	open (FH, ">", $file) or die "can't write $file: $!";
 	
+	print STDERR "writing $file\n" unless $quiet;
+	
+	print FH $fs{script} . "\n";
+	
+	close FH;
+}
+
+#
+# Create defs.php, 
+#   containing system vars used by php files
+#
+
+sub create_php_defs {
+
+	my $file = shift;
+
+	open (FH, ">:utf8", $file) or die "can't create file $file: $!";
+
+	print STDERR "writing $file\n";
+	
+	print FH <<END;
+		
+<?php \$url_html  = "$url{html}" ?>
+<?php \$url_css   = "$url{css}" ?>
+<?php \$url_cgi   = "$url{cgi}" ?>
+<?php \$url_doc   = "$url{doc}" ?>
+<?php \$url_image = "$url{image}" ?>
+<?php \$url_text  = "$url{text}" ?>
+<?php \$fs_html   = "$fs{html}" ?>
+
+END
+	
+	close FH;
 	return;
 }
 

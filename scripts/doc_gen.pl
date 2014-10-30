@@ -225,14 +225,9 @@ foreach my $file (@file_array) {
 
 #Create the index of documents
 
-open (IGNORE, '>>', "$scripts_folder/../.gitignore") or die $!;
-print IGNORE "# Automatically generated documentation files\n";
 foreach my $script (sort keys %toc) {
 	$php .= "\n<li><a href='$toc{$script}'>$script</a>\n";
-	
-	#Append the .gitignore file
-	print IGNORE "$toc{$script}\n";
-	
+
 }
 
 my $php2 = <<END;
@@ -255,3 +250,8 @@ $php = $php . $php2;
 
 open (HELP, ">$phpfile") or die $!;
 print HELP $php;
+
+# this temp file gets created by the pod2html process
+if (-e "pod2htmd.tmp") {
+	unlink "pod2htmd.tmp";
+}
