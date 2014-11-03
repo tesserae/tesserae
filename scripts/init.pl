@@ -197,8 +197,15 @@ if ($help) {
 
 print STDERR "building dictionaries\n";
 
-do_cmd("perl " . catfile($fs{script}, 'build-stem-cache.pl '. join(" ", @inst_lang)));
-do_cmd("perl " . catfile($fs{script}, 'patch-stem-cache.pl'));
+do_cmd(join(" ", 
+	$Tesserae::perl_path, 
+	Tesserae::escape_path(catfile($fs{script}, 'build-stem-cache.pl')),
+	@inst_lang
+	));
+do_cmd(join(" ",
+	$Tesserae::perl_path,
+	Tesserae::escape_path(catfile($fs{script}, 'patch-stem-cache.pl'))
+	));
 
 print STDERR "done\n\n";
 
@@ -209,17 +216,21 @@ print STDERR "done\n\n";
 print STDERR "adding texts\n";
 
 for my $lang (@inst_lang) {
-
-	my $script = catfile($fs{script}, 'v3', 'add_column.pl');
-	my $texts  = catfile($fs{text}, $lang, '*');
 	
-	do_cmd("perl $script $texts");
+	do_cmd(join(" ",
+		$Tesserae::perl_path,
+		Tesserae::escape_path(catfile($fs{script}, 'v3', 'add_column.pl')),
+		Tesserae::escape_path(catfile($fs{text}, $lang, '*'))
+		));
 
 	for my $feature (@inst_feature) {
 		
-		$script = catfile($fs{script}, 'v3', "add_col_stem.pl --feat $feature");
-	
-		do_cmd("perl $script $texts");
+		do_cmd(join(" ",
+			$Tesserae::perl_path,
+			Tesserae::escape_path(catfile($fs{script}, 'v3', 'add_col_stem.pl')),
+			"--feat $feature",
+			Tesserae::escape_path(catfile($fs{text}, $lang, '*'))
+			));		
 	}
 }
 
@@ -230,14 +241,13 @@ print STDERR "done\n\n";
 #
 {
 	print "calculating corpus-wide frequencies\n";
-	
-	my $script = catfile($fs{script}, 'v3', 'corpus-stats.pl');
-	
-	my $features = join(" ", map {"--feat $_"} @inst_feature);
-	
-	my $langs = join(" ", @inst_lang);
-	
-	do_cmd("perl $script $features $langs");
+		
+	do_cmd(join(" ",
+		$Tesserae::perl_path,
+		Tesserae::escape_path(catfile($fs{script}, 'v3', 'corpus-stats.pl')),
+		(map {"--feat $_"} @inst_feature),
+		@inst_lang
+		));
 	
 	print STDERR "done\n\n";
 }
@@ -248,10 +258,11 @@ print STDERR "done\n\n";
 
 {
 
-	my $script = catfile($fs{script}, 'textlist.pl');
-	my $langs = join(" ", @inst_lang);
-
-	do_cmd("perl $script $langs");
+	do_cmd(join(" ",
+		$Tesserae::perl_path,
+		Tesserae::escape_path(catfile($fs{script}, 'textlist.pl')),
+		@inst_lang
+		));
 }
 
 #
@@ -268,4 +279,3 @@ sub do_cmd {
 	
 	return;
 }
-

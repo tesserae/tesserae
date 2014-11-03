@@ -99,8 +99,6 @@ use Pod::Usage;
 
 # load additional modules necessary for this script
 
-use Config;
-
 # use File::Copy::Recursive qw/dircopy/;
 
 # initialize some variables
@@ -153,7 +151,7 @@ for my $key (keys %fs_orig) {
 	
 		# dircopy($fs_orig{$key}, $fs{$key});
 		
-		print STDERR "NB: Please copy $fs_orig{$key} => $fs{key} manually!\n";
+		print STDERR "NB: Please copy $fs_orig{$key} => $fs{$key} manually!\n";
 	}
 }
 
@@ -196,15 +194,9 @@ create_php_defs(catfile($fs{html}, 'defs.php'));
 # install documentation
 #
 
-# get perl path (copied from example at `perldoc perlvar`)
-my $secure_perl_path = $Config{perlpath};
-if ($^O ne 'VMS') {
-	$secure_perl_path .= $Config{_exe}
-	unless $secure_perl_path =~ m/$Config{_exe}$/i;
-}
-
 my $file_script = catfile($fs{script}, 'doc_gen.pl');
-`$secure_perl_path $file_script`;
+$file_script = Tesserae::escape_path($file_script);
+`$Tesserae::perl_path $file_script`;
 
 
 #

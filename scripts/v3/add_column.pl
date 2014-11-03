@@ -263,7 +263,7 @@ if ($max_processes) {
 
 # get files to be processed from cmd line args
 
-my @files = map { glob } @ARGV;
+my @files = @ARGV;
 my %file = %{Tesserae::process_file_list(\@files, $lang, {filenames=>1})};
 
 unless (keys %file) {
