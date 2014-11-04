@@ -3,6 +3,7 @@
 tesserae.conf
 .tesserae.conf
 html/defs.php
+html/help_scripts.php
 xsl/defs.xsl
 
 # compiled python modules

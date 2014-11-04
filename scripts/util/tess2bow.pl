@@ -130,13 +130,15 @@ use Storable;
 my $help = 0;
 my $feature = 'word';
 my $unit = 'phrase';
+my $show_id = 0;
 
 # get user options
 
 GetOptions(
 	'help'  => \$help,
 	'feature=s' => \$feature,
-	'unit=s' => \$unit
+	'unit=s' => \$unit,
+	'id' => \$show_id
 );
 
 # print usage if the user needs help
@@ -167,12 +169,12 @@ my @unit = @{retrieve($base . ".$unit")};
 # print out one unit at a time
 #
 
-for my $unit (@unit) {
+for (my $unit_id = 0; $unit_id <= $#unit; $unit_id++) {
 
 	my @line;
 	
-	for my $i (@{$$unit{TOKEN_ID}}) {
-	
+	for my $i (@{$unit[$unit_id]{TOKEN_ID}}) {
+			
 		next unless $token[$i]{TYPE} eq 'WORD';
 		
 		my $form = $token[$i]{FORM};
@@ -185,6 +187,7 @@ for my $unit (@unit) {
 		push @line, $form;
 	}
 	
+	print $unit_id . "\t" if $show_id;
 	print join(" ", @line);
 	print "\n";
 }
