@@ -1,27 +1,82 @@
-#! /opt/local/bin/perl5.12
-
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
+#!/usr/bin/env perl
 
 #
-# read_table.pl
-#
-# select two texts for comparison using the big table
+# 
 #
 
 use strict;
 use warnings;
 
-use CGI qw(:standard);
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}
+
+	$lib = catdir($lib, 'TessPerl');	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
 
 use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
+use CGI qw(:standard);
 use POSIX;
 use Storable qw(nstore retrieve);
-use File::Spec::Functions;
-
-use TessSystemVars;
-use EasyProgressBar;
 
 # allow unicode output
 
@@ -47,8 +102,8 @@ my $quiet = 0;
 my $target = 'lucan.bellum_civile.part.1';
 my $source = 'vergil.aeneid.part.1';
 my $unit_id = 0;
-my $threshold = .7;
-my $topics = 15;
+my $threshold = .5;
+my $topics = 10;
 
 #
 # command-line arguments
@@ -99,16 +154,16 @@ print <<END;
 		<meta name="author" content="Neil Coffee, Jean-Pierre Koenig, Shakthi Poornima, Chris Forstall, Roelant Ossewaarde">
 		<meta name="keywords" content="intertext, text analysis, classics, university at buffalo, latin">
 		<meta name="description" content="Intertext analyzer for Latin texts">
-		<link href="$url_css/style.css" rel="stylesheet" type="text/css"/>
-		<link href="$url_image/favicon.ico" rel="shortcut icon"/>
+		<link href="$url{css}/style.css" rel="stylesheet" type="text/css"/>
+		<link href="$url{image}/favicon.ico" rel="shortcut icon"/>
 
 		<title>Tesserae</title>
 
 	</head>
 
 	<frameset cols="50%,50%">
-		<frame name="left"  src="$url_cgi/lsa.target.pl?$params">
-		<frame name="right" src="$url_cgi/lsa.source.pl?$params">
+		<frame name="left"  src="$url{cgi}/lsa.target.pl?$params">
+		<frame name="right" src="$url{cgi}/lsa.source.pl?$params">
 	</frameset>
 </html>
 

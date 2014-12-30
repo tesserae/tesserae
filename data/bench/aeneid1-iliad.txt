@@ -1,0 +1,291 @@
+TARGET_BOOK	TARGET_LINE	TARGET_TEXT	SOURCE_BOOK	SOURCE_LINE	SOURCE_TEXT	TYPE	AUTH
+1	4	Iunonis ob iram	18	119	χόλος Ἥρης		Knauer
+1	4	Iunonis ob iram	5	892	μένος ... Ἥρης		Knauer
+1	7	altae moenia Romae	16	698	ὑψίπυλον Τροίην		Knauer
+1	8	quo numine	1	8	τίς ... θεῶν		Knauer
+1	8	Musa … mihi memora	2	484	ἔσπετε ... μοι Μοῦσαι		Knauer
+1	9	dolens regina deum	1	9	Διὸς υἱός … χολωθεὶς		Knauer
+1	9	dolens regina deum	4	24	Ἥρῃ … χόλον		Knauer
+1	9	dolens regina deum	8	461	Ἥρῃ … χόλον		Knauer
+1	9	dolens regina deum	5	759	ἐμοὶ δ᾽ ἄχος		Knauer
+1	9	dolens regina deum	18	119	ἀργαλέος χόλος Ἥρης		Knauer
+1	10	tot adire labores	6	77	πόνος ... μάλιστα ... ἐγκέκλιται		Knauer
+1	10	casus ... labores ... impulerit	12	348	πόνος ... νεῖκος … ὄρωρεν		Knauer
+1	12	urbs … fuit	6	152	ἔστι πόλις		Knauer
+1	15	terris magis omnibus … coluisse	4	51	πολὺ φίλταταί ... πόληες		Knauer
+1	14	dives opum	5	544	ἀφνειὸς βιότοιο		Knauer
+1	15	terris … coluisse	4	46	πόληες ... Τιέσκετο		Knauer
+1	15	magis omnibus unam ... coluisse	3	388	μάλιστα δέ μιν φιλέεσκε		Knauer
+1	15	magis omnibus unam ... coluisse	5	61	ἔξοχα μιν ἐφίλατο		Knauer
+1	15	magis omnibus unam ... coluisse	20	304	ὃν ... περὶ πάντων φίλατο		Knauer
+1	15	magis omnibus unam	12	243	εἷς ... ἄριστος		Knauer
+1	16	hoc regnum	13	21	ἔνθα δέ οἱ κλυτὰ δώματα		Knauer
+1	17	hic currus	13	23	ἔνθ᾽... ὄχεσφι		Knauer
+1	17	currus … regnum	5	193	μεγάροισι … δίφροι		Knauer
+1	18	fata 	18	120	μοῖρα		Knauer
+1	18	si ... sinant	13	807	εἴ ... εἴξειαν		Knauer
+1	21	late regem	1	102	εὐρὺ κρείων		Knauer
+1	25	etiam ... irarum	9	678	χόλον ... ἔτι 		Knauer
+1	25	saevique dolores	4	169	αἰνὸν ἄχος		Knauer
+1	26	alta mente	19	125	φρένα ... βαθεῖαν		Knauer
+1	37	mene (ne)	11	403	ἄρα		Knauer
+1	39	exurere classem	14	47	νῆας ἐνιπρῆσαι		Knauer
+1	44	expirantem ... flammas	6	182	ἀποπνείουσα πυρὸς		Knauer
+1	46	ego quae divum	18	364	ἔγωγ᾽ ἥ ... θεάων		Knauer
+1	47	et ... et ... coniunx ... gente	4	60	γενεῇ τε καὶ ... παράκοιτις		Knauer
+1	47	et ... et ... coniunx ... gente	18	365	γενεῇ τε καὶ...παράκοιτις		Knauer
+1	47	soror et coniunx	18	356	κασιγνήτην ἄλοχόν τε		Knauer
+1	47	soror et coniunx	16	432	κασιγνήτην ἄλοχόν τε		Knauer
+1	48	quisquam numen ... adoret	7	447	τις νόον ... μῆτιν ἐνίψει		Knauer
+1	50	corde volutans	21	137	ὅρμηνεν ... θυμὸν 		Knauer
+1	64	tum ... vocibus	14	232	ἔπος ... ἔκ		Knauer
+1	65	divom pater atque hominum rex	14	233	ἄναξ ... τε θεῶν ... τ᾽ ἀνθρώπων		Knauer
+1	65	namque tibi	24	334	σοὶ γάρ τε		Knauer
+1	65	namque tibi	4	286	σφῶϊ...γὰρ 		Knauer
+1	65	divom pater atque hominum	1	544	πατὴρ ἀνδρῶν τε θεῶν τε		Knauer
+1	65	divom pater atque hominum	8	49	πατὴρ ἀνδρῶν τε θεῶν τε		Knauer
+1	65	divom pater atque hominum	15	12	πατὴρ ἀνδρῶν τε θεῶν τε		Knauer
+1	71	sunt mihi	9	144	μοί εἰσι 		Knauer
+1	73	conubio...dicabo	14	268	ὀπυιέμεναι...κεκλῆσθαι		Knauer
+1	74	omnis ... annos	14	276	ἤματα πάντα		Knauer
+1	76	quid optes	14	195	ὅ τι φρονέεις		Knauer
+1	76	quid optes	18	426	ὅ τι φρονέεις		Knauer
+1	85	Eurusque Notusque	2	145	Εὖρός τε Νότος τε		Knauer
+1	91	intentant...mortem	15	628	θανάτοιο φέρονται		Knauer
+1	93	ingemit ... ad sidera	21	272	ᾤμωξεν ... εἰς οὐρανὸν		Knauer
+1	93	tendens ad sidera palmas	15	371	χεῖρ᾽ ὀρέγων εἰς οὐρανὸν ἀστερόεντα		Knauer
+1	93	tendens ... palmas	1	450	χεῖρας ἀνασχών		Knauer
+1	93	tendens ... palmas	3	275	χεῖρας ἀνασχών		Knauer
+1	93	tendens ... palmas	19	254	χεῖρας ἀνασχὼν		Knauer
+1	94	voce refert	1	201	ἔπεα ... προσηύδα		Knauer
+1	95	quis ... patrum	21	273	πάτερ ... τίς		Knauer
+1	95	sub moenibus	21	277	ὑπὸ τείχεϊ 		Knauer
+1	96	Danaum fortissime	6	98	κάρτιστον Ἀχαιῶν		Knauer
+1	96	Danaum fortissime	16	21	φέρτατ᾽ Ἀχαιῶν		Knauer
+1	97	mene ... occumbere	21	279	μ᾽ ... κτεῖναι		Knauer
+1	97	mene Iliacis	21	277	μ᾽ ... Τρώων		Knauer
+1	98	non ... animam	5	250	μή ... ἦτορ		Knauer
+1	99	Aeacidae telo	22	319	αἰχμῆς ... Ἀχιλλεὺς		Knauer
+1	100	ubi tot Simois	12	22	Σιμόεις ὅθι πολλὰ		Knauer
+1	100	sub undis	21	11	περὶ δίνας		Knauer
+1	100	sub undis	21	238	κατὰ ῥέεθρα,		Knauer
+1	100	sub undis	21	239	ἐν δίνῃσι		Knauer
+1	101	scuta ... galeasque	12	22	βοάγρια καὶ τρυφάλειαι		Knauer
+1	101	corpora volvit	21	235	ὦσε ... νεκροὺς		Knauer
+1	101	fortia corpora	3	23	μεγάλῳ .. σώματι		Knauer
+1	102	procella ... ferit	11	306	λαίλαπι τύπτων		Knauer
+1	102	stridens Aquilone procella velum	15	626	ἀνέμοιο ... ἀήτη ἱστίῳ ἐμβρέμεται		Knauer
+1	102	iactanti stridens Aquilone procella velum ... fluctusque	1	481	ἄνεμος ... ἱστίον ... κῦμα ... ἴαχε		Knauer
+1	115	excutitur pronusque ... in caput	5	586	ἔκπεσε ... κύμβαχος ... ἐπὶ βρεχμόν		Knauer
+1	115	pronusque ... volvitur in caput	6	42	ἐξεκυλίσθη πρηνὴς ... ἐπὶ στόμα		Knauer
+1	115	excutitur pronusque ... caput	12	385	κεφαλῆς ... ἀρνευτῆρι ... κάππεσ᾽		Knauer
+1	125	et imis stagna	13	21	δέ ... βένθεσι λίμνης		Knauer
+1	126	alto ... unda	13	15	ἁλὸς		Knauer
+1	126	et ... prospiciens	15	6	ἴδε δὲ		Knauer
+1	130	nec latuere ... Iunonis	1	536	οὐδέ ... Ἥρη ἠγνοίησεν 		Knauer
+1	130	nec latuere	23	323	οὐδέ ... λήθει		Knauer
+1	131	ad ... fatur	15	13	πρὸς ... ἔειπεν		Knauer
+1	137	maturate ... haec	11	140	ἀγγελίην ἐλθόντα		Knauer
+1	138	pelagi ... mihi sorte	15	190	ἐγὼν ἔλαχον ... ἅλα ... παλλομένων		Knauer
+1	140	vestras ... domos ... et ... regnet	1	179	οἴκαδ᾽ ... σῇς ... καὶ ... ἄνασσε		Knauer
+1	147	et ... aperit ... et ... aequor ... rotis ... levibus perlabitur undas	13	29	δὲ θάλασσα διίστατο ... δὲ πέτοντο ῥίμφα ... ἄξων		Knauer
+1	156	equos curruque volans	13	23	ἐλθὼν ... ὄχεσφι ... ἵππω		Knauer
+1	156	equos 	13	31	ἵπποι		Knauer
+1	159	est ... secessu	6	152	ἔστι ... μυχῷ		Knauer
+1	187	arcumque ... gerebat	12	372	φέρε ... τόξα		Knauer
+1	193	fundat humi	16	469	ἔπεσ᾽ ... κονίῃσι 		Knauer
+1	202	revocate animos maestumque	6	112	 μνήσασθε δὲ ... ἀλκῆς		Knauer
+1	206	regna ... Troiae	20	307	βίη Τρώεσσιν		Knauer
+1	207	durate et ... servate	2	299	τλῆτε ... καὶ μείνατ᾽		Knauer
+1	210	accingunt dapibusque	1	467	τετύκοντό τε δαῖτα ... δαιτὸς		Knauer
+1	211	et viscera	1	464	καὶ σπλάγχνα		Knauer
+1	212	frustra ... veribusque ... figunt	1	465	μίστυλλόν ... καὶ ... ὀβελοῖσιν ἔπειραν		Knauer
+1	215	veteris Bacchi	1	462	γέρων ... οἶνον		Knauer
+1	210	accingunt dapibusque	2	430	τετύκοντό τε δαῖτα ... δαιτὸς		Knauer
+1	211	et viscera	2	427	καὶ σπλάγχνα		Knauer
+1	211	et viscera ... veribusque ... figunt ... flammasque	2	426	σπλάγχνα δ᾽ ... ἀμπείραντες ... Ἡφαίστοιο		Knauer
+1	212	frustra ... veribusque ... figunt	2	428	μίστυλλόν ... καὶ ... ὀβελοῖσιν ἔπειραν		Knauer
+1	210	accingunt dapibusque	7	319	τετύκοντό τε δαῖτα ... δαιτὸς		Knauer
+1	212	frusta secant veribusque .. figunt	7	316	διέχευαν ... μίστυλλόν τ᾽ ... πεῖράν τ᾽ ὀβελοῖσιν		Knauer
+1	212	secant veribusque ... figunt	9	210	μίστυλλε καὶ ... ὀβελοῖσιν ἔπειρε		Knauer
+1	212	secant veribusque trementia figunt;	24	623	μίστυλλόν τ᾽ ... πεῖράν τ᾽ ὀβελοῖσιν		Knauer
+1	216	postquam exempta	1	469	ἐπεὶ ... ἕντο		Knauer
+1	221	praecipue ... gemit	24	510	κλαῖ᾽ ... προπάροιθε ... κλαῖεν		Knauer
+1	223	summo despiciens ... vertice ... constitit	15	5	κορυφῇσι ... στῆ ... ἴδε		Knauer
+1	224	terrasque iacentis	15	9	δ᾽ ... πεδίῳ ... κείμενον		Knauer
+1	223	et ... summo despiciens ... vertice ... constitit	8	51	δ᾽ κορυφῇσι καθέζετο ... εἰσορόων		Knauer
+1	224	despiciens ... constitit	11	81	καθέζετο ... εἰσορόων 		Knauer
+1	226	defixit lumina	13	3	τρέπεν ὄσσε φαεινὼ		Knauer
+1	224	despiciens ... terrasque ... populos	13	4	καθορώμενος αἶαν ... ἀνθρώπων		Knauer
+1	226	defixit lumina	13	7	τρέπεν ὄσσε φαεινώ		Knauer
+1	225	vertice caeli	8	3	ἀκροτάτῃ κορυφῇ ... Οὐλύμποιο		Knauer
+1	225	vertice caeli	1	499	ἀκροτάτῃ κορυφῇ ... Οὐλύμποιο		Knauer
+1	225	vertice caeli	5	754	ἀκροτάτῃ κορυφῇ ... Οὐλύμποιο		Knauer
+1	225	vertice caeli	20	5	κρατὸς ... Οὐλύμποιο 		Knauer
+1	228	et lacrimis oculos suffusa	17	695	δέ ... ὄσσε δακρυόφι πλῆσθεν		Knauer
+1	228	et lacrimis	21	506	δακρυόεσσα δὲ 		Knauer
+1	228	et lacrimis ...suffusa	6	405	δέ ... δάκρυ χέουσα		Knauer
+1	234	volventibus annis	2	551	περιτελλομένων ἐνιαυτῶν		Knauer
+1	247	sedesque locavit	2	750	οἰκί᾽ ἔθεντο		Knauer
+1	252	longe ... oris	15	740	ἑκὰς ... αἴης	
+1	254	subridens hominum sator atque deorum	5	426	μείδησεν δὲ πατὴρ ἀνδρῶν τε θεῶν τε		Knauer
+1	254	olli subridens ... atque	8	38	τὴν δ᾽ ἐπιμειδήσας 		Knauer
+1	254	subridens hominum sator atque deorum	15	47	μείδησεν δὲ πατὴρ ἀνδρῶν τε θεῶν τε		Knauer
+1	255	caelum tempestatesque	17	649	ἠέρα ... καὶ		Knauer
+1	267	cui ... cognomen	6	402	τόν ... καλέεσκε		Knauer
+1	269	volvendis mensibus	2	295	περιτροπέων ἐνιαυτὸς		Knauer
+1	279	mare ... terrasque	8	479	γαίης καὶ πόντοιο		Knauer
+1	285	dominabitur 	20	307	ἀνάξει		Knauer
+1	295	Belli ... saeva vinctus aenis ... nodis	5	385	Ἄρης ... κρατερός ...δῆσαν κρατερῷ ἐνὶ δεσμῷ		Knauer
+1	295	vinctus aenis ... nodis	5	387	χαλκέῳ ... δέδετο		Knauer
+1	293	et ... artis claudentur ... portae	14	167	πυκινὰς δὲ θύρας ... ἐπῆρσε ... κρυπτῇ		Knauer
+1	293	artis claudentur ... portae	21	535	ἐπανθέμεναι σανίδας πυκινῶς ἀραρυίας		Knauer
+1	305	At ... plurima volvens	10	3	ἀλλ᾽ ... πολλὰ ... ὁρμαίνοντα.		Knauer
+1	305	noctem plurima volvens	2	24	παννύχιον ... ἐπιτετράφαται ... τόσσα		Knauer
+1	305	At pius Aeneas, per noctem plurima volvens,	24	3	αὐτὰρ ... ἀλλ᾽ ἐστρέφετ᾽		Knauer
+1	313	bina ... crispans hastilia	3	18	δοῦρε δύω ... πάλλων		Knauer
+1	313	bina ... crispans hastilia	12	298	δύο δοῦρε τινάσσων		Knauer
+1	313	manu lato crispans hastilia	13	134	ἔγχεα ... χειρῶν σειόμεν᾽		Knauer
+1	315	virginis ... virginis	22	127	παρθένος ... παρθένος		Knauer
+1	319	dederatque comam	23	151	κόμην ὀπάσαιμι 		Knauer
+1	343	ditissimus agri ... magno ... iugarat	14	123	ἀφνειὸν ... ἄρουραι ... πολλοὶ ... ἔγημε		Knauer
+1	344	miserae dilectus	19	287	δειλῇ ... κεχαρισμένε		Knauer
+1	353	venit imago 	23	65	ἦλθε ψυχὴ		Knauer
+1	353	inhumati ... traiectaque	23	71	θάπτέ ... περήσω		Knauer
+1	353	imago ... domus	23	72	εἴδωλα ... δῶ		Knauer
+1	374	diem ... Olympo	8	393	οὐρανοῦ ... Ὧραι		Knauer
+1	379	veho ... aethera	20	299	οὐρανὸν ... ἔχουσιν		Knauer
+1	380	et genus	4	58	γένος δέ		Knauer
+1	385	Nec ... querentem passa	7	427	οὐδ᾽ εἴα κλαίειν		Knauer
+1	399	puppesque tuae pubesque tuorum	1	179	νηυσί τε σῇς καὶ σοῖς ἑτάροισι		Knauer
+1	403	ambrosiaeque comae divinum vertice	1	529	ἀμβρόσιαι δ᾽ ... χαῖται ... κρατὸς ... ἀθανάτοιο:		Knauer
+1	405	adgnovit ... fugientem	13	72	ἔγνων ἀπιόντος		Knauer
+1	408		Z	253			Knauer
+1	411		Y	443			Knauer
+1	412		H	41			Knauer
+1	412		O	308			Knauer
+1	418		H	37			Knauer
+1	423		H	44			Knauer
+1	427		H	43			Knauer
+1	439		H	39			Knauer
+1	439		H	139			Knauer
+1	441		Z	291			Knauer
+1	445		Z	138			Knauer
+1	445		N	6			Knauer
+1	448		H	89			Knauer
+1	448		N	4			Knauer
+1	449		H	83			Knauer
+1	458		I	340			Knauer
+1	459		I	14			Knauer
+1	459		Z	484			Knauer
+1	459		X	398			Knauer
+1	461		I	20			Knauer
+1	468		Z	469			Knauer
+1	469		K	437			Knauer
+1	470		K	383			Knauer
+1	471		K	489			Knauer
+1	472		K	568			Knauer
+1	472		B	838			Knauer
+1	476		Z	42			Knauer
+1	476		O	452			Knauer
+1	477		P	51			Knauer
+1	478		N	553			Knauer
+1	478		X	279			Knauer
+1	479		Z	296			Knauer
+1	482		Z	311			Knauer
+1	488		Y	338			Knauer
+1	488		N	642			Knauer
+1	493		Z	186			Knauer
+1	494		H	133			Knauer
+1	494		H	45			Knauer
+1	499		Z	105			Knauer
+1	501		Z	107			Knauer
+1	501		T	227			Knauer
+1	502		Z	106			Knauer
+1	521		H	156			Knauer
+1	522		X	280			Knauer
+1	524		I	259			Knauer
+1	524		I	252			Knauer
+1	525		I	266			Knauer
+1	525		O	406			Knauer
+1	531		I	141			Knauer
+1	531		I	283			Knauer
+1	533		B	547			Knauer
+1	533		Z	3			Knauer
+1	533		P	526			Knauer
+1	533		T	271			Knauer
+1	535		X	29			Knauer
+1	542		X	39			Knauer
+1	543		I	269			Knauer
+1	543		B	66			Knauer
+1	543		Y	215			Knauer
+1	544		I	263			Knauer
+1	546		N	837			Knauer
+1	552		Z	269			Knauer
+1	556		T	243			Knauer
+1	557		H	151			Knauer
+1	559		K	229			Knauer
+1	561		T	217			Knauer
+1	562		H	309			Knauer
+1	568		N	240			Knauer
+1	573		K	403			Knauer
+1	579		H	329			Knauer
+1	583		K	282			Knauer
+1	586		K	540			Knauer
+1	587		H	143			Knauer
+1	589		Z	235			Knauer
+1	589		B	478			Knauer
+1	589		B	12			Knauer
+1	589		P	63			Knauer
+1	590		Z	231			Knauer
+1	606		Z	154			Knauer
+1	609		H	332			Knauer
+1	611		H	142			Knauer
+1	613		K	323			Knauer
+1	613		H	145			Knauer
+1	615		K	523			Knauer
+1	617		K	330			Knauer
+1	623		N	256			Knauer
+1	624		B	681			Knauer
+1	624		B	840			Knauer
+1	624		K	429			Knauer
+1	627		K	333			Knauer
+1	628		K	457			Knauer
+1	631		H	162			Knauer
+1	631		K	336			Knauer
+1	634		H	202			Knauer
+1	639		H	336			Knauer
+1	639		N	369			Knauer
+1	644		K	54			Knauer
+1	650		B	161			Knauer
+1	652		N	137			Knauer
+1	654		Z	252			Knauer
+1	654		N	740			Knauer
+1	655		X	470			Knauer
+1	657		B	382			Knauer
+1	681		B	549			Knauer
+1	688		O	262			Knauer
+1	691		B	19			Knauer
+1	691		B	295			Knauer
+1	698		X	440			Knauer
+1	700		I	200			Knauer
+1	701		H	172			Knauer
+1	701		P	91			Knauer
+1	701		Y	254			Knauer
+1	703		H	103			Knauer
+1	723		T	61			Knauer
+1	724		I	175			Knauer
+1	724		Z	528			Knauer
+1	724		T	62			Knauer
+1	725		K	10			Knauer
+1	726		H	101			Knauer
+1	728		I	670			Knauer
+1	731		I	270			Knauer
+1	737		N	57			Knauer
+1	740		B	11			Knauer
+1	740		N	310			Knauer
+1	740		Y	277			Knauer
+1	741		X	347			Knauer
+1	752		K	568			Knauer
+1	752		I	151			Knauer
+1	754		K	384			Knauer

@@ -1,89 +1,174 @@
-<?php include "first.php"; ?>
-<?php include "nav_search.php"; ?>		
+	<form action="<?php echo $url_cgi . '/read_table.pl' ?>" method="post" ID="Form1">
 
+		<table class="input">
+			<tr>
+				<th>Source:</th>
+				<td>
+					<select name="source_auth" onchange="populate_work('<?php echo $lang['source']; ?>','source')">
+					</select><br />
+					<select name="source_work" onchange="populate_part('<?php echo $lang['source']; ?>','source')">
+					</select><br />
+					<select name="source">
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>Target:</th>
+				<td>
+					<select name="target_auth" onchange="populate_work('<?php echo $lang['target']; ?>','target')">
+					</select><br />
+					<select name="target_work" onchange="populate_part('<?php echo $lang['target']; ?>','target')">
+					</select><br />
+					<select name="target">
+					</select>
+				</td>
+			</tr>
+		</table>
+
+		<div onclick="hideshow()" style="color:grey; text-align:center;">
+			<p id="moremsg">show advanced</p>
 		</div>
-		
-		<div id="main">
-			
-			<form action="<?php echo $url_cgi . '/session.pl' ?>" method="post" ID="Form1">
-				
-				<h1>Version 1</h1>
-				
-				<h2>Advanced Features</h2>
-				
-				<p>
-					This page allows you to change the default settings for the 
-					<a href="<?php echo $url_html.'/index.php' ?>">Basic Search</a>.
+		<div id="advanced" style="display:none; background-color:white;">
+			<table class="input">
+				<tr>
+					<th>Unit:</th>
+					<td>
+						<select name="unit">
+							<option value="line">line</option>
+							<option value="phrase">phrase</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Feature:</th>
+					<td>
+						<select name="feature">
+							<?php
+								foreach ($features as $k => $v) {
+									$sel = '';
+									if ($k == $selected_feature) {
+										$sel = ' selected="selected"';
+									}
+									echo '<option value="' . $k .'"'. $sel .'>' . $v .'</option>';
+								}
+							?>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Number of stop words:</th>
+					<td>
+						<select name="stopwords">
+							<option value="0">0</option>
+							<option value="10" selected="selected">10</option>
+							<option value="20">20</option>
+							<option value="30">30</option>
+							<option value="40">40</option>
+							<option value="50">50</option>
+							<option value="100">100</option>
+							<option value="150">150</option>
+							<option value="200">200</option>
+						</select>							
+					</td>
+				</tr>
+				<tr>
+					<th>Stoplist basis:</th>
+					<td>
+						<select name="stbasis">
+							<option value="corpus">corpus</option>
+							<option value="target">target</option>
+							<option value="source">source</option>
+							<option value="both">target + source</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Score basis:</th>
+					<td>
+						<select name="score">
+							<option value="word">word</option>
+							<option value="stem">stem</option>
+							<option value="feature">feature</option>								
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Maximum distance:</th>
+					<td>
+						<select name="dist">
+							<option value="999" selected="selected">no max</option>
+							<option value="5">5 words</option>
+							<option value="10">10 words</option>
+							<option value="20">20 words</option>
+							<option value="30">30 words</option>
+							<option value="40">40 words</option>
+							<option value="50">50 words</option>
+						</select>							
+					</td>
+				</tr>
+				<tr>
+					<th>Distance metric:</th>
+					<td>
+						<select name="dibasis">
+							<option value="span">span</option>
+							<option value="span-target">span-target</option>
+							<option value="span-source">span-source</option>
+							<option value="freq" selected="selected">frequency</option>
+							<option value="freq-target">freq-target</option>
+							<option value="freq-source">freq-source</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Drop scores below:</td>
+					<td>
+						<select name="cutoff">
+							<option value="0" selected="selected">no cutoff</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div style="text-align:center; padding:20px;">
+			<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit" />
+		</div>
+		<div style="visibility:hidden">
+				<select id="<?php echo $lang['target'].'_texts' ?>">
+					<?php include $fs_html.'/textlist.'.$lang['target'].'.r.php'; ?>
+				</select>
+				<?php
+					if ($lang['source'] != $lang['target']) {
+
+						echo '<select id="'.$lang['source'].'_texts">';
+						include $fs_html.'/textlist.'.$lang['source'].'.r.php';
+						echo '</select>';
+					}
 					
-					To explore other search algorithms, please try 
-					<a href="<?php echo $url_html.'/v2.php' ?>">Version 2</a> or the experimental
-					<a href="<?php echo $url_html.'/la_table' ?>">Big Table</a>.
-				</p>
-				
-				<table class = "input">
-					<tr>
-						<td align="center"><span class="h2">Source text</span></td>
-						<td align="center"><span class="h2">Target text</span></td>
-					</tr>
-					<tr>
-						<td align ="center">
-							<select name="source" ID="source">
-								<?php include $fs_html.'/textlist.la.l.php'; ?>
-							</select>
-						</td>
-						<td align="center">
-							<select name="target" ID="target">
-								<?php include $fs_html.'/textlist.la.l.php'; ?>
-							</select>
-			 			</td>
-					</tr>
-				</table>
-
-				<h2>Feature Set</h2>
-
-				<p>
-					Match on
-					<select name="unit" ID="unit">
-						<option value="word" selected="selected">words</option>
-						<option value="stem">stems (temporarily unavailable)</option>
-					</select>
-				</p>
-
-				<h2>Exclude Features</h2>
-
-				<p>
-					Omit matches on
-					<select name="cutoff" ID="cutoff">
-						<option value="0">none</option>
-						<option value="10">top 10</option>
-						<option value="50">top 50</option>
-						<option value="100">top 100</option>
-					</select>
-					of the most frequent Latin words.
-				</p>
-
-				<p>
-					Omit matches on the following additional words:
-				</p>
-
-				<p>
-					<textarea name="stopwords" rows="10" cols="30"></textarea>
-				</p>
-
-				<p>
-					<input type="submit" onclick="return ValidateForm()" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>
-				</p>
-			</form>
+					foreach ($hidden as $k => $v) {
+					
+						echo '<input type="hidden" name="' . $k . '" value="' . $v . '" />';
+					}
+				?>
 		</div>
-		<script language="javascript">
-
-                	var ddlsrc = document.getElementById('source');
-                	var ddltrg = document.getElementById('target');
-
-                	ddlsrc.options[0].selected = true;
-                	ddltrg.options[ddltrg.options.length-1].selected = true;
-
-        	</script>
-
-		<?php include "last.php"; ?>
-
+	</form>
+	<script type="text/javascript">
+		lang = {
+			'target':'<?php echo $lang['target'] ?>',
+			'source':'<?php echo $lang['source'] ?>'
+		};
+		selected = {
+			'target':'<?php echo $selected['target'] ?>',
+			'source':'<?php echo $selected['source'] ?>'
+		};
+		populate_author(lang['target'], 'target');
+		populate_author(lang['source'], 'source');
+		set_defaults(lang, selected);
+	</script>
+	

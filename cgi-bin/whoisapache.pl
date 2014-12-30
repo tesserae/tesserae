@@ -1,8 +1,4 @@
-#! /opt/local/bin/perl5.12
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-
-use TessSystemVars;
+#!/usr/bin/env perl
 
 use CGI qw/:standard/;
 

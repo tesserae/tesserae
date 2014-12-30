@@ -1,27 +1,79 @@
-#! /opt/local/bin/perl5.12
-
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-
-#
-# read_table.pl
-#
-# select two texts for comparison using the big table
-#
+#!/usr/bin/env perl
 
 use strict;
 use warnings;
 
-use CGI qw(:standard);
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}
+	
+	$lib = catdir($lib, 'TessPerl');	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
 
 use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
+use CGI qw(:standard);
+
 use POSIX;
 use Storable qw(nstore retrieve);
-use File::Spec::Functions;
-
-use TessSystemVars;
-use EasyProgressBar;
 
 # allow unicode output
 
@@ -47,8 +99,8 @@ my $quiet = 0;
 my $target    = 'lucan.bellum_civile.part.1';
 my $source    = 'vergil.aeneid.part.1';
 my $unit_id   = 0;
-my $topics    = 15;
-my $threshold = 0.7;
+my $topics    = 10;
+my $threshold = 0.5;
 
 #
 # command-line arguments
@@ -87,13 +139,12 @@ unless ($no_cgi) {
 
 # abbreviations of canonical citation refs
 
-my $file_abbr = "$fs_data/common/abbr";
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
 # language of input texts
 
-my $file_lang = "$fs_data/common/lang";
-my %lang = %{retrieve($file_lang)};
+my $lang = Tesserae::lang($target);
 
 #
 # source and target data
@@ -104,7 +155,7 @@ if ($no_cgi) {
 	print STDERR "loading $target\n" unless ($quiet);
 }
 
-my $file = catfile($fs_data, 'v3', $lang{$target}, $target, $target);
+my $file = catfile($fs{data}, 'v3', $lang, $target, $target);
 
 my @token = @{retrieve("$file.token")};
 my @line  = @{retrieve("$file.line") };	
@@ -135,7 +186,7 @@ for my $line_id (0..$#line) {
 				
 		if ($token[$token_id]{TYPE} eq 'WORD') {
 				
-			my $link = "$url_cgi/lsa.pl?";
+			my $link = "$url{cgi}/lsa.pl?";
 
 			$link .= "target=$target;";
 			$link .= "source=$source;";
@@ -166,11 +217,11 @@ $table .= "</table>\n";
 
 # load the template
 
-my $frame = `php -f $fs_html/frame.fullscreen.php`;
+my $frame = `php -f $fs{html}/frame.fullscreen.php`;
 
-# add some style into the head
+# add some stuff into the head
 
-my $style = "
+my $head_insert = "
 		<style style=\"text/css\">
 			a {
 				text-decoration: none;
@@ -178,9 +229,10 @@ my $style = "
 			a:hover {
 				color: #888;
 			}
-		</style>\n";
+		</style>
+		<script src=\"$url{html}/tesserae.js\"></script>\n";
 
-$frame =~ s/<!--head-->/$style/;
+$frame =~ s/<!--head-->/$head_insert/;
 
 #
 # create navigation
@@ -188,42 +240,55 @@ $frame =~ s/<!--head-->/$style/;
 
 # read drop down list
 
-open (FH, "<:utf8", catfile($fs_html, "textlist.$lang{$target}.r.php"));
+open (FH, "<:utf8", catfile($fs{html}, "textlist.$lang.r.php"));
 my $menu;
 while (<FH>) { $menu .= "$_" }
 close FH;
 
-# mark the current text as selected
-
-$menu =~ s/ selected=\"selected\"//g;
-$menu =~ s/value="$target"/value="$target" selected="selected"/;
-
 # put together the form
 
-my $nav = "
-		<form action=\"$url_cgi/lsa.pl\" method=\"POST\" target=\"_top\">
-		<table>
+my $nav = <<END_FORM;
+		<form action="$url{cgi}/lsa.pl" method="POST" target="_top">
+		<table class="input">
 			<tr>
-				<td><a href=\"$url_html/experimental.php\" target=\"_top\">Back to Tesserae</a></td>
+				<td><a href="$url{html}/experimental.php" target="_top">Back to Tesserae</a></td>
 			</tr>
 			<tr>
 				<td>
-					<input type=\"hidden\" name=\"source\" value=\"$source\" />
+					<input type="hidden" name="source" value="$source" />
 				</td>
 			</tr>
 			<tr>
-				<td>Target:</td>
+				<th>Target:</th>
 				<td>
-					<select name=\"target\">
-						$menu
+					<select name="target_auth" onchange="populate_work('$lang', 'target')">
+					</select><br />
+					<select name="target_work" onchange="populate_part('$lang', 'target')">
+					</select><br />
+					<select name="target">
 					</select>
 				</td>
+			</tr>
+			<tr>
+				<th></th>
 				<td>
-					<input type=\"submit\" name=\"submit\" value=\"Change\" />
+					<input type="submit" value="Change" ID="btnSubmit" NAME="btnSubmit" />
 				</td>
 			</tr>
 		</table>
-		</form>\n";
+		</form>
+		<div style="visibility:hidden;">
+			<select id="la_texts">
+				$menu
+			</select>
+		</div>
+		
+		<script language="javascript">
+			populate_author('$lang', 'target');
+			set_defaults({'target':'$lang'}, {'target':'$target'});
+		</script>
+
+END_FORM
 
 $frame =~ s/<!--navigation-->/$nav/;
 
@@ -253,7 +318,7 @@ sub getBounds {
 	
 	my $phrase_id = shift;
 	
-	my @bounds = @{retrieve(catfile($fs_data, 'lsa', $lang{$target}, $target, 'bounds.target'))};
+	my @bounds = @{retrieve(catfile($fs{data}, 'lsa', $lang, $target, 'bounds.small'))};
 
 	return @{$bounds[$phrase_id]};
 }

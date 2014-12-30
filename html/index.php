@@ -1,57 +1,74 @@
 <?php include "first.php"; ?>
 <?php include "nav_search.php"; ?>
 
-		</div> <!--closes header-->
+</div>
 
+<script src="<?php echo $url_html . '/tesserae.js' ?>"></script>
 
-		<div id="main">
-			<h1>Basic Search</h1>
+<div id="main">
+		
+	<form action="<?php echo $url_cgi . '/read_table.pl' ?>" method="post" ID="Form1">
 
-			<p>
-				The Tesserae project aims to provide a flexible and robust web interface 
-				for exploring intertextual parallels. <br />
-				Select two poems below to see a list of lines sharing two or more words 
-				(regardless of inflectional changes).
-			</p>
+		<h1>Welcome</h1>
+		
+		<p>
+			The Tesserae project aims to provide a flexible and robust web interface for exploring intertextual parallels. 
+			Select two poems below to see a list of lines sharing two or more words (regardless of inflectional changes).
+			For advanced search options, select a language from the menu above.
+		</p>
 
-			<form action="<?php echo $url_cgi.'/read_table.pl'; ?>" method="post" ID="Form1">
-				<table class="input">
+		<table class="input">
+			<tr>
+				<th>Source:</th>
+				<td>
+					<select name="source_auth" onchange="populate_work('la','source')">
+					</select><br />
+					<select name="source_work" onchange="populate_part('la','source')">
+					</select><br />
+					<select name="source">
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>Target:</th>
+				<td>
+					<select name="target_auth" onchange="populate_work('la','target')">
+					</select><br />
+					<select name="target_work" onchange="populate_part('la','target')">
+					</select><br />
+					<select name="target">
+					</select>
+				</td>
+			</tr>
+		</table>
 
-					<tr>
-						<td>
-							<span class="h2">Source text</span>
-						</td>	
-						<td>
-							<select name="source" ID="source">
-								<?php include $fs_html.'/textlist.la.l.php'; ?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span class="h2">Target text</span>
-						</td>
-						<td>
-							<select name="target" ID="target">
-								<?php include $fs_html.'/textlist.la.r.php'; ?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input type="hidden" name="unit" value="line"/>
-							<input type="hidden" name="feature" value="stem"/>
-							<input type="hidden" name="stoplist" value="20"/>
-							<input type="hidden" name="filter" value="0"/>
-						</td>
-					</tr>
-					<tr>
-						<td colspan=2 align="center">
-							<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>
-						</td>
-					</tr>
-				</table>
-			</form>
+		<div style="text-align:center; padding:20px;">
+			<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit" style=""/>
 		</div>
-	
-		<?php include "last.php"; ?>
+	</form>
+</div>
+
+<div style="visibility:hidden">
+		<select id="la_texts">
+			<?php include $fs_html.'/textlist.la.r.php'; ?>
+		</select>
+</div>
+
+<script type="text/javascript">
+	lang = {
+		'target':'la',
+		'source':'la'
+	};
+	selected = {
+		'target':'vergil.georgics.part.1',
+		'source':'catullus.carmina'
+	};
+
+	populate_author(lang['target'], 'target');
+	populate_author(lang['source'], 'source');
+	set_defaults(lang, selected);	
+</script>
+
+
+<?php include "last.php"; ?>
+

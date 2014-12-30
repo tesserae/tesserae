@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl5.12
+#!/usr/bin/env perl
 
 # check-recall.pl
 #
@@ -12,16 +12,78 @@
 use strict;
 use warnings;
 
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}	
+	
+	$lib = catdir($lib, 'TessPerl');	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
 use CGI qw(:standard);
 
 use Storable;
-use File::Spec::Functions;
 use File::Basename;
-use Getopt::Long;
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-use TessSystemVars;
-use EasyProgressBar;
+use Parallel;
 
 # optional modules
 
@@ -40,17 +102,10 @@ my $rev = 1;
 my @w = (7);
 my $quiet = 1;
 
-my %name = ( source => 'vergil.aeneid', target => 'lucan.bellum_civile.part.1');
-
 my %file;
+my %name;
 
-$file{cache} = catfile($fs_data, 'bench', 'rec.cache');
-
-for (qw/target source/) {
-
-	$file{"token_$_"} = catfile($fs_data, 'v3', 'la', $name{$_}, $name{$_} . ".token");
-	$file{"unit_$_"}  = catfile($fs_data, 'v3', 'la', $name{$_}, $name{$_} . ".phrase");
-}
+$file{cache} = catfile($fs{data}, 'bench', 'rec.cache');
 
 # is the program being run from the web or
 # from the command line?
@@ -64,12 +119,12 @@ my $no_cgi = defined($query->request_method()) ? 0 : 1;
 #
 
 GetOptions(
-	"cache=s"        => \$file{cache},
-	"session=s"      => \$session,
-	"sort=s"         => \$sort,
-	"reverse"        => \$rev,
-	"multi=i"        => \$process_multi,
-	"export=s"       => \$export
+	"cache=s"    => \$file{cache},
+	"session=s"  => \$session,
+	"sort=s"     => \$sort,
+	"reverse"    => \$rev,
+	"multi=i"    => \$process_multi,
+	"export=s"   => \$export
 	);
 
 #
@@ -80,10 +135,13 @@ unless ($no_cgi) {
 		
 	# form data
 		
-	$session    = $query->param('session');
-	$sort       = $query->param('sort')    || $sort;
-	$export     = $query->param('export')  || 'html';
-	$rev        = $query->param('rev') if defined $query->param('rev');
+	$session      = $query->param('session');
+	$sort         = $query->param('sort')   || $sort;
+	$export       = $query->param('export') || 'html';
+	$rev          = $query->param('rev')    if defined $query->param('rev');
+	
+	my $cache = $query->param('cache');
+	if ($cache) { $file{cache} = catfile($fs{data}, 'bench', $cache . ".cache")};
 	
 	$quiet = 1;
 	
@@ -96,7 +154,6 @@ unless ($no_cgi) {
 	if ($export eq "tab") { $h{'-type'} = "text/plain"; $h{'-attachment'} = "tesresults-$session.txt" }
 	if ($export =~ /^miss/) { $h{'-type'} = "text/plain"; $h{'-attachment'} = "tesresults-$session.missed.txt" }
 
-
 	print header(%h);
 } 
 
@@ -106,7 +163,7 @@ unless ($no_cgi) {
 
 if (defined $session) {
 
-	$file{tess} = catfile($fs_tmp, "tesresults-" . $session);
+	$file{tess} = catfile($fs{tmp}, "tesresults-" . $session);
 }
 else {
 	
@@ -116,10 +173,14 @@ else {
 unless (defined $file{tess}) {
 	
 	if ($no_cgi) {
-		print STDERR $usage;
+		
+		pod2usage(2);
 	}
 	else {
+		
 		$session = "NA";
+		$name{source} = ($query->param('source') || 'vergil.aeneid');
+		$name{target} = ($query->param('target') || 'lucan.bellum_civile.part.1');
 		html_no_table();
 	}
 	exit;
@@ -144,6 +205,12 @@ my %auth;
 
 $session = $meta{SESSION};
 
+for (qw/target source/) {
+
+	$name{$_} = $meta{uc($_)};
+	$file{"token_$_"} = catfile($fs{data}, 'v3', Tesserae::lang($name{$_}), $name{$_}, $name{$_} . ".token");
+	$file{"unit_$_"}  = catfile($fs{data}, 'v3', Tesserae::lang($name{$_}), $name{$_}, $name{$_} . ".phrase");
+}
 
 # now load the texts
 
@@ -160,18 +227,8 @@ for (qw/target source/) {
 # abbreviations of canonical citation refs
 #
 
-my $file_abbr = catfile($fs_data, 'common', 'abbr');
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
-
-#
-# dictionaries - loaded only if necessary
-#
-
-my $file_stem = catfile($fs_data, 'common', 'la.stem.cache');
-my $file_syn  = catfile($fs_data, 'common', 'la.syn.cache');
-
-my %stem;
-my %syn;
 
 #
 # compare 
@@ -192,38 +249,48 @@ print STDERR "comparing\n" unless $quiet;
 	
 for my $i (0..$#bench) {
 	
-	my %rec = %{$bench[$i]};
+	my $auth   = $bench[$i]->get('auth');
+	my $type   = $bench[$i]->get('type');
+	my $unit_t = $bench[$i]->get('target_unit');
+	my $unit_s = $bench[$i]->get('source_unit');
 	
-	$total[$rec{SCORE}]++;
+	if (defined $type) {
 
-	if (defined $rec{AUTH}) {
+		$total[$type]++;
+	}
+	
+	if (defined $auth) {
 		
 		$total[6]++;
 	}
 	
-	if (defined $score{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}}) { 
+	if (defined $score{$unit_t}{$unit_s}) { 
 		
 		# tally the match for stats
-		
-		$count[$rec{SCORE}]++;
-		$score[$rec{SCORE}] += $score{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}};
-		
-		# add the benchmark data to the tess parallel
-		
-		$type{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}} = $rec{SCORE};
 
-		if (defined $rec{AUTH}) {
+		if (defined $type) {
+
+			$count[$type]++;
+			$score[$type] += $score{$unit_t}{$unit_s};
+		
+			# add the benchmark data to the tess parallel
+		
+			$type{$unit_t}{$unit_s} = $type;
+		}
+
+		if (defined $auth) {
 			
 			# tally commentator match
 			
 			$count[6]++;
-			$score[6] += $score{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}};
+			$score[6] += $score{$unit_t}{$unit_s};
 			
 			# add commentators to tess parallel
 			
-			$auth{$rec{BC_PHRASEID}}{$rec{AEN_PHRASEID}} = $rec{AUTH};
-			
+			$auth{$unit_t}{$unit_s} = $auth;
 		}
+		
+		$bench[$i]->set('score', $score{$unit_t}{$unit_s});
 				
 		push @order, $i;
 	}
@@ -275,7 +342,7 @@ sub load_multi {
 	
 	if ($session =~ /[0-9a-f]{8}/) {
 	
-		$multi_dir = catdir($fs_tmp, "tesresults-$session", "multi");
+		$multi_dir = catdir($fs{tmp}, "tesresults-$session", "multi");
 	}
 	else {
 	
@@ -342,35 +409,36 @@ sub html_table {
 
 	if ($sort eq 'score') {
 		
-		@order = sort { $score{$bench[$a]{BC_PHRASEID}}{$bench[$a]{AEN_PHRASEID}} <=> $score{$bench[$b]{BC_PHRASEID}}{$bench[$b]{AEN_PHRASEID}} }
-					sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
-					sort { $bench[$a]{AEN_PHRASEID} <=> $bench[$b]{AEN_PHRASEID} }	
-				(@order);		
+		@order = sort { $bench[$a]->get('score')  <=> $bench[$b]->get('score') }
+					sort { $bench[$a]->get('target_unit') <=> $bench[$b]->get('target_unit') }
+					sort { $bench[$a]->get('source_unit') <=> $bench[$b]->get('source_unit') }	
+					@order;
 	}	
 	elsif ($sort eq 'type') {
 		
-		@order = sort { $bench[$a]{SCORE}  <=> $bench[$b]{SCORE} }
-					sort { $score{$bench[$a]{BC_PHRASEID}}{$bench[$a]{AEN_PHRASEID}} <=> $score{$bench[$b]{BC_PHRASEID}}{$bench[$b]{AEN_PHRASEID}} }
-					sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
-				(@order);		
+		@order = sort { $bench[$a]->get('type')   <=> $bench[$b]->get('type') }
+					sort { $bench[$a]->get('score')  <=> $bench[$b]->get('score') }
+					sort { $bench[$a]->get('target_unit') <=> $bench[$b]->get('target_unit') }
+					sort { $bench[$a]->get('source_unit') <=> $bench[$b]->get('source_unit') }	
+					@order;		
 	}
 	else {
 		
-		@order = sort { $bench[$a]{BC_PHRASEID}  <=> $bench[$b]{BC_PHRASEID} }
-					sort { $bench[$a]{AEN_PHRASEID} <=> $bench[$b]{AEN_PHRASEID} }	
-				(@order);
+		@order = sort { $bench[$a]->get('target_unit') <=> $bench[$b]->get('target_unit') }
+					sort { $bench[$a]->get('source_unit') <=> $bench[$b]->get('source_unit') }	
+					@order;
 	}
 	
 	if ($rev) { @order = reverse @order }
 	
-	my $frame = `php -f $fs_html/check_recall.php`;
+	my $frame = `php -f $fs{html}/check_recall.php`;
 	
-	my $table_data;
+	my $table_data ="";
 	
 	for my $i (@order) {
 	
-		my $unit_id_target = $bench[$i]{BC_PHRASEID};
-		my $unit_id_source = $bench[$i]{AEN_PHRASEID};
+		my $unit_id_target = $bench[$i]->get('target_unit');
+		my $unit_id_source = $bench[$i]->get('source_unit');
 	
 		# note marked words
 	
@@ -414,14 +482,14 @@ sub html_table {
 		}
 		
 		$table_data .= table_row($mode,
-				   $bench[$i]{BC_BOOK}  . '.' . $bench[$i]{BC_LINE},
-				   $phrase_target,
-				   $bench[$i]{AEN_BOOK} . '.' . $bench[$i]{AEN_LINE},
-				   $phrase_source,
-				   $bench[$i]{SCORE},
-				   $score{$unit_id_target}{$unit_id_source},
-				   (defined $bench[$i]{AUTH} ? join(",", @{$bench[$i]{AUTH}}) : "")
-				   );
+			$bench[$i]->get('target_loc'),
+			$phrase_target,
+			$bench[$i]->get('source_loc'),
+			$phrase_source,
+			$bench[$i]->get('type'),
+			$bench[$i]->get('score'),
+			(defined $bench[$i]->get('auth') ? join(",", @{$bench[$i]->get('auth')}) : "")
+		);
 	}
 
 	my $recall_stats;
@@ -466,7 +534,7 @@ sub html_table {
 
 sub html_no_table {
 				
-	my $frame = `php -f $fs_html/check_recall.php`;
+	my $frame = `php -f $fs{html}/check_recall.php`;
 	
 	$frame =~ s/<!--info-->/&info/e; 
 
@@ -477,63 +545,78 @@ sub html_no_table {
 
 sub info {
 		
-	my %sel_feature = (word => "", stem => "", syn=>"", '3gr' => "");
+	my %sel_feature = (word => "", stem => "", syn=>"", '3gr' => "", trans1 => "", trans2mws => "");
 	my %sel_stbasis = (corpus => "", target => "", source => "", both => "");
 	my %sel_dibasis = (span => "", span_target => "", span_source => "", 
                       freq => "", freq_target => "", freq_source => "");
-    my @sel_filter = ("", "");
+	my %sel_scbasis = (word => "", stem => "", feature=>"");
 
 	$sel_feature{($meta{FEATURE}||'stem')}   = 'selected="selected"';
 	$sel_stbasis{($meta{STBASIS}||'corpus')} = 'selected="selected"';
 	$sel_dibasis{($meta{DIBASIS}||'freq')}   = 'selected="selected"';
-	$sel_filter[$meta{FILTER}]   = 'checked="checked"';
+
+	my $scbasis = $meta{SCORE};
+	if ($scbasis !~ /word|stem/ and $scbasis eq $meta{FEATURE}) { $scbasis = 'feature' }
+	$sel_scbasis{$scbasis} = 'selected="selected"';
 
 	my $cutoff = $meta{CUTOFF} || 0;
 	my $stop   = defined $meta{STOP} ? $meta{STOP} : 10;
 	my $dist   = defined $meta{DIST} ? $meta{DIST} : 999;
+	
+	my $cache = fileparse($file{cache}, qw/\.cache/);
+	
+	my @feature_choices;
+	
+	if (Tesserae::lang($name{target}) eq Tesserae::lang($name{source})) {
+	
+		@feature_choices = qw/word stem syn 3gr syn_lem/;
+	}
+	else {
+	
+		@feature_choices = qw/trans1 trans2mws/;
+	}
+	
+	my $html_feature = join("\n", map { "<option value=\"$_\" $sel_feature{$_}>$_</option>" } @feature_choices);
 
 	my $html = <<END;
 	
-	<form action="$url_cgi/read_table.pl" method="post" ID="Form1">
+	<form action="$url{cgi}/read_table.pl" method="post" ID="Form1">
 
-		<h1>Lucan-Vergil Recall Test</h1>
+		<h1>Benchmark Recall Test</h1>
 
 		<table class="input">
 			<tr>
-				<td><span class="h2">Session:</span></td>
-				<td>$session</td>
+				<th>Session:</th>
+				<th>$session</th>
 			</tr>
 			<tr>
-				<td><span class="h2">Source:</span></td>
-				<td>Vergil - Aeneid</td>
+				<th>Source:</th>
+				<th>$name{source}</th>
 			</tr>
 			<tr>
-				<td><span class="h2">Target:</span></td>
-				<td>Lucan - Pharsalia - Book 1</td>
+				<th>Target:</th>
+				<th>$name{target}</th>
 			</tr>
 			<tr>
-				<td><span class="h2">Unit:</span></td>
-				<td>Phrase</td>
+				<th>Unit:</th>
+				<th>phrase</th>
 			</tr>
 			<tr>
-				<td><span class="h2">Feature:</span></td>
+				<th>Feature:</th>
 				<td>
 					<select name="feature">
-						<option value="word" $sel_feature{word}>exact form only</option>
-						<option value="stem" $sel_feature{stem}>lemma</option>
-						<option value="syn"  $sel_feature{syn}>lemma + synonyms</option>
-						<option value="3gr"  $sel_feature{'3gr'}>character 3-grams</option>
+						$html_feature
 					</select>
 				</td>
 			</tr>
 			<tr>
-				<td><span class="h2">Number of stop words:</span></td>
+				<th>Number of stop words:</th>
 				<td>
 					<input type="text" name="stopwords" value="$stop">
 				</td>
 			</tr>
 			<tr>
-				<td><span class="h2">Stoplist basis:</span></td>
+				<th>Stoplist basis:</th>
 				<td>
 					<select name="stbasis">
 						<option value="corpus" $sel_stbasis{corpus}>corpus</option>
@@ -544,13 +627,23 @@ sub info {
 				</td>
 			</tr>
 			<tr>
-				<td><span class="h2">Maximum distance:</span></td>
+				<th>Score basis:</th>
+				<td>
+					<select name="score">
+						<option value="word"    $sel_scbasis{word}>word</option>
+						<option value="stem"    $sel_scbasis{stem}>stem</option>
+						<option value="feature" $sel_scbasis{feature}>feature</option>								
+					</select>
+				</td>
+			</tr>	
+			<tr>
+				<th>Maximum distance:</th>
 				<td>
 					<input type="text" name="dist" maxlength="3" value="$dist">
 				</td>
 			</tr>
 			<tr>
-				<td><span class="h2">Distance metric:</span></td>
+				<th>Distance metric:</th>
 				<td>
 					<select name="dibasis">
 						<option value="span"        $sel_dibasis{span}>span</option>
@@ -563,26 +656,20 @@ sub info {
 				</td>
 			</tr>
 			<tr>
-				<td><span class="h2">Drop scores below:</span></td>
+				<th>Drop scores below:</th>
 				<td>
 					<input type="text" name="cutoff" maxlen="3" value="$cutoff">
-				</td>
-			</tr>
-			<tr>
-				<td><span class="h2">Scoring Team filter:</span></td>
-				<td>
-					<input type="radio" name="filter" value="1" $sel_filter[1]> ON
-					<input type="radio" name="filter" value="0" $sel_filter[0]> OFF
 				</td>
 			</tr>
 		</table>
 		
 		<input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit"/>
 		
-		<input type="hidden" name="source" value="vergil.aeneid"/>
-		<input type="hidden" name="target" value="lucan.bellum_civile.part.1"/>
-		<input type="hidden" name="unit" value="phrase"/>
-		<input type="hidden" name="frontend" value="recall"/>
+		<input type="hidden" name="source"       value="$name{source}" />
+		<input type="hidden" name="target"       value="$name{target}" />
+		<input type="hidden" name="recall_cache" value="$cache"        />
+		<input type="hidden" name="unit"         value="phrase"        />
+		<input type="hidden" name="frontend"     value="recall"        />
 		
 	</form>
 
@@ -600,9 +687,11 @@ sub re_sort {
 	$sel_rev[$rev]         = 'selected="selected"';
 	$sel_sort{$sort}       = 'selected="selected"';
 	
+	my $cache = fileparse($file{cache}, qw/\.cache/);
+	
 	my $html = <<END;
 	
-	<form action="$url_cgi/check-recall.pl" method="post" id="Form2">
+	<form action="$url{cgi}/check-recall.pl" method="post" id="Form2">
 		
 		<table>
 			<tr>
@@ -626,7 +715,8 @@ sub re_sort {
 			</td>
 			<td>
 				<input type="hidden" name="session" value="$session" />
-				<input type="submit" name="submit" value="Change Display" />
+				<input type="hidden" name="cache"   value="$cache"   />
+				<input type="submit" name="submit"  value="Change Display" />
 			</td>
 		</tr>
 	</table>
@@ -866,7 +956,7 @@ sub print_delim {
 							
 							my $locus = $multi{$other}{$unit_id_target}{$unit_id_source}{$_}{LOCUS};
 							my $score = $multi{$other}{$unit_id_target}{$unit_id_source}{$_}{SCORE};
-							$score = sprintf("%i", $score);
+							$score = sprintf("%.0f", $score);
 							
 							push @loci, "$locus ($score)";
 						}
@@ -895,15 +985,7 @@ sub print_delim {
 sub print_missed {
 	
 	my $delim = shift;
-	
-	#
-	# for this we need the dictionaries
-	#
-	
-	print STDERR "loading stem dictionary\n";
-	
-	%stem = %{retrieve($file_stem)};
-	
+		
 	print STDERR "writing output\n";
 	
 	#
@@ -950,12 +1032,12 @@ sub print_missed {
 	
 		$pr->advance();
 
-		my %rec = %{$bench[$missed[$i]]};
+		my $rec = $bench[$missed[$i]];
 
-		my $unit_id_target = $rec{BC_PHRASEID};
-		my $unit_id_source = $rec{AEN_PHRASEID};
-		my $type = $rec{SCORE};
-		my $auth = defined $rec{AUTH} ? join(",", @{$rec{AUTH}}) : "";
+		my $unit_id_target = $rec->get('unit_t');
+		my $unit_id_source = $rec->get('unit_s');
+		my $type = $rec->get('type');
+		my $auth = defined $rec->get('auth') ? join(",", @{$rec->get('auth')}) : "";
 			
 		# do a tess search on these two phrases
 
@@ -1058,6 +1140,8 @@ sub minitess {
 	my %index;
 		
 	for my $text (qw/target source/) {
+		
+		my $lang = Tesserae::lang($name{$text});
 	
 		for my $token_id (@{$unit{$text}[$unit_id{$text}]{TOKEN_ID}}) {
 
@@ -1065,9 +1149,9 @@ sub minitess {
 		
 			my $word = $token{$text}[$token_id]{FORM};
 
-			for my $stem (@{stems($word)}) {
+			for my $feat (@{Tesserae::feat($lang, $meta{FEATURE}, $word)}) {
 			
-				push @{$index{$stem}{$text}}, $token_id;
+				push @{$index{$feat}{$text}}, $token_id;
 			}
 		}
 	}
@@ -1084,21 +1168,23 @@ sub minitess {
 	my %marked;
 	my %seen_keys;
 	
-	for my $stem (keys %index) {
+	for my $feat (keys %index) {
 	
-		next unless defined ($index{$stem}{target} and $index{$stem}{source});
+		next unless defined ($index{$feat}{target} and $index{$feat}{source});
 		
 		# mark all tokens that share a common stem
 		
 		for my $text (qw/target source/) {
+			
+			my $lang = Tesserae::lang($name{$text});
 		
-			for my $token_id (@{$index{$stem}{$text}}) {
+			for my $token_id (@{$index{$feat}{$text}}) {
 			
 				$marked{$text}{$token_id} = 1;
 				
-				my @stems = @{stems($token{$text}[$token_id]{FORM})};
+				my @feats = @{Tesserae::feat($lang, $meta{FEATURE}, $token{$text}[$token_id]{FORM})};
 				
-				$seen_keys{join("-", sort @stems)} = 1;
+				$seen_keys{join("-", sort @feats)} = 1;
 			}
 		}
 	}
@@ -1108,46 +1194,4 @@ sub minitess {
 	$results{seen_keys}     = [keys %seen_keys];
 	
 	return \%results;
-}
-
-sub stems {
-
-	my $form = shift;
-	
-	my @stems;
-	
-	if ($use_lingua_stem) {
-	
-		@stems = @{$stemmer->stem($form)};
-	}
-	elsif (defined $stem{$form}) {
-	
-		@stems = @{$stem{$form}};
-	}
-	else {
-	
-		@stems = ($form);
-	}
-	
-	return \@stems;
-}
-
-sub syns {
-
-	my $form = shift;
-	
-	my %syns;
-	
-	for my $stem (@{stems($form)}) {
-	
-		if (defined $syn{$stem}) {
-		
-			for (@{$syn{$stem}}) {
-			
-				$syns{$_} = 1;
-			}
-		}
-	}
-	
-	return [keys %syns];
 }

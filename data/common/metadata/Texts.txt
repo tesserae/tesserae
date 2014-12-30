@@ -1,0 +1,240 @@
+ID	AUTHOR	TITLE	PHI	PUB	PUB_CERT	FILE	WORDS
+1	1	Rerum Gestarum		391	0	ammianus.rerum_gestarum	129913
+2	2	Apologia	1212 001 Apol	170	0	apuleius.apologia	21508
+3	2	Florida	1212 003 Fl	169	0	apuleius.florida	7884
+4	2	Metamorphoses	1212 002 Met	170	0	apuleius.metamorphoses	53334
+5	3	Epistulae Selections		430	0	augustine.epistulae_selections	46252
+6	4	Cento Nuptialis		399	0	ausonius.cento_nuptialis	1559
+7	4	Commemoratio Professorum Burdigalensium		399	0	ausonius.commemoratio_professorum_burdigalensium	2632
+8	4	Cupido Cruciatur		399	0	ausonius.cupido_cruciatur	741
+9	4	De Bissula		399	0	ausonius.de_bissula	372
+10	4	De Herediolo		399	0	ausonius.de_herediolo	246
+11	4	De Xii Caesaribu		399	0	ausonius.de_xii_caesaribus	852
+12	4	Eclogarum Liber		399	0	ausonius.eclogarum_liber	2744
+13	4	Ephemeris Id Est Totius Diei Negotium		399	0	ausonius.ephemeris_id_est_totius_diei_negotium	1287
+14	4	Epicedion In Patrem		399	0	ausonius.epicedion_in_patrem	491
+15	4	Epigrammata Ausonii De Diversis Rebus		399	0	ausonius.epigrammata_ausonii_de_diversis_rebus	3645
+16	4	Epistularium		399	0	ausonius.epistularum	10256
+17	4	Epitaphia Heroum Qui Bello Troico Interfuerunt		399	0	ausonius.epitaphia_heroum_qui_bello_troico_interfuerunt	1203
+18	4	Gratiarum Actio		399	0	ausonius.gratiarum_actio	4143
+19	4	Griphus Temarii Numeri		399	0	ausonius.griphus_ternarii_numeri	1072
+20	4	Libri De Fastis Conclusio		399	0	ausonius.libri_de_fastis_conclusio	144
+21	4	Ludus Septum Sapientum		399	0	ausonius.ludus_septem_sapientum	1319
+22	4	Mosella		399	0	ausonius.mosella	3260
+23	4	Oratio Consulius Ausonii Cersibus Rhopalicis		399	0	ausonius.oratio_consulis_ausonii_versibus_rhopalicis	211
+24	4	Ordo Urbium Nobilium		399	0	ausonius.ordo_urbium_nobilium	1046
+25	4	Parentalia		399	0	ausonius.parentalia	2599
+26	4	Praefatiunculae		399	0	ausonius.praefatiunculae	548
+27	4	Precationes		399	0	ausonius.precationes	469
+28	4	Technopaegnion		399	0	ausonius.technopaegnion	1489
+29	4	Versus Paschales Pro Augusto Dicti		399	0	ausonius.versus_paschales_pro_augusto_dicti	187
+30	5	Concolatio Philosophiae		524	0	boethius.consolatio_philosophiae	24540
+31	5	De Fide Catholica 		524	0	boethius.de_fide_catholica	1927
+32	5	Liber De Persona Et Duabus Naturis Contra Eutychen Et Nestorium		524	0	boethius.liber_de_persona_et_duabus_naturis_contra_eutychen_et_nestorium	5853
+34	5	Quomodo Substantiae In Eo Quod Sint Bonae Sint Cum Non Sint Substantialia Bona		524	0	boethius.quomodo_substantiae_in_eo_quod_sint_bonae_sint_cum_non_sint_substantialia_bona	1391
+35	5	Quomodo Trinitas		524	0	boethius.quomodo_trinitas	2940
+36	5	Utrum Pater		524	0	boethius.utrum_pater	559
+37	6	De Bello Gallico	0448 001 Gal	-44	1	caesar.de_bello_gallico	51295
+38	6	De Bellum Civile	0448 002 Civ	-44	1	caesar.de_bellum_civile	32336
+39	7	Res Gestae Divi Augusti	1221 007 Anc	14	0	caesar_augustus.res_gestae_divi_augusti	2615
+40	8	Carmina	0472 001 Carm	-54	1	catullus.carmina	12857
+41	9	De Medicina	0836 002 Med		0	celsus.de_medicina	102495
+42	10	Academia	0474 045 Ac	-43	1	cicero.academica	4870
+43	10	Brutus	0474 039 Brut	-46	1	cicero.brutus	24762
+44	10	Cum Populo Gratias Egit		-43	1	cicero.cum_populo_gratias_egit	2641
+45	10	Cum Senatui Gratias Egit		-43	1	cicero.cum_senatui_gratias_egit	4330
+46	10	De Amicitia	0474 052 Amic	-44	1	cicero.de_amicitia	9341
+47	10	De Divinatione	0474 053 Div	-44	1	cicero.de_divinatione	27741
+48	10	De Domo Sua	0474 020 Dom	-56	1	cicero.de_domo_sua	15146
+49	10	De Fato	0474 054 Fat	-45	1	cicero.de_fato	4947
+50	10	De Finibus Bonorum Et Malorum	0474 048 Fin	-46	1	cicero.de_finibus_bonorum_et_malorum	47231
+51	10	De Haruspicum Responso	0474 021 Har	-56	1	cicero.de_haruspicum_responso	7527
+52	10	De Imperio Cn Pompei		-43	1	cicero.de_imperio_cn_pompei	6666
+53	10	De Inventione	0474 036 Inv	-43	1	cicero.de_inventione	32306
+54	10	De Lege Agraria Contra Rullum	0474 011 Agr	-66	1	cicero.de_lege_agraria_contra_rullum	13783
+55	10	De Natura Deorum	0474 050 ND	-46	1	cicero.de_natura_deorum	35698
+56	10	De Officiis	0474 055 Off	-44	1	cicero.de_officiis	34281
+57	10	De Optimo Genere Oratorum	0474 041 OptGen	-44	1	cicero.de_optimo_genere_oratorum	1603
+58	10	De Oratore	0474 037 deOrat	-55	1	cicero.de_oratore	62153
+59	10	De Partitione Oratoria	0474 038 Part	-43	1	cicero.de_partitione_oratoria	9949
+60	10	De Provinciis Consularibus	0474 025 Prov	-56	1	cicero.de_provinciis_consularibus	5127
+61	10	De Republica	0474 043 Rep	-55	1	cicero.de_republica	22154
+62	10	De Senectute	0474 051 Sen	-43	1	cicero.de_senectute	8261
+63	10	Divinatio In C Verrem	0474 005 Ver	-70	1	cicero.divinatio_in_c_verrem	100541
+64	10	Divinatio In Q Caecillium	0474 004 DivCaec	-70	1	cicero.divinatio_in_q_caecilium	5818
+66	10	Epistulae Ad Familiares	0474 056 Fam	-43	1	cicero.epistulae_ad_familiares	112625
+67	10	In Catilinam	0474 013 Catil	-69	1	cicero.in_catilinam	12559
+68	10	In L Pisonem	0474 027 Pis	-55	1	cicero.in_l_pisonem	10915
+69	10	In Vatinium	0474 023 Vat	-56	1	cicero.in_vatinium	4490
+70	10	Letters to Atticus	0474 057 Att	-43	1	cicero.letters_to_atticus	121458
+71	10	Letters to Brutus	0474 059 adBrut	-43	1	cicero.letters_to_brutus	9539
+72	10	Letters to Quintus	0474 058 Qfr	-43	1	cicero.letters_to_quintus	18368
+73	10	Lucullus	0474 046 Luc	-46	1	cicero.lucullus	17960
+74	10	Orator	0474 040 Orat	-46	1	cicero.orator	18531
+75	10	Paradoxica Stoicorum Ad M Brutum	0474 047 Parad	-69	1	cicero.paradoxa_stoicorum_ad_m_brutum	4626
+76	10	Philippicae	0474 035 Phil	-44	1	cicero.philippicae	52571
+77	10	Post Reditum In Senatu	0474 019 RedSen	-56	1	cicero.post_reditum_in_senatu	4330
+78	10	Pro A Caecina	0474 008 Caec	-69	1	cicero.pro_a_caecina	10385
+79	10	Pro A Cluentio	0474 010 Clu	-69	1	cicero.pro_a_cluentio	20779
+80	10	Pro Archia	0474 016 Arch	-62	1	cicero.pro_archia	3117
+81	10	Pro Balbo	0474 026 Balb	-43	1	cicero.pro_balbo	6798
+82	10	Pro C Rabirio	047 012 RabPerd	-69	1	cicero.pro_c_rabirio	3548
+83	10	Pro C Rabirio Postumo	0474 030 RabPost	-54	1	cicero.pro_c_rabirio_postumo	4073
+84	10	Pro Fonteio	0474 007 Font	-69	1	cicero.pro_fonteio	4539
+85	10	Pro L Flacco	0474 017 Flac	-59	1	cicero.pro_l_flacco	10904
+86	10	Pro Ligario	0474 033 Lig	-43	1	cicero.pro_ligario	3280
+87	10	Pro M Caelio	0474 024 Cael	-43	1	cicero.pro_m_caelio	8469
+88	10	Pro Marcello	0474 032 Marc	-43	1	cicero.pro_marcello	2767
+89	10	Pro Milone	0474 031 Mil	-43	1	cicero.pro_milone	10515
+90	10	Pro Murena	0474 014 Mur	-43	1	cicero.pro_murena	10553
+91	10	Pro Plancio	0474 028 Planc	-54	1	cicero.pro_plancio	11579
+92	10	Pro Publio Quinctio	0474 001 Quinct	-80	1	cicero.pro_publio_quinctio	8647
+94	10	Pro Q Roscio Comoedo	0474 003 QRosc	-80	1	cicero.pro_q_roscio_comoedo	4762
+95	10	Pro Rege Deiotaro	0474 034 Deiot	-43	1	cicero.pro_rege_deiotaro	3812
+96	10	Pro S Roscio	0474 002 SRosc	-80	1	cicero.pro_s_roscio	13246
+97	10	Pro Scauro	0474 029 Scaur	-69	1	cicero.pro_scauro	2970
+98	10	Pro Sestio	0474 022 Sest	-56	1	cicero.pro_sestio	16832
+99	10	Pro Sulla	0474 015 Sul	-67	1	cicero.pro_sulla	9304
+100	10	Pro Tullio	0474 006 Tul	-69	1	cicero.pro_tullio	3441
+101	10	Timaeus	0474 072 Tim	-43	1	cicero.timaeus	4216
+102	10	Topica	0474 042 Top	-44	1	cicero.topica	6886
+103	10	Tusculanae Disputationes	0474 049 Tusc	-43	1	cicero.tusculanae_disputationes	47850
+104	11	De Bello Gildonico		398	0	claudian.de_bello_gildonico	3165
+105	11	De Bello Gothico		402	0	claudian.de_bello_gothico	4033
+106	11	De Consulatu Stilichonis		400	0	claudian.de_consulatu_stilichonis	7583
+107	11	De Raptu Proserpinae		404	0	claudian.de_raptu_proserpinae	6991
+108	11	Epithalamium De Nuptiis Honorii Augusti		398	0	claudian.epithalamium_de_nuptiis_honorii_augusti	2187
+109	11	In Consulatum Olybrii Et Probini		395	0	claudian.in_consulatum_olybrii_et_probini	1696
+110	11	In Eutropium		399	0	claudian.in_eutropium	7183
+111	11	In Rufinum		397	0	claudian.in_rufinum	5730
+112	11	Panegyricus De Quarto Consulatu Honorii Augusti		396	0	claudian.panegyricus_de_quarto_consulatu_honorii_augusti	3965
+113	11	Panegyricus De Sexto Consulatu  Honorii Augusti		398	0	claudian.panegyricus_de_sexto_consulatu_honorii_augusti	4160
+114	11	Panegyricus De Tertio Consulatu Honorii Augusti		404	0	claudian.panegyricus_de_tertio_consulatu_honorii_augusti	1382
+115	11	Panegyricus Dictus Manlio Theodoro Consuli		399	0	claudian.panegyricus_dictus_manlio_theodoro_consuli	2151
+116	12	De Re Rustica	0845 002 RR	65	0	columella.de_re_rustica	78971
+117	13	Johannis			0	corippus.johannis	29046
+118	14	Historiae Alexandri Magni	0860 001 Alex	99	0	curtius_rufus.historiae_alexandri_magni	74258
+119	15	Epitome Bellorum Omnium Annorum	1242 001 Epit	99	0	florus.epitome_bellorum_omnium_annorum	26364
+120	16	Attic Nights	1254 001 NA	180	0	gellius.attic_nights	113230
+121	17	Washingtonii Vita			0	glass.washingtonii_vita	28529
+122	18	Ars Poetica	0893 006 Ars	-15	1	horace.ars_poetica	3090
+123	18	Camren Saeculare	0893 002 Saec	-15	1	horace.carmen_saeculare	313
+124	18	Epistles	0893 005 Ep	-21	1	horace.epistles	9906
+125	18	Epodes	0893 003 Epod	-30	1	horace.epodes	3006
+126	18	Odes	0893 001 Carm	-31	1	horace.odes	13292
+127	18	Satires	0893 004 S	-30	1	horace.satires	14215
+128	19	Ilias Latina	0890 001 Ilias	68	0	ilias_latina	6597
+129	20	Epistulae Selections		420	0	jerome.epistulae_selections	43766
+131	21	Satires	1276 001 S	199	0	juvenal.satires	24884
+132	22	Historia Evangelica		330	0	juvencus.historia_evangelica	19854
+133	23	Ab Urbe Condita	0914 001 AUC	17	0	livy.ab_urbe_condita	666577
+134	24	Bellum Civile	0917 001 BC	63	0	lucan.bellum_civile	51065
+135	25	De Rerum Natura	0550 001 DRN	-55	1	lucretius.de_rerum_natura	49030
+136	26	Astronomicon	0926 001 Astr	99	0	manilius.astronomicon	27353
+137	27	Octavius			0	marcus_mincuius_felix.octavius	11606
+138	28	Epigrams	1294 002 Ep	80	0	martial.epigrams	40551
+139	29	Vitae	0588 001 Vit	-34	1	nepos.vitae	28383
+140	30	Amores	0959 001 Am	-16	1	ovid.amores	15626
+141	30	Ars Amatoria	0959 004 Ars	-1	1	ovid.ars_amatoria	14895
+142	30	Ex Ponto	0959 009 Pont	13	0	ovid.ex_ponto	20750
+143	30	Fasti	0959 007 Fast	8	0	ovid.fasti	31259
+144	30	Heroides	0959 002 Her	-2	1	ovid.heroides	25720
+145	30	Medicamina Faciei Femineae	0959 003 Med	-2	1	ovid.medicamina_faciei_femineae	613
+146	30	Metamorphoses	0959 006 Met	8	0	ovid.metamorphoses	78098
+147	30	Remedia Amoris	0959 005 Rem	2	0	ovid.remedia_amoris	5263
+148	30	Tristia	0959 008 Tr	12	0	ovid.tristia	22817
+149	31	Carmina	9221 001 poet		0	paul.carmina	10311
+150	32	Satires	0969 001 S	62	0	persius.satires	4457
+151	33	Satyricon	0972 001 Sat	66	0	petronius.satyricon	29217
+152	34	Amphitruo	0119 001 Am	-184	1	plautus.amphitruo	9324
+153	34	Asinaria	0119 002 As	-184	1	plautus.asinaria	7615
+154	34	Aulularia	0119 003 Aul	-184	1	plautus.aulularia	6540
+155	34	Bacchides	0119 004 Bac	-184	1	plautus.bacchides	9438
+156	34	Captivi	0119 005 Capt	-184	1	plautus.captivi	8265
+157	34	Casina	0119 006 Cas	-184	1	plautus.casina	7175
+158	34	Cistellaria	0119 007 Cist	-184	1	plautus.cistellaria	4939
+159	34	Curculio	0119 008 Cur	-184	1	plautus.curculio	5706
+160	34	Epidicus	0119 009 Epid	-184	1	plautus.epidicus	5965
+161	34	Menaechmi	0119 010 Men	-184	1	plautus.menaechmi	8912
+162	34	Mercator	0119 011 Mer	-184	1	plautus.mercator	7990
+163	34	Miles Gloriosus	0119 012 Mil	-184	1	plautus.miles_gloriosus	11786
+164	34	Mostellaria	0119 013 Mos	-184	1	plautus.mostellaria	8882
+165	34	Persa	0119 014 Per	-184	1	plautus.persa	7172
+166	34	Poenulus	0119 015 Poen	-184	1	plautus.poenulus	10701
+167	34	Pseudolus	0119 016 Ps	-191	1	plautus.pseudolus	10438
+168	34	Rudens	0119 017 Rud	-184	1	plautus.rudens	11024
+169	34	Stichus	0119 018 St	-200	1	plautus.stichus	5908
+170	34	Trinummus	0119 019 Trin	-184	1	plautus.trinummus	9328
+171	34	Truculentus	0119 020 Truc	-184	1	plautus.truculentus	7809
+172	35	Naturalis Historia	0978 001 Nat	79	0	pliny_the_elder.naturalis_historia	394447
+173	36	Letters	1318 001 Ep	109	0	pliny_the_younger.letters	66668
+174	37	Elegies	0620 001 Eleg	-28	1	propertius.elegies	25249
+175	38	Apotheosis		405	0	prudentius.apotheosis	7418
+176	38	Contra Symmachum		405	0	prudentius.contra_symmachum	12028
+177	38	Dittochaeon		405	0	prudentius.dittochaeon	1250
+178	38	Epilogus		405	0	prudentius.epilogus	135
+179	38	Hamartigenia		405	0	prudentius.hamartigenia	6402
+180	38	Psychomachia		405	0	prudentius.psychomachia	6010
+181	39	On Running For Consul			0	q_cicero.on_running_for_consul	4349
+182	40	Institutio Oratoria	1002 001 Inst	96	0	quintilian.institutio_oratoria	171970
+183	41	De Reditu			0	rutilius.de_reditu	3971
+184	42	Catalina	0631 001 Cat	-42	1	sallust.catilina	10701
+185	42	Histories	0631 003 HistFr	-35	1	sallust.histories	4099
+186	42	Jugurtha	0631 002 Iug	-41	1	sallust.jugurtha	21314
+187	43	Historia Augusta Vol 1		284	0	scriptores_historiae_augustae.historia_augusta_vol_1	35851
+188	43	Historia Augusta Vol 2		284	0	scriptores_historiae_augustae.historia_augusta_vol_2	38044
+189	44	Ad Lucilium Epistulae Morales	1017 015 Ep	65	0	seneca.ad_lucilium_epistulae_morales	119722
+190	44	Agamemnon	1017 007 Ag	53	0	seneca.agamemnon	5468
+191	44	Apocolocyntosis	1017 011 Apoc	53	0	seneca.apocolocyntosis	2926
+192	44	De Beneficiis	1017 013 Ben	56	0	seneca.de_beneficiis	45610
+193	44	De Brevitate Vitae		55	0	seneca.de_brevitate_vitae	6183
+194	44	De Clementia	1017 014 Cl	56	0	seneca.de_clementia	8350
+195	44	De Concolatione Ad Helviam		43	0	seneca.de_consolatione_ad_helviam	6765
+197	44	De Concolatione Ad Marciam		40	0	seneca.de_consolatione_ad_marciam	8173
+198	44	De Consolatione Ad Polybium		43	0	seneca.de_consolatione_ad_polybium	5670
+199	44	De Constantia		65	0	seneca.de_constantia	5285
+200	44	De Ira		51	0	seneca.de_ira	22380
+201	44	De Otio		61	0	seneca.de_otio	1961
+202	44	De Providentia		53	0	seneca.de_providentia	4092
+203	44	De Tranquillitate Animi		55	0	seneca.de_tranquillitate_animi	7555
+204	44	De Vita Beata		58	0	seneca.de_vita_beata	7288
+205	44	Hercules Furens	1017 001 HerF	53	0	seneca.hercules_furens	7510
+206	44	Hercules Oetaeus	1017 009 HerO	53	0	seneca.hercules_oetaeus	11172
+207	44	Medea	1017 004 Med	53	0	seneca.medea	5569
+208	44	Octavia	1017 010 Oct	53	0	seneca.octavia	5117
+209	44	Oedipus	1017 006 Oed	53	0	seneca.oedipus	5785
+210	44	Phaedra	1017 005 Phaed	53	0	seneca.phaedra	7078
+211	44	Phoenissae	1017 003 Phoen	53	0	seneca.phoenissae	4084
+212	44	Thyestes	1017 008 Thy	53	0	seneca.thyestes	6181
+213	44	Troades	1017 002 Tro	53	0	seneca.troades	6701
+214	45	Controversiae	1014 001 Con	40	0	seneca_the_elder.controversiae	64432
+215	45	Excerpta Controversiae	1014 002 ConExc	40	0	seneca_the_elder.excerpta_controversiae	21074
+216	45	Fragmenta	1014 004 frg	40	0	seneca_the_elder.fragmenta	144
+217	45	Suasoriae	1014 003 Suas	40	0	seneca_the_elder.suasoriae	10020
+219	46	In Virgilium Commentarius		399	0	servius_honoratus.in_virgilium_commentarius	52327
+220	47	Punica	1345 001 Pun	102	0	silius_italicus.punica	76292
+221	48	Achilleid	1020 003 Ach	96	0	statius.achilleid	7204
+222	48	Silvae	1020 002 Silv	94	0	statius.silvae	23898
+223	48	Thebaid	1020 001 Theb	92	0	statius.thebaid	62504
+224	49	De Vita Caesarum	1348 001 VC	199	0	suetonius.de_vita_caesarum	70176
+225	50	Agricola	1351 001 Ag	98	0	tacitus.agricola	6740
+226	50	Annales	1351 005 Ann	115	0	tacitus.annales	88899
+227	50	De Origine Et Situ Germanorum Liber	1351 002 Ger	98	0	tacitus.de_origine_et_situ_germanorum_liber	5513
+229	50	Dialogus De Oratoribus	1351 003 Dial	12	0	tacitus.dialogus_de_oratoribus	9308
+230	50	Historiae	1351 004 Hist	110	0	tacitus.historiae	51493
+231	51	Adelphi	1235 006 Ad	-160	1	terence.adelphi	9110
+232	51	Andria	1235 001 An	-166	1	terence.andria	8173
+233	51	Eunuchus	1235 003 Eu	-161	1	terence.eunuchus	8961
+234	51	Heautonimorumenos	1235 002 Hau	-163	1	terence.heautontimorumenos	8799
+235	51	Hecyra	1235 005 Hec	-165	1	terence.hecyra	7370
+236	51	Phormio	1235 004 Ph	-161	1	terence.phormio	8508
+237	52	Apologeticum			0	tertullian.apologeticum	19955
+238	52	De Spectaculis			0	tertullian.de_spectaculis	6352
+239	53	Elegies	0660 001 Eleg	-19	1	tibullus.elegies	12353
+240	54	Facta Et Dicta Memorabilia	1038 001 Mem	-31	0	valerius.facta_et_dicta_memorabilia	79504
+241	55	Argonautica	1035 001 Arg		0	valerius_flaccus	37250
+242	56	Historiam Ecclesiasticam Gentis Anglorum			0	venerable_bede.historiam_ecclesiasticam_gentis_anglorum	79412
+243	57	Aeneis	0690 003 A	-19	1	vergil.aeneid	63719
+244	57	Eclogues	0690 001 Ecl	-39	1	vergil.eclogues	5617
+245	57	Georgica	0690 002 G	-29	1	vergil.georgics	14154
+246	58	De Architectura		-15	0	vitruvius.de_architectura	57651

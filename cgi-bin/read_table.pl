@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl5.12
+#!/usr/bin/env perl
 
 =head1 NAME
 
@@ -100,36 +100,90 @@ Alternatively, the contents of this file may be used under the terms of either t
 
 =cut
 
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
-
-#
-# read_table.pl
-#
-# select two texts for comparison using the big table
-#
-
-my $t0 = time;
-
 use strict;
 use warnings;
 
-use CGI qw/:standard/;
+#
+# Read configuration file
+#
 
-use Pod::Usage;
-use Getopt::Long;
-use Storable qw(nstore retrieve);
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
 use File::Spec::Functions;
-use File::Path qw(mkpath rmtree);
+use FindBin qw/$Bin/;
 
-use TessSystemVars;
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}
+	
+	$lib = catdir($lib, 'TessPerl');
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
 use EasyProgressBar;
 
+# modules to read cmd-line options and print usage
+
+use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
+use CGI qw/:standard/;
+use Storable qw(nstore retrieve);
+use File::Path qw(mkpath rmtree);
+use Encode;
+
+binmode STDERR, 'utf8';
 
 #
 # set some parameters
 #
+
+# time for benchmark
+
+my $t0 = time;
 
 # source means the alluded-to, older text
 
@@ -157,14 +211,6 @@ my $stopwords = 10;
 # frequencies from: source, target, or corpus
 
 my $stoplist_basis = "corpus";
-
-# apply the scoring team filter?
-
-my $filter = 0;
-
-# minimium frequency for interesting words
-
-my $interest = 0.008;
 
 # output file
 
@@ -205,9 +251,21 @@ my $multi_cutoff = 0;
 
 my @include;
 
+# cache param to pass on to check-recall.pl
+
+my $recall_cache = 'rec';
+
 # help flag
 
 my $help;
+
+# print benchmark times?
+
+my $bench = 0;
+
+# what frequency table to use in scoring
+
+my $score_basis;
 
 # which script should mediate the display of results
 
@@ -225,8 +283,9 @@ GetOptions(
 			'distance=i'   => \$max_dist,
 			'dibasis=s'    => \$distance_metric,
 			'cutoff=f'     => \$cutoff,
-			'filter'       => \$filter,
-			'interest=f'   => \$interest,
+			'score=s'      => \$score_basis,
+			'benchmark'    => \$bench,
+			'no-cgi'       => \$no_cgi,
 			'quiet'        => \$quiet,
 			'help'         => \$help);
 
@@ -239,6 +298,13 @@ if ($help) {
 	pod2usage(-verbose => 2);
 }
 
+# default score basis set by Tesserae.pm
+
+unless (defined $score_basis)  { 
+	
+	$score_basis = $Tesserae::feature_score{$feature} || 'word';
+}
+
 # html header
 #
 # put this stuff early on so the web browser doesn't
@@ -248,7 +314,7 @@ unless ($no_cgi) {
 
 	print header();
 
-	my $stylesheet = "$url_css/style.css";
+	my $stylesheet = "$url{css}/style.css";
 
 	print <<END;
 
@@ -265,9 +331,9 @@ END
 	# open the temp directory
 	# and get the list of existing session files
 
-	opendir(my $dh, $fs_tmp) || die "can't opendir $fs_tmp: $!";
+	opendir(my $dh, $fs{tmp}) || die "can't opendir $fs{tmp}: $!";
 
-	my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}/ && -d catfile($fs_tmp, $_) } readdir($dh);
+	my @tes_sessions = grep { /^tesresults-[0-9a-f]{8}/ && -d catfile($fs{tmp}, $_) } readdir($dh);
 
 	closedir $dh;
 
@@ -296,7 +362,7 @@ END
 
 	# open the new session file for output
 
-	$file_results = catfile($fs_tmp, "tesresults-$session");
+	$file_results = catfile($fs{tmp}, "tesresults-$session");
 }
 
 
@@ -304,18 +370,8 @@ END
 # abbreviations of canonical citation refs
 #
 
-my $file_abbr = catfile($fs_data, 'common', 'abbr');
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
-
-# $lang sets the language of input texts
-# - necessary for finding the files, since
-#   the tables are separate.
-# - one day, we'll be able to set the language
-#   for the source and target independently
-# - choices are "grc" and "la"
-
-my $file_lang = catfile($fs_data, 'common', 'lang');
-my %lang = %{retrieve($file_lang)};
 
 # if web input doesn't seem to be there, 
 # then check command line arguments
@@ -329,8 +385,8 @@ if ($no_cgi) {
 }
 else {
 
-	$source          = $query->param('source')       || "";
-	$target          = $query->param('target')       || "";
+	$source          = $query->param('source');
+	$target          = $query->param('target');
 	$unit            = $query->param('unit')         || $unit;
 	$feature         = $query->param('feature')      || $feature;
 	$stopwords       = defined($query->param('stopwords')) ? $query->param('stopwords') : $stopwords;
@@ -338,27 +394,30 @@ else {
 	$max_dist        = $query->param('dist')         || $max_dist;
 	$distance_metric = $query->param('dibasis')      || $distance_metric;
 	$cutoff          = $query->param('cutoff')       || $cutoff;
-	$filter          = defined($query->param('filter')) ? $query->param('filter') : $filter;
-	$interest        = $query->param('interest')     || $interest;
+	$score_basis     = $query->param('score')        || $score_basis;
 	$frontend        = $query->param('frontend')     || $frontend;
 	$multi_cutoff    = $query->param('mcutoff')      || $multi_cutoff;
 	@include         = $query->param('include');
+	$recall_cache    = $query->param('recall_cache') || $recall_cache;
 	
-	if ($source eq "" or $target eq "") {
+	unless (defined $source) {
 	
-		die "read_table.pl called from web interface with no source/target";
+		die "read_table.pl called from web interface with no source";
 	}
+	unless (defined $target) {
 	
+		die "read_table.pl called from web interface with no target";
+	}
+		
 	$quiet = 1;
 	
 	# how to redirect browser to results
 
 	%redirect = ( 
-		default  => "$url_cgi/read_bin.pl?session=$session",
-		recall   => "$url_cgi/check-recall.pl?session=$session",
-		fulltext => "$url_cgi/fulltext.pl?session=$session",
-		multi    => "$url_cgi/multitext.pl?session=$session;mcutoff=$multi_cutoff"
-		         . join("", map {";include=$_"} @include)
+		default  => "$url{cgi}/read_bin.pl?session=$session",
+		recall   => "$url{cgi}/check-recall.pl?session=$session;cache=$recall_cache",
+		fulltext => "$url{cgi}/fulltext.pl?session=$session",
+		multi    => "$url{cgi}/multitext.pl?session=$session;mcutoff=$multi_cutoff;list=1"
 	);
 
 	
@@ -371,16 +430,41 @@ else {
 			Searching...
 		</p>
 END
-                                       
-
 
 }
+
+#
+# force unit=phrase if either work is prose
+#
+# Note: This is a hack!  Fix later!!
+
+if (Tesserae::check_prose_list($target) or Tesserae::check_prose_list($source)) {
+
+	$unit = 'phrase';
+}
+
+# assume unicode text names are utf8,
+# whether input via cmd line or cgi
+
+# $target = decode('utf8', $target);
+# $source = decode('utf8', $source);
+
+# if user selected 'feature' as score basis,
+# set it to whatever the feature is
+
+if ($score_basis =~ /^feat/) {
+
+	$score_basis = $feature;
+}
+
+# print all params for debugging
 
 unless ($quiet) {
 
 	print STDERR "target=$target\n";
 	print STDERR "source=$source\n";
-	print STDERR "lang=$lang{$target};\n";
+	print STDERR "lang(target)=" . Tesserae::lang($target) . ";\n";
+	print STDERR "lang(source)=" . Tesserae::lang($source) . ";\n";		
 	print STDERR "feature=$feature\n";
 	print STDERR "unit=$unit\n";
 	print STDERR "stopwords=$stopwords\n";
@@ -388,7 +472,7 @@ unless ($quiet) {
 	print STDERR "max_dist=$max_dist\n";
 	print STDERR "distance basis=$distance_metric\n";
 	print STDERR "score cutoff=$cutoff\n";
-	print STDERR "interesting freq=$interest\n";
+	print STDERR "score basis=$score_basis\n";
 }
 
 
@@ -398,15 +482,13 @@ unless ($quiet) {
 
 # token frequencies from the target text
 
-my $file_freq_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . ".freq_score_$feature");
+my $file_freq_target = select_file_freq($target) . ".freq_score_" . $score_basis;
+my %freq_target = %{Tesserae::stoplist_hash($file_freq_target)};
 
-my %freq_target = %{TessSystemVars::stoplist_hash($file_freq_target)};
+# token frequencies from the source text
 
-# token frequencies from the target text
-
-my $file_freq_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . ".freq_score_$feature");
-
-my %freq_source = %{TessSystemVars::stoplist_hash($file_freq_source)};
+my $file_freq_source = select_file_freq($source) . ".freq_score_" . $score_basis;
+my %freq_source = %{Tesserae::stoplist_hash($file_freq_source)};
 
 #
 # basis for stoplist is feature frequency from one or both texts
@@ -415,19 +497,6 @@ my %freq_source = %{TessSystemVars::stoplist_hash($file_freq_source)};
 my @stoplist = @{load_stoplist($stoplist_basis, $stopwords)};
 
 unless ($quiet) { print STDERR "stoplist: " . join(",", @stoplist) . "\n"}
-
-#
-# if the featureset is synonyms, get the parameters used
-# to create the synonym dictionary for debugging purposes
-#
-
-my $max_heads = "NA";
-my $min_similarity = "NA";
-
-if ( $feature eq "syn" ) { 
-
-	($max_heads, $min_similarity) = @{ retrieve(catfile($fs_data, "common", "$lang{$target}.syn.cache.param")) };
-}
 
 
 #
@@ -440,7 +509,7 @@ unless ($quiet) {
 	print STDERR "reading source data\n";
 }
 
-my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source);
+my $file_source = catfile($fs{data}, 'v3', Tesserae::lang($source), $source, $source);
 
 my @token_source   = @{ retrieve("$file_source.token") };
 my @unit_source    = @{ retrieve("$file_source.$unit") };
@@ -451,12 +520,11 @@ unless ($quiet) {
 	print STDERR "reading target data\n";
 }
 
-my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target);
+my $file_target = catfile($fs{data}, 'v3', Tesserae::lang($target), $target, $target);
 
 my @token_target   = @{ retrieve("$file_target.token") };
 my @unit_target    = @{ retrieve("$file_target.$unit") };
 my %index_target   = %{ retrieve("$file_target.index_$feature" ) };
-
 
 #
 #
@@ -513,7 +581,7 @@ for my $key (keys %index_source) {
 	for my $token_id_target ( @{$index_target{$key}} ) {
 
 		my $unit_id_target = $token_target[$token_id_target]{uc($unit) . '_ID'};
-
+		
 		for my $token_id_source ( @{$index_source{$key}} ) {
 
 			my $unit_id_source = $token_source[$token_id_source]{uc($unit) . '_ID'};
@@ -524,7 +592,7 @@ for my $key (keys %index_source) {
 	}
 }
 
-print "search>>" . (time-$t1) . "\n" if $no_cgi;
+print "search>>" . (time-$t1) . "\n" if $no_cgi and $bench;
 
 #
 #
@@ -641,16 +709,6 @@ for my $unit_id_target (keys %match_target) {
 			next;
 		}
 		
-		#
-		# filter based on scoring team's algorithm
-		#
-		
-		if ($filter and not score_team($match_target{$unit_id_target}{$unit_id_source}, $match_source{$unit_id_target}{$unit_id_source})) {
-		
-			delete $match_target{$unit_id_target}{$unit_id_source};
-			delete $match_source{$unit_id_target}{$unit_id_source};
-			next;			
-		}
 		
 		#
 		# calculate the score
@@ -679,11 +737,10 @@ my %feature_notes = (
 	
 	word => "Exact matching only.",
 	stem => "Stem matching enabled.  Forms whose stem is ambiguous will match all possibilities.",
-	syn  => "Stem + synonym matching.  This search is still in development.  Note that stopwords may match on less-common synonyms.  max_heads=$max_heads; min_similarity=$min_similarity"
-	
+	syn  => "Stem + synonym matching.  This search is still in development.  Note that stopwords may match on less-common synonyms."
 	);
 
-print "score>>" . (time-$t1) . "\n" if $no_cgi;
+print "score>>" . (time-$t1) . "\n" if $no_cgi and $bench;
 
 #
 # write binary results
@@ -704,9 +761,9 @@ my %match_meta = (
 	DIBASIS   => $distance_metric,
 	SESSION   => $session,
 	CUTOFF    => $cutoff,
-	FILTER    => $filter,
-	INTEREST  => $interest,
+	SCBASIS   => $score_basis,
 	COMMENT   => $feature_notes{$feature},
+	VERSION   => $Tesserae::VERSION,
 	TOTAL     => $total_matches
 );
 
@@ -725,10 +782,15 @@ mkpath($file_results);
 	
 nstore \%match_target, catfile($file_results, "match.target");
 nstore \%match_source, catfile($file_results, "match.source");
-nstore \%match_score,  catfile($file_results, "match.score");
-nstore \%match_meta,   catfile($file_results, "match.meta");
+nstore \%match_score,  catfile($file_results, "match.score" );
+nstore \%match_meta,   catfile($file_results, "match.meta"  );
 
-print "store>>" . (time-$t1) . "\n" if $no_cgi;
+if (@include) {
+
+	write_multi_list($file_results, \@include);
+}
+
+print "store>>" . (time-$t1) . "\n" if $no_cgi and $bench;
 
 print <<END unless ($no_cgi);
 
@@ -743,7 +805,7 @@ print <<END unless ($no_cgi);
 END
 
 
-print "total>>" . (time-$t0)  . "\n" if $no_cgi;
+print "total>>" . (time-$t0)  . "\n" if $no_cgi and $bench;
 
 #
 # subroutines
@@ -883,34 +945,31 @@ sub load_stoplist {
 	
 	if ($stoplist_basis eq "target") {
 		
-		my $file = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
-		
-		%basis = %{TessSystemVars::stoplist_hash($file)};
+		my $file = select_file_freq($target) . '.freq_stop_' . $feature;
+		%basis = %{Tesserae::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "source") {
 		
-		my $file = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
+		my $file = select_file_freq($source) . '.freq_stop_' . $feature;
 
-		%basis = %{TessSystemVars::stoplist_hash($file)};
+		%basis = %{Tesserae::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "corpus") {
 
-		my $file = catfile($fs_data, 'common', $lang{$target} . '.' . $feature . '.freq');
+		my $file = catfile($fs{data}, 'common', Tesserae::lang($target) . '.' . $feature . '.freq');
 		
-		%basis = %{TessSystemVars::stoplist_hash($file)};
+		%basis = %{Tesserae::stoplist_hash($file)};
 	}
 	
 	elsif ($stoplist_basis eq "both") {
 		
-		my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target . '.freq_stop_' . $feature);
+		my $file_target = select_file_freq($target) . '.freq_stop_' . $feature;
+		%basis = %{Tesserae::stoplist_hash($file_target)};
 		
-		%basis = %{TessSystemVars::stoplist_hash($file_target)};
-		
-		my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source . '.freq_stop_' . $feature);
-		
-		my %basis2 = %{TessSystemVars::stoplist_hash($file_source)};
+		my $file_source = select_file_freq($source) . '.freq_stop_' . $feature;
+		my %basis2 = %{Tesserae::stoplist_hash($file_source)};
 		
 		for (keys %basis2) {
 		
@@ -955,10 +1014,10 @@ sub exact_match {
 		push @stokens, $token_source[$_]{FORM};
 	}
 	
-	@ttokens = @{TessSystemVars::uniq(\@ttokens)};
-	@stokens = @{TessSystemVars::uniq(\@ttokens)};
+	@ttokens = @{Tesserae::uniq(\@ttokens)};
+	@stokens = @{Tesserae::uniq(\@ttokens)};
 	
-	my @exact_match = @{TessSystemVars::intersection(\@ttokens, \@stokens)};
+	my @exact_match = @{Tesserae::intersection(\@ttokens, \@stokens)};
 	
 	return scalar(@exact_match);
 }
@@ -987,6 +1046,59 @@ sub score_default {
 		
 		$score += $freq;
 	}
+
+
+	#For cross-language matching, include Bamman's p-o-s and treebanking data
+#		my $source_flag = 0;
+#		my $target_flag = 0;
+			
+#		if ($feature =~ 'trans') {
+			
+#			my @syntax_source    = @{ retrieve("$file_source.syntax") };
+#			my @syntax_target    = @{ retrieve("$file_target.syntax") };
+#			my @target_ids = keys %match_target;
+#			my @source_ids = keys %match_source;
+#			my @source_heads;
+#			my @target_heads;
+			
+#			foreach my $token_id_target (@target_ids) {
+#				push (@target_heads, ${$syntax_target[$token_id_target]}{'HEAD'});
+#			}
+#			foreach my $token_id_source (@source_ids) {
+#				push (@source_heads, ${$syntax_target[$token_id_source]}{'HEAD'});
+#			}
+			
+
+#			foreach my $token_id_target (@target_ids) {
+#				foreach my $head_id_target (@target_heads) {
+#					print STDERR "Target matchword: $token_id_target\t";
+#					if (defined $head_id_target) {
+#						print STDERR "head: $head_id_target\n";
+#						if ($token_id_target == $head_id_target) {
+			#				$target_flag = 1;
+#						}
+#					
+#					}
+#				}
+#			}
+			
+#			foreach my $token_id_source (@source_ids) {
+#				foreach my $head_id_source (@source_heads) {
+#					print STDERR "Source matchword: $token_id_source\t";
+#					if (defined $head_id_source) {
+#						print STDERR "head: $head_id_source\n";
+#						if ($token_id_source == $head_id_source) {
+#							$source_flag = 1;
+#						}
+#					}
+#				}
+#			}
+
+			
+
+		#}
+
+
 	
 	for my $token_id_source ( keys %match_source ) {
 
@@ -1005,64 +1117,63 @@ sub score_default {
 	}
 	
 	$score = sprintf("%.3f", log($score/$distance));
-	
-	return $score;
+
+#			if ($source_flag == 1 or $target_flag == 1) {
+			return $score;
+
+#			}
+#			else {
+#			$score = 0;
+#			return $score;
+#			}
 }
 
-sub score_team {
 
-	# the parallel to check
-	
-	my ($match_t_ref, $match_s_ref) = @_;
+# save the list of multi-text searches to session file
 
-	my %match_target = %$match_t_ref;
-	my %match_source = %$match_s_ref;
+sub write_multi_list {
 	
-	# count interesting words in three categories
+	my ($session, $incl) = @_;
 	
-	my @cat   = (0, 0, 0);
-	my @level = (0.0004, 0.0008, 0.0018);
+	my @include = @$incl;
 	
-	# start with a "reject" policy
+	my $file_list = catfile($session, '.multi.list');
 	
-	my $score = 0;
+	open (FH, ">:utf8", $file_list) or die "can't write $file_list: $!";
 	
-	# check all the tokens in the target phrase
+	for (@include) {
 	
-	for my $token_id_target (keys %match_target ) {
+		print FH $_ . "\n";
+	}
+	
+	close FH;
+}
+
+# choose the frequency file for a text
+
+sub select_file_freq {
+
+	my $name = shift;
+	
+	if ($name =~ /\.part\./) {
+	
+		my $origin = $name;
+		$origin =~ s/\.part\..*//;
 		
-		for (0..2) {
+		if (defined $abbr{$origin} and defined Tesserae::lang($origin)) {
 		
-			if ($freq_target{$token_target[$token_id_target]{FORM}} < $level[$_]) {
-			
-				$cat[$_]++;
-			}
+			$name = $origin;
 		}
 	}
 	
-	# and the source phrase
+	my $lang = Tesserae::lang($name);
+	my $file_freq = catfile(
+		$fs{data}, 
+		'v3', 
+		$lang, 
+		$name, 
+		$name
+	);
 	
-	for my $token_id_source ( keys %match_source ) {
-		
-		for (0..2) {
-		
-			if ($freq_source{$token_source[$token_id_source]{FORM}} < $level[$_]) { 
-			
-				$cat[$_]++; 
-			}
-		}
-	}
-	
-	# get the number of exact matches
-	
-	my $exact_match = exact_match(\%match_target, \%match_source);
-	
-	# promote parallel to "keep" if it meets the criteria
-	
-	if (($cat[2] > 0) or ($cat[1] > 1) or ($cat[0] > 0 and $exact_match > 0 ))  {
-
-		$score = 1;
-	}
-	
-	return $score;
+	return $file_freq;
 }

@@ -1,126 +1,157 @@
-#!/opt/local/bin/python
+#!/usr/bin/env python
+'''run an lsa query'''
 
-import string
+# modules necessary to read config file,
+# parse command-line arguments
+
 import os
-import cgi, cgitb
-from gensim import corpora, models, similarities
-
-import logging
+import sys
 import argparse
 
-#
-# set params
-#
+# read config
 
-target = 'lucan.bellum_civile.part.1'
-source = 'vergil.aeneid.part.1'
-
-unit_id  = 0
-topics   = 15
-
-fs_data = '/Users/chris/Sites/tesserae/data'
-fs_text = '/Users/chris/Sites/tesserae/texts'
-
-lang = 'la'
-
-#
-# look for user options
-#
-
-if 'REQUEST_METHOD' in os.environ:
-
-	# web interface
-
-	cgitb.enable()
+def read_pointer():
+	'''look for .tesserae.conf; return lib path'''
 	
-	form = cgi.FieldStorage() 
+	dir = os.path.dirname(sys.argv[0])
+	lib = None
+	pointer = os.path.join(dir, '.tesserae.conf')
+
+	while not os.access(pointer, os.R_OK):
+		
+		if dir == os.path.sep:
+			raise LookupError('file not found: {0}'.format(pointer))
+			return lib
+			
+		dir = os.path.dirname(dir)
+		pointer = os.path.join(dir, '.tesserae.conf')
+		
+	f = open(pointer, 'r');
 	
-	target  = form.getvalue('target', 'lucan.bellum_civile.part.1')
-	source  = form.getvalue('source', 'vergil.aeneid.part.1')
-	unit_id = int(form.getvalue('unit_id', 0))
-	topics  = int(form.getvalue('num_topics', 15))
-
-	# print header
+	lib = f.readline().strip()
 	
-	print "Content-type:text/plain"
-	print
+	return lib
+
+sys.path.append(read_pointer())
 
 
-else:
+#
+# Tesserae-specific modules
+#
+
+from TessPy.tesserae import fs, url
+from TessPy import progressbar
+from TessPy import tesslang
+
+#
+# additional modules for this script
+#
+
+import string
+import logging
+from gensim import corpora, models, similarities
+
+#
+# global variables
+#
+
+
+#
+# functions
+#
+
+
+#
+# main
+#
+
+
+def main():
+
+	if 'REQUEST_METHOD' in os.environ:
+		
+		# print header
+		
+		print "Content-type:text/plain"
+		print
+
+	#
+	# look for user options
+	#
 	
-	# command line interface
-
 	parser = argparse.ArgumentParser(description='Do an LSA search on two Tesserae texts.')
 
-	parser.add_argument('-s', '--source', required=True, help="source text")
-	parser.add_argument('-t', '--target', required=True, help="target text")
-	parser.add_argument('-i', '--unit-id', type=int, default=0,  help="phrase id in the target text")
-	parser.add_argument('-n', '--topics',  type=int, default=15, help="number of topics")
+	parser.add_argument('-c', '--corpus', required=True, help="text from which results are drawn")
+	parser.add_argument('-q', '--query', required=True, help="text from which query is drawn")
+	parser.add_argument('-l', '--lang',   type=str, default='la', help="language")
+	parser.add_argument('-i', '--unit_id', type=int, default=0,  help="phrase id in the query text")
+	parser.add_argument('-n', '--topics',  type=int, default=10, help="number of topics")
 
 	args=parser.parse_args()
+	
+	# set paths
+	
+	dir_corpus = os.path.join(fs['data'], 'lsa', args.lang, args.corpus)
+	dir_query = os.path.join(fs['data'], 'lsa', args.lang, args.query)
 
-	source  = args.source
-	target  = args.target
-	unit_id = args.unit_id
-	topics  = args.topics
+	#
+	# load data from training program
+	#
+	
+	logging.info("corpus=" + args.corpus)
+	
+	# dictionary
+	
+	file_dict = os.path.join(dir_corpus, 'dictionary')
+	dictionary = corpora.Dictionary.load(file_dict)
+	
+	# corpus
+	
+	file_training = os.path.join(dir_corpus, 'training.mm')
+	training = corpora.MmCorpus(file_training)
+	
+	# create lsi model
+	
+	lsi = models.LsiModel(training, id2word=dictionary, num_topics=args.topics)
 
+	#
+	# load query
+	#
+	
+	logging.info("query=" + args.query + "; unit id=" + str(args.unit_id))
+	
+	listing = os.listdir(os.path.join(dir_query, 'small'))
+	listing = [sample for sample in listing if not sample.startswith('.')]
+        listing.sort()
+	
+	f = open(os.path.join(dir_query, 'small', listing[args.unit_id]))
+	doc = f.read()
 
-# set paths
+	vec_bow = dictionary.doc2bow(doc.lower().split())
+	
+	vec_lsi = lsi[vec_bow] # convert the query to LSI space
 
-dir_source = os.path.join(fs_data, 'lsa', lang, source)
-dir_target = os.path.join(fs_data, 'lsa', lang, target)
+	#
+	# calculate similarities
+	#
+	
+	index = similarities.MatrixSimilarity(lsi[training])
+	
+	sims = index[vec_lsi] 
+	sims = sorted(enumerate(sims), key=lambda item: -item[1])
 
+	#
+	# print results
+	#
+	
+	for result in sims:
+	   (x, y) = result
+	
+	   print  x, y
+	
 #
-# load data from training program
+# call function main as default action
 #
 
-logging.info("source=" + source)
-
-# dictionary
-
-file_dict = os.path.join(dir_source, 'dictionary')
-dictionary = corpora.Dictionary.load(file_dict)
-
-# corpus
-
-file_corpus = os.path.join(dir_source, 'corpus.mm')
-corpus = corpora.MmCorpus(file_corpus)
-
-# create lsi model
-
-lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=topics)
-
-#
-# load query
-#
-
-logging.info("target=" + target + "; unit id=" + str(unit_id))
-
-listing = os.listdir(os.path.join(dir_target, 'target'))
-listing = [sample for sample in listing if not sample.startswith('.')]
-
-f = open(os.path.join(dir_target, 'target', listing[unit_id]))
-doc = f.read()
-
-vec_bow = dictionary.doc2bow(doc.lower().split())
-
-vec_lsi = lsi[vec_bow] # convert the query to LSI space
-
-#
-# calculate similarities
-#
-
-index = similarities.MatrixSimilarity(lsi[corpus])
-
-sims = index[vec_lsi] 
-sims = sorted(enumerate(sims), key=lambda item: -item[1])
-
-#
-# print results
-#
-
-for result in sims:
-   (x, y) = result
-
-   print  x, y
-
+if __name__ == '__main__':
+    main()

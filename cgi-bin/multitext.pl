@@ -1,35 +1,180 @@
-#! /opt/local/bin/perl5.12
-
-# the line below is designed to be modified by configure.pl
-
-use lib '/Users/chris/Desktop/tesserae/perl';	# PERL_PATH
+#!/usr/bin/env perl
 
 #
 # multitext.pl
 #
-# the goal of this script is to check the results of 
-# a previous tesserae search against all the other
-# texts to see whether the allusions discovered 
-# exist elsewhere in the corpus as well.
+=head1 NAME
+
+index_multi.pl - index texts for multi-text searching
+
+=head1 SYNOPSIS
+
+perl index_multi.pl [options] TEXT [TEXT2 [...]]
+
+=head1 DESCRIPTION
+
+The goal of this script is to check the results of  a previous tesserae search against all the other texts to see whether the allusions discovered  exist elsewhere in the corpus as well.
+
+Command-line use is something like this:
+
+	perl cgi-bin/multitext.pl tesresults --include cicero.in_catilinam
+	
+	
+This should compare a set of results against cicero's speech against Catiline. The results will be stored inside the directory of match results specified by 'tesresults' (replace with the name of your results folder).
+
+=head1 OPTIONS AND ARGUMENTS
+
+=over
+
+=item B<--sort>
+
+#
+
+=item B<--page>
+
+# 
+
+=item B<--batch>
+
+
+
+=item B<--quiet>
+
+#
+
+=item B<--session>
+
+Session ID# of a Tesserae search. Normally used by the web interface. Named sessions can be indicated on the command line.
+
+=item B<--include>
+
+#
+
+=item B<--exclude>
+
+#
+
+=item B<--max-processes>
+
+#
+
+=item B<--multi-cutoff>
+
+#
+
+=item B<--list>
+
+#
+
+=item B<--quiet>
+
+Don't print messages to STDERR.
+
+
+=back
+
+=head1 KNOWN BUGS
+
+=head1 SEE ALSO
+
+=head1 COPYRIGHT
+
+University at Buffalo Public License Version 1.0.
+The contents of this file are subject to the University at Buffalo Public License Version 1.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://tesserae.caset.buffalo.edu/license.txt.
+
+Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
+
+The Original Code is name.pl.
+
+The Initial Developer of the Original Code is Research Foundation of State University of New York, on behalf of University at Buffalo.
+
+Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
+
+Contributor(s):
+
+Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
+
+=cut
 
 use strict;
 use warnings;
 
-use CGI qw(:standard);
+#
+# Read configuration file
+#
+
+# modules necessary to read config file
+
+use Cwd qw/abs_path/;
+use File::Spec::Functions;
+use FindBin qw/$Bin/;
+
+# read config before executing anything else
+
+my $lib;
+
+BEGIN {
+
+	# look for configuration file
+	
+	$lib = $Bin;
+	
+	my $oldlib = $lib;
+	
+	my $pointer;
+			
+	while (1) {
+
+		$pointer = catfile($lib, '.tesserae.conf');
+	
+		if (-r $pointer) {
+		
+			open (FH, $pointer) or die "can't open $pointer: $!";
+			
+			$lib = <FH>;
+			
+			chomp $lib;
+			
+			last;
+		}
+									
+		$lib = abs_path(catdir($lib, '..'));
+		
+		if (-d $lib and $lib ne $oldlib) {
+		
+			$oldlib = $lib;			
+			
+			next;
+		}
+		
+		die "can't find .tesserae.conf!\n";
+	}
+
+	$lib = catdir($lib, 'TessPerl');	
+}
+
+# load Tesserae-specific modules
+
+use lib $lib;
+use Tesserae;
+use EasyProgressBar;
+
+# modules to read cmd-line options and print usage
 
 use Getopt::Long;
+use Pod::Usage;
+
+# load additional modules necessary for this script
+
+use CGI qw(:standard);
 use POSIX;
 use Storable qw(nstore retrieve);
-use File::Spec::Functions;
 use File::Path qw(mkpath rmtree);
 use File::Basename;
 
-use TessSystemVars;
-use EasyProgressBar;
-
 # optional modules
 
-use if $ancillary{"Parallel::ForkManager"}, "Parallel::ForkManager";
+my $override_parallel = Tesserae::check_mod("Parallel::ForkManager");
 
 # set autoflush
 
@@ -49,6 +194,9 @@ my $no_cgi = defined($query->request_method()) ? 0 : 1;
 #
 # command-line options
 #
+
+
+my $help = 0;
 
 # print debugging messages to stderr?
 
@@ -87,6 +235,10 @@ my @include = ();
 
 my $max_processes = 0;
 
+# a file containing the list of texts to search
+
+my $list = 0;
+
 #
 # command-line arguments
 #
@@ -98,9 +250,24 @@ GetOptions(
 	'session=s'  => \$session,
 	'exclude=s'  => \@exclude,
 	'include=s'  => \@include,
+	'list'       => \$list,
+	'help'           => \$help,
 	'cutoff=i'   => \$multi_cutoff,
 	'parallel=i' => \$max_processes,
 	'quiet'      => \$quiet );
+
+
+#
+# print usage if the user needs help
+#
+# you could also use perldoc name.pl
+	
+if ($help) {
+
+	pod2usage(1);
+}
+
+
 
 #
 # cgi input
@@ -110,20 +277,21 @@ unless ($no_cgi) {
 	
 	my $query   = new CGI || die "$!";
 
-	$session    = $query->param('session') || die "no session specified from web interface";
+	$session      = $query->param('session') || die "no session specified from web interface";
 	$multi_cutoff = $query->param('mcutoff'); 
-	@include = $query->param('include');
+	@include      = $query->param('include');
+	$list         = $query->param('list');
 
 	print header();
 	
-	my $redirect = "$url_cgi/read_multi.pl?session=$session";
+	my $redirect = "$url{cgi}/read_multi.pl?session=$session";
 	
 	print <<END;
 	
 <html>
 	<head>
 		<title>Multi-text search in progress...</title>
-		<link rel="stylesheet" type="text/css" href="$url_css/style.css" />
+		<link rel="stylesheet" type="text/css" href="$url{css}/style.css" />
 		<meta http-equiv="Refresh" content="0; url='$redirect'">
 	</head>
 	<body>
@@ -134,13 +302,14 @@ unless ($no_cgi) {
 	
 END
 
+	$quiet = 1;
 }
 
 my $file;
 
 if (defined $session) {
 
-	$file = catdir($fs_tmp, "tesresults-" . $session);
+	$file = catdir($fs{tmp}, "tesresults-" . $session);
 }
 else {
 	
@@ -197,6 +366,19 @@ my $total_matches = $meta{TOTAL};
 
 my $comments = $meta{COMMENT};
 
+#
+# add source and target to exclude list
+# 
+
+# Fix bug depriving filenames of .part extensions (JG 11/20/2014)
+my $target_c = $target;
+my $source_c = $source;
+
+for my $text ($target_c, $source_c) {
+	
+	$text =~ s/\.part\..*//;
+	push @exclude, $text;
+}
 
 #
 # load texts
@@ -204,12 +386,12 @@ my $comments = $meta{COMMENT};
 
 # abbreviations of canonical citation refs
 
-my $file_abbr = catfile($fs_data, 'common', 'abbr');
+my $file_abbr = catfile($fs{data}, 'common', 'abbr');
 my %abbr = %{ retrieve($file_abbr) };
 
 # language of input texts
 
-my $file_lang = catfile($fs_data, 'common', 'lang');
+my $file_lang = catfile($fs{data}, 'common', 'lang');
 my %lang = %{retrieve($file_lang)};
 
 # read source text
@@ -219,7 +401,7 @@ unless ($quiet) {
 	print STDERR "reading source data\n";
 }
 
-my $file_source = catfile($fs_data, 'v3', $lang{$source}, $source, $source);
+my $file_source = catfile($fs{data}, 'v3', $lang{$source}, $source, $source);
 
 my @token_source   = @{ retrieve("$file_source.token")          };
 my @unit_source    = @{ retrieve("$file_source.${unit}")        };
@@ -232,7 +414,8 @@ unless ($quiet) {
 	print STDERR "reading target data\n";
 }
 
-my $file_target = catfile($fs_data, 'v3', $lang{$target}, $target, $target);
+
+my $file_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target);
 
 my @token_target   = @{ retrieve("$file_target.token")          };
 my @unit_target    = @{ retrieve("$file_target.${unit}")        };
@@ -240,8 +423,13 @@ my %index_target   = %{ retrieve("$file_target.index_$feature") };
 
 # get the list of all the other texts in the corpus
 
-my @textlist = @{get_textlist($target, $source)};
-
+### I can't understand why you would build a list of all other texts, or why you would do it this way. Code appears vestigial; doesn't actually work. (JG 11/20/2014)
+my @textlist = @{textlist($target, $source, \@include, \@exclude, $list)};
+print STDERR "Textlist subroutine complete. List: @textlist";
+#This is how the textlist should be built (using the existing subroutine) ––JG 11/20/2014
+#if ($list) {
+#	@textlist = &parse_list;
+#}
 # create a directory for multi search data
 
 my $multi_dir = catdir($file, "multi");
@@ -264,8 +452,8 @@ print <<END unless ($no_cgi);
 
    	<p>
 			Your results are done!  If you are not redirected automatically, 
-			<a href="$url_cgi/read_multi.pl?session=$session">Click here</a> to proceed.
-	</p>
+			<a href="$url{cgi}/read_multi.pl?session=$session">Click here</a> to proceed.
+		</p>
 	</div>
 </body>
 </html>
@@ -277,38 +465,59 @@ END
 # subroutines
 #
 
-sub get_textlist {
+sub textlist {
 	
-	my ($target, $source) = @_[0,1];
+	my ($target, $source, $include, $exclude, $list) = @_;
 	
 	for ($target, $source) { s/[\._]part[\._].*// }
 
-	my $directory = catdir($fs_data, 'v3', $lang{$target});
+	my $all_texts = Tesserae::get_textlist($lang{$target}, -no_part=>1);
 
-	opendir(DH, $directory);
-	
-	my @all_texts = grep {/^[^.]/ && ! /[\._]part[\._]/} readdir(DH);
-	
-	closedir(DH);
-	
-	if (@include) {
-	
-		@all_texts = @{TessSystemVars::intersection(\@include, \@all_texts)};
-	}
+	print STDERR "All texts: @{$all_texts}";
+
 	
 	my @textlist;
 	
-	for my $text (@all_texts) {
-
-      next if $text eq $target;
-      next if $text eq $source;
-
-      next if grep { $_ eq $text } @exclude;
-
-      push @textlist, $text;
-   	}
+	if ($list) {
+		#@textlist = @{Tesserae::intersection($all_texts, parse_list($file))};
+	
+		@textlist = @{parse_list($file)};
+		
+	}
+	elsif (@$include) {
+	
+		@textlist = @{Tesserae::intersection($all_texts, $include)};
+	}
+	else {
+	
+		@textlist = @$all_texts;
+	}
+		
+	@textlist = grep {my $test = $_; ! grep {$_ eq $test} @exclude} @textlist;
 	
 	return \@textlist;
+}
+
+sub parse_list {
+
+	my $file = shift;
+	my $file_list = catdir($file, '.multi.list');
+	
+	print STDERR "List file: $file_list\n";	
+
+	open (FH, "<:utf8", $file_list) or die "can't open list $file_list: $!";
+	
+	my @all_texts;
+	
+	while (my $line = <FH>) {
+		
+		if ($line =~ /(\S+)/) {
+			
+			push @all_texts, $1;
+		}
+	}
+	print "Text array size: " . scalar (@all_texts) . "\n";
+ 	return \@all_texts;
 }
 
 sub search_multi {
@@ -336,7 +545,7 @@ sub search_multi {
 	}
 	else {
 	
-		print "<p>parsing the intitial search...\n";
+		print "<p>parsing the intitial search...</p>\n";
 		
 		$pr = HTMLProgress->new(scalar(keys %match_target));
 		
@@ -354,7 +563,7 @@ sub search_multi {
 			my $target_pairs = unique_keypairs($match_target{$unit_id_target}{$unit_id_source});
 			my $source_pairs = unique_keypairs($match_source{$unit_id_target}{$unit_id_source});
 			
-			my @pairs = @{TessSystemVars::intersection($target_pairs, $source_pairs)};
+			my @pairs = @{Tesserae::intersection($target_pairs, $source_pairs)};
 			
 			# add this parallel to the index under each pair
 			
@@ -402,7 +611,7 @@ sub search_multi {
 			print sprintf("[%i/%i] checking %s\n", $i+1, scalar(@textlist), $other);
 		}
 
-		my $file = catfile($fs_data, 'v3', $lang{$target}, $other, $other);
+		my $file = catfile($fs{data}, 'v3', $lang{$target}, $other, $other);
 		
 		my %index_other = %{ retrieve("$file.multi_${unit}_${feature}") };
 		my @unit_other  = @{ retrieve("$file.$unit") };
