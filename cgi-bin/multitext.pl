@@ -370,7 +370,11 @@ my $comments = $meta{COMMENT};
 # add source and target to exclude list
 # 
 
-for my $text ($target, $source) {
+# Fix bug depriving filenames of .part extensions (JG 11/20/2014)
+my $target_c = $target;
+my $source_c = $source;
+
+for my $text ($target_c, $source_c) {
 	
 	$text =~ s/\.part\..*//;
 	push @exclude, $text;
@@ -410,6 +414,7 @@ unless ($quiet) {
 	print STDERR "reading target data\n";
 }
 
+
 my $file_target = catfile($fs{data}, 'v3', $lang{$target}, $target, $target);
 
 my @token_target   = @{ retrieve("$file_target.token")          };
@@ -418,8 +423,13 @@ my %index_target   = %{ retrieve("$file_target.index_$feature") };
 
 # get the list of all the other texts in the corpus
 
+### I can't understand why you would build a list of all other texts, or why you would do it this way. Code appears vestigial; doesn't actually work. (JG 11/20/2014)
 my @textlist = @{textlist($target, $source, \@include, \@exclude, $list)};
-
+print STDERR "Textlist subroutine complete. List: @textlist";
+#This is how the textlist should be built (using the existing subroutine) ––JG 11/20/2014
+#if ($list) {
+#	@textlist = &parse_list;
+#}
 # create a directory for multi search data
 
 my $multi_dir = catdir($file, "multi");
@@ -462,12 +472,17 @@ sub textlist {
 	for ($target, $source) { s/[\._]part[\._].*// }
 
 	my $all_texts = Tesserae::get_textlist($lang{$target}, -no_part=>1);
+
+	print STDERR "All texts: @{$all_texts}";
+
 	
 	my @textlist;
 	
 	if ($list) {
+		#@textlist = @{Tesserae::intersection($all_texts, parse_list($file))};
 	
-		@textlist = @{Tesserae::intersection($all_texts, parse_list($file))};
+		@textlist = @{parse_list($file)};
+		
 	}
 	elsif (@$include) {
 	
@@ -488,18 +503,20 @@ sub parse_list {
 	my $file = shift;
 	my $file_list = catdir($file, '.multi.list');
 	
+	print STDERR "List file: $file_list\n";	
+
 	open (FH, "<:utf8", $file_list) or die "can't open list $file_list: $!";
 	
 	my @all_texts;
 	
 	while (my $line = <FH>) {
-	
-		if ($line =~ /(\S+)/) {
 		
+		if ($line =~ /(\S+)/) {
+			
 			push @all_texts, $1;
 		}
 	}
-	
+	print "Text array size: " . scalar (@all_texts) . "\n";
  	return \@all_texts;
 }
 

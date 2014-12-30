@@ -1046,6 +1046,59 @@ sub score_default {
 		
 		$score += $freq;
 	}
+
+
+	#For cross-language matching, include Bamman's p-o-s and treebanking data
+#		my $source_flag = 0;
+#		my $target_flag = 0;
+			
+#		if ($feature =~ 'trans') {
+			
+#			my @syntax_source    = @{ retrieve("$file_source.syntax") };
+#			my @syntax_target    = @{ retrieve("$file_target.syntax") };
+#			my @target_ids = keys %match_target;
+#			my @source_ids = keys %match_source;
+#			my @source_heads;
+#			my @target_heads;
+			
+#			foreach my $token_id_target (@target_ids) {
+#				push (@target_heads, ${$syntax_target[$token_id_target]}{'HEAD'});
+#			}
+#			foreach my $token_id_source (@source_ids) {
+#				push (@source_heads, ${$syntax_target[$token_id_source]}{'HEAD'});
+#			}
+			
+
+#			foreach my $token_id_target (@target_ids) {
+#				foreach my $head_id_target (@target_heads) {
+#					print STDERR "Target matchword: $token_id_target\t";
+#					if (defined $head_id_target) {
+#						print STDERR "head: $head_id_target\n";
+#						if ($token_id_target == $head_id_target) {
+			#				$target_flag = 1;
+#						}
+#					
+#					}
+#				}
+#			}
+			
+#			foreach my $token_id_source (@source_ids) {
+#				foreach my $head_id_source (@source_heads) {
+#					print STDERR "Source matchword: $token_id_source\t";
+#					if (defined $head_id_source) {
+#						print STDERR "head: $head_id_source\n";
+#						if ($token_id_source == $head_id_source) {
+#							$source_flag = 1;
+#						}
+#					}
+#				}
+#			}
+
+			
+
+		#}
+
+
 	
 	for my $token_id_source ( keys %match_source ) {
 
@@ -1064,8 +1117,15 @@ sub score_default {
 	}
 	
 	$score = sprintf("%.3f", log($score/$distance));
-	
-	return $score;
+
+#			if ($source_flag == 1 or $target_flag == 1) {
+			return $score;
+
+#			}
+#			else {
+#			$score = 0;
+#			return $score;
+#			}
 }
 
 
