@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html>
+	<head lang="en-US">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="author" content="Neil Coffee, Jean-Pierre Koenig, Shakthi Poornima, Chris Forstall, Roelant Ossewaarde, James Gawley">
+		<meta name="keywords" content="intertext, text analysis, classics, university at buffalo, latin">
+		<meta name="description" content="Intertext analyzer for Latin texts">
+
+		<link href="/css/style.css" rel="stylesheet" type="text/css"/>
+		<link href="/images/favicon.ico" rel="shortcut icon"/>
+		
+		<script src="/tesserae.js"></script>
+		<script src="/jquery.js"></script>
+		<script type="text/javascript">
+			var is_adv = false
+			function toggle_adv() {
+				if (is_adv) {
+					$(".adv").hide()
+					$("#toggle_adv").text("show advanced")
+				}
+				else {
+					$(".adv").show()
+					$("#toggle_adv").text("hide advanced")
+				}
+				is_adv = ! is_adv
+			}
+			function run_tess_search() {
+				var target = $("#sel_target_parts").val()
+				var source = $("#sel_source_parts").val()
+				var unit = $("#sel_units").val()
+				var feature = $("#sel_features").val()
+				$.getJSON("/cgi-bin/read_table.pl", {
+					source: source,
+					target: target,
+					unit: unit,
+					feature: feature
+				},
+				function(r) {
+					window.location.assign("/cgi-bin/read_bin.pl?session="+r.session)
+				})
+			}
+		</script>
+		
+		<style type="text/css">
+			.adv { display: none; }
+		</style>
+
+		<!--head_insert-->
+
+		<title>Tesserae</title>
+
+	</head>
+	<body>
+
+		<div id="container">
+
+		<div id="header"> 
+		
+			<div id="header_image">
+				<a href="/"><img src="/images/Tesserae.png" alt="Tesserae" width="300"></a>
+			</div>		
+			<div id="nav_sub">
+				<ul>
+					<li><a id="toggle_adv" style="cursor:pointer;" onclick="toggle_adv()">Show Advanced</a></li>
+					<li><a href="/help_adv.php">Instructions</a></li>
+					<li><a href="/sources.php">Sources</a></li>
+					<li><a href="http://tesserae.caset.buffalo.edu/blog/">Research Blog</a></li>
+				</ul>
+			</div>
+	</div>
+	<div id="main">
+		<h1>Welcome</h1>
+		
+		<p>
+			The Tesserae project aims to provide a flexible and robust web interface for exploring intertextual parallels. 
+			Select two poems below to see a list of lines sharing two or more words (regardless of inflectional changes).
+		</p>
+		<p>
+		For explanations of advanced features, see the <a href="/help_advanced.php">Instructions</a> page.
+		</p>
+	
+
+			<table class="input">
+				<tr>
+					<th>Source:</th>
+					<td>
+						<select id="sel_source_langs" class="adv" onchange="get_authors('source');">
+						</select><br />
+						<select id="sel_source_authors" onchange="get_texts('source');">
+						</select><br />
+						<select id="sel_source_texts" onchange="get_parts('source');">
+						</select><br />
+						<select id="sel_source_parts" name="source">
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Target:</th>
+					<td>
+						<select id="sel_target_langs" class="adv" onchange="get_authors('target');">
+						</select><br />
+						<select id="sel_target_authors" onchange="get_texts('target');">
+						</select><br />
+						<select id="sel_target_texts" onchange="get_parts('target');">
+						</select><br />
+						<select id="sel_target_parts" name="target">
+						</select>
+					</td>
+				</tr>
+			</table>
+
+			<div class="adv">
+				<table class="input">
+					<tr>
+						<th>Unit:</th>
+						<td>
+							<select id="sel_units" name="unit">
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>Feature:</th>
+						<td>
+							<select id="sel_features" name="feature">
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>Number of stop words:</th>
+						<td>
+							<select name="stopwords">
+								<option value="0">0</option>
+								<option value="10" selected="selected">10</option>
+								<option value="20">20</option>
+								<option value="30">30</option>
+								<option value="40">40</option>
+								<option value="50">50</option>
+								<option value="100">100</option>
+								<option value="150">150</option>
+								<option value="200">200</option>
+							</select>							
+						</td>
+					</tr>
+					<tr>
+						<th>Stoplist basis:</th>
+						<td>
+							<select name="stbasis">
+								<option value="corpus">corpus</option>
+								<option value="target">target</option>
+								<option value="source">source</option>
+								<option value="both" selected="selected">target + source</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>Score basis:</th>
+						<td>
+							<select name="score">
+								<option value="word">word</option>
+								<option value="stem">stem</option>
+								<option value="feature" selected="selected">feature</option>								
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>Maximum distance:</th>
+						<td>
+							<select name="dist">
+								<option value="999">no max</option>
+								<option value="5">5 words</option>
+								<option value="10" selected="selected">10 words</option>
+								<option value="20">20 words</option>
+								<option value="30">30 words</option>
+								<option value="40">40 words</option>
+								<option value="50">50 words</option>
+							</select>							
+						</td>
+					</tr>
+					<tr>
+						<th>Distance metric:</th>
+						<td>
+							<select name="dibasis">
+								<option value="span">span</option>
+								<option value="span-target">span-target</option>
+								<option value="span-source">span-source</option>
+								<option value="freq" selected="selected">frequency</option>
+								<option value="freq-target">freq-target</option>
+								<option value="freq-source">freq-source</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>Drop scores below:</td>
+						<td>
+							<select name="cutoff">
+								<option value="0">no cutoff</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7" selected="selected">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div style="text-align:center; padding:20px;">
+				<input type="button" value="Compare Texts" id="btnSearch" onclick="run_tess_search();" />
+				<!-- <input type="submit" value="Compare Texts" ID="btnSubmit" NAME="btnSubmit" /> -->
+			</div>
+
+		<script type="text/javascript">
+			get_langs('target', 'la')
+			get_langs('source', 'la')
+		</script>
+	</div>
+	<div id="footer">
+		<div class="footer_icon_left">
+				<img src="/images/ublogo.png" class="logo_wide" alt="UB logo"> <br />
+				<img src="/images/uccs.png" class="logo_wide" alt="UCCS logo"> <br />
+			</div>
+			<div class="footer_icon_right">
+				<img src="/images/neh_logo-light_bg.png" alt="NEH logo" class="logo_wide">
+			</div>
+			<div id="footer_content">
+				<p> 
+					Tesserae is a collaborative project of the 
+					<a href="http://www.buffalo.edu">University at Buffalo</a>'s <br />
+					<a href="http://www.classics.buffalo.edu"><b>Department of Classics</b></a> and
+					<a href="http://linguistics.buffalo.edu"><b>Department of Linguistics</b></a>,<br />
+					and the <a href="http://vast.uccs.edu">VAST Lab</a> of the 
+					<a href="http://www.uccs.edu/">University of Colorado at Colorado Springs</a>.
+				</p>
+  					<p>
+					This project is funded by the
+					<a href="http://www.neh.gov/ODH/ODHUpdate/tabid/108/EntryId/177/Announcing-22-New-Start-Up-Grant-Awards-March-2012.aspx">
+						<b>Office of Digital Humanities</b><br /> 
+						of the <b>National Endowment for the Humanities</b>
+					</a>
+					<br /> and by the 
+					<a href="http://digitalhumanities.buffalo.edu/">
+						<b>Digital Humanities Initiative at Buffalo</b>
+					</a>.<br />
+				</p>
+				<p>	
+					Inquiries or comments about this website should be 
+					directed to <br/>
+					<a href="mailto:ncoffee@buffalo.edu"> <b>Neil Coffee</b></a> |
+  		
+					Department of Classics | 338 MFAC | Buffalo, NY 14261<br />
+
+  						tel: (716) 645-2154 | fax: (716) 645-2225
+				</p>
+			</div>
+		</div>
+		</div> <!-- closes container -->
+	</body>
+</html>
