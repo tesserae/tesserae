@@ -78,7 +78,7 @@
 							<option value="corpus">corpus</option>
 							<option value="target">target</option>
 							<option value="source">source</option>
-							<option value="both">target + source</option>
+							<option value="both" selected="selected">target + source</option>
 						</select>
 					</td>
 				</tr>
@@ -96,9 +96,9 @@
 					<th>Maximum distance:</th>
 					<td>
 						<select name="dist">
-							<option value="999" selected="selected">no max</option>
+							<option value="999">no max</option>
 							<option value="5">5 words</option>
-							<option value="10">10 words</option>
+							<option value="10" selected="selected">10 words</option>
 							<option value="20">20 words</option>
 							<option value="30">30 words</option>
 							<option value="40">40 words</option>
@@ -123,12 +123,12 @@
 					<th>Drop scores below:</td>
 					<td>
 						<select name="cutoff">
-							<option value="0" selected="selected">no cutoff</option>
+							<option value="0">no cutoff</option>
 							<option value="3">3</option>
 							<option value="4">4</option>
 							<option value="5">5</option>
 							<option value="6">6</option>
-							<option value="7">7</option>
+							<option value="7" selected="selected">7</option>
 							<option value="8">8</option>
 							<option value="9">9</option>
 						</select>

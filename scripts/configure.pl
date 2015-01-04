@@ -144,9 +144,11 @@ my %fs = (
 
 	root   => $fs_base,
 	cgi    => catfile($fs_base, 'cgi-bin'),
+   css    => catfile($fs_base, 'css'),
 	data   => catfile($fs_base, 'data'),
 	doc    => catfile($fs_base, 'doc', 'html'),
 	html   => catfile($fs_base, 'html'),
+   image  => catfile($fs_base, 'images'),
 	script => catfile($fs_base, 'scripts'),
 	text   => catfile($fs_base, 'texts'),
 	tmp    => catfile($fs_base, 'tmp')
