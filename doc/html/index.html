@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <title>Tesserae Code Documentation</title>
+      <link rel="stylesheet" href="http://r3_1.tesserae.org/css/doc.css" type="text/css" />
+   </head>
+   <body>
+      <div id="main">
+         <h1>Code Documentation</h1>
+         <p>
+            This document is designed to help users of the home-version of 
+            Tesserae to install, use, and modify the tool as needed. The 
+            project code can be found at <a 
+            href="github.com/tesserae/tesserae">github.com/tesserae/tesserae
+            </a>.
+	      </p>
+         
+         <h2>Navigating the Folders</h2>
+	      <p>
+            <b>cgi-bin:</b> This folder contains scripts that are read when
+            finding and displaying search results online. The scripts read the
+            user’s specified target and source text data, identify meaningful 
+            instances of intertextuality, and display the results online. 
+            These scripts make up the core part of a Tesserae search request.
+         </p>
+         <p>
+            <b>css:</b> This folder contains files that set the environment 
+            (such as color, font, spacing, etc.) for search results displayed
+            online.
+         </p>
+         <p>
+            <b>data</b>: This folder contains permanent data generated in the 
+            install process.
+         </p>
+         <ul>
+            <li>
+               The batch folder is populated by one of the steps in the batch
+               processing system, which allows multiple features to be run at 
+               once.
+            </li>
+            <li>
+               The bench folder contains pre-run data for test sets, 
+               Aeneid/Iliad and BC/Aeneid. The common folder contains
+               frequently used files such as Greek and Latin dictionaries, 
+               tools for recognizing and storing word stems during a search, 
+               abbreviation lists, stop words lists, etc. Many scripts in the 
+               Tesserae program access these files regularly. 
+            </li>
+            <li>
+               The synonymy folder contains files with Latin and Greek synonym
+               lists from the New Testament comparisons. These files are used
+               by the trans1 and trans2 features.
+            </li>
+            <li>
+               The v3 folder (referring to version three of the Tesserae
+               project) contains the core data files for individual texts. 
+               After running the full install process as detailed above, the
+               user should see at least two subfolders here, grc and la.
+            </li>
+            <li>
+               The Greek and Latin folders contain a large number of folders
+               organized by author in the format author.name_of_work. Each work
+               has nine specific data files as follows:
+               <ul>
+                  <li>
+                     author.name_of_work.freq_score_stem – Each stem in the
+                     text is stored with a frequency statistic calculated by
+                     the number of times that stem appears in that author’s 
+                     corpus divided by the total number of stems in the 
+                     author’s corpus.
+                  </li>
+                  <li>
+                     author.name_of_work.freq_score_word – Each exact word in
+                     the text is stored with a frequency statistic calculated
+                     by the number of times that exact word appears in that 
+                     author’s corpus divided by the total number of words in
+                     the author’s corpus.
+                  </li>
+                  <li>
+                     author.name_of_work.freq_stop_stem – Frequency 
+                     statistics for stop word stems (ie, common stems that are
+                     not considered to make meaningful allusions).
+                  </li>
+                  <li>
+                     author.name_of_work.freq_stop_word – Frequency statistics
+                     for exact stop words (ie, common words that are not 
+                     considered to make meaningful allusions).
+                  </li>
+                  <li>
+                     author.name_of_work.index_stem – An index of each stem 
+                     and its location in the text.
+                  </li>
+                  <li>
+                     author.name_of_work.index_word – An index of each exact
+                     word and its location in the text.
+                  </li>
+                  <li>
+                     author.name_of_work.line  – A hash of the lines in 
+                     which each stem appears.
+                  </li>
+                  <li>
+                     author.name_of_work.phrase – A hash of the phrases 
+                     (sentences) in which each stem appears.
+                  </li> 
+                  <li>
+                     author.name_of_work.token – A hash of the locations of
+                     each word as it appears with its original markers such
+                     as capitalization.
+                  </li>
+               </ul>
+            </li>
+         </ul>
+         <p>
+            <b>doc</b>: This folder contains files with project documentation
+            and user instructions.
+         </p>
+         <p>
+            <b>html</b>: This folder contains files that run the web interface
+            of the Tesserae home page.
+         </p>
+         <p>
+            <b>images</b>: This folder contains a collection of frequently
+            used pictures such as logos, web banners, etc.
+         </p>
+         <p>
+            <b>scripts</b>:
+            <ul>
+
+<li><a href='http://r3_1.tesserae.org/doc/3gr.display.pl.html'>3gr.display.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/3gr.init.pl.html'>3gr.init.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/3gr.session.pl.html'>3gr.session.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/add_col_stem.pl.html'>add_col_stem.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/add_column.pl.html'>add_column.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/ana.line.pl.html'>ana.line.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/ana.session.pl.html'>ana.session.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/append_bench_scores.pl.html'>append_bench_scores.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/batch.dl.pl.html'>batch.dl.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/batch.enqueue.pl.html'>batch.enqueue.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/batch.kill.pl.html'>batch.kill.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/batch.manage.pl.html'>batch.manage.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/batch.prepare.pl.html'>batch.prepare.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/batch.run.pl.html'>batch.run.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/batch.status.pl.html'>batch.status.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/bigram-freq.pl.html'>bigram-freq.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/bigram_freq.pl.html'>bigram_freq.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/build-queue.pl.html'>build-queue.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/build-rec.pl.html'>build-rec.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/build-stem-cache.pl.html'>build-stem-cache.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/build-trans-cache.pl.html'>build-trans-cache.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/change_begin.pl.html'>change_begin.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/check-recall.pl.html'>check-recall.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/claudian-tess.pl.html'>claudian-tess.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/clean.pl.html'>clean.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/compare_texts.pl.html'>compare_texts.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/configure.pl.html'>configure.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/context.pl.html'>context.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/corpus-stats.pl.html'>corpus-stats.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/cross-language-dictionary-gen.pl.html'>cross-language-dictionary-gen.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/david_johnson.pl.html'>david_johnson.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/doc_gen.pl.html'>doc_gen.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/feat.pl.html'>feat.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/find.pl.html'>find.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/frame.fulltext.pl.html'>frame.fulltext.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/fulltext.pl.html'>fulltext.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/get-data.pl.html'>get-data.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/group.pl.html'>group.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/index_multi.pl.html'>index_multi.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/init.pl.html'>init.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/inspect-bin.pl.html'>inspect-bin.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/install.pl.html'>install.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/knauer.pl.html'>knauer.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/list-modules.pl.html'>list-modules.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/lsa.pl.html'>lsa.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/lsa.samples.pl.html'>lsa.samples.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/lsa.source.pl.html'>lsa.source.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/lsa.target.pl.html'>lsa.target.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/multitext.pl.html'>multitext.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/nb_collate.pl.html'>nb_collate.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/niko_partition.pl.html'>niko_partition.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/parse_niko.pl.html'>parse_niko.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/part.pl.html'>part.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/patch-combining.pl.html'>patch-combining.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/patch-stem-cache.pl.html'>patch-stem-cache.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/patch_greek_index.pl.html'>patch_greek_index.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/plautus.pl.html'>plautus.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/print-stoplist.pl.html'>print-stoplist.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/read_bin.pl.html'>read_bin.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/read_multi.pl.html'>read_multi.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/read_table.pl.html'>read_table.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/score.test.pl.html'>score.test.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/syn-diagnostic-dl.pl.html'>syn-diagnostic-dl.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/syn-diagnostic-index.pl.html'>syn-diagnostic-index.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/syn-diagnostic-lookup.pl.html'>syn-diagnostic-lookup.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/syn-diagnostic-submit.pl.html'>syn-diagnostic-submit.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/syn-diagnostic.pl.html'>syn-diagnostic.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/tess.perl.header.pl.html'>tess.perl.header.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/tess2bow.pl.html'>tess2bow.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/test.pl.html'>test.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/textlist.pl.html'>textlist.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/tf-idf.pl.html'>tf-idf.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/unit_count.pl.html'>unit_count.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/vhost-gen.pl.html'>vhost-gen.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/whitaker.pl.html'>whitaker.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/whoisapache.pl.html'>whoisapache.pl</a></li>
+
+<li><a href='http://r3_1.tesserae.org/doc/xml-structure-guided.pl.html'>xml-structure-guided.pl</a></li>
+            </ul>
+         </p>
+         <p>
+            <b>texts</b>: This folder contains specially formatted text files
+            that are ready to be run in a search. Each work is a separate .tess
+            file; larger works are also split into separate files for each 
+            book. The structure of this folder is parallel to that of the 
+            data/v3 folder.
+         </p> 
+         <p>
+            <b>tmp</b>: This folder is where temporary output is stored. It 
+            behaves like a scratchpad for Tesserae while a search is running.
+            If the user stops a search in the middle of processing, files 
+            besides err.log, output.txt, temporary-session.xml, and tmp.csv
+            (these are all template files) must be deleted.
+         </p>
+         <p>
+            <b>xsl</b>: This folder contains files which read .xml files for
+            web display
+         </p>
+      </div>
+   </body>
+</html>
