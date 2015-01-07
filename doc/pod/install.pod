@@ -1,0 +1,144 @@
+=head1 Tesserae Installation
+
+=head2 Download
+
+Get the code from GitHub:
+
+ % git clone https://github.com/tesserae/tesserae
+
+=head2 Configure
+
+ % cd tesserae
+ % scripts/configure.pl
+ % scripts/install.pl
+
+Under certain circumstances, in particular if you plan on using the web 
+interface via a locally running webserver, you might need to customize the
+configuration. See documentation on F<scripts/configure.pl> for more details.
+
+For a default installation, the following should take care of creating the
+necessary dictionaries and indices for included texts. From here, skip to the
+search documentation (or see F<cgi-bin/read_table.pl>).
+
+For a custom installation, modify the following step-by-step directions as
+necessary. For further details, please see documentation for the respective
+scripts.
+
+=head2 Build dictionaries
+
+ % scripts/build-stem-dict.pl la grc
+ % scripts/patch-stem-dict.pl
+
+=head2 Index texts for the base I<word> feature set.
+
+Texts are stored in the F<texts/> subdirectory. Latin texts are in
+F<texts/la/>, Greek are in F<texts/grc/>, and English texts are in
+F<texts/en/>.
+
+Texts are added to Tesserae using the script F<scripts/v3/add_column.pl>. The
+arguments are the texts to be added. As long as the texts are in a language
+subdirectory, it should know what language they are.
+
+In some cases, a giant text has been split into smaller parts--for example,
+the Aeneid is split into its twelve books. Usually the full text will be in
+the root language directory, and then there will be a subdirectory named for
+the text containing a bunch of F<*.part.tess> files. B<add_column.pl> expects
+this arrangement.
+
+To add the texts that came with Tesserae:
+
+ % scripts/v3/add_column.pl texts/la/*
+ % scripts/v3/add_column.pl texts/grc/*
+ % scripts/v3/add_column.pl texts/en/*
+
+The corpus that comes with Tesserae can take a while to index; use of the 
+B<--parallel> flag can be a big timesaver. See documentation for 
+B<add_column.pl>
+
+=head2 Index additional feature sets
+
+The script F<add_col_stem.pl> is used to index not only stems but in fact all
+feature sets beyond I<word>. In some cases the I<stem> index is used to 
+calculate other features, so it may be necessary to index stems first. E.g.:
+
+ % scripts/v3/add_col_stem.pl texts/la/* texts/grc/*
+ % scripts/v3/add_col_stem.pl --feat 3gr texts/la/* texts/grc/*
+ % scripts/v3/add_col_stem.pl --feat syn texts/la/* texts/grc/*
+
+Again, use B<--parallel> if possible.
+
+=head2 Calculate corpus-wide statistics.
+
+The corpus-wide word and stem counts are used in scoring. Any time new texts
+are added, these stats need to be recalculated. The script is
+F<scripts/v3/corpus-stats.pl>. Its arguments are the language subdirectories
+to process.
+
+ % scripts/v3/corpus-stats.pl grc la en
+
+=head1 Initialize Ancillary Programs
+
+=head2 Multi-text Index
+
+It's necessary to build this index if you want to be able to cross-reference
+your results for a given source and target against the entire corpus after the
+fact. This takes a while and for the moment parallel processing isn't an 
+option.
+
+ % scripts/v3/index-multi.pl la grc
+
+=head2 LSI Index
+
+B<Note:> Topic modelling features require Python and the Gensim package. See
+https://radimrehurek.com/gensim/ and the documentation for (the now mis-named)
+F<scripts/lsa/lsa.train.py> and F<cgi-bin/lsa.search.py>.
+
+ % scripts/lsa/lsa.samples.pl texts/la/*
+ % scripts/lsa/lsa.train.py texts/la/*
+
+=head2 Process benchmark set(s)
+
+ % scripts/benchmark/build-rec.pl
+
+=head2 Tesserae Web Interface
+
+Assuming you're using Apache to serve the site, make sure that you turn on
+the PHP and Perl modules.
+
+Under ideal conditions, you should be able to serve the web interface from
+wherever you've saved the root tesserae directory using a virtual host. The
+script F<scripts/apache2/vhost-gen.pl> should be able to create the necessary
+configuration file. You will have to specify a name for the vhost to
+F<scripts/configure.pl> when you're installing Tesserae. (If you've already
+run F<configure.pl> you should be able to re-run both it and F<install.pl>
+now without affecting the texts you've already ingested, as long as you're
+only modifying the URL parameters and not moving the filesystem paths.)
+
+For example, I call my vhost I<tesserae.org>. In my /etc/hosts file I've made
+this an alias for the localhost. I run configure.pl like this:
+
+ % scripts/configure.pl --url_root http://tesserae.org
+
+Then (on my Mac):
+
+ % scripts/apache2/vhost-gen.pl > tesserae.org
+ % sudo mv tesserae.org /etc/apache2/sites-available/
+ % sudo a2ensite tesserae.org
+ % sudo service apache2 reload
+
+=head2 Create drop-down text lists
+
+After you have run all the Tesserae indexing scripts, you need to add the
+texts to the drop-down lists used by the web interface. These will be created
+in the I<html/> directory. 
+
+ % scripts/textlist.pl la grc
+
+=head2 Start batch daemon
+
+If you want to be able to queue batch runs using the web interface, you have
+to run F<scripts/batch/batch.manage.pl> in the background:
+
+ % scripts/batch/batch.manage.pl &
+
+=cut

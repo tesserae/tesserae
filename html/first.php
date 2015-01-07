@@ -30,8 +30,7 @@
 			</div>		
 			<div id="nav_main">
 				<ul>
-					<li><a href="<?php echo $url_html; ?>">Search</a></li>
-					<li><a href="<?php echo $url_html . "/help.php"; ?>">Help</a></li>
+					<li><a href="<?php echo $url_doc . "/"; ?>">Help</a></li>
 					<li><a href="http://tesserae.caset.buffalo.edu/blog">Blog</a></li>
 
 				</ul>
