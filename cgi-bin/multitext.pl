@@ -423,13 +423,15 @@ my %index_target   = %{ retrieve("$file_target.index_$feature") };
 
 # get the list of all the other texts in the corpus
 
-### I can't understand why you would build a list of all other texts, or why you would do it this way. Code appears vestigial; doesn't actually work. (JG 11/20/2014)
+### Unsure why list of texts needed. Code appears vestigial; doesn't actually work. See alternative below. (JG 11/20/2014)
 my @textlist = @{textlist($target, $source, \@include, \@exclude, $list)};
 print STDERR "Textlist subroutine complete. List: @textlist";
 #This is how the textlist should be built (using the existing subroutine) ––JG 11/20/2014
 #if ($list) {
-#	@textlist = &parse_list;
+#	@textlist = &parse_list;/
 #}
+
+
 # create a directory for multi search data
 
 my $multi_dir = catdir($file, "multi");
