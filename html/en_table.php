@@ -17,6 +17,7 @@
 
 <?php include "first.php"; ?>
 <?php include "nav_search.php"; ?>
+<?php include "nav_lang.php"; ?>
 
 </div>
 <div id="main">

@@ -76,6 +76,21 @@ div#nav_sub
 	text-align: center;
 }
 
+div#nav_sub2
+{
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	padding: auto;
+	height : 29px;
+	line-height : 29px;
+	background : 	#a7b85d;
+	text-transform : uppercase;
+	font-family : "times new roman", serif;
+	text-align: center;
+}
+
+
 div#nav_sub ul
 {
 	margin: 0px;

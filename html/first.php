@@ -28,10 +28,3 @@
 					<img src="<?php echo $url_image . "/Tesserae.png" ?>" alt="Tesserae" width="300">
 				</a>
 			</div>		
-			<div id="nav_main">
-				<ul>
-					<li><a href="<?php echo $url_doc . "/"; ?>">Help</a></li>
-					<li><a href="http://tesserae.caset.buffalo.edu/blog">Blog</a></li>
-
-				</ul>
-			</div>
