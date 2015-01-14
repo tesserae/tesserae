@@ -20,11 +20,11 @@
 <?php include "first.php"; ?>
 <?php include "nav_search.php"; ?>
 </div>
-<?php include "nav_lang.php"; ?>
+
 
 
 <div id="main">
-	
+<?php include "nav_lang.php"; ?>	
 	<h1>Latin Search</h1>
 	
 	<p>
