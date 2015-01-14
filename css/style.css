@@ -78,7 +78,7 @@ div#nav_sub
 
 div#nav_sub2
 {
-	position: absolute;
+	position: static;
 	bottom: 0px;
 	width: 100%;
 	padding: auto;
