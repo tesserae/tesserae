@@ -29,8 +29,9 @@
 	<p>
 		The Tesserae project aims to provide a flexible and robust web interface for exploring intertextual parallels. 
 		Select two poems below to see a list of lines sharing two or more words (regardless of inflectional changes).
-		For explanations of advanced features, see the <br>
-		<a href="<?php echo $url_html . '/help_advanced.php' ?>">Instructions</a> page.
+	</p>
+	<p>	
+		For explanations of advanced features, see the <a href="<?php echo $url_html . '/help_advanced.php' ?>">Instructions</a> page.
 	</p>
 	
 
