@@ -20,6 +20,7 @@
 <?php include "nav_search.php"; ?>
 
 </div>
+<?php include "nav_lang.php"; ?>
 <div id="main">
 	
 	<h1>Greek Search</h1>

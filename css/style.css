@@ -76,6 +76,21 @@ div#nav_sub
 	text-align: center;
 }
 
+div#nav_sub2
+{
+	position: static;
+	bottom: 0px;
+	width: 100%;
+	padding: auto;
+	height : 29px;
+	line-height : 29px;
+	background : 	#a7b85d;
+	text-transform : uppercase;
+	font-family : "times new roman", serif;
+	text-align: center;
+}
+
+
 div#nav_sub ul
 {
 	margin: 0px;
@@ -94,6 +109,28 @@ div#nav_sub li a
 	color: black;
 	text-decoration: none;
 }
+
+
+div#nav_sub2 ul
+{
+	margin: 0px;
+}
+
+div#nav_sub2 ul li
+{
+	list-style-type: none;
+	display: block;
+	display: inline;
+	padding: 0px 20px;
+}
+
+div#nav_sub2 li a
+{
+	color: black;
+	text-decoration: none;
+}
+
+
 
 div#pager
 {

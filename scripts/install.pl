@@ -153,7 +153,7 @@ for my $key (keys %fs_orig) {
 	
 		# dircopy($fs_orig{$key}, $fs{$key});
 		
-		print STDERR "NB: Please copy $fs_orig{$key} => $fs{key} manually!\n";
+		print STDERR "NB: Please copy $fs_orig{$key} => $fs{$key} manually!\n";
 	}
 }
 
@@ -184,6 +184,19 @@ if ($^O ne 'VMS') {
 my $file_script = catfile($fs{script}, 'doc_gen.pl');
 `$secure_perl_path $file_script`;
 
+#
+# create var definition files for php
+#
+
+create_php_defs(catfile($fs{html}, 'defs.php'));
+
+#
+# install documentation
+#
+
+my $file_script = catfile($fs{script}, 'doc_gen.pl');
+$file_script = Tesserae::escape_path($file_script);
+`$Tesserae::perl_path $file_script`;
 
 #
 # subroutines
@@ -216,6 +229,7 @@ sub create_php_defs {
 	my $file = shift;
 
 	open (FH, ">:utf8", $file) or die "can't create file $file: $!";
+
 
 	print STDERR "writing $file\n";
 	

@@ -1,0 +1,88 @@
+=head1 Searching with Tesserae
+
+The process of performing a Tesserae search has two steps, (1) discovery and 
+scoring, and (2) retrieval and display. 
+
+=head2 Discovery and Scoring
+
+First the search script, I<cgi-bin/read_table.pl> is called. This compares 
+two texts, determines which sentences/lines match each other, and saves the
+results as a set of hashs using Storable. One hash stores metadata, three 
+others contain co-ordinated search results:
+
+=over
+
+=item match.source
+
+This holds data about which tokens in the source document were matched.
+
+=item match.target
+
+This holds data about which tokens in the target document were matched.
+
+=item match.score
+
+This contains the scores assigned to each parallel.
+
+=back
+
+These three hashes are build on the same basic structure. The first set of
+keys are unit ids in the source document. They point to anonymous hashes 
+whose keys are unit ids in the target. Thus a reference of the form
+C<$rec{$unit_id_source}{$unit_id_target}> points to the same parallel in all
+three hashes. Let's imagine the contents of these three files are loaded as
+follows: 
+ use Storable;
+ 
+ my %match_score = %{retrieve("match.score")};
+ my %match_source = %{retrieve("match.source")};
+ my %match_target = %{retrieve("match.target")};
+
+Then C<$match_score{$unit_id_source}{$unit_id_target}> will produce the score
+for this particular allusion.
+
+In B<match.source> and B<match.target>, things are a bit more complicated.
+Here, the reference is to an anonymous hash whose keys are token ids in the 
+source or target text, respectively. So 
+C<keys (%{$match.source{$unit_id_source}{$unit_id_target}})>
+will return the list of token ids in the source target that participate in 
+the allusion between a certain unit in the source and target; to get the list
+of tokens in the target text, 
+use C<keys (%{$match.source{$unit_id_source}{$unit_id_target}})>. The next
+anonymous hash has matched features as its keys. Thus,
+C<keys (%{$match_source{$unit_id_source}{$unit_id_target}{$token_id_source}})>
+will produce the list of features on which a particular token was matched.
+The values to this last embedded hash are for the present just placeholders,
+and aren't used for anything.
+
+=head2 Retrieval and Display
+
+In the second step, the script I<read_bin.pl> reads that binary and turns the
+hash into a nice list. It has three different output modes, one produces a
+paged HTML table for the web interface, one creates a sorted CSV, and the
+last just dumps an XML file with all the data.
+
+When the program is run from the web interface, the storable binaries
+produced by I<read_table.pl> are given incremental session numbers as their
+filenames and they're stored in the I<tmp/> directory. If you're running
+Tesserae from the command line, you can give the results file your own name.
+
+=head2 Example
+
+Here's how to run the benchmark search. This checks for allusions to Vergil's
+I<Aeneid> in Book 1 of Lucan's I<Pharsalia>. If everything is working, you
+should end up with a CSV file giving a ranked table of pairs of matching
+phrases from the two texts.
+
+ % cgi-bin/read_table.pl --target lucan.pharsalia.part.1 --source
+vergil.aeneid --unit phrase --bin myresults.bin
+
+ % cgi-bin/read_bin.pl --export csv --rev --sort score myresults.bin >
+myresults.csv
+
+=head2 See also
+
+More details on the available options for these scripts can be found in the
+documentation for the respective scripts.
+
+=cut

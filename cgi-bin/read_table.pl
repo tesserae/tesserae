@@ -1025,6 +1025,8 @@ sub exact_match {
 sub score_default {
 	
 	my ($match_t_ref, $match_s_ref, $distance) = @_;
+	
+	if ($distance == 0) { return -1; }
 
 	my %match_target = %$match_t_ref;
 	my %match_source = %$match_s_ref;
