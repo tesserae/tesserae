@@ -17,9 +17,10 @@
 
 <?php include "first.php"; ?>
 <?php include "nav_search.php"; ?>
-<?php include "nav_lang.php"; ?>
 
 </div>
+<?php include "nav_lang.php"; ?>
+
 <div id="main">
 	
 	<h1>English Search</h1>

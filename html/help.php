@@ -1,9 +1,9 @@
 <?php include "first.php"; ?>
 <?php include "nav_search.php"; ?>
-<?php include "nav_help.php"; ?>
+
 
 			</div>
-
+<?php include "nav_help.php"; ?>
 			<div id="main">
 				<h1>Help</h1>
 				
