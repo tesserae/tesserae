@@ -110,6 +110,28 @@ div#nav_sub li a
 	text-decoration: none;
 }
 
+
+div#nav_sub2 ul
+{
+	margin: 0px;
+}
+
+div#nav_sub2 ul li
+{
+	list-style-type: none;
+	display: block;
+	display: inline;
+	padding: 0px 20px;
+}
+
+div#nav_sub2 li a
+{
+	color: black;
+	text-decoration: none;
+}
+
+
+
 div#pager
 {
 	text-align: center;
