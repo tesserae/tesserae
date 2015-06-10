@@ -197,6 +197,7 @@ if ($help) {
 
 print STDERR "building dictionaries\n";
 
+
 do_cmd("perl " . catfile($fs{script}, 'build-stem-cache.pl '. join(" ", @inst_lang)));
 do_cmd("perl " . catfile($fs{script}, 'patch-stem-cache.pl'));
 
@@ -220,6 +221,7 @@ for my $lang (@inst_lang) {
 		$script = catfile($fs{script}, 'v3', "add_col_stem.pl --feat $feature");
 	
 		do_cmd("perl $script $texts");
+
 	}
 }
 
@@ -230,7 +232,7 @@ print STDERR "done\n\n";
 #
 {
 	print "calculating corpus-wide frequencies\n";
-	
+
 	my $script = catfile($fs{script}, 'v3', 'corpus-stats.pl');
 	
 	my $features = join(" ", map {"--feat $_"} @inst_feature);

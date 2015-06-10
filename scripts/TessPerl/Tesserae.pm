@@ -62,6 +62,8 @@ our %feature_score = (
 	'stem'   => 'stem',
 	'trans1' => 'stem',
 	'trans2' => 'stem',
+	'trans2mws' => 'stem',
+	'g_l' => 'stem',
 	'syn'    => 'syn',
 	'3gr'    => '3gr'
 );

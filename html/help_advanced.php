@@ -1,8 +1,9 @@
 <?php include "first.php"; ?>
-<?php include "nav_help.php"; ?>
+<?php include "nav_search.php"; ?>
+
 
 			</div>
-
+<?php include "nav_help.php"; ?>
 			<div id="main">
 				<h1>Help</h1>
 				
@@ -70,6 +71,50 @@
 					If you set the stoplist basis to “target,” then matches against 
 					the top 10 most frequent headwords in the target text will be ignored.
 				</p>
+
+				<h3>Score Basis</h3>
+				
+				<p>
+					The scoring system depends on measurements of each matchword's frequency.
+					This frequency measurement can be based on the number of appearances of the 
+					exact form which the matchword takes (the default, or 'word' setting), or it can reflect
+					all the possible inflections of the word (the 'stem' setting). To use the
+					setting pre-determined to work best with your selected feature set, 
+					choose 'Score basis: feature.'
+					
+				</p>
+
+				<h3>Frequency Basis</h3>
+				
+				<p>
+					Scores assigned during Tesserae search depend in part on the frequency
+					of constituent matchwords. These frequency values can be based on the
+					appearance of a matchword in the target and source texts (this is the default,
+					or 'texts' setting) or they can reflect the appearance of a matchword in the
+					corpus as a whole (the 'corpus' setting).
+				</p>
+				<p>
+					It is important to note that, because semantic-based matching is now incorporated
+					into Tesserae searches, sometimes a matchword in the target text is not
+					based on the same lemma as its corresponding matchword in the source text. For this reason, 
+					the frequencies of each word in a match are considered separately. When frequency scores are
+					based on 'texts,' then matchwords in the 
+					target text are scored according to their frequency in the target text, and
+					each corresponding matchword from the source text is scored according to its
+					frequency in the source. If 'corpus' is selected instead, each word is examined according
+					to its rate of appearance in the corpus of texts in the appropriate language.
+				</p>	
+				<p>
+					For example, in a cross-language search the Latin word 'maior' in the Aeneid might be linked 
+					to the Greek word 'μέγας' in the Iliad.					
+					If the frequency basis is set to 'corpus', then the frequency of 'maior' is looked up in the 
+					corpus of all Latin texts, and the frequency of 'μέγας' is looked up in the corpus of Greek texts.
+					If the frequency basis were set to 'texts',
+					the frequency of 'maior' would be considered within the Aeneid while the frequency of 'μέγας' 
+					would be considered within the Iliad.
+				</p>
+
+
 
 				<h3>Maximum Distance</h3>
 				

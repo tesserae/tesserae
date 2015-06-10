@@ -1,0 +1,95 @@
+TARGET_BOOK	TARGET_LINE	TARGET_TEXT	SOURCE_BOOK	SOURCE_LINE	SOURCE_TEXT	TYPE	AUTH
+1	1		1	1			Knauer
+1	4	Iunonis ob iram	18	119	χόλος Ἥρης		Knauer
+1	4	Iunonis ob iram	5	892	μένος ... Ἥρης		Knauer
+1	7	altae moenia Romae	16	698	ὑψίπυλον Τροίην		Knauer
+1	8	quo numine	1	8	τίς ... θεῶν		Knauer
+1	8	Musa … mihi memora	2	484	ἔσπετε ... μοι Μοῦσαι		Knauer
+1	9	dolens regina deum	1	9	Διὸς υἱός … χολωθεὶς		Knauer
+1	9	dolens regina deum	4	24	Ἥρῃ … χόλον		Knauer
+1	9	dolens regina deum	8	461	Ἥρῃ … χόλον		Knauer
+1	9	dolens regina deum	5	759	ἐμοὶ δ᾽ ἄχος		Knauer
+1	9	dolens regina deum	18	119	ἀργαλέος χόλος Ἥρης		Knauer
+1	10	tot adire labores	6	77	πόνος ... μάλιστα ... ἐγκέκλιται		Knauer
+1	10	casus ... labores ... impulerit	12	348	πόνος ... νεῖκος … ὄρωρεν		Knauer
+1	10	labores	22	11	πόνος		Knauer
+1	12	urbs … fuit	6	152	ἔστι πόλις		Knauer
+1	15	terris magis omnibus … coluisse	4	51	πολὺ φίλταταί ... πόληες		Knauer
+1	14	dives opum	5	544	ἀφνειὸς βιότοιο		Knauer
+1	14	asperrima	21	541	καρχαλέοι		Knauer
+1	15	terris … coluisse	4	46	πόληες ... Τιέσκετο		Knauer
+1	15	magis omnibus unam ... coluisse	3	388	μάλιστα δέ μιν φιλέεσκε		Knauer
+1	15	magis omnibus unam ... coluisse	5	61	ἔξοχα μιν ἐφίλατο		Knauer
+1	15	magis omnibus unam ... coluisse	20	304	ὃν ... περὶ πάντων φίλατο		Knauer
+1	15	magis omnibus unam	12	243	εἷς ... ἄριστος		Knauer
+1	17	hoc regnum	13	21	ἔνθα δέ οἱ κλυτὰ δώματα		Knauer
+1	17	hic currus	13	23	ἔνθ᾽... ὄχεσφι		Knauer
+1	17	currus	5	722	ὀχέεσσι		Knauer
+1	17	currus … regnum	5	193	μεγάροισι … δίφροι		Knauer
+1	17	currus	8	441	ἅρματα		Knauer
+1	18	fata	18	120	μοῖρα		Knauer
+1	18	si	3	450	εἴ		Knauer
+1	18	si...sinant	13	807	εἴ...εἴξειαν		Knauer
+1	21	late regem	1	102	εὐρὺ κρείων		Knauer
+1	24	caris	4	51	φίλταταί		Knauer
+1	25	irarum	1	224	χόλοιο		Knauer
+1	25	etiam...irarum	9	678	χόλον...ἔτι		Knauer
+1	25	irarum	16	206	χόλος		Knauer
+1	25	saevique dolores	4	169	αἰνὸν ἄχος		Knauer
+1	26	repostum	4	57	θέμεναι		Knauer
+1	26		1	80			Knauer
+1	26		1	82			Knauer
+1	26	alta mente	19	125	φρένα...βαθεῖαν		Knauer
+1	27	Paridis	24	28	Ἀλεξάνδρου		Knauer
+1	28	Ganymedis	20	232	Γανυμήδης		Knauer
+1	28	rapti	20	234	ἀνηρείψαντο		Knauer
+1	28	genus	5	265	γενεῆς		Knauer
+1	28	Ganymedis	5	266	Γανυμήδεος		Knauer
+1	35	vela	1	481	ἱστίον		Knauer
+1	35	ruebant	1	483	ἔθεεν		Knauer
+1	35	aere	1	482	στείρῃ		Knauer
+1	36	Juno	14	153	Ἥρη		Knauer
+1	37		14	159			Knauer
+1	37	mene (ne)	11	403	ἄρα		Knauer
+1	39	exurere	11	525	ὀρίνονται		Knauer
+1	39	exurere classem	14	47	νῆας ἐνιπρῆσαι		Knauer
+1	41		20	87			Knauer
+1	42	Iovis	14	157	Ζῆνα		Knauer
+1	42	ipsa	5	735	αὐτὴ		Knauer
+1	42	ipsa	8	386	αὐτὴ		Knauer
+1	42	ipsa	15	229	γ᾽		Knauer
+1	44	expirantem...flammas	6	182	ἀποπνείουσα πυρὸς		Knauer
+1	46	ego quae divum	18	364	ἔγωγ᾽ ἥ...θεάων		Knauer
+1	47	et...et...coniunx...gente	4	60	γενεῇ τε καὶ...παράκοιτις		Knauer
+1	47	et...et...coniunx...gente	18	365	γενεῇ τε καὶ...παράκοιτις		Knauer
+1	47	soror et coniunx	18	356	κασιγνήτην ἄλοχόν τε		Knauer
+1	47	soror et coniunx	16	432	κασιγνήτην ἄλοχόν τε		Knauer
+1	47		18	367			Knauer
+1	48	quisquam numen...adoret	7	447	τις νόον...μῆτιν ἐνίψει		Knauer
+1	50	corde	9	646	κραδίη		Knauer
+1	50	corde volutans	21	137	ὅρμηνεν...θυμὸν		Knauer
+1	52	venit	14	230	εἰσαφίκανε		Knauer
+1	53	sonoras	1	157	ἠχήεσσα		Knauer
+1	60	pater	1	544	πατὴρ		Knauer
+1	64	tum...vocibus	14	232	ἔπος...ἔκ		Knauer
+1	65	divom pater atque hominum rex	14	233	ἄναξ...τε θεῶν...τ᾽ ἀνθρώπων		Knauer
+1	65	namque tibi	24	334	σοὶ γάρ τε		Knauer
+1	65	namque tibi	4	286	σφῶϊ...γὰρ		Knauer
+1	65	namque	7	328	γὰρ		Knauer
+1	65	divom pater atque hominum	1	544	πατὴρ ἀνδρῶν τε θεῶν τε		Knauer
+1	65	divom pater atque hominum	8	49	πατὴρ ἀνδρῶν τε θεῶν τε		Knauer
+1	65	divom pater atque hominum	15	12	πατὴρ ἀνδρῶν τε θεῶν τε		Knauer
+1	71	nymphae	14	267	Χαρίτων		Knauer
+1	71	sunt mihi	9	144	μοί εἰσι		Knauer
+1	73	conubio...dicabo	14	268	ὀπυιέμεναι...κεκλῆσθαι		Knauer
+1	74	omnis...annos	14	276	ἤματα πάντα		Knauer
+1	74		8	304			Knauer
+1	76	contra	3	203	ἀντίον		Knauer
+1	76	quid optes	14	195	ὅ τι φρονέεις		Knauer
+1	76	quid optes	18	426	ὅ τι φρονέεις		Knauer
+1	78	sceptra	2	86	σκηπτοῦχοι		Knauer
+1	84	mari	9	4	πόντον		Knauer
+1	85	ruunt	2	146	ἐπαΐξας		Knauer
+1	85	Eurusque Notusque	2	145	Εὖρός τε Νότος τε		Knauer
+1	86	fluctus	9	6	κῦμα		Knauer
+1	91	intentant...mortem	15	628	θανάτοιο φέρονται		Knauer

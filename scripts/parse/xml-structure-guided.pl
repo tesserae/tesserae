@@ -5,9 +5,16 @@ use Term::UI;
 use Term::ReadLine;
 
 use XML::LibXML;
-use utf8;
+use Getopt::Long;
 
 binmode STDOUT, ":utf8";
+
+# flag for betacode text (e.g. Perseus Greek texts)
+my $beta_input;
+
+GetOptions(
+   "betacode" => \$beta_input
+);
 
 #
 # set up terminal interface
@@ -430,6 +437,10 @@ for my $f (0..$#files) {
 			$chunk =~ s/\s+$//;
 			
 			next unless $chunk =~ /\S/;
+         
+         if ($beta_input) {
+            $chunk = beta_to_uni($chunk);
+         }
 			
 			my $tag = $text_name . " " . join(".", map {$$_{count}} @div);
 			

@@ -16,13 +16,7 @@
 				<p>
 					Cross-references discovered parallels against the rest of the corpus.
 				</p>
-				
-				<h2><a href="<?php echo $url_html.'/cross.php'; ?>">Latin-Greek search</a></h2>
-					
-				<p>
-					This feature attempts to match Latin targets to Greek sources, using two different experimental methods.
-				</p>
-				
+								
 				<h2><a href="<?php echo $url_cgi.'/lsa.pl'; ?>">LSA Search Tool</a></h2>
 				
 				<p>
@@ -47,13 +41,7 @@
 					Allows you to perform a search of Lucan's Pharsalia Book 1 against Vergil's Aeneid,
 					and compares the results against our 3000-parallel benchmark set.
 				</p>
-
-				<h2><a href="<?php echo $url_cgi.'/syn-diagnostic.pl'; ?>">Greek-Latin dictionary diagnostic tool</a></h2>
-
-				<p>
-					Compares the two translation feature sets against the lexicon for a given Greek text,
-					shows purported translations for those Greek stems that have them in either feature set.
-				</p>
+            
 			</div>
 		
 			<?php include "last.php"; ?>
