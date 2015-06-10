@@ -10,6 +10,8 @@
 	$features = array(
 		'word' => 'exact word',
 		'stem' => 'lemma',
+		'syn'  => 'synonym',
+		'syn_lem'  => 'lemma + synonym',		
 		'3gr'  => 'character 3-gram'
 	);
 	$selected_feature = 'stem';
