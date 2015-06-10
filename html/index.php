@@ -10,7 +10,7 @@
 	$features = array(
 		'word' => 'exact word',
 		'stem' => 'lemma',
-		'syn'  => 'synonyms with lemmatization',
+		'syn'  => 'synonyms',
 		'syn_lem'  => 'lemma + synonyms',		
 		'3gr'  => 'character 3-gram'
 	);

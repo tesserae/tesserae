@@ -8,22 +8,26 @@
 		'source' => 'homer.iliad'
 	);
 	$features = array(
-		'trans1' => 'parallel texts method',
-		'trans2mws' => 'dictionary method'
+		'g_l' => 'Greek-Latin dictionary'
 	);
-	$selected_feature = 'trans1';
+	$selected_feature = 'g_l';
 ?>
 
 <?php include "first.php"; ?>
 <?php include "nav_search.php"; ?>
 
 </div>
+<?php include "nav_lang.php"; ?>
 <div id="main">
 	
 	<h1>Latin-Greek Search</h1>
 	
 	<p>
-		This search is experimental.  Results may not be consistent.
+		To learn more about the Latin-Greek search method, visit the 
+		<a href="http://tesserae.caset.buffalo.edu/blog/latin-greek-search-competing-methods/" target="_blank">blog</a>.<br>
+				For explanations of advanced features, see the 
+		<a href="<?php echo $url_html . '/help_advanced.php' ?>">Instructions</a> page.
+
 	</p>	
 
 	<script src="<?php echo $url_html . '/tesserae.js' ?>"></script>

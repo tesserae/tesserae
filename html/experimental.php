@@ -16,13 +16,7 @@
 				<p>
 					Cross-references discovered parallels against the rest of the corpus.
 				</p>
-				
-				<h2><a href="<?php echo $url_html.'/cross.php'; ?>">Latin-Greek search</a></h2>
-					
-				<p>
-					This feature attempts to match Latin targets to Greek sources, using two different experimental methods.
-				</p>
-				
+								
 				<h2><a href="<?php echo $url_cgi.'/lsa.pl'; ?>">LSA Search Tool</a></h2>
 				
 				<p>

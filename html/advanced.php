@@ -93,6 +93,14 @@
 					</td>
 				</tr>
 				<tr>
+					<th>Frequency basis:</th>
+					<td>
+						<select name="freq_basis">
+							<option value="text" selected="selected">texts</option>
+							<option value="corpus">corpus</option>
+						</select>
+					</td>
+				</tr>				<tr>
 					<th>Maximum distance:</th>
 					<td>
 						<select name="dist">
