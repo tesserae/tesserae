@@ -836,7 +836,6 @@ sub process_file_list {
 
 		$list_out{$name} = $file_in;
 	}
-
     #Remove erroneously added blank file names.
 
     for my $key (keys %list_out) {

@@ -539,7 +539,8 @@ sub print_results {
 				print "<input type=\"hidden\"   name=\"la_$subscript\" value=\"$value\">\n";
 	
 				if ($head) {
-					print "<input type=\"checkbox\" name=\"v_$subscript\">valid</input>\n";
+					print "<input type=\"checkbox\" name=\"v_$subscript\">valid</input> ";
+					print "<input type=\"checkbox\" name=\"w_$subscript\">pos</input>\n";
 				}
 				
 				print "</div>\n";

@@ -197,6 +197,7 @@ else {
 	
 		$param{"la_$_"} = $cgi->param("la_$_");
 		$param{"v_$_"} = $cgi->param("v_$_");
+		$param{"w_$_"} = $cgi->param("w_$_");
 	}
 
 	$html = 1;
@@ -265,6 +266,10 @@ sub validate_input {
 	
  		$param{$_} = ($param{$_} ? 1 : 0);
 	}
+	for (grep {/^w_/} keys %param) {
+	
+ 		$param{$_} = ($param{$_} ? 1 : 0);
+	}	
 	for (grep {/^la_/} keys %param) {
 	
  		$param{$_} = 'NULL' unless defined $param{$_};
@@ -322,6 +327,18 @@ sub init_db {
 				v_1b  int,
 				v_2a  int,
 				v_2b  int,
+				v_3a  int,
+				v_3b  int,
+				v_4a  int,
+				v_4b  int,
+				w_1a  int,
+				w_1b  int,				
+				w_2a  int,
+				w_2b  int,
+				w_3a  int,
+				w_3b  int,
+				w_4a  int,
+				w_4b  int,
 				auth char(2)
 			);'
 		);
