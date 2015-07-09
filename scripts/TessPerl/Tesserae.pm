@@ -61,7 +61,7 @@ our %feature_score = (
 	'word'   => 'word',
 	'stem'   => 'stem',
 	'g_l' => 'stem',
-	'syn'    => 'syn',
+	'syn'    => 'stem',
 	'syn_lem'    => 'stem',	
 	'3gr'    => '3gr'
 );
