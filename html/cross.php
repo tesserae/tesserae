@@ -20,7 +20,7 @@
 <?php include "nav_lang.php"; ?>
 <div id="main">
 	
-	<h1>Latin-Greek Search</h1>
+	<h1>Greek-To-Latin Search</h1>
 	
 	<p>
 		To learn more about the Latin-Greek search method, visit the 

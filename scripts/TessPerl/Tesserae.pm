@@ -56,8 +56,8 @@ unless ($override_stemmer) {
 
 our %feature_dep = (
 	
-	'trans1' => 'stem',
-	'trans2' => 'stem',
+	'g_l' => 'stem',
+	'syn_lem' => 'stem',
 	'syn'    => 'stem'
 );
 
@@ -67,11 +67,9 @@ our %feature_score = (
 
 	'word'   => 'word',
 	'stem'   => 'stem',
-	'trans1' => 'stem',
-	'trans2' => 'stem',
-	'trans2mws' => 'stem',
 	'g_l' => 'stem',
-	'syn'    => 'syn',
+	'syn'    => 'stem',
+	'syn_lem'    => 'stem',	
 	'3gr'    => '3gr'
 );
 
