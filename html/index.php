@@ -11,10 +11,11 @@
 		'word' => 'exact word',
 		'stem' => 'lemma',
 		'syn'  => 'synonyms',
-		'syn_lem_latin'  => 'lemma + synonyms',		
+		'syn_lem'  => 'lemma + synonyms',		
 		'3gr'  => 'character 3-gram'
 	);
 	$selected_feature = 'syn_lem';
+	$page = 'search';
 ?>
 
 <?php include "first.php"; ?>

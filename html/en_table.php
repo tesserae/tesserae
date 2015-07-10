@@ -13,6 +13,7 @@
 		'3gr'  => 'character 3-gram'
 	);
 	$selected_feature = 'stem';
+	$page = 'search';	
 ?>
 
 <?php include "first.php"; ?>

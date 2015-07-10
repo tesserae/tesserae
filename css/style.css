@@ -99,9 +99,17 @@ div#nav_sub ul
 div#nav_sub ul li
 {
 	list-style-type: none;
+	height : 29px;
+	line-height : 29px;
 	display: block;
 	display: inline;
 	padding: 0px 20px;
+}
+
+div#nav_sub span
+{
+	padding: 8px 12px;
+	background : 	#a7b85d;	
 }
 
 div#nav_sub li a
