@@ -96,8 +96,8 @@
 					<th>Frequency basis:</th>
 					<td>
 						<select name="freq_basis">
-							<option value="text" selected="selected">texts</option>
-							<option value="corpus">corpus</option>
+							<option value="text">texts</option>
+							<option value="corpus" selected="selected">corpus</option>
 						</select>
 					</td>
 				</tr>				<tr>

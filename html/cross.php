@@ -11,6 +11,7 @@
 		'g_l' => 'Greek-Latin dictionary'
 	);
 	$selected_feature = 'g_l';
+	$page = 'search';
 ?>
 
 <?php include "first.php"; ?>
