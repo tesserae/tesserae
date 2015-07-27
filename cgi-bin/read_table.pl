@@ -182,6 +182,7 @@ use CGI qw/:standard/;
 use Storable qw(nstore retrieve);
 use File::Path qw(mkpath rmtree);
 use Encode;
+use Lingua::Stem qw(stem);
 
 binmode STDERR, 'utf8';
 
@@ -316,9 +317,16 @@ if ($help) {
 unless (defined $score_basis)  { 
 	
 	$score_basis = $Tesserae::feature_score{$feature} || 'word';
+	
 }
 
+# the Tesserae.pm hash needs to be called if the score basis is set to 'feature'
 
+if ($score_basis eq 'feature')  { 
+	
+	$score_basis = $Tesserae::feature_score{$feature} || 'word';
+	
+}
 
 # html header
 #
@@ -484,26 +492,45 @@ my %source_dictionary;
 
 my $corpus_wide = 0;
 
+# Determine the language of the texts (NOTE: only cares if the language is English or other modern. 
+# When cross-language capabilities are developed for these languages, the system must be re-designed to consider each text's needs independently.
+
+my $lang = Tesserae::lang($target);
+
+my $modern = 0;
+
+if ($lang eq 'en') {
+
+	$modern = 1;
+
+}
+
 # If corpus-wide frequencies need to be counted, set the corpus-wide flag.
 
-if ($score_basis eq 'stem' && $freq_basis eq 'corpus' || $score_basis eq 'syn_lem' && $freq_basis eq 'corpus' || $score_basis eq 'g_l' && $freq_basis eq 'corpus') { 	
+if ($score_basis eq 'stem' && $freq_basis eq 'corpus' || $score_basis eq 'syn_lem' && $freq_basis eq 'corpus' || $score_basis eq 'g_l' && $freq_basis eq 'corpus' ) { 	
 	
 	$corpus_wide = 1;
 	
 }
 
 if ($corpus_wide == 1) {
-	# resolve the path to the stem dictionaries
 
-	my $target_dict_file = catfile($fs{data}, 'common', Tesserae::lang($target) . '.stem.cache');
+	# if the texts are in English (or another modern language), there is no .stem.cache file to load.
 
-	my $source_dict_file = catfile($fs{data}, 'common', Tesserae::lang($source) . '.stem.cache');	
-
-	# load the storable binaries
+	unless ($modern == 1) {
 	
-	%target_dictionary = %{retrieve($target_dict_file)};
+		# resolve the path to the stem dictionaries
 
-	%source_dictionary = %{retrieve($source_dict_file)};	
+		my $target_dict_file = catfile($fs{data}, 'common', Tesserae::lang($target) . '.stem.cache');
+
+		my $source_dict_file = catfile($fs{data}, 'common', Tesserae::lang($source) . '.stem.cache');	
+
+		# load the storable binaries
+	
+		%target_dictionary = %{retrieve($target_dict_file)};
+
+		%source_dictionary = %{retrieve($source_dict_file)};	
+	}
 
 }
 
@@ -553,8 +580,6 @@ else {
 
 my %freq_source = %{Tesserae::stoplist_hash($file_freq_source)};
 
-#print STDERR "Source frequency file = $file_freq_source. Size = " . scalar(keys %freq_source) . "\n";
-#print STDERR "Target frequency file = $file_freq_target. Size = " . scalar(keys %freq_target) . "\n";
 
 
 # print all params for debugging
@@ -1268,18 +1293,39 @@ sub stem_frequency {
 		
 	if ($text eq 'target') {
 		
+
 		my @stems = ();
 		
 		# load all possible stems
 		# if the stem array doesn't exist, use the form
+
 		
-		if ($target_dictionary{$form}) {
-			@stems = @{$target_dictionary{$form}};
+		unless ($modern == 1) {		
+
+			if ($target_dictionary{$form}) {
+
+				@stems = @{$target_dictionary{$form}};
+
+			}
+
+			else {
+
+				$stems[0] = $form;
+
+			}
+
 		}
-		else {
-			$stems[0] = $form;
-		}
+
+		else { 
 		
+		# if the language is modern, it's necessary to use Lingua::Stem
+		
+			my $stem_ref = stem($form);
+		
+			@stems = @{$stem_ref};
+		
+		}
+				
 		# retrieve corpus-wide frequency values for each stem
 	
 		my $freq_values;
@@ -1301,16 +1347,30 @@ sub stem_frequency {
 		
 		my @stems = ();
 	
-		if ($source_dictionary{$form}) {	
+		unless ($modern == 1) {
+		
+			if ($source_dictionary{$form}) {	
 
-			@stems = @{$source_dictionary{$form}};
+				@stems = @{$source_dictionary{$form}};
 
+			}
+
+			else {
+
+				$stems[0] = $form;
+
+			}
+	
 		}
-
-		else {
-
-			$stems[0] = $form;
-
+		
+		else { 
+		
+		# if the language is modern, it's necessary to use Lingua::Stem
+		
+			my $stem_ref = stem($form);
+		
+			@stems = @{$stem_ref};
+		
 		}
 	
 		# retrieve corpus-wide frequency values for each stem
