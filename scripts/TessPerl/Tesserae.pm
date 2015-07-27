@@ -6,6 +6,7 @@ use Storable qw(nstore retrieve);
 use utf8;
 use Unicode::Normalize;
 use Encode;
+use Config;
 
 require Exporter;
 
@@ -27,6 +28,12 @@ my ($fs_ref, $url_ref) = read_config(catfile($lib, '..', 'tesserae.conf'));
 
 our %fs  = %$fs_ref;
 our %url = %$url_ref;
+
+# get perl path (copied from example at `perldoc perlvar`)
+our $perl_path = $Config{perlpath};
+if ($^O ne 'VMS') {
+	$perl_path .= $Config{_exe} unless $perl_path =~ m/$Config{_exe}$/i;
+}
 
 # optional modules
 
@@ -926,5 +933,13 @@ sub get_base {
 	}
 	
 	return $base;
+}
+
+sub escape_path {
+	
+	my $path = shift;
+	$path =~ s/(\s)/\\$1/g;
+	
+	return $path;
 }
 1;

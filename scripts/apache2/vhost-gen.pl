@@ -144,6 +144,7 @@ print <<END;
 
 <VirtualHost *:80>
 	ServerAdmin $admin_email
+    ServerName $url{root}
 
 	<Directory />
 		Options FollowSymLinks
@@ -186,15 +187,14 @@ print <<END;
 		Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
 		Order allow,deny
 		Allow from all
+        # RemoveOutputFilter DEFLATE
 	</Directory>
 
-	ErrorLog \${APACHE_LOG_DIR}/tesserae.error.log
+    EnableSendfile Off
 
 	# Possible values include: debug, info, notice, warn, error, crit,
 	# alert, emerg.
 	LogLevel warn
-
-	CustomLog \${APACHE_LOG_DIR}/tesserae.access.log combined
 
 </VirtualHost>
 

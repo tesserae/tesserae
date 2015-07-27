@@ -161,56 +161,31 @@ div#pager span a
 div#footer
 {
 	position: relative;
-	background : #e1e6c6;
-	height: 12em;
+	background: #e1e6c6;
+	height: 80px;
 	text-align: left;
 	border-top: 1px solid black;
 }
 
-div#footer_content
-{
-	position: absolute;
-	left: 25%;
-	width: 50%;
-	padding: 0em 2em 0em 2em;
+div#footer ul{
+    margin: 0px;
+    padding: 0px;
+    display: table;
+    height: 100%;
+    width: 100%;
 }
 
-div#footer_content p
-{
-	position: static;
-	margin: 0px;	
-	font-size : .8em;
-	color : #777;
-	text-align: left;
+div#footer ul li{
+    display: table-cell;
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
 }
 
-div#footer_content a
+div#footer img
 {
-	text-decoration: none;
-	font-weight: bold;
-}
-
-div.footer_icon_right
-{
-	position: absolute;
-	text-align: right;
-	right: 5px;
-	top: 20%;
-}
-
-div.footer_icon_left
-{
-	position: absolute;
-	vertical-align: top;
-	left: 5px;
-	top: 20%;
-}
-
-
-div#footer img.logo_wide
-{
-	max-width: 200px;
-	padding: 5px;
+	max-height: 35px;
+  margin: auto;
 }
 
 div#results_sort table
