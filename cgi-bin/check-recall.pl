@@ -210,6 +210,7 @@ for (qw/target source/) {
 	$name{$_} = $meta{uc($_)};
 	$file{"token_$_"} = catfile($fs{data}, 'v3', Tesserae::lang($name{$_}), $name{$_}, $name{$_} . ".token");
 	$file{"unit_$_"}  = catfile($fs{data}, 'v3', Tesserae::lang($name{$_}), $name{$_}, $name{$_} . ".phrase");
+	$file{"freq_$_"}  = catfile($fs{data}, 'common', Tesserae::lang($meta{uc $_}) . '.stem.freq');
 }
 
 # now load the texts
@@ -217,10 +218,95 @@ for (qw/target source/) {
 my %unit;
 my %token;
 
+
+
 for (qw/target source/) {
  	
 	@{$token{$_}}   = @{ retrieve($file{"token_$_"})};
 	@{$unit{$_}}    = @{ retrieve($file{"unit_$_"}) };
+	
+}
+
+
+
+# open target/source dictionaries for corpus-based stem frequencies.
+
+# resolve the path to the stem dictionaries
+
+my $target_dict_file = catfile($fs{data}, 'common', Tesserae::lang($meta{TARGET}) . '.stem.cache');
+
+my $source_dict_file = catfile($fs{data}, 'common', Tesserae::lang($meta{SOURCE}) . '.stem.cache');	
+
+# load the storable binaries
+	
+my %target_dictionary = %{retrieve($target_dict_file)};
+
+my %source_dictionary = %{retrieve($source_dict_file)};	
+
+
+# open frequency file
+
+
+
+open (TARG, "$file{freq_target}") or die $!;
+	
+# build hash of feature, frequency in the text
+my %freq_target;	
+my %freq_source;
+
+while (<TARG>) {
+
+	if ($_ =~ /^#/) {
+		next;
+	}
+	$_ =~ /^(\w+)\t(\d+)/;
+
+
+	$freq_target{$1} = $2;
+	
+	
+}
+
+open (SOUR, "$file{freq_source}") or die $!;
+
+
+# build hash of feature, frequency in the text
+
+while (<SOUR>) {
+	if ($_ =~ /^#/) {
+		next;
+	}
+	
+	$_ =~ /^(\w+)\t(\d+)/;
+	$freq_source{$1} = $2;
+	
+	
+}
+
+	# Decide what the max number of matchwords is
+
+my $max_match = 2;
+
+for my $unit_id_target (keys %score) {
+
+	for my $unit_id_source ( keys %{$score{$unit_id_target}} ) {
+		
+		my $current_match = scalar (keys %{$match_target{$unit_id_target}{$unit_id_source}});
+
+		if ($current_match > $max_match) {
+			
+			$max_match = $current_match;
+			
+		}
+
+		 $current_match = scalar (keys %{$match_source{$unit_id_target}{$unit_id_source}});
+
+		if ($current_match > $max_match) {
+			
+			$max_match = $current_match;
+			
+		}
+	}
 }
 
 #
@@ -785,7 +871,7 @@ sub print_delim {
 		print "# m_cutoff  = $meta{MCUTOFF}\n";
 	}
 	
-	my @header = qw(
+	my @header_begin = qw(
 		"RESULT"
 		"TARGET_PHRASE"
 		"TARGET_BOOK"
@@ -796,9 +882,29 @@ sub print_delim {
 		"SOURCE_LINE"
 		"SOURCE_TEXT"
 		"SHARED"
-		"SCORE"
+		"ORIGINAL_SCORE");
+		
+	my @header_end = qw(
 		"TYPE"
-		"AUTH");
+		"AUTH");		
+		
+	my @header_middle;
+	
+	for my $tok (1..$max_match) {
+
+		my $z = $tok - 1;
+		
+		$header_middle[$z] = "\"TARGET_TOKEN_$tok\"";
+		
+		$header_middle[$z+$max_match] = "\"TARGET_FREQUENCY_$tok\"";
+		
+		$header_middle[$z+$max_match+$max_match] = "\"SOURCE_TOKEN_$tok\"";
+		
+		$header_middle[$z+$max_match+$max_match+$max_match] = "\"SOURCE_FREQUENCY_$tok\"";
+		
+	}
+	
+	my @header = (@header_begin, @header_middle, @header_end);
 		
 	if ($process_multi) {
 	
@@ -811,6 +917,8 @@ sub print_delim {
 	}
 	
 	print join ($delim, @header) . "\n";
+
+
 
 	my $pr = ProgressBar->new(scalar(keys %score));
 		
@@ -852,6 +960,85 @@ sub print_delim {
 			# get the score
 		
 			my $score = sprintf("%.3f", $score{$unit_id_target}{$unit_id_source});
+			
+			# At this point, it's possible to generate a list of info instead of a single score. Start with token IDs and freq values.
+			# Start with an array of token IDs.
+			
+			my @target_tokens = keys %marked_target;
+			
+			my @source_tokens = keys %marked_source;
+
+			# build the array of frequencies
+
+			my @target_freqs;
+			my @source_freqs;
+						
+			# the following assumes that the feature is 'word' and the frequencies should be drawn from the texts.
+			
+			for my $z (0..$#target_tokens) {
+				
+				#access the .token data file for this work, which is an array whose addresses are equivalent to token ids and whose values are hashes 
+				
+				
+				if (${${$token{target}}[$target_tokens[$z]]}{FORM}) {
+			
+					$target_freqs[$z] = stem_frequency(${${$token{target}}[$target_tokens[$z]]}{FORM}, 'target');
+				
+				}
+				else {
+					
+					$target_freqs[$z] = 'NA';
+					
+				}
+			}
+			
+			for my $z (0..$#source_tokens) {
+				
+				if (${${$token{source}}[$source_tokens[$z]]}{FORM}) {
+			
+					$source_freqs[$z] = stem_frequency(${${$token{source}}[$source_tokens[$z]]}{FORM}, 'source');
+				
+				}
+				else {
+					
+					$source_freqs[$z] = 'NA';
+					
+				}			
+			}
+			
+			# the target and source frequencies and token IDs must be joined in an array whose length is great enough to accept the largest number of possible matchwords.
+			
+			if (scalar(@target_tokens) < $max_match) {
+				
+				my $start = $#target_tokens + 1;
+				
+				for my $z ($start..($max_match - 1)) {
+				
+					$target_tokens[$z] = 'NA';
+
+					$target_freqs[$z] = 'NA';
+
+				
+				}
+				
+			}
+			
+			
+			if (scalar(@source_tokens) < $max_match) {
+				
+				my $start = $#source_tokens + 1;
+				
+				for my $z ($start..($max_match - 1)) {
+				
+					$source_tokens[$z] = 'NA';
+
+					$source_freqs[$z] = 'NA';
+
+				
+				}
+				
+			}
+			my @score = ($score, @target_tokens, @target_freqs, @source_tokens, @source_freqs);
 
 			# get benchmark data
 
@@ -930,7 +1117,10 @@ sub print_delim {
 
 			# score
 
-			push @row, $score;
+			push @row, @score;
+			
+			# At this point, it's possible to interrupt the program with a list of info instead of a single score.
+			
 	
 			# benchmark data
 			
@@ -1195,3 +1385,84 @@ sub minitess {
 	
 	return \%results;
 }
+
+
+# take an inflected form, and return the average corpus-wide frequency value of the associated stems
+sub stem_frequency {
+	
+	my ($form, $text) = @_;
+	
+	# this subroutine is agnostic of language but must be fed the appropriate text (target or source)
+	
+	my $average;
+		
+	if ($text eq 'target') {
+	
+		# load all possible stems
+	
+		my @stems;
+
+		if ($target_dictionary{$form}) {
+		
+		 	@stems = @{$target_dictionary{$form}};
+		 	
+		}
+		else {
+		
+			$stems[0] = $form;
+			
+		}
+	
+		# retrieve corpus-wide frequency values for each stem
+	
+		my $freq_values;
+	
+		for (0..$#stems) {
+		
+			$freq_values += $freq_target{$stems[$_]};
+		
+		}
+	
+		# average the frequencies
+	
+		$average = $freq_values / (scalar @stems);
+		
+	}
+	else {
+	
+		# load all possible stems
+	
+		my @stems;
+
+		if ($source_dictionary{$form}) {
+		
+		 	@stems = @{$source_dictionary{$form}};
+		 	
+		}
+		else {
+		
+			$stems[0] = $form;
+			
+		}
+	
+		# retrieve corpus-wide frequency values for each stem
+	
+		my $freq_values;
+	
+		for (0..$#stems) {
+		
+			$freq_values += $freq_source{$stems[$_]};
+		
+		}
+	
+		# average the frequencies
+	
+		$average = $freq_values / (scalar @stems);
+		
+	}
+	
+	
+	return $average;
+
+}
+

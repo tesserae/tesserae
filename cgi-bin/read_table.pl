@@ -896,10 +896,10 @@ sub dist {
 
 	my ($match_t_ref, $match_s_ref, $metric) = @_;
 	
-	my %match_target = %$match_t_ref;
+	my %match_target = %$match_t_ref; # The list of matchwords come to this subroutine in the form of a hash. The keys are token ID #s.
 	my %match_source = %$match_s_ref;
 	
-	my @target_id = sort {$a <=> $b} keys %match_target;
+	my @target_id = sort {$a <=> $b} keys %match_target; # To perform the calculation of distance, the token IDs have to be put in ascending order.
 	my @source_id = sort {$a <=> $b} keys %match_source;
 	
 	my $dist = 0;
@@ -1255,7 +1255,18 @@ sub stem_frequency {
 	
 		# load all possible stems
 	
-		my @stems = @{$target_dictionary{$form}};
+		my @stems;
+
+		if ($target_dictionary{$form}) {
+		
+		 	@stems = @{$target_dictionary{$form}};
+		 	
+		}
+		else {
+		
+			$stems[0] = $form;
+			
+		}
 	
 		# retrieve corpus-wide frequency values for each stem
 	
@@ -1276,7 +1287,18 @@ sub stem_frequency {
 	
 		# load all possible stems
 	
-		my @stems = @{$source_dictionary{$form}};
+		my @stems;
+
+		if ($source_dictionary{$form}) {
+		
+		 	@stems = @{$source_dictionary{$form}};
+		 	
+		}
+		else {
+		
+			$stems[0] = $form;
+			
+		}
 	
 		# retrieve corpus-wide frequency values for each stem
 	
