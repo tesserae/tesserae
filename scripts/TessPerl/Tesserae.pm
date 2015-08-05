@@ -6,6 +6,7 @@ use Storable qw(nstore retrieve);
 use utf8;
 use Unicode::Normalize;
 use Encode;
+use Config;
 
 require Exporter;
 
@@ -28,6 +29,12 @@ my ($fs_ref, $url_ref) = read_config(catfile($lib, '..', 'tesserae.conf'));
 our %fs  = %$fs_ref;
 our %url = %$url_ref;
 
+# get perl path (copied from example at `perldoc perlvar`)
+our $perl_path = $Config{perlpath};
+if ($^O ne 'VMS') {
+	$perl_path .= $Config{_exe} unless $perl_path =~ m/$Config{_exe}$/i;
+}
+
 # optional modules
 
 my $override_stemmer  = check_mod("Lingua::Stem");
@@ -49,8 +56,8 @@ unless ($override_stemmer) {
 
 our %feature_dep = (
 	
-	'trans1' => 'stem',
-	'trans2' => 'stem',
+	'g_l' => 'stem',
+	'syn_lem' => 'stem',
 	'syn'    => 'stem'
 );
 
@@ -60,11 +67,9 @@ our %feature_score = (
 
 	'word'   => 'word',
 	'stem'   => 'stem',
-	'trans1' => 'stem',
-	'trans2' => 'stem',
-	'trans2mws' => 'stem',
 	'g_l' => 'stem',
-	'syn'    => 'syn',
+	'syn'    => 'stem',
+	'syn_lem'    => 'stem',	
 	'3gr'    => '3gr'
 );
 
@@ -928,5 +933,13 @@ sub get_base {
 	}
 	
 	return $base;
+}
+
+sub escape_path {
+	
+	my $path = shift;
+	$path =~ s/(\s)/\\$1/g;
+	
+	return $path;
 }
 1;

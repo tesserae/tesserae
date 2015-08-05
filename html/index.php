@@ -14,7 +14,8 @@
 		'syn_lem'  => 'lemma + synonyms',		
 		'3gr'  => 'character 3-gram'
 	);
-	$selected_feature = 'stem';
+	$selected_feature = 'syn_lem';
+	$page = 'search';
 ?>
 
 <?php include "first.php"; ?>

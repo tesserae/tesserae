@@ -75,10 +75,10 @@
 					<th>Stoplist basis:</th>
 					<td>
 						<select name="stbasis">
-							<option value="corpus">corpus</option>
+							<option value="corpus" selected="selected">corpus</option>
 							<option value="target">target</option>
 							<option value="source">source</option>
-							<option value="both" selected="selected">target + source</option>
+							<option value="both">target + source</option>
 						</select>
 					</td>
 				</tr>
@@ -88,7 +88,7 @@
 						<select name="score">
 							<option value="word">word</option>
 							<option value="stem">stem</option>
-							<option value="feature">feature</option>								
+							<option value="feature" selected="selected">feature</option>								
 						</select>
 					</td>
 				</tr>
@@ -96,8 +96,8 @@
 					<th>Frequency basis:</th>
 					<td>
 						<select name="freq_basis">
-							<option value="text" selected="selected">texts</option>
-							<option value="corpus">corpus</option>
+							<option value="text">texts</option>
+							<option value="corpus" selected="selected">corpus</option>
 						</select>
 					</td>
 				</tr>				<tr>

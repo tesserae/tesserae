@@ -1,4 +1,5 @@
 <?php include "first.php"; ?>
+<?php 	$page = 'tools'; ?>
 <?php include "nav_search.php"; ?>
 
 			</div>

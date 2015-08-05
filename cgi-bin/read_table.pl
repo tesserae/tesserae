@@ -182,6 +182,7 @@ use CGI qw/:standard/;
 use Storable qw(nstore retrieve);
 use File::Path qw(mkpath rmtree);
 use Encode;
+use Lingua::Stem qw(stem);
 
 binmode STDERR, 'utf8';
 
@@ -316,9 +317,16 @@ if ($help) {
 unless (defined $score_basis)  { 
 	
 	$score_basis = $Tesserae::feature_score{$feature} || 'word';
+	
 }
 
+# the Tesserae.pm hash needs to be called if the score basis is set to 'feature'
 
+if ($score_basis eq 'feature')  { 
+	
+	$score_basis = $Tesserae::feature_score{$feature} || 'word';
+	
+}
 
 # html header
 #
@@ -482,41 +490,51 @@ my %target_dictionary;
 
 my %source_dictionary;
 
-if ($score_basis eq 'stem' and $freq_basis eq 'corpus') {
+my $corpus_wide = 0;
 
-	# resolve the path to the stem dictionaries
+# Determine the language of the texts (NOTE: only cares if the language is English or other modern. 
+# When cross-language capabilities are developed for these languages, the system must be re-designed to consider each text's needs independently.
 
-	my $target_dict_file = catfile($fs{data}, 'common', Tesserae::lang($target) . '.stem.cache');
+my $lang = Tesserae::lang($target);
 
-	my $source_dict_file = catfile($fs{data}, 'common', Tesserae::lang($source) . '.stem.cache');	
+my $modern = 0;
 
-	# load the storable binaries
+if ($lang eq 'en') {
+
+	$modern = 1;
+
+}
+
+# If corpus-wide frequencies need to be counted, set the corpus-wide flag.
+
+if ($score_basis eq 'stem' && $freq_basis eq 'corpus' || $score_basis eq 'syn_lem' && $freq_basis eq 'corpus' || $score_basis eq 'g_l' && $freq_basis eq 'corpus' ) { 	
 	
-	%target_dictionary = %{retrieve($target_dict_file)};
+	$corpus_wide = 1;
+	
+}
 
-	%source_dictionary = %{retrieve($source_dict_file)};	
+if ($corpus_wide == 1) {
+
+	# if the texts are in English (or another modern language), there is no .stem.cache file to load.
+
+	unless ($modern == 1) {
+	
+		# resolve the path to the stem dictionaries
+
+		my $target_dict_file = catfile($fs{data}, 'common', Tesserae::lang($target) . '.stem.cache');
+
+		my $source_dict_file = catfile($fs{data}, 'common', Tesserae::lang($source) . '.stem.cache');	
+
+		# load the storable binaries
+	
+		%target_dictionary = %{retrieve($target_dict_file)};
+
+		%source_dictionary = %{retrieve($source_dict_file)};	
+	}
 
 }
 
 
-# print all params for debugging
-
-unless ($quiet) {
-
-	print STDERR "target=$target\n";
-	print STDERR "source=$source\n";
-	print STDERR "lang(target)=" . Tesserae::lang($target) . ";\n";
-	print STDERR "lang(source)=" . Tesserae::lang($source) . ";\n";		
-	print STDERR "feature=$feature\n";
-	print STDERR "unit=$unit\n";
-	print STDERR "stopwords=$stopwords\n";
-	print STDERR "stoplist basis=$stoplist_basis\n";
-	print STDERR "max_dist=$max_dist\n";
-	print STDERR "distance basis=$distance_metric\n";
-	print STDERR "score cutoff=$cutoff\n";
-	print STDERR "frequency basis=$freq_basis\n";
-	print STDERR "score basis=$score_basis\n";
-}
 
 
 #
@@ -562,8 +580,30 @@ else {
 
 my %freq_source = %{Tesserae::stoplist_hash($file_freq_source)};
 
-#print STDERR "Source frequency file = $file_freq_source. Size = " . scalar(keys %freq_source) . "\n";
-#print STDERR "Target frequency file = $file_freq_target. Size = " . scalar(keys %freq_target) . "\n";
+
+
+# print all params for debugging
+
+unless ($quiet) {
+
+	print STDERR "target=$target\n";
+	print STDERR "source=$source\n";
+	print STDERR "lang(target)=" . Tesserae::lang($target) . ";\n";
+	print STDERR "lang(source)=" . Tesserae::lang($source) . ";\n";		
+	print STDERR "feature=$feature\n";
+	print STDERR "unit=$unit\n";
+	print STDERR "stopwords=$stopwords\n";
+	print STDERR "stoplist basis=$stoplist_basis\n";
+	print STDERR "max_dist=$max_dist\n";
+	print STDERR "distance basis=$distance_metric\n";
+	print STDERR "score cutoff=$cutoff\n";
+	print STDERR "frequency basis=$freq_basis\n";
+	print STDERR "score basis=$score_basis\n";
+	print STDERR "corpus-wide flag=$corpus_wide\n";
+	print STDERR "File for source frequency=$file_freq_source\n";	
+	print STDERR "File for target frequency=$file_freq_target\n";		
+}
+
 
 #
 # basis for stoplist is feature frequency from one or both texts
@@ -917,7 +957,7 @@ sub dist {
 		
 		my @t;
 		
-		unless ($freq_basis eq 'corpus' and $score_basis eq 'stem') {
+		unless ($corpus_wide == 1) {
 	
 			@t = sort {$freq_target{$token_target[$a]{FORM}} <=> $freq_target{$token_target[$b]{FORM}}} @target_id;
 	
@@ -947,7 +987,7 @@ sub dist {
 			
 		my @s;
 		
-		unless ($freq_basis eq 'corpus' and $score_basis eq 'stem') {
+		unless ($corpus_wide == 1) {
 			
 			@s = sort {$freq_source{$token_source[$a]{FORM}} <=> $freq_source{$token_source[$b]{FORM}}} @source_id; 
 
@@ -1139,7 +1179,7 @@ sub score_default {
 		
 		my $freq;
 		
-		unless ($score_basis eq 'stem' and $freq_basis eq 'corpus') {
+		unless ($corpus_wide == 1) {
 		
 			$freq = 1/$freq_target{$token_target[$token_id_target]{FORM}}; 
 		
@@ -1166,7 +1206,7 @@ sub score_default {
 
 		my $freq;
 		
-		unless ($score_basis eq 'stem' and $freq_basis eq 'corpus') {
+		unless ($corpus_wide == 1) {
 		
 			$freq = 1/$freq_source{$token_source[$token_id_source]{FORM}};
 		
@@ -1252,30 +1292,49 @@ sub stem_frequency {
 	my $average;
 		
 	if ($text eq 'target') {
-	
-		# load all possible stems
-	
-		my @stems;
+		
 
-		if ($target_dictionary{$form}) {
+		my @stems = ();
 		
-		 	@stems = @{$target_dictionary{$form}};
-		 	
-		}
-		else {
+		# load all possible stems
+		# if the stem array doesn't exist, use the form
+
 		
-			$stems[0] = $form;
-			
+		unless ($modern == 1) {		
+
+			if ($target_dictionary{$form}) {
+
+				@stems = @{$target_dictionary{$form}};
+
+			}
+
+			else {
+
+				$stems[0] = $form;
+
+			}
+
 		}
-	
+
+		else { 
+		
+		# if the language is modern, it's necessary to use Lingua::Stem
+		
+			my $stem_ref = stem($form);
+		
+			@stems = @{$stem_ref};
+		
+		}
+				
+
 		# retrieve corpus-wide frequency values for each stem
 	
 		my $freq_values;
 	
 		for (0..$#stems) {
-		
+
 			$freq_values += $freq_target{$stems[$_]};
-		
+
 		}
 	
 		# average the frequencies
@@ -1286,18 +1345,34 @@ sub stem_frequency {
 	else {
 	
 		# load all possible stems
+		
+		my @stems = ();
 	
-		my @stems;
+		unless ($modern == 1) {
+		
+			if ($source_dictionary{$form}) {	
 
-		if ($source_dictionary{$form}) {
-		
-		 	@stems = @{$source_dictionary{$form}};
-		 	
+				@stems = @{$source_dictionary{$form}};
+
+			}
+
+			else {
+
+				$stems[0] = $form;
+
+			}
+	
 		}
-		else {
 		
-			$stems[0] = $form;
-			
+		else { 
+		
+		# if the language is modern, it's necessary to use Lingua::Stem
+		
+			my $stem_ref = stem($form);
+		
+			@stems = @{$stem_ref};
+		
+
 		}
 	
 		# retrieve corpus-wide frequency values for each stem
@@ -1305,7 +1380,7 @@ sub stem_frequency {
 		my $freq_values;
 	
 		for (0..$#stems) {
-		
+
 			$freq_values += $freq_source{$stems[$_]};
 		
 		}
