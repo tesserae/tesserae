@@ -6,85 +6,92 @@
 			</div>
 <?php include "nav_help.php"; ?>
 			<div id="main">
-				<h1>Help</h1>
-				
-				<h2>Advanced Search</h2>
+			
+				<h1>Advanced Search</h1>
 				
 				<p>
-					On this page you can adjust a number of settings which are otherwise
-					set for you by default.
+				By clicking on “show advanced” on any search page, you can adjust the search settings.
 				</p>
 				
 				<h3>Units</h3>
 				
 				<p>
-					Here you can choose the textual units which are compared.  Choices are
-					verse lines or grammatical phrases.  Phrases are delimited for this
-					purpose by editorial punctuation, and parsed automatically.
+				Choose to compare either verse lines (for poetry only) or phrases. Phrases are equivalent to sentences, except that they can be separated by semicolons as well as the usual marks of sentence punctuation. Any search involving a prose text, even if the other text is verse, will automatically search by phrase, regardless of whether “line” is selected here. The default is line.
 				</p>
 
-				<h3>Feature Set</h3>
+				<h3>Feature</h3>
 				
 				<p>
-					This means the textual features which must be shared to consitute a match.
-					The default is lemma, meaning two words are judged to match if they share
-					a dictionary headword.  Setting this to exact form only will require 
+					Choose which textual features will be matched across texts. The default is lemma, meaning two words are judged to match if they share
+					a dictionary headword.  Setting this to 'word' will require 
 					inflected forms to match exactly.  
 				</p>
-				<p>
-					Lemma + synonyms is an experimental option which attempts to match
-					forms not only to their own dictionary headword but also to headwords
-					having related meanings.  The relationship between headwords was
-					determined automatically by parsing of a Latin-English dictionary;
-					this procedure and the dictionary used are under revision and may
-					change.
-				</p>
+
+	<table style="width:90%" align=center>
+ <tr >
+  <td align=left width=150><b>Selecting this feature</b>
+  </td>
+  <td align=left><b>Returns sets of parallels between texts where
+  the matched words</b>
+  </td>
+ </tr>
+ <tr>
+  <td align=left>Exact word
+  </td>
+  <td align=left>are spelled exactly the same.
+  </td>
+ </tr>
+ <tr >
+  <td align=left>Lemma
+  </td>
+  <td align=left>have the same dictionary headwords.
+  </td>
+ </tr>
+ <tr >
+  <td align=left>Semantic match
+  </td>
+  <td align=left>Have a relationship of meaning, as
+  determined by common words in their English dictionary definitions.
+  </td>
+ </tr>
+ <tr >
+  <td align=left>Lemma + semantic match
+  </td>
+  <td align=left>Have the similarities of either of
+  these two features.
+  </td>
+ </tr>
+ <tr >
+  <td align=left>Sound
+  </td>
+  <td align=left>Share three-letter sequences, with
+  matches that have higher numbers of three-letter sequences ranked more
+  highly.
+  </td>
+ </tr>
+</table><br>
 				
 				<h3>Number of Stop Words</h3>
 				
 				<p>
-					To reduce the number of uninteresting results, you can choose to exclude
-					matches with high-frequency features.  The stoplist is determined for
-					the selected feature set by ranking features within the stoplist basis 
-					(see below) according to frequency, and taking the top N items from
-					this list.  The default stoplist size for a Basic Search is 10.
+Choose whether to eliminate from the results the highest-frequency words, which may be inherently less interesting, and, if so, how far down the list of most frequent words to go. The list of words by frequency is generated from the sources chosen under “stoplist basis.” The stoplist is specific to the language feature chosen. If you choose exact word matching, then the search will use a list of the frequency of each exact spelling. So Latin animus and animo would each have separate entries in the list. If you choose lemma matching, the search will use a list of the frequency of each lemma, in any inflected form. So instances of animus and animo would both be counted under the lemma animus. The complete stoplist generated is printed at the bottom of each results page.The default is a stoplist of 10.
 				</p>
-				<p>
-					Note that the stop list is feature-set specific.  If your feature set
-					is exact-form only, then inflected forms are used; if the feature set
-					is stems or stems + synonyms, then headwords are used.  The complete
-					stoplist used in a given search is printed at the bottom of each 
-					results page.
-				</p>
-					
+
 				<h3>Stoplist Basis</h3>
 				
 				<p>
-					By default, the ranked list of features from which the stoplist is
-					drawn is calculated across the entire Tesserae corpus.  This can
-					be changed to use features from the target text only, from the source
-					only, or from just the target and source combined.
-				</p>
-				<p>
-					For example, in a default search, matches against the top 10 most
-					frequent headwords in the entire corpus will be ignored.  Some of
-					these words may be less frequent in the particular texts compared.
-					If you set the stoplist basis to “target,” then matches against 
-					the top 10 most frequent headwords in the target text will be ignored.
+		Choose which texts will be used to determine frequencies for the stoplist. These can be the whole corpus for that language in Tesserae, the source text or target texts only, or the latter two combined. The default uses the whole corpus.
 				</p>
 
 				<h3>Score Basis</h3>
 				
 				<p>
-					The scoring system depends on measurements of each matchword's frequency.
-					This frequency measurement can be based on the number of appearances of the 
-					exact form which the matchword takes (the default, or 'word' setting), or it can reflect
-					all the possible inflections of the word (the 'stem' setting). To use the
-					setting pre-determined to work best with your selected feature set, 
-					choose 'Score basis: feature.'
+The scoring system puts matches at the top of the results list that consist of rarer words closer together.
 					
 				</p>
-
+<p>
+Here you can choose how rarity is calculated for the purposes of scoring. The measurement of frequency can be based on the number of appearances of the exact form of each match word (“word”) or all the possible inflections of the word (“stem”). The default is “word.”
+</p>
 				<h3>Frequency Basis</h3>
 				
 				<p>

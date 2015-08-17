@@ -87,8 +87,7 @@
 					<td>
 						<select name="score">
 							<option value="word">word</option>
-							<option value="stem">stem</option>
-							<option value="feature" selected="selected">feature</option>								
+							<option value="stem" selected="selected">stem</option>							
 						</select>
 					</td>
 				</tr>
