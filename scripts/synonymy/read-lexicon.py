@@ -13,7 +13,7 @@ import sys
 import re
 import os.path
 import codecs
-import pickle
+import json
 import argparse
 import unicodedata
 
@@ -106,6 +106,7 @@ class pat:
 	}
 	
 	number = re.compile(r'[0-9]', re.U)
+	enword = re.compile(r"[a-z]+(?:-[a-z]+)*(?:'[a-z]+)*", re.I)
 
 
 def mo_beta2uni(mo):
@@ -115,27 +116,27 @@ def mo_beta2uni(mo):
 
 
 def write_dict(defs, name, quiet):
-	'''Save a copy of the dictionary in pickle format'''
+	'''Save a copy of the dictionary in json format'''
 	
-	f = open(os.path.join(fs['data'], 'synonymy', name + '.pickle'), 'w')
+	f = codecs.open(os.path.join(fs['data'], 'synonymy', name + '.json'), 'w', encoding="utf_8")
 		
 	if not quiet:
 		print "Saving dictionary to {0}".format(f.name)
 		
-	pickle.dump(defs, f)
+	json.dump(defs, f, ensure_ascii=False)
 	
 	f.close()
 
 
 def read_dict(name, quiet):
-	'''Load a copy of the dictionary in pickle format'''
+	'''Load a copy of the dictionary in json format'''
 	
-	f = open(os.path.join('data', 'synonymy', name + '.pickle'), 'r')
+	f = codecs.open(os.path.join('data', 'synonymy', name + '.json'), 'r', encoding="utf_8")
 		
 	if not quiet:
 		print "Loading dictionary from {0}".format(f.name)
 		
-	defs = pickle.load(f)
+	defs = json.load(f)
 	
 	return(defs)
 
@@ -235,7 +236,46 @@ def parse_XML_dictionaries(langs, quiet):
 	for k in empty_keys:
 		del defs[k]
 
+	if "" in defs:
+		del defs[""]
+
 	return(defs)
+
+
+def purge_short_entries(defs):
+    '''delete definitions consisting of a single, non-English word'''
+    
+    # load English dictionary
+    en_words = []
+    filename = os.path.join(fs["data"], "synonymy", "en.words.txt")
+    
+    if not quiet:
+        print 'Reading English wordlist {0}'.format(filename)
+	 
+    en_words = frozenset([line.strip() for line in f])
+    
+    # check all entries
+    empty_keys = set()
+    
+    for lemma in defs:
+        # break definition into words
+        def_words = frozenset(pat.enword.findall(defs[lemma]))
+    
+        # entry must have at least one english dictionary word
+        if def_words.isdisjoint(en_words):
+            empty_keys.add(lemma)
+        
+        # if the entry has only one word, it must be > 4 chars long
+        if len(def_words) == 1 and len("".join(def_words)) < 5:
+            empty_keys.add(lemma)
+    
+    if not quiet:
+        print 'Lost {0} short or malformed definitions'.format(len(empty_keys))
+    
+    for k in empty_keys:
+        del defs[k]
+        
+    return(defs)
 
 
 def parse_stop_list(lang, name, quiet):
@@ -291,59 +331,6 @@ def parse_stop_list(lang, name, quiet):
 		pr.advance(len(line.encode('utf-8')))
 	
 	return(freq)
-
-
-def parse_stem_dict(lang, quiet):
-	'''parse the csv stem dictionaries of Helma Dik'''
-	
-	filename = os.path.join(fs['data'], 'common', lang + '.lexicon.csv')
-	
-	f = open(filename, 'r')
-	
-	if not quiet:
-		print 'Reading lexicon {0}'.format(filename)
-	
-	pr = progressbar.ProgressBar(os.stat(filename).st_size, quiet)
-	
-	try: 
-		f = codecs.open(filename, encoding='utf_8')
-	except IOError as err:
-		print "Can't read {0}: {1}".format(filename, str(err))
-		sys.exit(1)
-		
-	pos = dict()
-	heads = dict()
-	
-	for line in f:
-		pr.advance(len(line.encode('utf-8')))
-		
-		line = line.strip().lower().replace('"', '')
-		
-		try:
-			token, code, lemma = line.split(',')
-		except ValueError:
-			continue
-			
-		lemma = tesslang.standardize(lang, lemma)
-		lemma = pat.number.sub('', lemma)
-		
-		if len(code) == 10:	
-			if lemma in pos:
-				pos[lemma].append(code[:2])
-			else:
-				pos[lemma] = [code[:2]]
-				
-		heads[lemma] = 1
-		
-	success = 0
-	
-	for lemma in heads:
-		if lemma in pos:
-			success += 1
-			
-	print 'pos success; {0}%'.format(100 * success / len(heads))
-	
-	return(pos)
 
 
 def bag_of_words(defs, stem_flag, quiet):
@@ -433,27 +420,7 @@ def make_index(defs, quiet):
 		by_id.append(lemma)
 		by_word[lemma] = len(by_id) - 1
 	
-	# save the lookup table
-	
-	file_lookup_word = os.path.join(fs['data'], 'synonymy', 'lookup_word.pickle')
-	
-	if not quiet:
-		print 'Saving index ' + file_lookup_word
-	
-	f = open(file_lookup_word, "w")
-	pickle.dump(by_word, f)
-	f.close()
-	
-	# save the id lookup
-	
-	file_lookup_id = os.path.join(fs['data'], 'synonymy', 'lookup_id.pickle')
-	
-	if not quiet:
-		print 'Saving index ' + file_lookup_id
-	
-	f = open(file_lookup_id, "w")
-	pickle.dump(by_id, f)
-	f.close()
+	return (by_word, by_id)
 
 
 def main():
@@ -468,14 +435,10 @@ def main():
 				help='Use cached version of dictionaries')
 	parser.add_argument('-s', '--stem', action='store_const', const=1,
 				help='Apply porter2 stemmer to definitions')
-	parser.add_argument('-t', '--topics', metavar='N', type=int,
-				help='Perform LSI with N topics')
 	parser.add_argument('-q', '--quiet', action='store_const', const=1,
 				help='Print less info')
-	parser.add_argument('-m', '--match', choices=['tess','dik'], default=None,
-				help = "Restrict candidates to Tesserae's stems or to Helma Dik's")
-	parser.add_argument('-n', '--nsims', metavar='N', type=int,
-				help = "Only calculate top N similarities")
+	parser.add_argument('-m', '--match', action='store_const', const=1,
+				help = "Restrict candidates to Tesserae's stems")
 	
 	opt = parser.parse_args()
 	quiet = opt.quiet
@@ -493,13 +456,9 @@ def main():
 	# convert to bag of words
 	
 	defs = bag_of_words(defs, opt.stem, opt.quiet)
-	
-	# (optional) utilize information from stem dictionary
-	
-	stem_pos = dict()
-	
-	if opt.match == 'tess':
-		# get part of speech data
+		
+	if opt.match:
+		# read the Tesserae stoplist
 		
  		freq = dict(parse_stop_list('la', '*', opt.quiet), **parse_stop_list('grc', '*', opt.quiet))
 		
@@ -518,125 +477,19 @@ def main():
 		for lemma in lost_keys:
 			del defs[lemma]
 		
-	if opt.match == 'dik':
-		# get part of speech data
-		
-		stem_pos = dict(parse_stem_dict('la', opt.quiet), **parse_stem_dict('grc', opt.quiet))
-		
-		write_dict(stem_pos, 'pos', opt.quiet)
-		
-		# limit synonym dictionary to members of stem dictionary
-		
-		print 'restricting synonym dictionary to extisting stem index'
-		
-		lost_keys = []
-		
-		for lemma in defs:
-			if lemma not in stem_pos:
-				lost_keys.append(lemma)
-		
-		for lemma in lost_keys:
-			del defs[lemma]
-	
-	# write_dict(defs, 'bow_defs')
-	
 	if not opt.quiet:
 		print '{0} lemmas still have definitions'.format(len(defs))
 	
 	# convert back into one string of defining words per lemma
 	
 	corpus = build_corpus(defs, opt.quiet)
+	write_dict(corpus, 'defs_bow', opt.quiet)
 	
 	# create and save by-word and by-id lookup tables
 	
-	make_index(defs, opt.quiet)
-		
-	#
-	# use gensim
-	#
-	
-	# create dictionary
-	
-	if not opt.quiet:
-		print 'Creating dictionary'
-	
-	dictionary = corpora.Dictionary(corpus)
-	
-	# save dictionary for debugging
-	
-	file_dictionary = os.path.join(fs['data'], 'synonymy', 'gensim.dictionary')
-	
-	if not opt.quiet:
-		print 'Saving dictionary as ' + file_dictionary
-		
-	dictionary.save(file_dictionary)
-	
-	# convert each sample to a bag of words
-	
-	if not opt.quiet:
-		print 'Converting each doc to bag-of-words'
-	
-	corpus = [dictionary.doc2bow(doc) for doc in corpus]
-		
-	# calculate tf-idf scores
-	
-	if not opt.quiet:
-		print 'Creating tf-idf model'
-	
-	tfidf = models.TfidfModel(corpus)
-		
-	if not opt.quiet:
-		print 'Transforming the corpus to tf-idf'
-	
-	corpus_tfidf = tfidf[corpus]
-	
-	# save corpus in market matrix format
-	
-	file_corpus = os.path.join(fs['data'], 'synonymy', 'gensim.corpus_tfidf.mm')
-	
-	if not opt.quiet:
-		print 'Saving corpus as matrix ' + file_corpus
-	
-	corpora.MmCorpus.serialize(file_corpus, corpus_tfidf)
-	
-	# perform lsi transformation
-
-	corpus_final = corpus_tfidf
-
-	if opt.topics is not None and opt.topics > 0:
-		if not opt.quiet:
-			print 'Performing LSI with {0} topics'.format(opt.topics)
-		
-		lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=opt.topics)
-		
-		corpus_final = lsi[corpus_tfidf]
-
-		# save corpus in market matrix format
-
-		file_corpus = os.path.join(fs['data'], 'synonymy', 'gensim.corpus_lsi.mm')
-
-		if not opt.quiet:
-			print 'Saving corpus as matrix ' + file_corpus
-
-		if opt.topics is not None and opt.topics > 0:
-			corpora.MmCorpus.serialize(file_corpus, corpus_final)
-	
-	# calculate similarities
-
-	if not opt.quiet:
-		print 'Calculating similarities (please be patient)'
-	
-	dir_calc = os.path.join(fs['data'], 'synonymy', 'sims')
-	
-	index = similarities.Similarity(dir_calc, corpus_final, len(corpus_final), opt.nsims)
-	
-	file_index = os.path.join(fs['data'], 'synonymy', 'gensim.index')
-	
-	if not opt.quiet:
-		print 'Saving similarity index ' + file_index
-	
-	index.save(file_index)
-
+	by_word, by_id = make_index(defs, opt.quiet)
+	write_dict(by_word, 'lookup_word', opt.quiet)
+	write_dict(by_id, 'lookup_id', opt.quiet)
 
 	
 if __name__ == '__main__':
