@@ -92,6 +92,15 @@ div#nav_sub2
 	text-align: center;
 }
 
+div#nav_sub2_spacer
+{
+	position: static;
+	bottom: 0px;
+	width: 100%;
+	padding: auto;
+	height : 29px;
+	line-height : 29px;
+	background : 	#fff;}
 
 div#nav_sub ul
 {

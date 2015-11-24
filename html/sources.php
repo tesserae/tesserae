@@ -2,7 +2,7 @@
 <?php 	$page = 'sources'; ?>
 <?php include "nav_search.php"; ?>
 		</div>
-		<div id="main">
+			<div id="nav_sub2_spacer"></div>		<div id="main">
 			<h1>
 				Sources
 			</h1>

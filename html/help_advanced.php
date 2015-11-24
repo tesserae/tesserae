@@ -96,10 +96,10 @@ Here you can choose how rarity is calculated for the purposes of scoring. The me
 				
 				<p>
 					Scores assigned during Tesserae search depend in part on the frequency
-					of constituent matchwords. These frequency values can be based on the
-					appearance of a matchword in the target and source texts (this is the default,
-					or 'texts' setting) or they can reflect the appearance of a matchword in the
-					corpus as a whole (the 'corpus' setting).
+					of constituent matchwords. 'Frequency' here refers to the number of times a given word appears in a text or group of texts; the 'frequency basis' feature sets the contents of that corpus.
+Frequency values can be based on the
+					 target and source texts (the 'texts' setting) or they can reflect the appearance of a matchword in the
+					corpus as a whole (the 'corpus' setting, which is the default).
 				</p>
 				<p>
 					It is important to note that, because semantic-based matching is now incorporated
@@ -112,15 +112,7 @@ Here you can choose how rarity is calculated for the purposes of scoring. The me
 					frequency in the source. If 'corpus' is selected instead, each word is examined according
 					to its rate of appearance in the corpus of texts in the appropriate language.
 				</p>	
-				<p>
-					For example, in a cross-language search the Latin word 'maior' in the Aeneid might be linked 
-					to the Greek word 'μέγας' in the Iliad.					
-					If the frequency basis is set to 'corpus', then the frequency of 'maior' is looked up in the 
-					corpus of all Latin texts, and the frequency of 'μέγας' is looked up in the corpus of Greek texts.
-					If the frequency basis were set to 'texts',
-					the frequency of 'maior' would be considered within the Aeneid while the frequency of 'μέγας' 
-					would be considered within the Iliad.
-				</p>
+
 
 
 
@@ -132,11 +124,7 @@ Here you can choose how rarity is calculated for the purposes of scoring. The me
 					inclusively in words: two adjacent words thus have a distance of 2.
 					Two words with one between them have a distance of 3.
 				</p>
-				<p>
-					<b>Note that the way this distance is calculated has recently
-					changed.</b>  If your results seem more inclusive compared to Fall
-					2012 (and you don't want this) try setting max distance lower.
-				</p>
+
 				<p>
 					In a Basic Search, there is no max distance limit.
 				</p>
