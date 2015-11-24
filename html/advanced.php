@@ -86,8 +86,8 @@
 					<th>Score basis:</th>
 					<td>
 						<select name="score">
-							<option value="word">word</option>
-							<option value="stem" selected="selected">stem</option>							
+							<option value="stem">stem</option>
+							<option value="word" selected="selected">word</option>							
 						</select>
 					</td>
 				</tr>
