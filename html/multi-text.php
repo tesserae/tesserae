@@ -69,7 +69,6 @@
 							<th>Unit:</th>
 							<td>
 								<select name="unit">
-									<option value="line">line</option>
 									<option value="phrase">phrase</option>
 								</select>
 							</td>
