@@ -1110,9 +1110,20 @@ END
 					my $score = $multi{$other}{$unit_id_target}{$unit_id_source}{$unit_id_other}{SCORE};
 					$score = sprintf("%i", $score);
 						
+							
+
+		if (Tesserae::check_prose_list($other)) {
+		
+			
+			print "\t\t<phrase text=\"other\" work=\"$abbr{$other}\" "
+						   . "unitID=\"$unit_id_other\" "
+						   . "phrase=\"$locus\" />\n";
+		
+		}
+		else{
 					print "\t\t<phrase text=\"other\" work=\"$abbr{$other}\" "
 						   . "unitID=\"$unit_id_other\" "
-						   . "line=\"$locus\" />\n";
+						   . "line=\"$locus\" />\n";}
 				}
 			}
 		}
@@ -1176,7 +1187,16 @@ sub format_multi_html {
 						
 			my $locus_other   = $multi{$other}{$unit_id_target}{$unit_id_source}{$unit_id_other}{LOCUS};
 			my $score_other   = sprintf("%i", $multi{$other}{$unit_id_target}{$unit_id_source}{$unit_id_other}{SCORE});
+		
+		my $unit = $meta{UNIT};
 
+		if (Tesserae::check_prose_list($other)) {
+		
+			# The $unit variable shouldn't change in global scope. It should only be changed for this iteration of the text loop.
+			
+			$unit = 'phrase';
+		
+		}
 			my $a = "<a href=\"javascript:;\" onclick=\"window.open(link='$url{cgi}/context.pl?target=$other;unit=$unit;id=$unit_id_other',  'context', 'width=520,height=240')\">$locus_other ($score_other)</a>";
 			
 			push @a, $a;
