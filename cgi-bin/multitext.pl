@@ -380,6 +380,8 @@ for my $text ($target_c, $source_c) {
 	push @exclude, $text;
 }
 
+push @exclude, "latin.all_texts";
+
 #
 # load texts
 #
