@@ -622,7 +622,7 @@ sub search_multi {
 
 		if (Tesserae::check_prose_list($other)) {
 		
-			# The $unit variable shouldn't change in global scope. It should only be changed for this iteration of the text loop.
+			# The $unit variable shouldn't change in global scope. It should only be changed for this iteration of the text loop. CD and JG 4/25/2016
 			
 			$unit = 'phrase';
 		
@@ -630,7 +630,7 @@ sub search_multi {
 		
 		my $file2 = "$file.multi_" . $unit . "_$feature";
 
-		my %index_other = %{ retrieve("$file2") }; #Why the $%$*&*^@# is this a symbolic reference? Screw it. I'm changing this. -JG 04/2016.
+		my %index_other = %{ retrieve("$file2") }; # changed from a symbolic reference -JG 04/2016.
 		my @unit_other  = @{ retrieve("$file.$unit") };
 
 		# this holds results for the other text,

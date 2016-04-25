@@ -69,7 +69,7 @@ The Initial Developer of the Original Code is Research Foundation of State Unive
 
 Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
 
-Contributor(s): Neil Coffee, Chris Forstall, James Gawley.
+Contributor(s): Neil Coffee, Chris Forstall, James Gawley, Caitlin Diddams.
 
 Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
 
@@ -1113,7 +1113,7 @@ END
 							
 
 		if (Tesserae::check_prose_list($other)) {
-		
+		# if phrase-based searching was forced, print phrase before $locus instead of line. CD 4/25/2016
 			
 			print "\t\t<phrase text=\"other\" work=\"$abbr{$other}\" "
 						   . "unitID=\"$unit_id_other\" "
@@ -1192,7 +1192,7 @@ sub format_multi_html {
 
 		if (Tesserae::check_prose_list($other)) {
 		
-			# The $unit variable shouldn't change in global scope. It should only be changed for this iteration of the text loop.
+			# The $unit variable shouldn't change in global scope. It should only be changed for this iteration of the text loop. We need $unit in the onclick below to link by phrase for phrase-based searches. CD and JG 4/25/16
 			
 			$unit = 'phrase';
 		
