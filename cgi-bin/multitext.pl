@@ -375,9 +375,9 @@ my $target_c = $target;
 my $source_c = $source;
 
 for my $text ($target_c, $source_c) {
-	
+
 	$text =~ s/\.part\..*//;
-	push @exclude, $text;
+#	push @exclude, $text;
 }
 
 #
