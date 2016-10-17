@@ -117,6 +117,13 @@
 					<td>Anna Glenn</td>
 
 </tr><tr>
+					<td>Ambrose</td>
+					<td>Apologia David Altera</td>
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin Project</a></td>
+					<td>Karl Schenkl, <em>Sanctii Ambrosii Opera, Pars Altera.</em>. Vindobonae: Gerold, 1897.</td>
+					<td>Caitlin Diddams</td>
+
+</tr><tr>
 					<td>Ammianus Marcellinus</td>
 					<td>Rerum Gestarum</td>
 					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A2007.01.0081%3Abook%3D14%3Achapter%3D1%3Asection%3D1">Perseus</a></td>
