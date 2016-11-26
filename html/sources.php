@@ -2,12 +2,12 @@
 <?php 	$page = 'sources'; ?>
 <?php include "nav_search.php"; ?>
 		</div>
-			<div id="nav_sub2_spacer"></div>		<div id="main">
+		<div id="main">
 			<h1>
 				Sources
 			</h1>
 			<p>
-				The texts used in this project were gathered from two electronic text databases, <a href="http://thelatinlibrary.com">The Latin Library</a>, and <a href="http://www.perseus.tufts.edu">The Perseus Project</a>. We have modified the texts by changing the markup, and may have made superficial changes to orthography. During our searches, all punctuation and capitalization are removed. Below we provide the electronic sources for each of our texts. To the best of our ability, we have looked for indications of the original provenance of these texts, and reproduce where possible citations given by the Latin Library or Perseus. This is a work in progress.
+				The texts used in this project were gathered from many electronic text databases, including <a href="http://thelatinlibrary.com">The Latin Library</a>, <a href="http://www.perseus.tufts.edu">The Perseus Project</a>, <a href="http://digiliblt.lett.unipmn.it">DigilibLT</a>, <a href="http://www.dh.uni-leipzig.de/wo/projects/open-greek-and-latin-project/">Open Greek and Latin Project</a>, <a href="http://www.mqdq.it/public/">Musisque Deoque</a>, and <a href="http://www.forumromanum.org/literature/index.html">Corpus Scriptorum Latinorum</a>. We have modified the texts by changing the markup, and may have made superficial changes to orthography. During our searches, all punctuation and capitalization are removed. Below we provide the electronic sources for each of our texts. To the best of our ability, we have looked for indications of the original provenance of these texts, and reproduce citation where possible. This is a work in progress.
 			</p>
 			<table class="sources_page" style="font-size:0.8em">
 <tr>
@@ -115,13 +115,6 @@
 					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0005">Perseus</a></td>
 					<td>Herbert Weir Smyth, Ph.D., <em>Aeschylus, with an English translation by Herbert Weir Smyth, Ph. D. in two volumes.</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1926.</td>
 					<td>Anna Glenn</td>
-
-</tr><tr>
-					<td>Ambrose</td>
-					<td>Apologia David Altera</td>
-					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin Project</a></td>
-					<td>Karl Schenkl, <em>Sanctii Ambrosii Opera, Pars Altera.</em>. Vindobonae: Gerold, 1897.</td>
-					<td>Caitlin Diddams</td>
 
 </tr><tr>
 					<td>Ammianus Marcellinus</td>
