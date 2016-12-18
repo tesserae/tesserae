@@ -4,7 +4,7 @@
 
 			</div>
 
-
+			<div id="nav_sub2_spacer"></div>
 			<div id="main">
 				<h1>Other Search Tools</h1>
 

@@ -6,9 +6,9 @@
 			</div>
 <?php include "nav_help.php"; ?>
 			<div id="main">
-				<h1>Help</h1>
+				<h1>Results Page</h1>
 
-				<h2>Results Page</h2>
+
 				<p>
 					The results page has several components, the most important of which
 					is the list of textual parallels.  Other components include a set of 
@@ -48,7 +48,7 @@
 					This score is a guess as to the significance of the result.  Score is 
 					based on the frequency of the matching words and on the distance between
 					them within each phrase.  For more information on how these are calculated,
-					please look at the “Advanced Features” help page.
+					please look at the “Advanced Search” help page.
 				</p>
 				<p>
 					Initial testing has shown that Tesserae's score tends to correlate roughly

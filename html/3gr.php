@@ -3,6 +3,13 @@
 	$default_t = 'vergil.georgics.part.1';	
 ?>
 
+
+
+
+
+
+
+
 <?php include "first.php"; ?>
 <?php include "nav_search.php"; ?>
 

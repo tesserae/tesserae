@@ -269,7 +269,6 @@ while (<TARG>) {
 
 open (SOUR, "$file{freq_source}") or die $!;
 
-
 # build hash of feature, frequency in the text
 
 while (<SOUR>) {
@@ -277,9 +276,9 @@ while (<SOUR>) {
 		next;
 	}
 	
-	$_ =~ /^(\w+)\t(\d+)/;
+	#Original '\w' could not read greek letters; changed to '\S' 11/30/2015 -James Gawley
+	$_ =~ /^(\S+)\t(\d+)/;
 	$freq_source{$1} = $2;
-	
 	
 }
 
@@ -332,7 +331,8 @@ my @missed;
 # do the comparison
 
 print STDERR "comparing\n" unless $quiet;
-	
+
+
 for my $i (0..$#bench) {
 	
 	my $auth   = $bench[$i]->get('auth');
@@ -340,9 +340,11 @@ for my $i (0..$#bench) {
 	my $unit_t = $bench[$i]->get('target_unit');
 	my $unit_s = $bench[$i]->get('source_unit');
 	
-	if (defined $type) {
+	if ($type ne '') {
 
 		$total[$type]++;
+
+
 	}
 	
 	if (defined $auth) {
@@ -354,7 +356,7 @@ for my $i (0..$#bench) {
 		
 		# tally the match for stats
 
-		if (defined $type) {
+		if ($type ne '') {
 
 			$count[$type]++;
 			$score[$type] += $score{$unit_t}{$unit_s};

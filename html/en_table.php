@@ -10,7 +10,7 @@
 	$features = array(
 		'word' => 'exact word',
 		'stem' => 'lemma',
-		'3gr'  => 'character 3-gram'
+		'3gr'  => 'sound'
 	);
 	$selected_feature = 'stem';
 	$page = 'search';	

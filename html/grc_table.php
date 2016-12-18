@@ -10,11 +10,11 @@
 	$features = array(
 		'word' => 'exact word',
 		'stem' => 'lemma',
-		'syn' => 'synonyms',
-		'syn_lem' => 'lemma + synonyms',
-		'3gr'  => 'character 3-gram'
+		'syn' => 'semantic',
+		'syn_lem' => 'lemma + semantic',
+		'3gr'  => 'sound'
 	);
-	$selected_feature = 'syn_lem';
+	$selected_feature = 'stem';
 	$page = 'search';
 ?>
 
@@ -26,9 +26,11 @@
 <div id="main">
 	
 	<h1>Greek Search</h1>
-	
+		<p>
+<font color='red'>Semantic search</font> that identifies parallels with related meaning is now available under show <i>advanced/ feature / lemma + semantic.</i> This is planned as the default search beginning November 2015. For an explanation see <a href="http://tesserae.caset.buffalo.edu/blog/version-3-1-capturing-more-parallels-and-sorting-them-better/" target="_blank">here</a>.
+	</p>
 	<p>
-		For explanations of advanced features, see the 
+		For an overview of all advanced features, see the 
 		<a href="<?php echo $url_html . '/help_advanced.php' ?>">Instructions</a> page.
 	</p>
 	
