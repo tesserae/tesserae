@@ -4226,6 +4226,20 @@ Recognovit brevique adnotatione critica instruxit
 					<td>Blake Cooper</td>
 
 </tr><tr>
+	<td>Theocritus</td>
+	<td>Epigrams</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0228%3Atext%3DId.">Perseus</a></td>
+	<td>R. J. Cholmeley, <em>Idylls</em>. London. George Bell & Sons. 1901.</td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Theocritus</td>
+	<td>Idylls</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0228%3Atext%3DId.">Perseus</a></td>
+	<td>R. J. Cholmeley, <em>Idylls</em>. London. George Bell & Sons. 1901.</td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
 	<td>Theophrastus</td>
 	<td>Characters</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0225">Perseus</a></td>
