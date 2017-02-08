@@ -24,8 +24,10 @@
 				</td>
 			</tr>
 		</table>
-
-		<div onclick="hideshow()" style="color:grey; text-align:center;">
+	<p>	
+		For an overview of all advanced features, see the <a href="<?php echo $url_html . '/help_advanced.php' ?>">Instructions</a> page.
+	</p>
+		<div onclick="hideshow()" style="color:black; text-align:center;">
 			<p id="moremsg">show advanced</p>
 		</div>
 		<div id="advanced" style="display:none; background-color:white;">
