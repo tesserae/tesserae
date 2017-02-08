@@ -26,8 +26,12 @@
 <div id="main">
 	
 	<h1>Greek Search</h1>
+	<p>
+		The Tesserae project aims to provide a flexible and robust web interface for exploring intertextual parallels. 
+		Select two poems below to see a list of lines sharing two or more words (regardless of inflectional changes).
+	</p>
 		<p>
-<font color='red'>Semantic search</font> that identifies parallels with related meaning is now available under show <i>advanced/ feature / lemma + semantic.</i> This is planned as the default search beginning November 2015. For an explanation see <a href="http://tesserae.caset.buffalo.edu/blog/version-3-1-capturing-more-parallels-and-sorting-them-better/" target="_blank">here</a>.
+<font color='red'>Semantic search</font> that identifies parallels with related meaning is now available under show <i>advanced/ feature / lemma + semantic.</i>  For an explanation see <a href="http://tesserae.caset.buffalo.edu/blog/version-3-1-capturing-more-parallels-and-sorting-them-better/" target="_blank">here</a>.
 	</p>
 	<p>
 		For an overview of all advanced features, see the 
