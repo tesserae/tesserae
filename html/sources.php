@@ -4163,6 +4163,19 @@ Recognovit brevique adnotatione critica instruxit
 
 </tr><tr>
 
+					<td>Lactantius Placidus</td>
+
+					<td>In Statii Thebaida Commentum</td>
+
+					<td><a href="http://digiliblt.lett.unipmn.it/xtf/view?query=;brand=default;docId=dlt000323/dlt000323.xml;">DigilibLT</a></td>
+
+					<td>Robertus Dale Sweeney<em></em> Stutgardiae et Lipsiae, Teubner 1997. Linguistic correction: Manuela Naso. XML encoding: Nadia Rosso.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
 					<td>Livy</td>
 
 					<td>Ab urbe condita, books 1-10, 21-45</td>
