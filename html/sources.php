@@ -754,15 +754,29 @@
 
 </tr><tr>
 
-					<td>Ausonius</td>
+					<td>Aurelius Victor</td>
 
-					<td>Ausonii Burdigalensis Vasatis Gratiarum Actio Ad Grati Angratianum Imperatorem Pro Consulatu</td>
+					<td>De Caesaribus</td>
 
-					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A2008.01.0615%3Asection%3D1">Perseus</a></td>
+					<td><a href="http://www.forumromanum.org/literature/victor_caes.html">Forum Romanum</a></td>
 
-					<td>Ausonius. <em>Works.</em> Ausonius, Vol 2. Ausonius, Decimus Magnus. Hugh G. Evelyn-White. William Heinemann Ltd.; Harvard University Press. London; Cambridge, Massachusetts. 1921.</td>
+					<td>Franz Pichlmayr. <em>Teubner 1911.</em> Entered by Igor Makhankov (2000) </td>
 
-					<td>Katherine Roache</td>
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Aurelius Victor</td>
+
+					<td>Epitome de Caesaribus</td>
+
+					<td><a href="http://www.forumromanum.org/literature/victor_ep.html">Forum Romanum</a></td>
+
+					<td>Franz Pichlmayr. <em>Teubner 1911.</em> Entered by Igor Makhankov (2000) </td>
+
+					<td>Caitlin Diddams</td>
 
 
 
@@ -3372,6 +3386,62 @@ Recognovit brevique adnotatione critica instruxit
 
 </tr><tr>
 
+	<td>Dractontius</td>
+
+	<td>De Laudibus Dei</td>
+
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/DRAC%7Claud%7C001">MQDQ</a></td>
+
+	<td>C. Camus, C. Moussy. <em> </em>. 1985-88.</td>
+
+	<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+	<td>Dractontius</td>
+
+	<td>Orestes</td>
+
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/DRAC%7Cores%7C001">MQDQ</a></td>
+
+	<td>F. Vollmer. <em> </em>. 1905.</td>
+
+	<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+	<td>Dractontius</td>
+
+	<td>Romulea</td>
+
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/DRAC%7Cromu%7C001">MQDQ</a></td>
+
+	<td>F. Vollmer. <em> </em>. 1905.</td>
+
+	<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+	<td>Dractontius</td>
+
+	<td>Satisfactio</td>
+
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/DRAC%7Csati%7C001">MQDQ</a></td>
+
+	<td>C. Moussy. <em> </em>. 1988.</td>
+
+	<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
 	<td>Euclid</td>
 
 	<td>Elements</td>
@@ -3647,6 +3717,20 @@ Recognovit brevique adnotatione critica instruxit
         <td>Gilbert Murray, <em>Euripidis Fabulae, vol. 2</em>. Oxford: Clarendon Press, Oxford, 1913.</td>
 
         <td>Tony R. Waleszczak & Jessica Micceri</td>
+
+
+
+</tr><tr>
+
+    <td>Eutropius</td>
+
+    <td>Breviarium</td>
+
+    <td><a href="http://www.forumromanum.org/literature/eutropius/index.html">Forum Romanum</a></td>
+
+    <td>Rev. John Selby Watson. <em> </em>. London: Henry G. Bohn, York Street, Convent Garden (1853).</td>
+
+    <td>Caitlin Diddams</td>
 
 
 
@@ -3940,7 +4024,7 @@ Recognovit brevique adnotatione critica instruxit
 
 					<td>Saint Jerome, <em>Vulgate Bible</em>.Bible Foundation and On-Line Book Initiative; ftp.std.com/obi/Religion/Vulga te: 13-Oct-99.</td>
 
-					<td>Tony R Waleszczak</td>
+					<td>Caitlin Diddams</td>
 
 
 
@@ -7488,6 +7572,34 @@ Recognovit brevique adnotatione critica instruxit
 
 </tr><tr>
 
+					<td>Priscian</td>
+
+					<td>Carmen in laudem Anastasii imperatoris</td>
+
+					<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRISC%7Canas%7C001">MQDQ</a></td>
+
+					<td>A. Chauvot. <em> </em>. 1986.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Priscian</td>
+
+					<td>Perihegesis</td>
+
+					<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRISC%7Cperi%7C001">MQDQ</a></td>
+
+					<td>P. van der Woestijn. <em> </em>. 1953.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
 					<td>Propertius</td>
 
 					<td>Elegies</td>
@@ -7567,6 +7679,20 @@ Recognovit brevique adnotatione critica instruxit
 					<td>Harold Edgeworth Butler, <em>With an English Translation</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1920.</td>
 
 					<td>Emilie Bétrix</td>
+
+
+
+</tr><tr>
+
+					<td>Quintus Smyrnaeus</td>
+
+					<td>Fall of Troy</td>
+
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:2008.01.0490">Perseus</a></td>
+
+					<td>Quintus Smyrnaeus. The Fall of Troy. <em>Arthur S. Way.</em>. London: William Heinemann; New York: G.P. Putnam's Sons. 1913.</td>
+
+					<td>Caitlin Diddams</td>
 
 
 
@@ -7959,6 +8085,20 @@ Recognovit brevique adnotatione critica instruxit
 					<td>L. Annaeus Seneca. <em>Tragoediae.</em> Rudolf Peiper. Gustav Richter. Leipzig. Teubner. 1921.</td>
 
 					<td>Katherine Roache</td>
+
+
+
+</tr><tr>
+
+					<td>Seneca</td>
+
+					<td>Quaestiones Naturales</td>
+
+					<td><a href="http://www.thelatinlibrary.com/sen/sen.qn1.shtml">The Latin Library</a></td>
+
+					<td><em> </em> Edition unknown.</td>
+
+					<td>Caitlin Diddams</td>
 
 
 
@@ -8454,6 +8594,34 @@ Recognovit brevique adnotatione critica instruxit
 
 </tr><tr>
 
+					<td>Theocritus</td>
+
+					<td>Epigrams</td>
+
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0228%3Atext%3DEp.">Perseus</a></td>
+
+					<td>Theocritus. Idylls. R. J. Cholmeley. London. George Bell & Sons. 1901.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Theocritus</td>
+
+					<td>Idylls</td>
+
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0228%3Atext%3DId.">Perseus</a></td>
+
+					<td>Theocritus. Idylls. R. J. Cholmeley. London. George Bell & Sons. 1901.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
 	<td>Theophrastus</td>
 
 	<td>Characters</td>
@@ -8561,6 +8729,160 @@ Recognovit brevique adnotatione critica instruxit
 					<td>J. B. Greenough, <em>Bucolics, Aeneid, and Georgics Of Vergil</em>. Boston: Ginn &amp; Co. 1900</td>
 
 					<td>Chris Forstall</td>
+
+
+
+</tr><tr>
+
+					<td>Vergil (Pseudo)</td>
+
+					<td>Aetna</td>
+
+					<td><a href="http://www.forumromanum.org/literature/aetna.html">Forum Romanum</a></td>
+
+					<td>R. Ellis. <em> </em> Oxford 1907.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Vergil (Pseudo)</td>
+
+					<td>Appendix Vergiliana (Combined)</td>
+
+					<td><a href="http://www.forumromanum.org/literature/aetna.html">Forum Romanum</a></td>
+
+					<td>Various Editions. <em> </em> </td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Vergil (Pseudo)</td>
+
+					<td>Catalepton</td>
+
+					<td><a href="http://www.forumromanum.org/literature/catalepton.html">Forum Romanum</a></td>
+
+					<td>R. Ellis. <em> </em> Oxford 1907.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Vergil (Pseudo)</td>
+
+					<td>Ciris</td>
+
+					<td><a href="http://www.forumromanum.org/literature/ciris.html">Forum Romanum</a></td>
+
+					<td>R. Ellis. <em> </em> Oxford 1907.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Vergil (Pseudo)</td>
+
+					<td>Copa</td>
+
+					<td><a href="http://www.forumromanum.org/literature/copa.html">Forum Romanum</a></td>
+
+					<td>Unknown Edition. <em> </em> </td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Vergil (Pseudo)</td>
+
+					<td>Culex</td>
+
+					<td><a href="http://www.forumromanum.org/literature/culex.html">Forum Romanum</a></td>
+
+					<td>Unknown Edition. <em> </em> </td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Vergil (Pseudo)</td>
+
+					<td>Dirae</td>
+
+					<td><a href="http://www.forumromanum.org/literature/dirae.html">Forum Romanum</a></td>
+
+					<td>Unknown Edition. <em> </em> </td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Vergil (Pseudo)</td>
+
+					<td>Elegiae in Maecenatem</td>
+
+					<td><a href="http://www.forumromanum.org/literature/elegiae_maecenatem.html">Forum Romanum</a></td>
+
+					<td>Unknown Edition. <em> </em> </td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Vergil (Pseudo)</td>
+
+					<td>Lydia</td>
+
+					<td><a href="http://www.forumromanum.org/literature/lydia.html">Forum Romanum</a></td>
+
+					<td>Unknown Edition. <em> </em> </td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Vergil (Pseudo)</td>
+
+					<td>Moretum</td>
+
+					<td><a href="http://www.forumromanum.org/literature/moretum.html">Forum Romanum</a></td>
+
+					<td>Unknown Edition. <em> </em> </td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
+					<td>Vergil (Pseudo)</td>
+
+					<td>Priapea</td>
+
+					<td><a href="http://www.forumromanum.org/literature/priapea.html">Forum Romanum</a></td>
+
+					<td>Unknown Edition. <em> </em> </td>
+
+					<td>Caitlin Diddams</td>
 
 
 
