@@ -446,6 +446,20 @@
 
 </tr><tr>
 
+					<td>Apulieus</td>
+
+					<td>De Deo Socratis</td>
+
+					<td><a href="http://www.forumromanum.org/literature/deo_socratis.html">Forum Romanum</a></td>
+
+					<td>Jean Beaujeu. <em></em>Paris 1973.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+
+</tr><tr>
+
 	<td>Aristophanes</td>
 
 	<td>Acharnians</td>
@@ -3386,7 +3400,7 @@ Recognovit brevique adnotatione critica instruxit
 
 </tr><tr>
 
-	<td>Dractontius</td>
+	<td>Dracontius</td>
 
 	<td>De Laudibus Dei</td>
 
@@ -3400,7 +3414,7 @@ Recognovit brevique adnotatione critica instruxit
 
 </tr><tr>
 
-	<td>Dractontius</td>
+	<td>Dracontius</td>
 
 	<td>Orestes</td>
 
@@ -3414,7 +3428,7 @@ Recognovit brevique adnotatione critica instruxit
 
 </tr><tr>
 
-	<td>Dractontius</td>
+	<td>Dracontius</td>
 
 	<td>Romulea</td>
 
@@ -3428,7 +3442,7 @@ Recognovit brevique adnotatione critica instruxit
 
 </tr><tr>
 
-	<td>Dractontius</td>
+	<td>Dracontius</td>
 
 	<td>Satisfactio</td>
 
@@ -4054,6 +4068,110 @@ Recognovit brevique adnotatione critica instruxit
 
 					<td>Chris Forstall</td>
 
+
+
+</tr><tr>
+
+					<td>Lactantius</td>
+
+					<td>Carmen de Passioni Domini</td>
+
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars II, Fasc I.</em> Vindobonae: Gerold, 1897.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
+					<td>Lactantius</td>
+
+					<td>De Ave Phoenice</td>
+
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars II, Fasc I.</em> Vindobonae: Gerold, 1897.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
+					<td>Lactantius</td>
+
+					<td>De Ira Dei</td>
+
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars II, Fasc I.</em> Vindobonae: Gerold, 1897.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
+					<td>Lactantius</td>
+
+					<td>De Mortibus Persecutorum</td>
+
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars II, Fasc II.</em> Vindobonae: Gerold, 1897.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
+					<td>Lactantius</td>
+
+					<td>De Opificio Dei</td>
+
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars II, Fasc I.</em> Vindobonae: Gerold, 1897.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
+					<td>Lactantius</td>
+
+					<td>Divinarum Institutionum</td>
+
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars I.</em> Vindobonae: Gerold, 1890.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
+					<td>Lactantius</td>
+
+					<td>Epitome Divinarum Institutionum</td>
+
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars I.</em> Vindobonae: Gerold, 1890.</td>
+
+					<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
+					<td>Lactantius Placidus</td>
+
+					<td>In Statii Thebaida Commentum</td>
+
+					<td><a href="http://digiliblt.lett.unipmn.it/xtf/view?query=;brand=default;docId=dlt000323/dlt000323.xml;">DigilibLT</a></td>
+
+					<td>Robertus Dale Sweeney<em></em> Stutgardiae et Lipsiae, Teubner 1997. Linguistic correction: Manuela Naso. XML encoding: Nadia Rosso.</td>
+
+					<td>Caitlin Diddams</td>
 
 
 </tr><tr>
@@ -7578,7 +7696,7 @@ Recognovit brevique adnotatione critica instruxit
 
 					<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRISC%7Canas%7C001">MQDQ</a></td>
 
-					<td>A. Chauvot. <em> </em>. 1986.</td>
+					<td>A. Chauvot. <em> </em>1986.</td>
 
 					<td>Caitlin Diddams</td>
 
@@ -7592,7 +7710,7 @@ Recognovit brevique adnotatione critica instruxit
 
 					<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRISC%7Cperi%7C001">MQDQ</a></td>
 
-					<td>P. van der Woestijn. <em> </em>. 1953.</td>
+					<td>P. van der Woestijn. <em> </em>1953.</td>
 
 					<td>Caitlin Diddams</td>
 
@@ -7606,11 +7724,100 @@ Recognovit brevique adnotatione critica instruxit
 
 					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0494">Perseus</a></td>
 
-					<td>L. Mueller, <em>Sex. Propertii Elegiae</em>. Leipzig: Teubner, 1898.</td>
+					<td>L. Mueller, <em>Sex. Propertii Elegiae.</em> Leipzig: Teubner, 1898.</td>
 
 					<td>Chris Forstall</td>
 
 
+
+</tr><tr>
+
+	<td>Prudentius</td>
+
+	<td>Apotheosis</td>
+
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRVD%7Capot%7C001">MQDQ</a></td>
+
+	<td>J. Bergman. <em> </em> 1926. Editing of the digital edition: G. Dalla Pietà (2010).</td>
+
+	<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
+	<td>Prudentius</td>
+
+	<td>Contra Symmachum</td>
+
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRVD%7Csymm%7C001">MQDQ</a></td>
+
+	<td>J. Bergman. <em> </em> 1926. Editing of the digital edition: G. Dalla Pietà (2010).</td>
+
+	<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
+	<td>Prudentius</td>
+
+	<td>Dittochaeon</td>
+
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRVD%7Cditt%7C001">MQDQ</a></td>
+
+	<td>J. Bergman. <em> </em> 1926. Editing of the digital edition: G. Dalla Pietà (2009).</td>
+
+	<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
+	<td>Prudentius</td>
+
+	<td>Epilogus</td>
+
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRVD%7Cepil%7C001">MQDQ</a></td>
+
+	<td>J. Bergman. <em> </em> 1926. Editing of the digital edition: G. Dalla Pietà (2009).</td>
+
+	<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
+	<td>Prudentius</td>
+
+	<td>Hamartigenia</td>
+
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRVD%7Chama%7C001">MQDQ</a></td>
+
+	<td>R. Palla. <em> </em> 1981. Editing of the digital edition: G. Dalla Pietà (2009).</td>
+
+	<td>Caitlin Diddams</td>
+
+
+</tr><tr>
+
+	<td>Prudentius</td>
+
+	<td>Peristephanon</td>
+
+	<td><a href="http://www.thelatinlibrary.com/prudentius/prud1.shtml">The Latin Library</a></td>
+
+	<td> Edition Unknown. <em> </em> </td>
+
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
+
+	<td>Prudentius</td>
+
+	<td>Psychomachia</td>
+
+	<td><a href="http://www.thelatinlibrary.com/prudentius/prud.psycho.shtml">The Latin Library</a></td>
+
+	<td> Edition Unknown. <em> </em> </td>
+
+	<td>Caitlin Diddams</td>
 
 </tr><tr>
 
@@ -7620,7 +7827,7 @@ Recognovit brevique adnotatione critica instruxit
 
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A2008.01.0401">Perseus</a></td>
 
-	<td>Plutarch. <em> Moralia</em>. Gregorius N. Bernardakis. Leipzig. Teubner. 1895. 6..</td>
+	<td>Plutarch. <em> Moralia</em> Gregorius N. Bernardakis. Leipzig. Teubner. 1895. 6..</td>
 
 	<td>Rudra Chakraborty</td>
 
