@@ -7,7 +7,7 @@
 				Sources
 			</h1>
 			<p>
-				The texts used in this project were gathered from two electronic text databases, <a href="http://thelatinlibrary.com">The Latin Library</a>, and <a href="http://www.perseus.tufts.edu">The Perseus Project</a>. We have modified the texts by changing the markup, and may have made superficial changes to orthography. During our searches, all punctuation and capitalization are removed. Below we provide the electronic sources for each of our texts. To the best of our ability, we have looked for indications of the original provenance of these texts, and reproduce where possible citations given by the Latin Library or Perseus. This is a work in progress.
+				The texts used in this project were gathered from many electronic text databases, including <a href="http://thelatinlibrary.com">The Latin Library</a>, <a href="http://www.perseus.tufts.edu">The Perseus Project</a>, <a href="http://digiliblt.lett.unipmn.it">DigilibLT</a>, <a href="http://www.dh.uni-leipzig.de/wo/projects/open-greek-and-latin-project/">Open Greek and Latin Project</a>, <a href="http://www.mqdq.it/public/">Musisque Deoque</a>, and <a href="http://www.forumromanum.org/literature/index.html">Corpus Scriptorum Latinorum</a>. We have modified the texts by changing the markup, and may have made superficial changes to orthography. During our searches, all punctuation and capitalization are removed. Below we provide the electronic sources for each of our texts. To the best of our ability, we have looked for indications of the original provenance of these texts, and reproduce citation where possible. This is a work in progress.
 			</p>
 			<table class="sources_page" style="font-size:0.8em">
 <tr>
@@ -296,6 +296,12 @@
 	<td>George W. Mooney, <em>Argonautica</em>. London: Longmans, Green, 1912.</td>
 	<td>Chris Forstall</td>
 
+</tr><tr>
+					<td>Apulieus</td>
+					<td>De Deo Socratis</td>
+					<td><a href="http://www.forumromanum.org/literature/deo_socratis.html">Forum Romanum</a></td>
+					<td>Jean Beaujeu. <em></em>Paris 1973.</td>
+					<td>Caitlin Diddams</td>
 </tr><tr>
 					<td>Apuleius</td>
 					<td>Florida</td>
@@ -843,6 +849,18 @@
 					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 					<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.<em> Vindobonae: Gerold. 1910.</td>
 					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Aurelius Victor</td>
+					<td>Epitome de Caesaribus</td>
+					<td><a href="http://www.forumromanum.org/literature/victor_ep.html">Forum Romanum</a></td>
+					<td>Franz Pichlmayr. <em>Teubner 1911.</em> Entered by Igor Makhankov (2000) </td>
+
+</tr><tr>
+					<td>Aurelius Victor</td>
+					<td>De Caesaribus</td>
+					<td><a href="http://www.forumromanum.org/literature/victor_caes.html">Forum Romanum</a></td>
+					<td>Franz Pichlmayr. <em>Teubner 1911.</em> Entered by Igor Makhankov (2000) </td>
+
 </tr><tr>
 					<td>Ausonius</td>
 					<td>Ausonii Burdigalensis Vasatis Gratiarum Actio Ad Grati Angratianum Imperatorem Pro Consulatu</td>
@@ -2374,6 +2392,30 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Hermann Usener, <em>Dionysii Halicarnasei Quae Exstant, Volumen Quintum</em>. Leipzig: In Aedibus B.G. Teubneri, 1899.</td>
 	<td>Caitlin Diddams</td>
 
+</tr></tr><tr>
+	<td>Dracontius</td>
+	<td>De Laudibus Dei</td>
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/DRAC%7Claud%7C001">MQDQ</a></td>
+	<td>C. Camus, C. Moussy. <em> </em>. 1985-88.</td>
+	<td>Caitlin Diddams</td>
+</tr><tr>
+	<td>Dracontius</td>
+	<td>Orestes</td>
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/DRAC%7Cores%7C001">MQDQ</a></td>
+	<td>F. Vollmer. <em> </em>. 1905.</td>
+	<td>Caitlin Diddams</td>
+</tr><tr>
+	<td>Dracontius</td>
+	<td>Romulea</td>
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/DRAC%7Cromu%7C001">MQDQ</a></td>
+	<td>F. Vollmer. <em> </em>. 1905.</td>
+	<td>Caitlin Diddams</td>
+</tr><tr>
+	<td>Dracontius</td>
+	<td>Satisfactio</td>
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/DRAC%7Csati%7C001">MQDQ</a></td>
+	<td>C. Moussy. <em> </em>. 1988.</td>
+	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Euclid</td>
 	<td>Elements</td>
@@ -2545,6 +2587,12 @@ Recognovit brevique adnotatione critica instruxit
     <td>Kirsopp Lake, <em>Eusebius, The Ecclesiastical History, Vol 1-2</em>. London; New York: William Heinemann; G.P. Putnam's Press; Harvard University Press, 1926-1932.</td>
     <td>Jessica Micceri</td>
 
+</tr><tr>
+    <td>Eutropius</td>
+    <td>Breviarium</td>
+    <td><a href="http://www.forumromanum.org/literature/eutropius/index.html">Forum Romanum</a></td>
+    <td>Rev. John Selby Watson. <em> </em>. London: Henry G. Bohn, York Street, Convent Garden (1853).</td>
+    <td>Caitlin Diddams</td>
 </tr><tr>
 					<td>Felix, Marcus Mincius</td>
 					<td>Octavius</td>
@@ -2819,6 +2867,54 @@ Recognovit brevique adnotatione critica instruxit
 					<td>G. G. Ramsay, <em>Juvenal and Persius: With An English Translation</em> New York: G. P. Putnam’s Sons, 1918.</td>
 					<td>Chris Forstall</td>
 
+</tr><tr>
+					<td>Lactantius</td>
+					<td>Carmen de Passioni Domini</td>
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars II, Fasc I.</em> Vindobonae: Gerold, 1897.</td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Lactantius</td>
+					<td>De Ave Phoenice</td>
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars II, Fasc I.</em> Vindobonae: Gerold, 1897.</td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Lactantius</td>
+					<td>De Ira Dei</td>
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars II, Fasc I.</em> Vindobonae: Gerold, 1897.</td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Lactantius</td>
+					<td>De Mortibus Persecutorum</td>
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars II, Fasc II.</em> Vindobonae: Gerold, 1897.</td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Lactantius</td>
+					<td>De Opificio Dei</td>
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars II, Fasc I.</em> Vindobonae: Gerold, 1897.</td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Lactantius</td>
+					<td>Divinarum Institutionum</td>
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars I.</em> Vindobonae: Gerold, 1890.</td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Lactantius Placidus</td>
+					<td>In Statii Thebaida Commentum</td>
+					<td><a href="http://digiliblt.lett.unipmn.it/xtf/view?query=;brand=default;docId=dlt000323/dlt000323.xml;">DigilibLT</a></td>
+					<td>Robertus Dale Sweeney<em></em> Stutgardiae et Lipsiae, Teubner 1997. Linguistic correction: Manuela Naso. XML encoding: Nadia Rosso.</td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Lactantius</td>
+					<td>De Opificio Dei</td>
+					<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+					<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars II, Fasc I.</em> Vindobonae: Gerold, 1897.</td>
+					<td>Caitlin Diddams</td>
 </tr><tr>
 					<td>Libanius</td>
 					<td>Declamationes</td>
@@ -4631,6 +4727,20 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Bridget Murray</td>
 
 </tr><tr>
+	<td>Priscian</td>
+	<td>Carmen in laudem Anastasii imperatoris</td>
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRISC%7Canas%7C001">MQDQ</a></td>
+	<td>A. Chauvot. <em> </em>1986.</td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Priscian</td>
+	<td>Perihegesis</td>
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRISC%7Cperi%7C001">MQDQ</a></td>
+	<td>P. van der Woestijn. <em> </em>1953.</td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
 					<td>Priscillian</td>
 					<td>Apologeticus</td>
 					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
@@ -4716,6 +4826,55 @@ Recognovit brevique adnotatione critica instruxit
 					<td>Chris Forstall</td>
 
 </tr><tr>
+	<td>Prudentius</td>
+	<td>Apotheosis</td>
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRVD%7Capot%7C001">MQDQ</a></td>
+	<td>J. Bergman. <em> </em> 1926. Editing of the digital edition: G. Dalla Pietà (2010).</td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Prudentius</td>
+	<td>Contra Symmachum</td>
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRVD%7Csymm%7C001">MQDQ</a></td>
+	<td>J. Bergman. <em> </em> 1926. Editing of the digital edition: G. Dalla Pietà (2010).</td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Prudentius</td>
+	<td>Dittochaeon</td>
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRVD%7Cditt%7C001">MQDQ</a></td>
+	<td>J. Bergman. <em> </em> 1926. Editing of the digital edition: G. Dalla Pietà (2009).</td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Prudentius</td>
+	<td>Epilogus</td>
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRVD%7Cepil%7C001">MQDQ</a></td>
+	<td>J. Bergman. <em> </em> 1926. Editing of the digital edition: G. Dalla Pietà (2009).</td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Prudentius</td>
+	<td>Hamartigenia</td>
+	<td><a href="http://www.mqdq.it/public/testo/testo/codice/PRVD%7Chama%7C001">MQDQ</a></td>
+	<td>R. Palla. <em> </em> 1981. Editing of the digital edition: G. Dalla Pietà (2009).</td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Prudentius</td>
+	<td>Peristephanon</td>
+	<td><a href="http://www.thelatinlibrary.com/prudentius/prud1.shtml">The Latin Library</a></td>
+	<td> Edition Unknown. <em> </em> </td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Prudentius</td>
+	<td>Psychomachia</td>
+	<td><a href="http://www.thelatinlibrary.com/prudentius/prud.psycho.shtml">The Latin Library</a></td>
+	<td> Edition Unknown. <em> </em> </td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
 					<td>Pseudo-Augustine</td>
 					<td>Quaestiones Veteris et Novi Testamenti</td>
 					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
@@ -4755,6 +4914,14 @@ Recognovit brevique adnotatione critica instruxit
 					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2007.01.0059">Perseus</a></td>
 					<td>Harold Edgeworth Butler, <em>With an English Translation</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1920.</td>
 					<td>Emilie Bétrix</td>
+
+</tr><tr>
+					<td>Quintus Smyrnaeus</td>
+					<td>Fall of Troy</td>
+					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:2008.01.0490">Perseus</a></td>
+					<td>Quintus Smyrnaeus. The Fall of Troy. <em>Arthur S. Way.</em>. London: William Heinemann; New York: G.P. Putnam's Sons. 1913.</td>
+					<td>L. Annaeus Seneca. <em>Tragoediae.</em> Rudolf Peiper. Gustav Richter. Leipzig. Teubner. 1921.</td>
+					<td>Katherine Roache</td>
 
 </tr><tr>
 					<td>Rufinus of Aquileia</td>
@@ -4963,6 +5130,13 @@ Recognovit brevique adnotatione critica instruxit
 					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2007.01.0009">Perseus</a></td>
 					<td>L. Annaeus Seneca. <em>Tragoediae.</em> Rudolf Peiper. Gustav Richter. Leipzig. Teubner. 1921.</td>
 					<td>Katherine Roache</td>
+
+</tr><tr>
+					<td>Seneca</td>
+					<td>Quaestiones Naturales</td>
+					<td><a href="http://www.thelatinlibrary.com/sen/sen.qn1.shtml">The Latin Library</a></td>
+					<td><em> </em> Edition unknown.</td>
+					<td>Caitlin Diddams</td>
 
 </tr><tr>
 					<td>Seneca the Elder</td>
@@ -5355,6 +5529,20 @@ Recognovit brevique adnotatione critica instruxit
 					<td>Franz Oehler. <em>Quinti Septimi Florentis Tertulliani Quae Supersunt Omnia, Tomus II.<em> Lipsiae: Weigel. 1854.</td>
 					<td>Caitlin Diddams</td>
 </tr><tr>
+    <td>Theocritus</td>
+	<td>Epigrams</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0228%3Atext%3DEp.">Perseus</a></td>
+	<td>Theocritus. Idylls. R. J. Cholmeley. London. George Bell & Sons. 1901.</td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Theocritus</td>
+	<td>Idylls</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0228%3Atext%3DId.">Perseus</a></td>
+	<td>Theocritus. Idylls. R. J. Cholmeley. London. George Bell & Sons. 1901.</td>
+	<td>Caitlin Diddams</td>
+
+</tr><tr>
 	<td>Theophrastus</td>
 	<td>Characters</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0225">Perseus</a></td>
@@ -5410,6 +5598,71 @@ Recognovit brevique adnotatione critica instruxit
 					<td>J. B. Greenough, <em>Bucolics, Aeneid, and Georgics Of Vergil</em>. Boston: Ginn &amp; Co. 1900</td>
 					<td>Chris Forstall</td>
 
+</tr><tr>
+					<td>Vergil (Pseudo)</td>
+					<td>Aetna</td>
+					<td><a href="http://www.forumromanum.org/literature/aetna.html">Forum Romanum</a></td>
+					<td>R. Ellis. <em> </em> Oxford 1907.</td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Vergil (Pseudo)</td>
+					<td>Appendix Vergiliana (Combined)</td>
+					<td><a href="http://www.forumromanum.org/literature/aetna.html">Forum Romanum</a></td>
+					<td>Various Editions. <em> </em> </td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Vergil (Pseudo)</td>
+					<td>Catalepton</td>
+					<td><a href="http://www.forumromanum.org/literature/catalepton.html">Forum Romanum</a></td>
+					<td>R. Ellis. <em> </em> Oxford 1907.</td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Vergil (Pseudo)</td>
+					<td>Ciris</td>
+					<td><a href="http://www.forumromanum.org/literature/ciris.html">Forum Romanum</a></td>
+					<td>R. Ellis. <em> </em> Oxford 1907.</td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Vergil (Pseudo)</td>
+					<td>Copa</td>
+					<td><a href="http://www.forumromanum.org/literature/copa.html">Forum Romanum</a></td>
+					<td>Unknown Edition. <em> </em> </td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Vergil (Pseudo)</td>
+					<td>Culex</td>
+					<td><a href="http://www.forumromanum.org/literature/culex.html">Forum Romanum</a></td>
+					<td>Unknown Edition. <em> </em> </td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+                    <td>Vergil (Pseudo)</td>
+					<td>Dirae</td>
+					<td><a href="http://www.forumromanum.org/literature/dirae.html">Forum Romanum</a></td>
+					<td>Unknown Edition. <em> </em> </td>
+					<td>Caitlin Diddams</td>   
+</tr><tr>
+					<td>Vergil (Pseudo)</td>
+					<td>Elegiae in Maecenatem</td>
+					<td><a href="http://www.forumromanum.org/literature/elegiae_maecenatem.html">Forum Romanum</a></td>
+					<td>Unknown Edition. <em> </em> </td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Vergil (Pseudo)</td>
+					<td>Lydia</td>
+					<td><a href="http://www.forumromanum.org/literature/lydia.html">Forum Romanum</a></td>
+					<td>Unknown Edition. <em> </em> </td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+					<td>Vergil (Pseudo)</td>
+					<td>Moretum</td>
+					<td><a href="http://www.forumromanum.org/literature/moretum.html">Forum Romanum</a></td>
+					<td>Unknown Edition. <em> </em> </td>
+					<td>Caitlin Diddams</td>
+</tr><tr>
+				    <td>Vergil (Pseudo)</td>
+					<td>Priapea</td>
+					<td><a href="http://www.forumromanum.org/literature/priapea.html">Forum Romanum</a></td>
+					<td>Unknown Edition. <em> </em> </td>
 </tr><tr>
 					<td>Victorinus</td>
 					<td>De Machabeis</td>
