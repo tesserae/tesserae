@@ -4957,6 +4957,20 @@ Recognovit brevique adnotatione critica instruxit
 					<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars II.<em> Vindobonae: Gerold. 1892.</td>
 					<td>Caitlin Diddams</td>
 </tr><tr>
+					<td>Sedulius</td>
+					<td>A Solis Ortus Cardine</td>
+					<td><a href="http://www.thelatinlibrary.com/sedulius.html">The Latin Library</a></td>
+					<td>J. Huemer.<em>Sedulii opera omnia, accedunt excerpta ex Remigii Expositione in Sedulii Paschale carmen.</em>Corpus Scriptorum Ecclesiasticorum Latinorum 10; Gerold, 1885</td>
+					<td>Caitlin Diddams</td>
+
+</tr><tr>
+					<td>Sedulius</td>
+					<td>Carmen Paschale</td>
+					<td><a href="http://www.thelatinlibrary.com/sedulius.html">The Latin Library</a></td>
+					<td>J. Huemer.<em>Sedulii opera omnia, accedunt excerpta ex Remigii Expositione in Sedulii Paschale carmen.</em>Corpus Scriptorum Ecclesiasticorum Latinorum 10; Gerold, 1885</td>
+					<td>Caitlin Diddams</td>
+
+</tr><tr>
 					<td>Seneca</td>
 					<td>Ad Lucilium Epistulae Morales</td>
 					<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2007.01.0080">Perseus</a></td>
