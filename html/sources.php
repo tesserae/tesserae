@@ -2442,7 +2442,7 @@ Recognovit brevique adnotatione critica instruxit
 					<td>Pius Knoll. <em>Eugippi Opera, Pars II.<em> Vindobonae: Gerold. 1886.</td>
 					<td>Caitlin Diddams</td>
 </tr><tr>
-					<td>Euodius</td>
+					<td>Evodius</td>
 					<td>De Fide Contra Manicheos</td>
 					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 					<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars II.<em> Vindobonae: Gerold. 1892.</td>
@@ -4742,73 +4742,7 @@ Recognovit brevique adnotatione critica instruxit
 
 </tr><tr>
 					<td>Priscillian</td>
-					<td>Apologeticus</td>
-					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-					<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
-					<td>Caitlin Diddams</td>
-</tr><tr>
-					<td>Priscillian</td>
-					<td>Benedictio Super Fideles</td>
-					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-					<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
-					<td>Caitlin Diddams</td>
-</tr><tr>
-					<td>Priscillian</td>
 					<td>Canones</td>
-					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-					<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
-					<td>Caitlin Diddams</td>
-</tr><tr>
-					<td>Priscillian</td>
-					<td>Liber ad Damasum Episcopum</td>
-					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-					<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
-					<td>Caitlin Diddams</td>
-</tr><tr>
-					<td>Priscillian</td>
-					<td>Liber de Fide et de Apocruphis</td>
-					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-					<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
-					<td>Caitlin Diddams</td>
-</tr><tr>
-					<td>Priscillian</td>
-					<td>Tractatus ad Populum I</td>
-					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-					<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
-					<td>Caitlin Diddams</td>
-</tr><tr>
-					<td>Priscillian</td>
-					<td>Tractatus ad Populum II</td>
-					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-					<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
-					<td>Caitlin Diddams</td>
-</tr><tr>
-					<td>Priscillian</td>
-					<td>Tractatus Exodi</td>
-					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-					<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
-					<td>Caitlin Diddams</td>
-</tr><tr>
-					<td>Priscillian</td>
-					<td>Tractatus Genesis</td>
-					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-					<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
-					<td>Caitlin Diddams</td>
-</tr><tr>
-					<td>Priscillian</td>
-					<td>Tractatus Pasche</td>
-					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-					<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
-					<td>Caitlin Diddams</td>
-</tr><tr>
-					<td>Priscillian</td>
-					<td>Tractatus Primi Psalmi</td>
-					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-					<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
-					<td>Caitlin Diddams</td>
-</tr><tr>
-					<td>Priscillian</td>
-					<td>Tractatus Psalmi Tertii</td>
 					<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 					<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
 					<td>Caitlin Diddams</td>
