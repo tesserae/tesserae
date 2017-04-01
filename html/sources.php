@@ -166,6 +166,12 @@
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
+	<td>De Mysteriis</td>
+	<td><a href="http://www.thelatinlibrary.com/ambrose.html">The Latin Library</a></td>
+	<td>Edition Unknown.<em><em></td>
+	<td>Brianna Roberts</td>
+</tr><tr>
+	<td>Ambrose</td>
 	<td>De Nabuthae</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.<em> Vindobonae: Gerold. 1897.</td>
@@ -194,6 +200,18 @@
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.<em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
+</tr><tr>
+	<td>Ambrose</td>
+	<td>Epistula ad Sororem</td>
+	<td><a href="http://www.thelatinlibrary.com/ambrose.html">The Latin Library</a></td>
+	<td>Edition Unknown.<em><em></td>
+	<td>Brianna Roberts</td>
+</tr><tr>
+	<td>Ambrose</td>
+	<td>Epistulae Variae</td>
+	<td><a href="http://www.thelatinlibrary.com/ambrose.html">The Latin Library</a></td>
+	<td>"submitted by Oscar Cismarius from an unidentified e-text"<em><em></td>
+	<td>Brianna Roberts</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>Explanatio Psalmorum XII</td>
@@ -658,6 +676,18 @@
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
+	<td>De Dialectica</td>
+	<td><a href="http://www.thelatinlibrary.com/augustine/dia.shtml">The Latin Library</a></td>
+	<td>W. Crecelius <em>S. Aurelii Augustini de dialecta liber.<em> Jahresbericht ueber das Gymnasium zu Elberfeld, Schuljahr 1856-57 (Elberfeld: Lucas, 1857).</td>
+	<td>Tessa Little</td>
+</tr><tr>
+	<td>Augustine</td>
+	<td>De Doctrina Christiana</td>
+	<td><a href="http://www.augustinus.it/latino/dottrina_cristiana/index2.htm">http://www.augustinus.it/</a></td>
+	<td>S. AURELII AUGUSTINI OPERA OMNIA: PATROLOGIAE LATINAE ELENCHUS <em><em> </td>
+	<td>Brianna Roberts</td>
+</tr><tr>
+	<td>Augustine</td>
 	<td>De Duabus Animabus</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI, Pars I.<em> Vindobonae: Gerold. 1891.</td>
@@ -776,6 +806,12 @@
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VIII, Pars I.<em> Vindobonae: Gerold. 1913.</td>
 	<td>Caitlin Diddams</td>
+</tr><tr>
+	<td>Augustine</td>
+	<td>De Trinitate</td>
+	<td><a href="http://www.thelatinlibrary.com/augustine/trin1.shtml">The Latin Library</a></td>
+	<td>"From an unidentified edition at the Workshop for Ancient and Medieval Philosophy (Japan) with the kind permission of its webmaster Sumio Nakagawa." <em><em> </td>
+	<td>Brianna Roberts</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Utilitate Credendi</td>
@@ -1562,10 +1598,17 @@ Recognovit brevique adnotatione critica instruxit
 
 </tr><tr>
 	<td>Claudianus</td>
-	<td>de raptu Proserpinae</td>
+	<td>de Raptu Proserpinae</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0685">Perseus</a></td>
 	<td>Maurice Platnaeur, <em>Claudian, Vol 2</em>. London; New York: William Heinemann; G.P. Putnam's Sons, 1922.</td>
 	<td></td>
+
+</tr><tr>
+	<td>Claudius Mamertinus</td>
+	<td>Panegyricus</td>
+	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000389">DigilibLT</a></td>
+	<td>D. Lassandro. <em>XII Panegyrici Latini</em>Augustae Taurinorum 1992 (Corpus Scriptorum Latinorum Parauianum).</td>
+	<td>Brianna Roberts</td>
 
 </tr><tr>
 	<td>Clement of Alexandria</td>
@@ -1699,12 +1742,6 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Epistulae</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
-	<td>Caitlin Diddams</td>
-</tr><tr>
-	<td>Cyprian</td>
-	<td>Fragmenta</td>
-	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.<em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
@@ -2416,6 +2453,24 @@ Recognovit brevique adnotatione critica instruxit
 	<td><a href="http://www.mqdq.it/public/testo/testo/codice/DRAC%7Csati%7C001">MQDQ</a></td>
 	<td>C. Moussy. <em> </em>. 1988.</td>
 	<td>Caitlin Diddams</td>
+</tr><tr>
+	<td>Ennodius</td>
+	<td>Carmina</td>
+	<td><a href="http://opengreekandlatin.github.io/csel-dev/   ">Open Greek and Latin</a></td>
+	<td>Hartel, Wilhelm August, Ritter von <em>Opera Omnia</em>. Vindobonae: Gerold, 1882.</td>
+	<td>Cari Haas</td>
+</tr><tr>
+	<td>Ennodius</td>
+	<td>Epigrammatica</td>
+	<td><a href="http://opengreekandlatin.github.io/csel-dev/   ">Open Greek and Latin</a></td>
+	<td>Hartel, Wilhelm August, Ritter von <em>Opera Omnia</em>. Vindobonae: Gerold, 1882.</td>
+	<td>Cari Haas</td>
+</tr><tr>
+	<td>Ennodius</td>
+	<td>Epistulae</td>
+	<td><a href="http://opengreekandlatin.github.io/csel-dev/   ">Open Greek and Latin</a></td>
+	<td>Hartel, Wilhelm August, Ritter von <em>Opera Omnia</em>. Vindobonae: Gerold, 1882.</td>
+	<td>Cari Haas</td>
 </tr><tr>
 	<td>Euclid</td>
 	<td>Elements</td>
@@ -3480,6 +3535,13 @@ Recognovit brevique adnotatione critica instruxit
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0151">Perseus</a></td>
 	<td>Kenneth J Maidment <em>Minor Attic Orators in two volumes, 2, with an English translation by J. O. Burtt, M.A</em>.Cambridge, MA, Harvard University Press; London, William Heinemann Ltd., 1962.</td>
 	<td>Jessica Micceri</td>
+
+</tr><tr>
+	<td>Macrobius</td>
+	<td>In Somnium Scipionis commentarii</td>
+	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000338">DigilibLT</a></td>
+	<td>M. Armisen-Marchetti. <em>Macrobe, Commentaire au songe du Scipion</em>Paris 2001-2003 (Collection des Universités de France).</td>
+	<td>Tessa Little</td>
 
 </tr><tr>
 	<td>Marcus Aurelius</td>
@@ -4893,6 +4955,18 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Tony R Waleszczak</td>
 
 </tr><tr>
+	<td>Salvianus</td>
+	<td>Ad Ecclesiam</td>
+	<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+	<td>Pauly, Franz <em>Salviani presbyteri Massiliensis opera omnia</em>. Vindobonae: Gerold, 1883.</td>
+	<td>Cari Haas</td>
+</tr><tr>
+	<td>Salvianus</td>
+	<td>De Gubernatione Dei</td>
+	<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+	<td>Pauly, Franz <em>Salviani presbyteri Massiliensis opera omnia</em>. Vindobonae: Gerold, 1883.</td>
+	<td>Cari Haas</td>
+</tr><tr>
 	<td>Scriptores Historiae Augustae</td>
 	<td>Historia Augusta, Vol. 1</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text;jsessionid=207BFD035F78CA3C95101DC5F6883565?doc=Perseus%3atext%3a2008.01.0508%3awork%3d1">Perseus</a></td>
@@ -5371,7 +5445,7 @@ Recognovit brevique adnotatione critica instruxit
 
 </tr><tr>
 	<td>Tertullian</td>
-	<td>Ad Martyras</td>
+	<td>Ad Martyres</td>
 	<td><a href="http://www.thelatinlibrary.com/tertullian/tertullian.martyres.shtml">The Latin Library</a></td>
 	<td>Franz Oehler. <em>Tertulliani Opera Quae Supersunt Omnia, vol. I.<em> Leipzig. 1851.</td>
 	<td>Caitlin Diddams</td>
@@ -5439,10 +5513,9 @@ Recognovit brevique adnotatione critica instruxit
 </tr><tr>
 	<td>Tertullian</td>
 	<td>De Ieiunio</td>
-	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0571">Perseus</a></td>
-	<td>Tertullian. T.R. Glover. William Heinemann Ltd.; Harvard University Press. London; Cambridge, Massachusetts. 1931.</td>
+	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.<em> Vindobonae: Gerold. 1890.</td>
 	<td>Caitlin Diddams</td>
-
 </tr><tr>
 	<td>Tertullian</td>
 	<td>De Oratione</td>
