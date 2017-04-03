@@ -90,7 +90,7 @@ The Initial Developer of the Original Code is Research Foundation of State Unive
 
 Portions created by the Initial Developer are Copyright (C) 2007 Research Foundation of State University of New York, on behalf of University at Buffalo. All Rights Reserved.
 
-Contributor(s):
+Contributor(s): Chris Forstall, James Gawley, Caitlin Diddams.
 
 Alternatively, the contents of this file may be used under the terms of either the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General Public License Version 2.1 (the "LGPL"), in which case the provisions of the GPL or the LGPL are applicable instead of those above. If you wish to allow use of your version of this file only under the terms of either the GPL or the LGPL, and not to allow others to use your version of this file under the terms of the UBPL, indicate your decision by deleting the provisions above and replace them with the notice and other provisions required by the GPL or the LGPL. If you do not delete the provisions above, a recipient may use your version of this file under the terms of any one of the UBPL, the GPL or the LGPL.
 
@@ -615,7 +615,22 @@ sub search_multi {
 
 		my $file = catfile($fs{data}, 'v3', $lang{$target}, $other, $other);
 		
-		my %index_other = %{ retrieve("$file.multi_${unit}_${feature}") };
+		# Adding a check to determine whether the text being compared ($other) is on the prose list.
+		# If it is, then we need to force the unit used below to be 'phrase'. JG & CD 4/2016
+		
+		my $unit = $meta{UNIT};
+
+		if (Tesserae::check_prose_list($other)) {
+		
+			# The $unit variable shouldn't change in global scope. It should only be changed for this iteration of the text loop. CD and JG 4/25/2016
+			
+			$unit = 'phrase';
+		
+		}
+		
+		my $file2 = "$file.multi_" . $unit . "_$feature";
+
+		my %index_other = %{ retrieve("$file2") }; # changed from a symbolic reference -JG 04/2016.
 		my @unit_other  = @{ retrieve("$file.$unit") };
 
 		# this holds results for the other text,

@@ -96,7 +96,7 @@
 					<td>
 						<select name="freq_basis">
 							<option value="text">texts</option>
-							<option value="corpus" selected="selected">corpus</option>
+							<option value="corpus" selected="selected">texts</option>
 						</select>
 					</td>
 				</tr>				<tr>
