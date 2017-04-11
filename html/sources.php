@@ -2739,6 +2739,13 @@ Recognovit brevique adnotatione critica instruxit
     <td>Jessica Micceri</td>
 
 </tr><tr>
+    <td>Hesiod</td>
+    <td>Works and Days</td>
+    <td><a href="https://www.hs-augsburg.de/~harsch/graeca/Chronologia/S_ante08/Hesiodos/hes_erga.html">Bibliotheca Augustana </a></td>
+	<td>Hesiodi theogonia, opera et dies, scutum, fragmenta. ed. F. Solmsen/R. Merkelbach/M. L. West</em>. Oxford 1970.</td>
+    <td>Cari Haas</td>
+
+</tr><tr>
 	<td>Hilarius (Pseudo) </td>
 	<td>In Genesin Ad Leonem Papam</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
