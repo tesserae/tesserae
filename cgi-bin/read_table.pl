@@ -429,7 +429,8 @@ else {
 	$multi_cutoff    = $query->param('mcutoff')      || $multi_cutoff;
 	@include         = $query->param('include');
 	$recall_cache    = $query->param('recall_cache') || $recall_cache;
-	
+	$export    = $query->param('export') || $export;
+		
 	unless (defined $source) {
 	
 		die "read_table.pl called from web interface with no source";
