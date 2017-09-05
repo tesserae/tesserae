@@ -131,17 +131,17 @@ BEGIN {
 	
 	$lib = $Bin;
 	
-	my $oldlib = $lib;
+	my $oldlib = $lib; # keep a copy of the cgi directory
 	
 	my $pointer;
 			
 	while (1) {
 
-		$pointer = catfile($lib, '.tesserae.conf');
+		$pointer = catfile($lib, '.tesserae.conf'); # cgi/.tesserae.conf
 	
 		if (-r $pointer) {
 		
-			open (FH, $pointer) or die "can't open $pointer: $!";
+			open (FH, $pointer) or die "can't open $pointer: $!"; 
 			
 			$lib = <FH>;
 			
@@ -150,11 +150,11 @@ BEGIN {
 			last;
 		}
 									
-		$lib = abs_path(catdir($lib, '..'));
+		$lib = abs_path(catdir($lib, '..')); # move backward one folder
 		
-		if (-d $lib and $lib ne $oldlib) {
+		if (-d $lib and $lib ne $oldlib) { # if the current directory exists and it's not the first directory...
 		
-			$oldlib = $lib;			
+			$oldlib = $lib;			# use the current directory next time.
 			
 			next;
 		}
@@ -283,6 +283,11 @@ my $freq_basis = 'text';
 # which script should mediate the display of results
 
 my $frontend = 'default';
+
+# export format is required for Tesserae-as-service
+
+my $export = 'html';
+
 my %redirect;
 
 GetOptions( 
@@ -301,6 +306,7 @@ GetOptions(
 			'benchmark'    => \$bench,
 			'no-cgi'       => \$no_cgi,
 			'quiet'        => \$quiet,
+			'export'        => \$export,
 			'help'         => \$help);
 
 #
@@ -438,7 +444,7 @@ else {
 	# how to redirect browser to results
 
 	%redirect = ( 
-		default  => "$url{cgi}/read_bin.pl?session=$session",
+		default  => "$url{cgi}/read_bin.pl?session=$session;export=$export",
 		recall   => "$url{cgi}/check-recall.pl?session=$session;cache=$recall_cache",
 		fulltext => "$url{cgi}/fulltext.pl?session=$session",
 		multi    => "$url{cgi}/multitext.pl?session=$session;mcutoff=$multi_cutoff;list=1"
