@@ -96,7 +96,6 @@ use Cwd qw/abs_path/;
 use File::Spec::Functions;
 use FindBin qw/$Bin/;
 use utf8;
-use JSON;
 
 # read config before executing anything else
 
@@ -147,6 +146,8 @@ BEGIN {
 use lib $lib;
 use Tesserae;
 use EasyProgressBar;
+use JSON;
+
 
 # modules to read cmd-line options and print usage
 
