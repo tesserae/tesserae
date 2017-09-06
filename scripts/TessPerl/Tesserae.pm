@@ -935,6 +935,21 @@ sub get_base {
 	return $base;
 }
 
+sub find_cts {
+
+	#lookup cts urn from file
+
+	my $text = shift;
+	
+	my $ctsfile = catfile($fs{data}, 'common', 'cts.store');
+	
+	my %names = %{retrieve($ctsfile)};
+	
+	return $names{$text};
+
+
+}
+
 sub escape_path {
 	
 	my $path = shift;

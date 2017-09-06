@@ -82,6 +82,7 @@ use warnings;
 use Cwd qw/abs_path/;
 use File::Spec::Functions;
 use FindBin qw/$Bin/;
+use Storable qw/nstore retrieve/;
 
 # read config before executing anything else
 
@@ -213,6 +214,44 @@ create_php_defs(catfile($fs{html}, 'defs.php'));
 $file_script = catfile($fs{script}, 'doc_gen.pl');
 $file_script = Tesserae::escape_path($file_script);
 `$Tesserae::perl_path $file_script`;
+
+#
+# Create cts.store file 
+# to be used by Tesserae::find_cts
+#
+
+my @all;
+
+my $it = 0;
+
+my $cts_csv_file = catfile($fs{data}, 'common', 'CTSlist.csv');
+
+open my $cts_csv, "<:utf8", $cts_csv_file or die "Could not open CTSlist.csv." . $!;
+
+while (<$cts_csv>) {
+
+	my @line = split (',', $_);
+	
+	
+	next unless $line[1];	
+	
+	push (@all, \@line);
+	
+
+}
+
+my %names;
+
+foreach my $lineref (@all) {
+
+	$names{$lineref->[0]} = $lineref->[1];
+
+}
+
+my $cts_storable = catfile($fs{data}, 'common', 'cts.store');
+
+nstore \%names, $cts_storable;
+
 
 #
 # subroutines
