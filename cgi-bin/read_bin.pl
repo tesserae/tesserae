@@ -970,7 +970,13 @@ sub print_json {
 		# score
 
 		$record{'score'} = $score;
+
+		# cts urns
 		
+		$record{'source_urn'} = $unit_source[$unit_id_source]{URN};
+		
+		$record{'target_urn'} = $unit_target[$unit_id_target]{URN};		
+
 		# print row
 		
 		my $json = encode_json \%record;

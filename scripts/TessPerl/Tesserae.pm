@@ -426,6 +426,68 @@ sub stoplist_hash {
 	return \%index;
 }
 
+sub custom_stoplist {
+
+	my $file = shift;
+
+	my $stops = shift;
+
+	my %index;
+	
+	open (FREQ, "<:utf8", $file) or die "can't read $file: $!";
+
+	open (STOP, "<:utf8", $stops) or die "can't read $stops: $!";
+	
+	my @stops;
+
+	while (my $lem = <STOP>) {
+	
+		next if $lem =~ /#/;
+	
+		chomp $lem;
+		
+		push (@stops, $lem);
+	
+	}
+	
+	close STOP;
+	
+	my $head = <FREQ>;
+	
+	my $total = 1;
+	
+	if ($head =~ /count\D+(\d+)/) {
+	
+		$total = $1;
+	}
+	else {
+	
+		seek(FREQ, 0, 0);
+	}
+	
+	while (my $line = <FREQ>) {
+	
+		next if $line =~ /^#/;
+	
+		my ($key, $count) = split("\t", $line);
+		
+		$index{$key} = $count/$total;
+	}
+	
+	close FREQ;
+	
+	my %stop_index;
+	
+	foreach my $lemma (@stops) {
+	
+		$stop_index{$lemma} = $index{$lemma};
+	
+	}
+	
+	return \%stop_index;
+}
+
+
 # load a frequency file and just return the forms in order
 
 sub stoplist_array {
@@ -584,7 +646,7 @@ sub lang {
 
 	if (! %lang and -s $file_lang) {
 		
-		%lang = %{retrieve($file_lang)};
+		%lang = %{retrieve($file_lang)} or die $!;
 	}
 	
 	if ($lang) {

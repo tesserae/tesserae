@@ -107,23 +107,23 @@ BEGIN {
 
 	# look for configuration file
 	
-	$lib = $Bin;
+	$lib = $Bin; # directory from which script is being run
 	
-	my $oldlib = $lib;
+	my $oldlib = $lib; 
 	
 	my $pointer;
 			
 	while (1) {
 
-		$pointer = catfile($lib, '.tesserae.conf');
+		$pointer = catfile($lib, '.tesserae.conf'); # the current folder plus /.tesserae.conf
 	
-		if (-r $pointer) {
+		if (-r $pointer) { # if the .tesserae.conf file in question is readable
 		
 			open (FH, $pointer) or die "can't open $pointer: $!";
 			
-			$lib = <FH>;
+			$lib = <FH>; #pull out the single line, which is a 
 			
-			chomp $lib;
+			chomp $lib; 
 			
 			last;
 		}
@@ -327,6 +327,12 @@ for my $name (keys %file) {
 	# open the input text
 
 	open (TEXT, "<:utf8", $file{$name}) or die("Can't open file ".$file{$name});
+	
+	# save text name for the CTS lookup file.
+	
+	my $filename = $file{$name};
+	
+	$filename =~ s/.*\/$lang\/(.*?)\.tess/$1/;
 
 	# assume first quote mark is a left one
 	
@@ -361,6 +367,16 @@ for my $name (keys %file) {
 		# save the book/poem/line number
 
 		$line[-1]{LOCUS} = $locus;
+		
+		# lookup CTS URN
+		
+		my $urn = Tesserae::find_cts($filename);
+		
+		if ($urn) {
+		
+			$line[-1]{URN} = "$urn:$locus";
+		
+		}
 
 		# remove html special chars
 
