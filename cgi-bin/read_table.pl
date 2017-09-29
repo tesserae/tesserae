@@ -290,8 +290,6 @@ my $export = 'html';
 
 my %redirect;
 
-my $stopfile;
-
 GetOptions( 
 			'source=s'     => \$source,
 			'target=s'     => \$target,
@@ -521,7 +519,6 @@ if ($lang eq 'en') {
 
 }
 
-
 # If corpus-wide frequencies need to be counted, set the corpus-wide flag.
 
 if ($score_basis eq 'stem' && $freq_basis eq 'corpus' || $score_basis eq 'syn_lem' && $freq_basis eq 'corpus' || $score_basis eq 'g_l' && $freq_basis eq 'corpus' ) { 	
@@ -591,9 +588,7 @@ else {
 
 	# this should allow target and source to use different corpus-frequency hashes based on respective language.
 
-
-	$file_freq_source = catfile($fs{data}, 'common', Tesserae::lang($source) . '.' . $score_basis . '.freq');
-
+	$file_freq_source = catfile($fs{data}, 'common', Tesserae::lang($source) . '.' . $score_basis . '.freq')
 	
 }
 
@@ -629,8 +624,6 @@ unless ($quiet) {
 #
 
 my @stoplist = @{load_stoplist($stoplist_basis, $stopwords)};
-
-
 
 unless ($quiet) { print STDERR "stoplist: " . join(",", @stoplist) . "\n"}
 
@@ -1115,7 +1108,6 @@ sub load_stoplist {
 	my %basis;
 	my @stoplist;
 	
-	
 	if ($stoplist_basis eq "target") {
 		
 		my $file = select_file_freq($target) . '.freq_stop_' . $feature;
@@ -1150,18 +1142,6 @@ sub load_stoplist {
 		
 			$basis{$_} = ($basis{$_} + $basis2{$_})/2;
 		}
-	}
-
-	# override stoplist here with custom word list
-
-	if ($stopfile) {
-	
-		my $file = catfile($fs{data}, 'common', Tesserae::lang($target) . '.' . $feature . '.freq');
-		
-		my $custom_file = catfile($fs{data}, 'common', $stopfile);
-		
-		%basis = %{Tesserae::custom_stoplist($file, $custom_file)};
-	
 	}
 		
 	@stoplist = sort {$basis{$b} <=> $basis{$a}} keys %basis;
@@ -1302,14 +1282,12 @@ sub write_multi_list {
 
 sub select_file_freq {
 
-	my $name = shift or die $!;
-	
+	my $name = shift;
 	
 	if ($name =~ /\.part\./) {
 	
 		my $origin = $name;
 		$origin =~ s/\.part\..*//;
-
 		
 		if (defined $abbr{$origin} and defined Tesserae::lang($origin)) {
 		
@@ -1317,8 +1295,7 @@ sub select_file_freq {
 		}
 	}
 	
-	my $lang = Tesserae::lang($name) or die $!;
-	
+	my $lang = Tesserae::lang($name);
 	my $file_freq = catfile(
 		$fs{data}, 
 		'v3', 

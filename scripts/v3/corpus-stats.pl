@@ -128,7 +128,7 @@ use Storable qw(nstore retrieve);
 
 # initialize some variables
 
-my @feature = split (" ", "word stem");
+my @feature = qw/word/;
 my @lang;
 my $help = 0;
 my $quiet = 0;
