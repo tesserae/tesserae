@@ -342,8 +342,6 @@ if ($score_basis eq 'feature')  {
 unless ($no_cgi) { 
 
 	#don't spit out a header if the request is coming from a server instead of a browser
-	
-	unless ($export eq "json") {
 
 		print header();
 
@@ -356,7 +354,7 @@ unless ($no_cgi) {
 	<title>Tesserae results</title>
 	<link rel="stylesheet" type="text/css" href="$stylesheet" />
 END
-		}
+		
 		
 	#
 	# determine the session ID
@@ -456,7 +454,6 @@ else {
 		multi    => "$url{cgi}/multitext.pl?session=$session;mcutoff=$multi_cutoff;list=1"
 	);
 
-	unless ($export eq "json") {	
 		print <<END;
 	<meta http-equiv="Refresh" content="0; url='$redirect{$frontend}'">
 	</head>
@@ -467,7 +464,7 @@ else {
 		</p>
 END
 
-	}
+	
 
 }
 
@@ -686,9 +683,7 @@ if ($no_cgi) {
 	$pr = ProgressBar->new(scalar(keys %index_source), $quiet);
 }
 else {
-	unless ($export eq "json") {
 		$pr = HTMLProgress->new(scalar(keys %index_source));
-	}
 }
 
 # start with each key in the source
@@ -745,14 +740,11 @@ if ($no_cgi) {
 
 	$pr = ProgressBar->new(scalar(keys %match_target), $quiet);
 }
-else {
-	unless ($export eq "json") {
-	
+else {	
 		print "<p>Scoring...</p>\n";
 
 		$pr = HTMLProgress->new(scalar(keys %match_target));
 	
-	}
 }
 
 #
@@ -908,11 +900,8 @@ if ($no_cgi) {
 }
 else {
 
-	unless ($export eq "json") {
-
 		print "<p>Writing session data.</p>";
 	
-	}
 }
 
 rmtree($file_results);
@@ -930,7 +919,6 @@ if (@include) {
 
 print "store>>" . (time-$t1) . "\n" if $no_cgi and $bench;
 
-unless ($export eq "json") {
 
 print <<END unless ($no_cgi);
 
@@ -944,7 +932,7 @@ print <<END unless ($no_cgi);
 
 END
 
-}
+
 
 print "total>>" . (time-$t0)  . "\n" if $no_cgi and $bench;
 
