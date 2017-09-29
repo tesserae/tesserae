@@ -341,20 +341,25 @@ if ($score_basis eq 'feature')  {
 # put this stuff early on so the web browser doesn't
 # give up
 
-unless ($no_cgi) {
+unless ($no_cgi) { 
 
-	print header();
+	#don't spit out a header if the request is coming from a server instead of a browser
+	
+	unless ($export eq "json") {
 
-	my $stylesheet = "$url{css}/style.css";
+		print header();
 
-	print <<END;
+		my $stylesheet = "$url{css}/style.css";
+
+		print <<END;
 
 <html>
 <head>
 	<title>Tesserae results</title>
 	<link rel="stylesheet" type="text/css" href="$stylesheet" />
 END
-
+		}
+		
 	#
 	# determine the session ID
 	# 
@@ -453,8 +458,8 @@ else {
 		multi    => "$url{cgi}/multitext.pl?session=$session;mcutoff=$multi_cutoff;list=1"
 	);
 
-	
-	print <<END;
+	unless ($export eq "json") {	
+		print <<END;
 	<meta http-equiv="Refresh" content="0; url='$redirect{$frontend}'">
 	</head>
 	<body>
@@ -463,6 +468,8 @@ else {
 			Searching...
 		</p>
 END
+
+	}
 
 }
 
@@ -686,7 +693,9 @@ if ($no_cgi) {
 	$pr = ProgressBar->new(scalar(keys %index_source), $quiet);
 }
 else {
-	$pr = HTMLProgress->new(scalar(keys %index_source));
+	unless ($export eq "json") {
+		$pr = HTMLProgress->new(scalar(keys %index_source));
+	}
 }
 
 # start with each key in the source
@@ -744,10 +753,13 @@ if ($no_cgi) {
 	$pr = ProgressBar->new(scalar(keys %match_target), $quiet);
 }
 else {
+	unless ($export eq "json") {
+	
+		print "<p>Scoring...</p>\n";
 
-	print "<p>Scoring...</p>\n";
-
-	$pr = HTMLProgress->new(scalar(keys %match_target));
+		$pr = HTMLProgress->new(scalar(keys %match_target));
+	
+	}
 }
 
 #
@@ -903,7 +915,11 @@ if ($no_cgi) {
 }
 else {
 
-	print "<p>Writing session data.</p>";
+	unless ($export eq "json") {
+
+		print "<p>Writing session data.</p>";
+	
+	}
 }
 
 rmtree($file_results);
@@ -921,6 +937,8 @@ if (@include) {
 
 print "store>>" . (time-$t1) . "\n" if $no_cgi and $bench;
 
+unless ($export eq "json") {
+
 print <<END unless ($no_cgi);
 
 	<p>
@@ -933,6 +951,7 @@ print <<END unless ($no_cgi);
 
 END
 
+}
 
 print "total>>" . (time-$t0)  . "\n" if $no_cgi and $bench;
 
