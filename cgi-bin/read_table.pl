@@ -340,21 +340,6 @@ if ($score_basis eq 'feature')  {
 # give up
 
 unless ($no_cgi) { 
-
-	#don't spit out a header if the request is coming from a server instead of a browser
-
-		print header();
-
-		my $stylesheet = "$url{css}/style.css";
-
-		print <<END;
-
-<html>
-<head>
-	<title>Tesserae results</title>
-	<link rel="stylesheet" type="text/css" href="$stylesheet" />
-END
-		
 		
 	#
 	# determine the session ID
@@ -395,6 +380,28 @@ END
 	# open the new session file for output
 
 	$file_results = catfile($fs{tmp}, "tesresults-$session");
+
+	# send redirect first if the request is coming from a server instead of a browser
+
+	if ($export =~ /json/) {
+	
+		print $query->redirect(-uri => '$url{cgi}/read_bin.pl?session=$session;export=$export');
+	
+	}
+
+		print header();
+
+		my $stylesheet = "$url{css}/style.css";
+
+		print <<END;
+
+<html>
+<head>
+	<title>Tesserae results</title>
+	<link rel="stylesheet" type="text/css" href="$stylesheet" />
+END
+		
+
 }
 
 
