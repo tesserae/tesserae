@@ -388,8 +388,9 @@ unless ($no_cgi) {
 		print $query->redirect(-url => '$url{cgi}/read_bin.pl?session=$session;export=$export');
 	
 	}
-
+	else{
 		print header();
+	}
 
 		my $stylesheet = "$url{css}/style.css";
 
