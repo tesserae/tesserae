@@ -385,7 +385,7 @@ unless ($no_cgi) {
 
 	if ($export =~ /json/) {
 	
-		print $query->redirect(-uri => '$url{cgi}/read_bin.pl?session=$session;export=$export');
+		print $query->redirect(-url => '$url{cgi}/read_bin.pl?session=$session;export=$export');
 	
 	}
 
