@@ -826,11 +826,13 @@
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
-	<td>Epistulae. Selections</td>
-	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0552">Perseus</a></td>
-	<td><em>Select Letters.</em> Augustine, Saint. James Houston Baxter. William Heinemann Ltd.; Harvard University Press. London; Cambridge, Massachusetts. 1930.</td>
-	<td>Katherine Roache</td>
-
+	<td>Epistulae</td>
+	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+	<td>Alois Goldbacher<em>Sancti Aurelii Augustini Opera, Sectio II, Pars I</em> Vindobonae: Gerold. 1895.</td>
+	<td>Alois Goldbacher<em>Sancti Aurelii Augustini Opera, Sectio II, Pars II</em> Vindobonae: Gerold. 1898.</td>
+	<td>Alois Goldbacher<em>Sancti Aurelii Augustini Opera, Sectio II, Pars V</em> Vindobonae: Gerold. 1904.</td>
+	<td>Alois Goldbacher<em>Sancti Aurelii Augustini Opera, Sectio II, Pars VI</em> Vindobonae: Gerold. 1911.</td>
+	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Gesta cum Emerito Donastistarum Episcopo</td>
