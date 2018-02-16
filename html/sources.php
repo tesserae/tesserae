@@ -244,6 +244,30 @@
 	<td>Katherine Roache</td>
 
 </tr><tr>
+	<td>Andocides</td>
+	<td>De Mysteriis</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
+	<td>Karl Fuhr. <em>Orationes.<em> Stutgardiae: Teubner. 1966.</td>
+	<td></td>
+</tr><tr>
+	<td>Andocides</td>
+	<td>De Pace</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
+	<td>Karl Fuhr. <em>Orationes.<em> Stutgardiae: Teubner. 1966.</td>
+	<td></td>
+</tr><tr>
+	<td>Andocides</td>
+	<td>De Reditu Suo</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
+	<td>Karl Fuhr. <em>Orationes.<em> Stutgardiae: Teubner. 1966.</td>
+	<td></td>
+</tr><tr>
+	<td>Andocides</td>
+	<td>In Alcibiadem</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
+	<td>Karl Fuhr. <em>Orationes.<em> Stutgardiae: Teubner. 1966.</td>
+	<td></td>
+</tr><tr>
 	<td>Anonymous</td>
 	<td>Laudes Domini</td>
 	<td><a href="http://www.divusangelus.it/texts/sec4dc/laudesdomini.htm">Divus Angelus</a></td>
@@ -347,6 +371,23 @@
 	<td>Apuleius.<em>Apulei Platonici Madaurensis, Pro se de magia liber (Apologia).</em>Rudolf Helm. Lipsiae: B.G. Teubneri. 1912.</td>
 	<td>Katherine Roache</td>
 
+</tr><tr>
+	<td>Aratus Solensis</td>
+	<td>Phaenomena</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
+	<td><em>Arati Phaenomena.<em> Berolini: Apvd Weidmannos. 1893.</td>
+	<td></td>
+</tr><tr>
+	<td>Aretaeus</td>
+	<td>De Causis et Signis Acutorum Morborum</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
+	<td>Francis Adams. <em>The Extant Works of Aretaeus, the Cappadocian.<em> Boston: Milford House. 1856.</td>
+	<td></td>
+	<td>Aretaeus</td>
+	<td>De Curatione Acutorum Morborum Libri Duo</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
+	<td>Francis Adams. <em>The Extant Works of Aretaeus, the Cappadocian.<em> Boston: Milford House. 1856.</td>
+	<td></td>
 </tr><tr>
 	<td>Aristophanes</td>
 	<td>Acharnians</td>
@@ -499,7 +540,12 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0405">Perseus</a></td>
 	<td>Charles Burton Gulick, <em>The Deipnosophists</em>. Cambridge, MA: Harvard University Press, 1927.</td>
 	<td>Emilie Redwood</td>
-
+</tr><tr>
+	<td>Augurelli, Giovanni Aurelio</td>
+	<td>Chrysopoeia</td>
+	<td><a href=" http://http://www.perseus.tufts.edu/hopper/searchresults?q=chrysopoeia">Perseus</a></td>
+	<td>Christophe Plantin. <em>Chrysopoeia ad Leonem X Pontificem Maximum<em> Antwerpen. 1582.</td>
+	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Adnotationes in Iob</td>
@@ -1060,6 +1106,21 @@
 	<td>Katherine Roache</td>
 
 </tr><tr>
+	<td>Bacchylides</td>
+	<td>Dithyrambs</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
+	<td>Bruno Snell. <em>Carmina cum Fragmentis.<em> Lipsiae: B. B. Teubner. 1970.</td>
+	<td></td>
+	<td>Bacchylides</td>
+	<td>Epinicians</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
+	<td>Bruno Snell. <em>Carmina cum Fragmentis.<em> Lipsiae: B. B. Teubner. 1970.</td>
+	<td></td>
+	<td>Bacchylides</td>
+	<td>Dithyrambs</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
+	<td>Bruno Snell. <em>Carmina cum Fragmentis.<em> Lipsiae: B. B. Teubner. 1970.</td>
+	<td></td>
 	<td>Barnabas</td>
 	<td>Barnabae Epistula</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0629">Perseus</a></td>
@@ -1086,6 +1147,13 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0671">Perseus</a></td>
 	<td>J. M. (John Maxwell) Edmonds, <em>The Greek Bucolic Poets</em>. London; New York: William Heinemann; G. P. Putnam's Sons, 1919.</td>
 	<td>Anna Glenn</td>
+
+</tr><tr>
+	<td>Bion of Phlossa</td>
+	<td>Fragmenta</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0672">Perseus</a></td>
+	<td>J. M. (John Maxwell) Edmonds, <em>The Greek Bucolic Poets</em>. London: Heinemann, 1919.</td>
+	<td></td>
 
 </tr><tr>
 	<td>Boethius</td>
@@ -1135,6 +1203,19 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0127">Perseus</a></td>
 	<td><em>Res Gestae Divi Augusti</em>.</td>
 	<td>Emilie Bétrix</td>
+
+</tr><tr>
+	<td>Callimachus</td>
+	<td>Epigrams</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0672">Perseus</a></td>
+	<td>G.R. Mair,<em>Callimachus and Lycophron.</em>. London; New York: W. Heinemann; G. P. Putnam's Sons, 1921.</td>
+	<td></td>
+</tr><tr>
+	<td>Callimachus</td>
+	<td>Hymns</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0672">Perseus</a></td>
+	<td>Ulrich von Wilamowitz-Moellendorff,<em>Callimachi Hymni et Epigrammata.</em>. Berlin: Wedimann, 1897.</td>
+	<td></td>
 
 </tr><tr>
 	<td>Callistratus</td>
@@ -1879,6 +1960,12 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Katherine Roache</td>
 
 </tr><tr>
+	<td>Demetrius of Phaleron</td>
+	<td>Libro de Elocutione</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0672">Perseus</a></td>
+	<td>W. Rhys Roberts,<em>Demetrius on Style.</em>. Cambridge: The University Press, 1902.</td>
+	<td></td>
+</tr><tr>	
 	<td>Demosthenes</td>
 	<td>Against Androtion</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0073%3aspeech%3d22">Perseus</a></td>
@@ -2474,6 +2561,24 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Hartel, Wilhelm August, Ritter von <em>Opera Omnia</em>. Vindobonae: Gerold, 1882.</td>
 	<td>Cari Haas</td>
 </tr><tr>
+	<td>Epictetus</td>
+	<td>Discourses</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0672">Perseus</a></td>
+	<td>Henricus Schenkl,<em>Dissertationes ab Arriano digestae ad fidem codicis Bodleiani.</em>. Lipsiae: B.G. Teubneri, 1916.</td>
+	<td></td>
+</tr><tr>
+	<td>Epictetus</td>
+	<td>Enchiridion</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0672">Perseus</a></td>
+	<td>Henricus Schenkl,<em>Dissertationes ab Arriano digestae ad fidem codicis Bodleiani.</em>. Lipsiae: B.G. Teubneri, 1916.</td>
+	<td></td>
+</tr><tr>
+	<td>Epictetus</td>
+	<td>Fragments</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0672">Perseus</a></td>
+	<td>Henricus Schenkl,<em>Dissertationes ab Arriano digestae ad fidem codicis Bodleiani.</em>. Lipsiae: B.G. Teubneri, 1916.</td>
+	<td></td>
+</tr><tr>
 	<td>Euclid</td>
 	<td>Elements</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0085">Perseus</a></td>
@@ -2833,6 +2938,18 @@ Recognovit brevique adnotatione critica instruxit
     <td>Jessica Micceri</td>
 
 </tr><tr>
+	<td>Homer</td>
+	<td>Iliad</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0672">Perseus</a></td>
+	<td>Thomas W. Allen,<em>Homeri Ilias.</em>. Oxonii: Clarendoniano, 1931.</td>
+	<td></td>
+</tr><tr>
+	<td>Homer</td>
+	<td>Odyssey</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0672">Perseus</a></td>
+	<td>Thomas W. Allen,<em>Homeri Opera Tomus III Odysseae.</em>. Oxonii: Clarendoniano, 1962.</td>
+	<td></td>
+</tr><tr>
 	<td>Horace</td>
 	<td>Ars Poetica</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0064">Perseus</a></td>
@@ -2888,6 +3005,12 @@ Recognovit brevique adnotatione critica instruxit
 	<td><em>Isaeus with an English translation by Edward Seymour Forster, M.A.</em>.Cambridge, MA, Harvard University Press; London, William Heinemann Ltd., 1962.</td>
     <td>Jessica Micceri</td>
 
+</tr><tr>
+	<td>Isocrates</td>
+	<td>Letters</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0672">Perseus</a></td>
+	<td>Rudolf Hercher,<em>Epistolographoi Hellenikoi, Epistolographi Graeci.</em>. Paris: A.F. Didot, 1873.</td>
+	<td></td>
 </tr><tr>
 	<td>Jerome</td>
 	<td>Epistulae. Selections.</td>
