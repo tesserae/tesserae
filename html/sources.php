@@ -1104,23 +1104,42 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0625">Perseus</a></td>
 	<td>Ausonius. <em>Works.</em> Ausonius, Vol 1. Ausonius, Decimus Magnus. Hugh G. Evelyn-White. William Heinemann Ltd.; Harvard University Press. London; Cambridge, Massachusetts. 1919.</td>
 	<td>Katherine Roache</td>
-
+	
+</tr><tr>
+	<td>Avitus of Vienne</td>
+	<td>De Spiritalis Historiae Gestis</td>
+	<td><a href="http://mlat.uzh.ch/?c=2&w=AviVie.DeMoHiG">Corpus Corporum</a></td>
+	<td>J.P. Migne (ed.). <em>Patrologia Latina 59 Avitus Viennesis De Spiritalis Historiae Gestis</em>. Classical Latin Orthography. Paris. 1847.</td>
+	<td>Cari Haas</td>
+	
+</tr><tr>Avitus of Vienne</td>
+	<td>De Consolatoria Laude Casitatis</td>
+	<td><a href="http://mlat.uzh.ch/?c=2&w=AviVie.DeMoHiG">Corpus Corporum</a></td>
+	<td>J.P. Migne (ed.). <em>Patrologia Latina 59 Avitus Viennesis De Spiritalis Historiae Gestis</em>. Classical Latin Orthography. Paris. 1847.</td>
+	<td>Cari Haas</td>
+	
 </tr><tr>
 	<td>Bacchylides</td>
 	<td>Dithyrambs</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
 	<td>Bruno Snell. <em>Carmina cum Fragmentis.<em> Lipsiae: B. B. Teubner. 1970.</td>
-	<td></td>
+	<td>Anna Glenn</td>
+	
+</tr><tr>
 	<td>Bacchylides</td>
 	<td>Epinicians</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
 	<td>Bruno Snell. <em>Carmina cum Fragmentis.<em> Lipsiae: B. B. Teubner. 1970.</td>
-	<td></td>
+	<td>Anna Glenn</td>
+	
+</tr><tr>
 	<td>Bacchylides</td>
 	<td>Dithyrambs</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
 	<td>Bruno Snell. <em>Carmina cum Fragmentis.<em> Lipsiae: B. B. Teubner. 1970.</td>
-	<td></td>
+	<td>Anna Glenn</td>
+	
+</tr><tr>
 	<td>Barnabas</td>
 	<td>Barnabae Epistula</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0629">Perseus</a></td>
@@ -5023,6 +5042,14 @@ Recognovit brevique adnotatione critica instruxit
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Alexander Souter. <em>Pseudo-Augustini Quaestiones Veteris et Novi Testamenti CXXVII.<em> Vindobonae: Gerold. 1908.</td>
 	<td>Caitlin Diddams</td>
+	
+</tr><tr>
+	<td>Pseudo-Cicero</td>
+	<td>Pridie Quam in Exilium Iret Oratio</td>
+	<td>
+	<td>Carolus Fridericus Augustus Nobbe, ed. <em>Opera Omnia Uno Volumine Comprehensa (Carolus Tauchnitius [suntibus et typis Caroli Tauchnitii])</em>. Leipzig and London. 1850.</td>
+	<td>Tessa Little</td>
+	
 </tr><tr>
 	<td>Pseudo-Plutarch</td>
 	<td>De Musica</td>
