@@ -1107,13 +1107,13 @@
 	
 </tr><tr>
 	<td>Avitus of Vienne</td>
-	<td>De Spiritalis Historiae Gestis</td>
+	<td>De Consolatoria Laude Casitatis</td>
 	<td><a href="http://mlat.uzh.ch/?c=2&w=AviVie.DeMoHiG">Corpus Corporum</a></td>
 	<td>J.P. Migne (ed.). <em>Patrologia Latina 59 Avitus Viennesis De Spiritalis Historiae Gestis</em>. Classical Latin Orthography. Paris. 1847.</td>
 	<td>Cari Haas</td>
 	
 </tr><tr>Avitus of Vienne</td>
-	<td>De Consolatoria Laude Casitatis</td>
+	<td>De Spiritalis Historiae Gestis</td>
 	<td><a href="http://mlat.uzh.ch/?c=2&w=AviVie.DeMoHiG">Corpus Corporum</a></td>
 	<td>J.P. Migne (ed.). <em>Patrologia Latina 59 Avitus Viennesis De Spiritalis Historiae Gestis</em>. Classical Latin Orthography. Paris. 1847.</td>
 	<td>Cari Haas</td>
@@ -5047,7 +5047,7 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Pseudo-Cicero</td>
 	<td>Pridie Quam in Exilium Iret Oratio</td>
 	<td>
-	<td>Carolus Fridericus Augustus Nobbe, ed. <em>Opera Omnia Uno Volumine Comprehensa (Carolus Tauchnitius [suntibus et typis Caroli Tauchnitii])</em>. Leipzig and London. 1850.</td>
+	<td>Carolus Fridericus Augustus Nobbe, ed. <em>Opera Omnia Uno Volumine Comprehensa (Carolus Tauchnitius [suntibus et typis Caroli Tauchnitii])</em>. Leipzig and London. 1850. (edited by Anthony Corbeill, University of Virginia</td>
 	<td>Tessa Little</td>
 	
 </tr><tr>
