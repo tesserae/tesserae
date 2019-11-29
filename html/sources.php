@@ -940,6 +940,12 @@
 	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.<em> Vindobonae: Gerold. 1910.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
+	<td>Augustine (Pseudo)</td>
+	<td>Quaestiones Veteris et Novi Testamenti</td>
+	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+	<td>Alexander Souter. <em>Pseudo-Augustini Quaestiones Veteris et Novi Testamenti CXXVII.<em> Vindobonae: Gerold. 1908.</td>
+	<td>Caitlin Diddams</td>	
+</tr><tr>
 	<td>Aurelius Victor</td>
 	<td>Epitome de Caesaribus</td>
 	<td><a href="http://www.forumromanum.org/literature/victor_ep.html">Forum Romanum</a></td>
@@ -1676,6 +1682,13 @@ Recognovit brevique adnotatione critica instruxit
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2007.01.0044">Perseus</a></td>
 	<td>M. Pohlenz, <em>Tusculanae Disputationes</em>. Leipzig: Teubner, 191 8.</td>
 	<td>Anna Glenn</td>
+	
+</tr><tr>
+	<td>Cicero (Pseudo)</td>
+	<td>Pridie Quam in Exilium Iret Oratio</td>
+	<td><a href=" https://drive.google.com/file/d/0B59Y3skKEZuqWGhKdXBOUk5yam5KcU1mX18yZFFIdVB0TmFR/view?usp=sharing">Nobbe</a></td>
+	<td>Carolus Fridericus Augustus Nobbe, ed. <em>Opera Omnia Uno Volumine Comprehensa (Carolus Tauchnitius [suntibus et typis Caroli Tauchnitii])</em>. Leipzig and London. 1850. ( <a href=" https://drive.google.com/file/d/0B59Y3skKEZuqeVRXX0s3emV5eHp4ZGl5Ujc0RmR6cURmVjBZ/view?usp=sharing">edited</a> by Anthony Corbeill, University of Virginia</td>
+	<td>Tessa Little</td>	
 
 </tr><tr>
 	<td>Claudianus</td>
@@ -4948,6 +4961,20 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
+	<td>Plutarch (Pseudo)</td>
+	<td>De Musica</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A2008.01.0401">Perseus</a></td>
+	<td>Plutarch. <em> Moralia</em>. Gregorius N. Bernardakis. Leipzig. Teubner. 1895. 6..</td>
+	<td>Rudra Chakraborty</td>
+	
+</tr><tr>
+	<td>Plutarch (Pseudo)</td>
+	<td>Placita Philosophorum</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A2008.01.0403">Perseus</a></td>
+	<td>Plutarch. <em> Moralia</em>. Gregorius N. Bernardakis. Leipzig. Teubner. 1895. 6..</td>
+	<td>Rudra Chakraborty</td>
+		
+</tr><tr>
 	<td>Polybius</td>
 	<td>Histories</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0233">Perseus</a></td>
@@ -5037,41 +5064,6 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Caitlin Diddams</td>
 
 </tr><tr>
-	<td>Pseudo-Augustine</td>
-	<td>Quaestiones Veteris et Novi Testamenti</td>
-	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Alexander Souter. <em>Pseudo-Augustini Quaestiones Veteris et Novi Testamenti CXXVII.<em> Vindobonae: Gerold. 1908.</td>
-	<td>Caitlin Diddams</td>
-	
-</tr><tr>
-	<td>Pseudo-Cicero</td>
-	<td>Pridie Quam in Exilium Iret Oratio</td>
-	<td><a href=" https://drive.google.com/file/d/0B59Y3skKEZuqWGhKdXBOUk5yam5KcU1mX18yZFFIdVB0TmFR/view?usp=sharing">Nobbe</a></td>
-	<td>Carolus Fridericus Augustus Nobbe, ed. <em>Opera Omnia Uno Volumine Comprehensa (Carolus Tauchnitius [suntibus et typis Caroli Tauchnitii])</em>. Leipzig and London. 1850. ( <a href=" https://drive.google.com/file/d/0B59Y3skKEZuqeVRXX0s3emV5eHp4ZGl5Ujc0RmR6cURmVjBZ/view?usp=sharing">edited</a> by Anthony Corbeill, University of Virginia</td>
-	<td>Tessa Little</td>
-	
-</tr><tr>
-	<td>Pseudo-Plutarch</td>
-	<td>De Musica</td>
-	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A2008.01.0401">Perseus</a></td>
-	<td>Plutarch. <em> Moralia</em>. Gregorius N. Bernardakis. Leipzig. Teubner. 1895. 6..</td>
-	<td>Rudra Chakraborty</td>
-
-</tr><tr>
-	<td>Pseudo-Plutarch</td>
-	<td>Placita Philosophorum</td>
-	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A2008.01.0403">Perseus</a></td>
-	<td>Plutarch. <em> Moralia</em>. Gregorius N. Bernardakis. Leipzig. Teubner. 1895. 6..</td>
-	<td>Rudra Chakraborty</td>
-
-</tr><tr>
-	<td>Pseudo-Quintilian</td>
-	<td>Major Declamations</td>
-	<td><a href="http://www.thelatinlibrary.com/quintilian/quintilian.decl.mai1.shtml">The Latin Library</a></td>
-	<td>L. Håkanson,<em>Declamationes XIX maiores Quintiliano falso ascriptae</em>. Stuttgart, 1982</td>
-	<td>James Gawley</td>
-
-</tr><tr>
 	<td>Q. Cicero</td>
 	<td>Essay on Running for Consul</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0016">Perseus</a></td>
@@ -5084,6 +5076,13 @@ Recognovit brevique adnotatione critica instruxit
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2007.01.0059">Perseus</a></td>
 	<td>Harold Edgeworth Butler, <em>With an English Translation</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1920.</td>
 	<td>Emilie Bétrix</td>
+	
+</tr><tr>
+	<td>Quintilian (Pseudo)</td>
+	<td>Major Declamations</td>
+	<td><a href="http://www.thelatinlibrary.com/quintilian/quintilian.decl.mai1.shtml">The Latin Library</a></td>
+	<td>L. Håkanson,<em>Declamationes XIX maiores Quintiliano falso ascriptae</em>. Stuttgart, 1982</td>
+	<td>James Gawley</td>
 
 </tr><tr>
 	<td>Quintus Smyrnaeus</td>
