@@ -1,20 +1,101 @@
-use strict;
-use warnings;
+#!/usr/bin/env perl
+
+=head1 NAME
+
+xml-structure-guided - supervised extraction of text from TEI docs
+
+=head1 SYNOPSIS
+
+xml-structure-guided.pl [options] TEXT [TEXT [...]]
+
+=head1 DESCRIPTION
+
+This script is just a bunch of hacks we've used over the years to try to get
+Tesserae compatible texts out of Perseus (and related format) XML documents.
+
+=head1 OPTIONS AND ARGUMENTS
+
+=over
+
+=item I<TEXT>
+
+Document(s) to parse, in TEI XML format.
+
+=item B<--help>
+
+Print usage and exit.
+
+=back
+
+=head1 KNOWN BUGS
+
+=head1 SEE ALSO
+
+=head1 COPYRIGHT
+
+University at Buffalo Public License Version 1.0. The contents of this file are
+subject to the University at Buffalo Public License Version 1.0 (the
+"License"); you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://tesserae.caset.buffalo.edu/license.txt.
+
+Software distributed under the License is distributed on an "AS IS" basis,
+WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+the specific language governing rights and limitations under the License.
+
+The Original Code is xml-structure-guided.pl.
+
+The Initial Developer of the Original Code is Research Foundation of State
+University of New York, on behalf of University at Buffalo.
+
+Portions created by the Initial Developer are Copyright (C) 2007 Research
+Foundation of State University of New York, on behalf of University at Buffalo.
+All Rights Reserved.
+
+Contributor(s): Chris Forstall <cforstall@gmail.com>, James Gawley, Caitlin
+Diddams
+
+Alternatively, the contents of this file may be used under the terms of either
+the GNU General Public License Version 2 (the "GPL"), or the GNU Lesser General
+Public License Version 2.1 (the "LGPL"), in which case the provisions of the
+GPL or the LGPL are applicable instead of those above. If you wish to allow use
+of your version of this file only under the terms of either the GPL or the
+LGPL, and not to allow others to use your version of this file under the terms
+of the UBPL, indicate your decision by deleting the provisions above and
+replace them with the notice and other provisions required by the GPL or the
+LGPL. If you do not delete the provisions above, a recipient may use your
+version of this file under the terms of any one of the UBPL, the GPL or the
+LGPL.
+
+=cut
+
+use Getopt::Long;
+use POD::Usage;
 
 use Term::UI;
 use Term::ReadLine;
-
 use XML::LibXML;
-use Getopt::Long;
+use Data::Dumper;
 
 binmode STDOUT, ":utf8";
 
-# flag for betacode text (e.g. Perseus Greek texts)
+
+# command-line options
+my $quiet;
+my $help;
 my $beta_input;
+my $rootname;
+my $teins;
 
 GetOptions(
-   "betacode" => \$beta_input
+  "quiet" => \$quiet,
+  "betacode" => \$beta_input,
+  "help" => \$help
 );
+
+# print usage if user needs help
+if ($help) { pod2usage(1) }
+
 
 #
 # set up terminal interface
@@ -28,7 +109,7 @@ my $term = Term::ReadLine->new('myterm');
 
 my @files = @ARGV;
 
-print STDERR "checking " . scalar(@files) . " files\n";
+print STDERR "Checking " . scalar(@files) . " files\n";
 
 #
 # parse each file
@@ -39,60 +120,71 @@ for my $f (0..$#files) {
 	#
 	# step 1: parse the file
 	#
-	
-	# create a new parser object
-		
-	my $parser = XML::LibXML->new();
-	
-	# open the file
-	
-	open (my $fh, "<", $files[$f])	|| die "can't open $files[$f]: $!";
 
-	print STDERR "reading " . ($f+1) . "/" . scalar(@files) . " $files[$f]...";
-
-	# this line is where the whole file is read 
-	# and turned into an XML::LibXML object.
-	# from now on we're done with the original
-	# file and we'll work with $doc
-	#
-	# unfortunately, i think this will only work if you
-	# have internet access, because the documents use
-	# a remote DTD for validation
-
-	my $doc = $parser->parse_fh( $fh );
-
-	# close the file
-
-	close ($fh);
-	
+	print STDERR "Reading " . ($f+1) . "/" . scalar(@files) . " $files[$f]...";	
+  my $doc = XML::LibXML->load_xml(location=>$files[$f]);
 	print STDERR "\n";
-	
-	my @title = $doc->findnodes("/TEI.2/teiHeader/fileDesc/titleStmt/title");
-	
-	for (@title) {
-	
-		$_ = $_->textContent;
-		
-		next unless $_;
-	
-		print STDERR "\t$_\n";
-	}
-	
-	print STDERR "\n";
+
+  # get the name of the root element
+  #   - i.e. determine whether it's <TEI> or <TEI.2>
+  
+  $rootname = $rootname || $doc->documentElement->nodeName;
+  
+  print STDERR "Root is $rootname\n";  
+  unless ($rootname =~ /^TEI(?:\.2)?$/) {
+    print STDERR "This doesn't look like the TEI we're expecting\n";
+  }
+  
+  # get the namespace of the root element
+  #  - assume this is the namespace for all the nodes we care about
+  
+  $teins = $teins || $doc->documentElement->namespaceURI;
+  
+  # assign this namespace to a prefix in an xpath context,
+  #  then use this context instead of $doc for the rest of the script
+  #  See perldoc XML::LibXML::Node under "findnodes"
+  
+  my $xpc = XML::LibXML::XPathContext->new;
+  $xpc->registerNs("tei", $teins);
+  
+  #
+  # look for work titles in the document header
+  #  - sometimes there are multiple works in a single file
+  
+  print STDERR "Looking for work titles...";
+  
+	my @title = search_titles($doc, $xpc, $rootname);
+  
+  if (@title) {
+    print STDERR "found " . scalar(@title) . ":\n";
+    for (@title) { print "\t$_\n" }
+    print STDERR "\n";
+
+  } else {
+    print "found none.\n"
+  }
 	
 	#
 	# step 2: the parsing is done, now we can search
 	#         the structure of the xml document
 	#
 	
-	my @struct = @{getStruct($doc)};
+	my @struct = @{getStruct($doc, $xpc)};
+  if (@struct) {
+    print STDERR "Found structures: " . join(" ", @struct) . "\n";
+  }
 	
 	#
 	# step 3: get all the texts in this doc
 	#
 	
-	my @text = $doc->findnodes("//text[not(text)]");
-		
+	my @text = $xpc->findnodes("//tei:text[not(tei:text)]", $doc);
+	if (@text) {
+	  print STDERR "Found " . scalar(@text) . " text elements\n";
+	} else {
+	  die "Found no text elements!";
+	}
+  
 	#
 	# process each text
 	#
@@ -104,19 +196,13 @@ for my $f (0..$#files) {
 		#
 		# identify the text
 		#
-		
-		print STDERR "\n";
 
-		print STDERR "text $f.$t.\t";
+		print STDERR sprintf("Now processing file %i, text %i\n", $f + 1, $t + 1);
 		
-		my @a = $text->findnodes("attribute::*");
-		
-		for (@a) {
-		
-			$_ = $_->nodeName . "=" . $_->nodeValue;
+    # spit out attributes
+		for my $a ($text->findnodes("attribute::*")) {
+      print STDERR sprintf("\t%s = %s\n", $a->nodeName, $a->nodeValue)
 		}
-		
-		print STDERR join(" ", @a) . "\n\n";
 		
 		my $text_name = $term->get_reply(
 			prompt  => 'Enter an abbreviation for this text?',
@@ -160,21 +246,31 @@ for my $f (0..$#files) {
 		
 		for my $elem ($text->findnodes("descendant::*")) {
 		
-			my $name = $elem->nodeName;
+			my $name = $elem->localname;
 			
-			# for divn and milestone nodes,
-			# note the type/unit attribute,
-			# since they may occur at multiple
-			# hierarchical levels
-			
-			if ($name =~ /div/) {
-			
-				$name .= "[type=" . $elem->getAttribute("type") . "]";
-			}
-			
+			# for milestone nodes note the type/unit attribute,
+			# since they may represent diverse hierarchical levels
+
 			if ($name eq 'milestone') {
 			
 				$name .= "[unit=" . $elem->getAttribute("unit") . "]";
+			}
+
+			# divn nodes are even worse: if the type is "textpart"
+      # then you have to check the subtype attribute
+      
+			if ($name =~ /^div\d?/) {
+        
+        my $div_type = $elem->getAttribute("type");
+        my $suffix = "type=$div_type";
+			  
+        if ($div_type eq "textpart") {
+          my $subtype = $elem->getAttribute("subtype");
+          if ($subtype) {
+            $suffix = "subtype=$subtype";
+          }
+        }
+				$name .= "[$suffix]";
 			}
 		
 			$count{$name}++;
@@ -299,6 +395,12 @@ for my $f (0..$#files) {
 				last;
 			}
 		}
+    
+    #
+    # resolve <choice> decisions
+    #
+    
+    resolve_choices($doc, $xpc);
 		
 		#
 		# choose elements to omit
@@ -312,10 +414,8 @@ for my $f (0..$#files) {
 				
 		for my $elem_type (@omit) {
 		
-			my @nodes = $text->findnodes("descendant::$elem_type");
-			
-			next unless @nodes;
-						
+			my @nodes = $xpc->findnodes("descendant::tei:$elem_type", $text);
+									
 			for my $node (@nodes) {
 			
 				$node->unbindNode;
@@ -354,9 +454,11 @@ for my $f (0..$#files) {
 		
 		# transliterate greek
 		
-		$text =~ s/<foreign\s+lang="greek".*?>(.*?)<\/foreign>/beta_to_uni($1)/eg;
-		$text =~ s/<quote\s+lang="greek".*?>(.*?)<\/quote>/beta_to_uni($1)/eg;
-
+    if ($beta_input) {
+      $text =~ s/<foreign\s+lang="greek".*?>(.*?)<\/foreign>/beta_to_uni($1)/eg;
+      $text =~ s/<quote\s+lang="greek".*?>(.*?)<\/quote>/beta_to_uni($1)/eg;
+    }
+    
 		# convert quote tags to quotation marks
 		
 		$text =~ s/<q\b.*?>/“/g;
@@ -394,7 +496,7 @@ for my $f (0..$#files) {
 		# convert custom tags back into angle brackets
 		
 		$text =~ s/TESDIV(\d)--(.*?)--/<div$1 $2>/g;
-		
+    		
 		# break into chunks on units
 		
 		$text =~ s/</\n</g;
@@ -453,7 +555,7 @@ for my $f (0..$#files) {
 
 sub getStruct {
 
-	my $doc = shift;
+	my ($doc, $xpc) = @_;
 
 	# let's look for all unique paths from the document
 	# root to its nodes.  this will give us some idea
@@ -465,38 +567,44 @@ sub getStruct {
 	print STDERR "Reading document header\n";
 	
 	# look for <encodingDesc>
-	
-	my @enc = $doc->findnodes("//encodingDesc/refsDecl");
-	
-	for my $i (0..$#enc) {
-			
-		my $enc = $enc[$i];
-			
-		my @unit = $enc->findnodes("state");
 		
-		for (@unit) {
-		
-			$_ = $_->getAttribute("unit");
-		}
-		
-		unless (@unit) {
-		
-			@unit = $enc->findnodes("step");
-			
-			for (@unit) {
-			
-				$_ = $_->getAttribute("refunit");
-			}			
-		}
-		
-		if (@unit) {
-			
-			push @struct, join(".", @unit);
-		}
-		
-		$i++;
-	}
+	for my $refsDecl ($xpc->findnodes("//tei:encodingDesc/tei:refsDecl", $doc)) {
 
+    my @unit;
+    
+    # there seem to be a diverse set of possible structure declarations;
+    #  in each case, there's a series of elements representing successive
+    #  hierarchical units of the text, with the human-readable name of
+    #  the unit in some attribute of the element
+    
+    my @structures_to_try = (
+      { name => "state", attr => "unit" },
+      { name => "step", attr => "refunit" },
+      { name => "cRefPattern", attr => "n" }
+    );
+    
+    # try them all until one produces results
+    
+    for my $s (@structures_to_try) {
+
+      my @nodes = $xpc->findnodes("tei:" . $s->{name}, $refsDecl);
+      for (@nodes) {
+        push @unit, $_->getAttribute($s->{attr});
+      }
+
+      # Not sure this is universal, but CTS version seems list levels
+      # from the particular to the general instead of other way around
+      if ($refsDecl->getAttribute("n") =~ /^cts$/i) {
+        @unit = reverse @unit;
+      }
+      
+      if (@unit) {
+        push @struct, join(".", @unit);
+        last;
+      }
+    }    
+	}
+  
 	return \@struct;
 }
 
@@ -726,4 +834,49 @@ sub incr {
 	
 		return $n . "-1";
 	}
+}
+
+
+sub search_titles {
+  # look for titles -- sometimes more than one per XML file ?
+  
+  my ($doc, $xpc, $rootname) = @_;
+  my @title;
+  
+  my $xpath = join("/", "",
+    map {"tei:" . $_} (
+      $rootname, "teiHeader", "fileDesc", "titleStmt", "title"
+    )
+  );
+  
+  for my $node ($xpc->findnodes($xpath, $doc)) {
+
+    my $title = $node->textContent;
+    if ($title) {
+      push @title, $title;
+    }
+  }
+	
+  return @title;
+}
+
+sub resolve_choices {
+  # get user to choose between <sic> and <corr> in <choice> tags.
+  
+  my ($doc, $xpc) = @_;
+  my @choice = $xpc->findnodes("//tei:choice", $doc);
+  
+  for my $choice (@choice) {
+    my $sic = $xpc->findnodes("tei:sic", $choice)->shift;
+    my @corr = $xpc->findnodes("tei:corr", $choice);
+    
+    if (defined $sic and scalar @corr > 0) {
+      $sic->unbindNode;
+      if (scalar(@corr) > 1) {
+        for (@corr[1..$#corr]) {
+          $_->unbindNode;
+        }
+      }
+    }
+  }
 }
