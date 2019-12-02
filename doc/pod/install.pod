@@ -9,6 +9,10 @@ Get the code from GitHub:
 =head2 Configure
 
  % cd tesserae
+ % sudo cpan Term::UI
+ % sudo cpan Lingua::Stem
+ % sudo cpan Parallel::FormManager
+ Copy abbr into tesserae/data/common
  % scripts/configure.pl
  % scripts/install.pl
 
@@ -75,6 +79,7 @@ F<scripts/v3/corpus-stats.pl>. Its arguments are the language subdirectories
 to process.
 
  % scripts/v3/corpus-stats.pl grc la en
+ % scripts/v3/corpus-stats.pl grc la en --feature stem
 
 =head1 Initialize Ancillary Programs
 
