@@ -12,10 +12,16 @@
 					Here you can try out some searches we're still testing.  We would appreciate any feedback you have.  Caution: results may not be very stable.
 				</p>
 
-				<h2><a href="<?php echo $url_html.'/multi-text.php'; ?>">Multi-text search</a></h2>
+				<h2><a href="<?php echo $url_html.'/latin-multi-text.php'; ?>">Latin Multi-text search</a></h2>
 					
 				<p>
-					Cross-references discovered parallels against the rest of the corpus.
+					Cross-references discovered parallels against the rest of the Latin corpus.
+				</p>
+				
+				<h2><a href="<?php echo $url_html.'/greek-multi-text.php'; ?>">Greek Multi-text search</a></h2>
+					
+				<p>
+					Cross-references discovered parallels against the rest of the Greek corpus.
 				</p>
 								
 				<h2><a href="<?php echo $url_cgi.'/lsa.pl'; ?>">LSA Search Tool</a></h2>

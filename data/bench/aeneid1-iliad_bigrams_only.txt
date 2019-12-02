@@ -118,7 +118,7 @@
 1	226	defixit lumina	13	3	τρέπεν ὄσσε φαεινὼ		Knauer	This entry and the succeeding entires of this book should be taken together.  defixit can mean "turn intentively in a direction," (the prefix does convey the idea of motion downwards at any rate).  ὄσσε φαεινὼ means "radiant eyes," whereas the primary meaning of lumina is "lights," thus "lights of the eyes," thus "eyes."  It can also (no doubt due to its primary meaning) mean "gleam" or "brightness" 
 1	224	despiciens ... terrasque ... populos	13	4	καθορώμενος αἶαν ... ἀνθρώπων		Knauer	
 1	226	defixit lumina	13	7	τρέπεν ὄσσε φαεινώ		Knauer	Note the exactness with line 3.  
-1	223a		5	274			Knauer	I found nothing here. 
+1	223		5	274			Knauer	I found nothing here. 
 1	225	vertice caeli	8	3	ἀκροτάτῃ κορυφῇ ... Οὐλύμποιο		Knauer	
 1	225	vertice caeli	1	499	ἀκροτάτῃ κορυφῇ ... Οὐλύμποιο		Knauer	
 1	225	vertice caeli	5	754	ἀκροτάτῃ κορυφῇ ... Οὐλύμποιο		Knauer	
@@ -135,7 +135,7 @@
 1	255	caelum tempestatesque	17	649	ἠέρα ... καὶ		Knauer	I have related the words for sky/air and the conjunctions "and" in these passages.  There are certainly other parallels, but perhaps none that can be included in this entry.  The Greek has ἠέρα μὲν σκέδασεν καὶ ἀπῶσεν ὀμίχλην, "He scatter/dispersed the air (or mist) and drove away the mist/fog."  The Latin has caelum tempestatesque serenat, "he clears up/calms the sky/heaven and the storms."  Of course, the result of the Greek and Latin verbs is the same, the foul weather is removed, but the Greek would seem to employ much more active, forceful language, whereas serenat does not.  As such, I did not feel that their semantic range was close enough to include them here, though, taken with their respective objects, they clearly represent the same idea.  One might also which to include ὀμίχλην and tempestatesque.  Once again, it did not seem that their semantic range fit the bill, so to speak, but as both make reference to negatively-perceived weather, perhaps they should be included.  
 1	267	cui ... cognomen	6	402	τόν ... καλέεσκε		Knauer	The full Latin clause is, cui nunc cognomen Iulo additur, "to whom now the cognomen is added/joined."  I have included the pronouns and the "name" word in the entry.  Both passages refer to an individual who is called by two names.
 1	269	volvendis mensibus	2	295	περιτροπέων ἐνιαυτὸς		Knauer	
-1	279b		4	26			Knauer	I found nothing here.  Both relate to Juno/Hera, but I did not see any word-specific reference. 
+1	279		4	26			Knauer	I found nothing here.  Both relate to Juno/Hera, but I did not see any word-specific reference. 
 1	279	mare ... terrasque	8	479	γαίης καὶ πόντοιο		Knauer	The Latin refers to Jupiter talking about Juno, whereas the Greek refers to Zeus talking to Hera.  "Earth" and "sea" are the only words I saw as parallel.  
 1	285	dominabitur 	20	307	ἀνάξει		Knauer	These are the only specific words I found.  domus Assaraci obviously refers to Aeneas, who is named in the Greek.  Both clearly refer to the Trojans/descendants of Aeneas will rise to power.  
 1	295	Belli ... saeva vinctus aenis ... nodis	5	385	Ἄρης ... κρατερός ...δῆσαν κρατερῷ ἐνὶ δεσμῷ		Knauer	This and the succeeding entry should be taken together.  Belli, in the Latin, is separated from the other words by a semicolon.  
@@ -150,7 +150,7 @@
 1	313	manu lato crispans hastilia	13	134	ἔγχεα ... χειρῶν σειόμεν᾽		Knauer	
 1	315	virginis ... virginis	22	127	παρθένος ... παρθένος		Knauer	
 1	319	dederatque comam	23	151	κόμην ὀπάσαιμι 		Knauer	
-1	323b		3	17a			Knauer	Tricky.  The Latin has maculosae tegmine lyncis, "With the covering of a spotty lynx," while the Greek has παρδαλέην ὤμοισιν ἔχων, "Having a leopard-skin on her shoulders."
+1	323		3	17			Knauer	Tricky.  The Latin has maculosae tegmine lyncis, "With the covering of a spotty lynx," while the Greek has παρδαλέην ὤμοισιν ἔχων, "Having a leopard-skin on her shoulders."
 1	343	ditissimus agri ... magno ... iugarat	14	123	ἀφνειὸν ... ἄρουραι ... πολλοὶ ... ἔγημε		Knauer	The Latin also has Huic coniunx Sychaeus erat, which would reinforce the idea of marriage
 1	344	miserae dilectus	19	287	δειλῇ ... κεχαρισμένε		Knauer	The Latin also has magno, while the Greek has πλεῖστον, but I wasn't sure whether to include superlatives with their positive counterparts.  The Latin also has amore, while the Greek has θυμῷ > both can mean desire, but the connotations of θυμός as soul, spirit, strength, and the seat of thought, would seem to give it a significantly broader semantic field than amor.  But perhaps they both should be included.   
 1	353	venit imago 	23	65	ἦλθε ψυχὴ		Knauer	This entry and the succeeding entries of this book should be taken together.  It is interesting that Vergil uses nudavit and Homer uses ἕστο - removing and putting on clothes repectively (though here, nudavit seems to be used in a more metaphorical sense of lay bare/expose).  Relatedly, the Latin has nudavit and retexit, while the Greek has ἔειπεν (68).  Though not semantically related, hence their exclusion from these entries, we can presume that the Roman ghost would have had to speak in order to reveal the transgressions.  caecum, "blind/hiddren/concealed and λελασμένος (from λανθάνω), "forgetting/escaping one's notice," which would seem to connote similar ideas, but are not similar enough that I have included them.  The Latin has in somnis (353) and the Greek has εὕδεις, "you sleep" (69)  
@@ -160,17 +160,17 @@
 1	379	veho ... aethera	20	299	οὐρανὸν ... ἔχουσιν		Knauer	Note: the Greek is taken from the line after the one which Knauer cites, though still the same phrase.  
 1	380	et genus	4	58	γένος δέ		Knauer	The Greek has γένος δέ μοι ἔνθεν ὅθεν σοί and the Latin has et genus ab Iove summo.  I wasn't sure whether to include the Greek adverbs, since both connote "from," whereas the Latin obviously contains the actual preposition, "from."  
 1	385	Nec ... querentem passa	7	427	οὐδ᾽ εἴα κλαίειν		Knauer	Possibly to include: the Latin has plura and the Greek has μέγας.
-1	396b		14	196			Knauer	The Latin has aut capere, aut captas iam despectare videntur and the Greek has εἰ δύναμαι τελέσαι γε καὶ εἰ τετελεσμένον ἐστίν.  Knauer would seem to be relating the aut capere, aut captas with εἰ τελέσαι ... εἰ τετελεσμένον, but I see no reason to relate them.
+1	396		14	196			Knauer	The Latin has aut capere, aut captas iam despectare videntur and the Greek has εἰ δύναμαι τελέσαι γε καὶ εἰ τετελεσμένον ἐστίν.  Knauer would seem to be relating the aut capere, aut captas with εἰ τελέσαι ... εἰ τετελεσμένον, but I see no reason to relate them.
 1	399	puppesque tuae pubesque tuorum	1	179	νηυσί τε σῇς καὶ σοῖς ἑτάροισι		Knauer	
 1	403	ambrosiaeque comae divinum vertice	1	529	ἀμβρόσιαι δ᾽ ... χαῖται ... κρατὸς ... ἀθανάτοιο:		Knauer	
 1	405	adgnovit ... fugientem	13	72	ἔγνων ἀπιόντος		Knauer	
-1	408	dextrae iungere dextram	Z	253	ἔν τ᾽ ἄρα οἱ φῦ χειρί		Knauer	Tricky.  ἔν ... φῦ is tmesis for ἐμφύω, the verb correlated with iungere, here.  dextrae...dextram refers to the right hand, though not as explicit as χειρί.
-1	408	dextrae iungere dextram	Z	406	ἔν τ᾽ ἄρα οἱ φῦ χειρί		Knauer	Tricky.  ἔν ... φῦ is tmesis for ἐμφύω, the verb correlated with iungere, here.  dextrae...dextram refers to the right hand, though not as explicit as χειρί.
+1	408	dextrae iungere dextram	6	253	ἔν τ᾽ ἄρα οἱ φῦ χειρί		Knauer	Tricky.  ἔν ... φῦ is tmesis for ἐμφύω, the verb correlated with iungere, here.  dextrae...dextram refers to the right hand, though not as explicit as χειρί.
+1	408	dextrae iungere dextram	6	406	ἔν τ᾽ ἄρα οἱ φῦ χειρί		Knauer	Tricky.  ἔν ... φῦ is tmesis for ἐμφύω, the verb correlated with iungere, here.  dextrae...dextram refers to the right hand, though not as explicit as χειρί.
 1	411	Venus obscuro ... aere saepsit	3	380	Ἀφροδίτη ... ἐκάλυψε ... ἠέρι πολλῇ		Knauer	obscuro and πολλῇ do not mean the same thing, of course, but their attachment to aere and ἠέρι, respectively, would seem to connote a similar thick fog or mist.  Both verbs have the connotation of covering   
 1	411	obscuro ... aere saepsit	20	443	ἐκάλυψε ... ἠέρι πολλῇ		Knauer	obscuro and πολλῇ do not mean the same thing, of course, but their attachment to aere and ἠέρι, respectively, would seem to connote a similar thick fog or mist.  Both verbs have the connotation of covering.  Here, Apollo is the god in action.
-1	412	nebulae circum ... fudit	15		εἱμένος ... νεφέλην		Knauer	If circum ... fudit is tmesis for circumfundo, it may have similar connotations to ἕννυμι.  The Greek is εἱμένος ὤμοιιν νεφέλην, "wrapping a cloud on his shoulders" whereas the Latin include multo ... amictu "She surrounded (them) with a great cloak."  The sense of these two passage is the same, but even the verbs are debatably discluded.  
+1	412	nebulae circum ... fudit	15	307	εἱμένος ... νεφέλην		Knauer	If circum ... fudit is tmesis for circumfundo, it may have similar connotations to ἕννυμι.  The Greek is εἱμένος ὤμοιιν νεφέλην, "wrapping a cloud on his shoulders" whereas the Latin include multo ... amictu "She surrounded (them) with a great cloak."  The sense of these two passage is the same, but even the verbs are debatably discluded.  
 1	430	qualis apes nova per florea ... gentis ... venientum	2	87	ἠΰτε ἔθνεα ... μελισσάων ... νέον ἐρχομενάων ...  ἐπ᾽ ἄνθεσιν		Knauer	aestate and εἰαρινοῖσιν possibly should be included, though the former is the noun, "summer," while the latter is the adjective, "of spring."
-1	445	facilem victu	Z	138	ῥεῖα ζώοντες		Knauer	The "easy" is an adjective in latin, but an adverb in Greek.  The "living" is a noun in Latin and a verb in Greek.  
+1	445	facilem victu	6	138	ῥεῖα ζώοντες		Knauer	The "easy" is an adjective in latin, but an adverb in Greek.  The "living" is a noun in Latin and a verb in Greek.  
 1	445	egregiam et facilem victu per saecula gentem.	13	6	γλακτοφάγων Ἀβίων τε δικαιοτάτων ἀνθρώπων		Knauer	
 1	448	limina ... foribus	12	120	πύλῃσιν .. σανίδας		Knauer	I was unsure whether trabes, "beams," and ὀχῆα, "bolt/bar," were close enough semantically.  
 1	448	aerea ... limina	1	126	χαλκοβατὲς δῶ		Knauer	There are three words for bronze in the Latin passage- I have only included the foremost according to the line citation of Knauer.
@@ -201,28 +201,28 @@
 1	472	equos 	10	513	 ἵππων 		Knauer	" " a period.
 1	471	Tydides ... vastabat	10	489	Τυδεΐδης ... πλήξειε		Knauer	vastabat more means "destroy" while πλήξειε connotes "striking."  Both, of course, amount to the same thing for the victim.  
 1	472	equos in pabula gustassent	10	568	φάτνῃ ἐφ᾽ ἱππείῃ ... ἵπποι πυρὸν ἔδοντες:		Knauer	it is debatable whether ardentis should be included and compared with ὠκύποδες.  The former means "burning" while the latter means "swift-footed."  I was uncertain whether to include φάτνῃ, "manger" to correspond with pabula, πυρὸν, "wheat," or both.
-1	472	ardentisque avertit equos	B	838	φέρον ἵπποι αἴθωνες		Knauer	φέρω can mean "carry off" without any added prefix.  
+1	472	ardentisque avertit equos	2	838	φέρον ἵπποι αἴθωνες		Knauer	φέρω can mean "carry off" without any added prefix.  
 1	472	ardentisque avertit equos	12	96	φέρον ἵπποι αἴθωνες		Knauer	φέρω can mean "carry off" without any added prefix.  
 1	474	Troilus ... curruque	24	257	καὶ Τρωΐλον ἱππιοχάρμην		Knauer	
 1	476	equis curruque lora tenens	11	159	ἵπποι ... ὄχεα ... ἡνιόχους		Knauer	Complicated by the fact that ἡνιόχους contains the words for "reins" and "hold" (ἡνία and ἔχω), and thus means "charioteer."
 1	476	equis curruque	15	452	ὀχέων ... δέ ἵπποι ... ὄχεα		Knauer	
 1	477	 cervixque comaeque trahuntur ... terram ... pulvis	22	401	ἑλκομένοιο κονίσαλος ... δὲ χαῖται ... κάρη ... κονίῃσι		Knauer	huic is interesting here because it would seem to be a dative of possession.  While the genitive τοῦ ... ἑλκομένοιο would seem to be a genitive absolute or a genitive of source, the possessive qualities of the case could be seen as related to huic, here.  I have not included huic because of the complexity of such a hypothetical allusion.  I have included cervix and κάρη because of the close relationship between the two body parts.  I have chosen to include terram with the two Greek words for dust due to its relationship with dust.  
-1	479	ad templum ibant	Z	286	μολοῦσα ποτὶ μέγαρ᾽		Knauer	This and the following eight entries should be taken together
-1	479	ad templum ibant	Z	297	νηὸν ἵκανον Ἀθήνης		Knauer	" " much
-1	479	Pallidis ... Iliades	Z	300	Τρῶες ... Ἀθηναίης		Knauer	" " a colon.
-1	479	Palladis ... ferebant ... palmis	Z	301	Ἀθήνῃ χεῖρας ἀνέσχον		Knauer	" " a period.
-1	479	Palladis crinibus ... peplumque ferebat	Z	302	πέπλον ἑλοῦσα ... Ἀθηναίης ... ἠϋκόμοιο		Knauer	" " a colon.
-1	479	Palladis ... Iliades	Z	305	Ἀθηναίη ... Τρώων ἀλόχους		Knauer	" " a colon.  ἀλόχους specifies that these are the "wives of the Trojans" while Iliades simply means "Trojan women."
-1	479	Palladis ... aversa	Z	311	ἀνένευε .. Παλλὰς Ἀθήνη		Knauer	" " a period. Latin words separated from each other by a semicolon.  aversa can have a connotation of "back" in addition to "away," so I have included it has a parallel with ἀνένευε.  Both, at any rate, signify Athena's rejection of the situation.  
-1	479	templum ... Palladis crinibus ... peplumque	Z	271	πέπλον ... μεγάρῳ ... Ἀθηναίης ... ἠϋκόμοιο		Knauer	I also debated whether to include ferebant and θὲς.
-1	479	templum ... Palladis crinibus ... peplumque	Z	90	πέπλον ... μεγάρῳ ... Ἀθηναίης ... ἠϋκόμοιο		Knauer	I also debated whether to include ferebant and θεῖναι
+1	479	ad templum ibant	6	286	μολοῦσα ποτὶ μέγαρ᾽		Knauer	This and the following eight entries should be taken together
+1	479	ad templum ibant	6	297	νηὸν ἵκανον Ἀθήνης		Knauer	" " much
+1	479	Pallidis ... Iliades	6	300	Τρῶες ... Ἀθηναίης		Knauer	" " a colon.
+1	479	Palladis ... ferebant ... palmis	6	301	Ἀθήνῃ χεῖρας ἀνέσχον		Knauer	" " a period.
+1	479	Palladis crinibus ... peplumque ferebat	6	302	πέπλον ἑλοῦσα ... Ἀθηναίης ... ἠϋκόμοιο		Knauer	" " a colon.
+1	479	Palladis ... Iliades	6	305	Ἀθηναίη ... Τρώων ἀλόχους		Knauer	" " a colon.  ἀλόχους specifies that these are the "wives of the Trojans" while Iliades simply means "Trojan women."
+1	479	Palladis ... aversa	6	311	ἀνένευε .. Παλλὰς Ἀθήνη		Knauer	" " a period. Latin words separated from each other by a semicolon.  aversa can have a connotation of "back" in addition to "away," so I have included it has a parallel with ἀνένευε.  Both, at any rate, signify Athena's rejection of the situation.  
+1	479	templum ... Palladis crinibus ... peplumque	6	271	πέπλον ... μεγάρῳ ... Ἀθηναίης ... ἠϋκόμοιο		Knauer	I also debated whether to include ferebant and θὲς.
+1	479	templum ... Palladis crinibus ... peplumque	6	90	πέπλον ... μεγάρῳ ... Ἀθηναίης ... ἠϋκόμοιο		Knauer	I also debated whether to include ferebant and θεῖναι
 1	483	Ter circum ... raptaverat Hectora	24	15	Ἕκτορα ... ἕλκεσθαι ... τρὶς ... ἐρύσας περὶ 		Knauer	
 1	487	manus Priamum	24	477	Πρίαμος ... χερσὶν ... χεῖρας		Knauer	
 1	488	principibus permixtum	20	338	πρώτοισι μάχεσθαι:		Knauer	permixtum can mean "to engage in battle."
 1	488	Se ... principibus permixtum	13	642	αὐτὸς ... προμάχοισιν ἐμίχθη.		Knauer	
 1	488	permixtum adgnovit	5	85	γνοίης ... μετείη		Knauer	
 1	493	viris concurrere	3	189	ἦλθον ... ἀντιάνειραι:		Knauer	concurrere can mean "come together" and so I included it as a parallel with ἦλθον.  The Amazons are referenced in the Latin, but the terms in the line are bellatrix and virgo.  
-1	493	 viris	Z	186	ἀντιανείρας.		Knauer	The Amazons are referenced in the Latin, but the terms in the line are bellatrix and virgo.  
+1	493	 viris	6	186	ἀντιανείρας.		Knauer	The Amazons are referenced in the Latin, but the terms in the line are bellatrix and virgo.  
 1	502	pertemptant gaudia pectus:	14	156	χαῖρε ... θυμῷ		Knauer	Complicated, because χαῖρε means "rejoice," whereas the Latin, pertemptant gaudia pectus, means "joy assail my hear heart/chest.  
 1	502	tacitum ... gaudia pectus	18	556	σιωπῇ ... γηθόσυνος κῆρ		Knauer	Though gaudia is a noun, whereas γηθόσυνος is an adjective.
 1	525	prohibe ... navibus ignis	16	301	νηῶν ... ἀπωσάμενοι ... πῦρ		Knauer	
@@ -232,8 +232,8 @@
 1	546	aura aetheria	13	837	αἰθέρα		Knauer	
 1	551	subducere classem,	14	75	νῆες ... εἰρύαται ... ἕλκωμεν		Knauer	
 1	556	habet ... iam 	3	243	ἤδη κάτεχεν		Knauer	
-1	559a560b	cuncti ... fremebant	1	22	πάντες ἐπευφήμησαν		Knauer	
-1	559a560b	cuncti ... fremebant	1	376	πάντες ἐπευφήμησαν		Knauer	
+1	559	cuncti ... fremebant	1	22	πάντες ἐπευφήμησαν		Knauer	
+1	559	cuncti ... fremebant	1	376	πάντες ἐπευφήμησαν		Knauer	
 1	561	voltum demissa	3	217	κατὰ χθονὸς ὄμματα πήξας,		Knauer	Complicated because the Latin means "having been sent down in respect to her countenance," i.e. "lowered her face/gaze," while the Greek technically reads "Having fixed his eyes on the ground."  Same general sense, slightly different literal sense.  
 1	582	quae ... animo	24	197	τί ... φρεσὶν		Knauer	
 1	586	Vix ... fatus ... cum	10	540	οὔ πω ... εἴρητο ... ὅτ᾽		Knauer	
@@ -246,10 +246,10 @@
 1	618	genuit Simoentis ...undam	12	18	ποταμῶν ... εἰσαγαγόντες.		Knauer	I was unsure which Latin word to include, as unda is wave, while Simoentis is the river itself.  Both genuit and εἰσαγαγόντες can have the connotation of "bringing forth," though slightly different.  
 1	624	regesque Pelasgi.	10	429	 δῖοί τε Πελασγοί,		Knauer	 δῖοί means "heavenly," but can also mean "noble."  I was unsure whether this could have a close enough "royal" connation with reges.  
 1	644	rapidum ad navis	10	54	ῥίμφα ... παρὰ νῆας		Knauer	
-1	650	ornatus ... Helenae quos illa ... extulerat	Z	289	πέπλοι ... τὰς αὐτὸς ... ἤγαγε ... Ἑλένην		Knauer	
+1	650	ornatus ... Helenae quos illa ... extulerat	6	289	πέπλοι ... τὰς αὐτὸς ... ἤγαγε ... Ἑλένην		Knauer	
 1	650	Argivae Helenae quos ... Mycenis,	2	161	Ἀργείην Ἑλένην ἧς ... Ἀχαιῶν		Knauer	I am unsure whether Mycenis should be included with Ἀχαιῶν.  
 1	652	extulerat matris	3	238	γείνατο μήτηρ		Knauer	
-1	654	maxima natarum	Z	252	θυγατρῶν ... ἀρίστην		Knauer	
+1	654	maxima natarum	6	252	θυγατρῶν ... ἀρίστην		Knauer	
 1	655	auroque coronam.	22	470	κρήδεμνόν θ᾽ ... χρυσῆ		Knauer	
 1	681	super ... sede	2	549	ἐν ... νηῷ		Knauer	
 1	690	gaudens incedit	4	272	παρῴχετο γηθόσυνος		Knauer	
@@ -261,7 +261,7 @@
 1	723	Postquam epulis	1	469	ἐπεὶ ἐδητύος		Knauer	
 1	724	crateras ... vina coronant	1	470	κρητῆρας ἐπεστέψαντο ποτοῖο		Knauer	
 1	724	crateras ... vina coronant	9	175	κρητῆρας ἐπεστέψαντο ποτοῖο		Knauer	
-1	724	crateras ... statuunt	Z	528	κρητῆρα στήσασθαι		Knauer	
+1	724	crateras ... statuunt	6	528	κρητῆρα στήσασθαι		Knauer	
 1	724	crateras ... vina	8	232	κρητῆρας ... οἴνοιο,		Knauer	
 1	728	auroque ... pateram	4	3	χρυσέοις δεπάεσσι		Knauer	
 1	728	auroque ... pateram	9	670	ρυσέοισι κυπέλλοις 		Knauer	
@@ -275,9 +275,9 @@
 1	752	Diomedis equi	10	568	Διομήδεος ἵπποι		Knauer	
 1	752	nunc quales Diomedis equi	5	260			Knauer	I have chosen not to scan this expanse of Greek text for each occurrence of the parallels for these four Latin words.  Most of them will be unigrams, due to sentence division.  On briefly skimming, horses are mentioned often.  
 1	752	nunc quales Diomedis equi	23	290	Διομήδης ἵππους ... οὕς		Knauer	οὕς, of course, does not have the connotation of quality as quales.  It, perhaps, should be omitted. 
-1	752	nunc quales Diomedis equi	23		Διομήδεος ... ἵπποι		Knauer	
+1	752	nunc quales Diomedis equi	23	377	Διομήδεος ... ἵπποι		Knauer	
 1	752	nunc quales Diomedis equi	4	370	Τυδέος υἱὲ ...  ἱπποδάμοιο		Knauer	
 1	752	nunc quales Diomedis equi	5	126	οἷον ... ἱππότα Τυδεύς		Knauer	
 1	752	Diomedis equi	9	711	Διομήδεος ἱπποδάμοιο.		Knauer	
 1	752	nunc ... Achilles.	24	629	ἤτοι ... Ἀχιλῆα		Knauer	
-1	753	“Immo age et ... dic ... nobis	10	384	ἀλλ᾽ ἄγε μοι ... εἰπὲ καὶ		Knauer	
+1	753	Immo age et ... dic ... nobis	10	384	ἀλλ᾽ ἄγε μοι ... εἰπὲ καὶ		Knauer	
