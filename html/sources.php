@@ -120,121 +120,121 @@
 	<td>Ambrose</td>
 	<td>Apologia David Altera</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Apologia David</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Cain et Abel</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Prima.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Prima.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Fuga Saeculi</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Helia et Ieiunio</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Iacob et Vita Beata</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Interpellatione Iob et David</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Ioseph</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Mysteriis</td>
 	<td><a href="http://www.thelatinlibrary.com/ambrose.html">The Latin Library</a></td>
-	<td>Edition Unknown.<em><em></td>
+	<td>Edition Unknown.<em></em></td>
 	<td>Brianna Roberts</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Nabuthae</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Noe</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Prima.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Prima.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Paradiso</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Prima.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Prima.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Patriarchis</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Tobia</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Altera.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>Epistula ad Sororem</td>
 	<td><a href="http://www.thelatinlibrary.com/ambrose.html">The Latin Library</a></td>
-	<td>Edition Unknown.<em><em></td>
+	<td>Edition Unknown.<em></em></td>
 	<td>Brianna Roberts</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>Epistulae Variae</td>
 	<td><a href="http://www.thelatinlibrary.com/ambrose.html">The Latin Library</a></td>
-	<td>"submitted by Oscar Cismarius from an unidentified e-text"<em><em></td>
+	<td>"submitted by Oscar Cismarius from an unidentified e-text"<em></em></td>
 	<td>Brianna Roberts</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>Explanatio Psalmorum XII</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Sanctii Ambrosii Opera, Pars VI.<em> Vindobonae: Gerold. 1919.</td>
+	<td>Michael Petschenig. <em>Sanctii Ambrosii Opera, Pars VI.</em> Vindobonae: Gerold. 1919.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>Expositio Psalmi CXVIII</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Sanctii Ambrosii Opera, Pars Quinta.<em> Vindobonae: Gerold. 1913.</td>
+	<td>Michael Petschenig. <em>Sanctii Ambrosii Opera, Pars Quinta.</em> Vindobonae: Gerold. 1913.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>Expositio Evangelii Secundum Lucan</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Henricus Schenkl. <em>Sanctii Ambrosii Opera, Pars Quarta.<em> Vindobonae: Gerold. 1902.</td>
+	<td>Henricus Schenkl. <em>Sanctii Ambrosii Opera, Pars Quarta.</em> Vindobonae: Gerold. 1902.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>Hexameron</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Prima.<em> Vindobonae: Gerold. 1897.</td>
+	<td>Karl Schenkl. <em>Sanctii Ambrosii Opera, Pars Prima.</em> Vindobonae: Gerold. 1897.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ammianus Marcellinus</td>
@@ -247,25 +247,25 @@
 	<td>Andocides</td>
 	<td>De Mysteriis</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
-	<td>Karl Fuhr. <em>Orationes.<em> Stutgardiae: Teubner. 1966.</td>
+	<td>Karl Fuhr. <em>Orationes.</em> Stutgardiae: Teubner. 1966.</td>
 	<td></td>
 </tr><tr>
 	<td>Andocides</td>
 	<td>De Pace</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
-	<td>Karl Fuhr. <em>Orationes.<em> Stutgardiae: Teubner. 1966.</td>
+	<td>Karl Fuhr. <em>Orationes.</em> Stutgardiae: Teubner. 1966.</td>
 	<td></td>
 </tr><tr>
 	<td>Andocides</td>
 	<td>De Reditu Suo</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
-	<td>Karl Fuhr. <em>Orationes.<em> Stutgardiae: Teubner. 1966.</td>
+	<td>Karl Fuhr. <em>Orationes.</em> Stutgardiae: Teubner. 1966.</td>
 	<td></td>
 </tr><tr>
 	<td>Andocides</td>
 	<td>In Alcibiadem</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
-	<td>Karl Fuhr. <em>Orationes.<em> Stutgardiae: Teubner. 1966.</td>
+	<td>Karl Fuhr. <em>Orationes.</em> Stutgardiae: Teubner. 1966.</td>
 	<td></td>
 </tr><tr>
 	<td>Anonymous</td>
@@ -375,18 +375,19 @@
 	<td>Aratus Solensis</td>
 	<td>Phaenomena</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
-	<td><em>Arati Phaenomena.<em> Berolini: Apvd Weidmannos. 1893.</td>
+	<td><em>Arati Phaenomena.</em> Berolini: Apvd Weidmannos. 1893.</td>
 	<td></td>
 </tr><tr>
 	<td>Aretaeus</td>
 	<td>De Causis et Signis Acutorum Morborum</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
-	<td>Francis Adams. <em>The Extant Works of Aretaeus, the Cappadocian.<em> Boston: Milford House. 1856.</td>
+	<td>Francis Adams. <em>The Extant Works of Aretaeus, the Cappadocian.</em> Boston: Milford House. 1856.</td>
 	<td></td>
+</tr><tr>
 	<td>Aretaeus</td>
 	<td>De Curatione Acutorum Morborum Libri Duo</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
-	<td>Francis Adams. <em>The Extant Works of Aretaeus, the Cappadocian.<em> Boston: Milford House. 1856.</td>
+	<td>Francis Adams. <em>The Extant Works of Aretaeus, the Cappadocian.</em> Boston: Milford House. 1856.</td>
 	<td></td>
 </tr><tr>
 	<td>Aristophanes</td>
@@ -532,7 +533,7 @@
 	<td>Arnobius</td>
 	<td>Adversus Nationes</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>August Reifferscheid. <em>Arnobii Adversus Nationes Libri VII.<em> Vindobonae: Gerold. 1875.</td>
+	<td>August Reifferscheid. <em>Arnobii Adversus Nationes Libri VII.</em> Vindobonae: Gerold. 1875.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Athenaeus</td>
@@ -544,331 +545,331 @@
 	<td>Augurelli, Giovanni Aurelio</td>
 	<td>Chrysopoeia</td>
 	<td><a href=" http://http://www.perseus.tufts.edu/hopper/searchresults?q=chrysopoeia">Perseus</a></td>
-	<td>Christophe Plantin. <em>Chrysopoeia ad Leonem X Pontificem Maximum<em> Antwerpen. 1582.</td>
+	<td>Christophe Plantin. <em>Chrysopoeia ad Leonem X Pontificem Maximum</em> Antwerpen. 1582.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Adnotationes in Iob</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect III Pars III, Quaestiones in Heptateuchum, Adnotationes in Iob.<em> Vindobonae: Gerold. 1895.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect III Pars III, Quaestiones in Heptateuchum, Adnotationes in Iob.</em> Vindobonae: Gerold. 1895.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Breviculus Collationis cum Donatistis</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas, Opera Sectio 7, Pars 3.<em> Vindobonae: Gerold. 1910.</td>
+	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas, Opera Sectio 7, Pars 3.</em> Vindobonae: Gerold. 1910.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Commonitorium</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars II.<em> Vindobonae: Gerold. 1892.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars II.</em> Vindobonae: Gerold. 1892.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Confessiones</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Pius Knoll. <em>Sancti Aurelii Augustini Opera Opera Sectio I, Pars I.<em> Vindobonae: Gerold. 1896.</td>
+	<td>Pius Knoll. <em>Sancti Aurelii Augustini Opera Opera Sectio I, Pars I.</em> Vindobonae: Gerold. 1896.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Academicos</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Pius Knoll. <em>Sancti Aurelii Augustini Opera, Sect I Pars III.<em> Vindobonae: Gerold. 1922.</td>
+	<td>Pius Knoll. <em>Sancti Aurelii Augustini Opera, Sect I Pars III.</em> Vindobonae: Gerold. 1922.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Adimantum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars I.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars I.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Cresconium Grammaticum Partis Donati</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas, Opera Sect 7, Pars 2.<em> Vindobonae: Gerold. 1909.</td>
+	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas, Opera Sect 7, Pars 2.</em> Vindobonae: Gerold. 1909.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Duas Epistulas Pelagianorum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VIII Pars I.<em> Vindobonae: Gerold. 1913.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VIII Pars I.</em> Vindobonae: Gerold. 1913.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Epistulam Fundamenti</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars I.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars I.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Epistulam Parmeniani</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta Contra Donatistas, Opera Sectio 7, Pars 1.<em> Vindobonae: Gerold. 1908.</td>
+	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta Contra Donatistas, Opera Sectio 7, Pars 1.</em> Vindobonae: Gerold. 1908.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Faustum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars I.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars I.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Felicem</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars II.<em> Vindobonae: Gerold. 1892.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars II.</em> Vindobonae: Gerold. 1892.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Fortunatum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars I.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars I.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Gaudentium Donatistarum Episcopum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas, Opera Sectio 7, Pars 3.<em> Vindobonae: Gerold. 1910.</td>
+	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas, Opera Sectio 7, Pars 3.</em> Vindobonae: Gerold. 1910.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Litteras Petiliani</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas, Opera Sectio 7, Pars 2.<em> Vindobonae: Gerold. 1909.</td>
+	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas, Opera Sectio 7, Pars 2.</em> Vindobonae: Gerold. 1909.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Mendacium</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Partem Donati post Gesta</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas, Opera Sectio 7, Pars 3.<em> Vindobonae: Gerold. 1910.</td>
+	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas, Opera Sectio 7, Pars 3.</em> Vindobonae: Gerold. 1910.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Contra Secundinum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars II.<em> Vindobonae: Gerold. 1892.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars II.</em> Vindobonae: Gerold. 1892.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Agone Christiano</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio V Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio V Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Baptismo</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas, Opera Sectio 7, Pars I.<em> Vindobonae: Gerold. 1908.</td>
+	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas, Opera Sectio 7, Pars I.</em> Vindobonae: Gerold. 1908.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Beata Vita</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Pius Knoll. <em>Sancti Aurelii Augustini Opera, Sect I Pars III.<em> Vindobonae: Gerold. 1922.</td>
+	<td>Pius Knoll. <em>Sancti Aurelii Augustini Opera, Sect I Pars III.</em> Vindobonae: Gerold. 1922.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Bono Coniugali</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Bono Viduitatis</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Civitate Dei</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Bernhard Dombart. <em>De Civitate Dei Libri XXII Vol I Lib I-XII.<em> Lipsiae: In Aedibus B.G. Teubner. 1877.</td>
+	<td>Bernhard Dombart. <em>De Civitate Dei Libri XXII Vol I Lib I-XII.</em> Lipsiae: In Aedibus B.G. Teubner. 1877.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Conjugiis Adulterinis</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Consensu Evangelistarum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Franz Weihrich. <em>Sancti Aureli Augustini De Consensu Evangelistarum.<em> Vindobonae: Gerold. 1904.</td>
+	<td>Franz Weihrich. <em>Sancti Aureli Augustini De Consensu Evangelistarum.</em> Vindobonae: Gerold. 1904.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Continentia</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Cura Pro Mortuis Gerenda</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Divinatione Daemonum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Dialectica</td>
 	<td><a href="http://www.thelatinlibrary.com/augustine/dia.shtml">The Latin Library</a></td>
-	<td>W. Crecelius <em>S. Aurelii Augustini de dialecta liber.<em> Jahresbericht ueber das Gymnasium zu Elberfeld, Schuljahr 1856-57 (Elberfeld: Lucas, 1857).</td>
+	<td>W. Crecelius <em>S. Aurelii Augustini de dialecta liber.</em> Jahresbericht ueber das Gymnasium zu Elberfeld, Schuljahr 1856-57 (Elberfeld: Lucas, 1857).</td>
 	<td>Tessa Little</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Doctrina Christiana</td>
 	<td><a href="http://www.augustinus.it/latino/dottrina_cristiana/index2.htm">http://www.augustinus.it/</a></td>
-	<td>S. AURELII AUGUSTINI OPERA OMNIA: PATROLOGIAE LATINAE ELENCHUS <em><em> </td>
+	<td>S. AURELII AUGUSTINI OPERA OMNIA: PATROLOGIAE LATINAE ELENCHUS <em></em> </td>
 	<td>Brianna Roberts</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Duabus Animabus</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI, Pars I.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI, Pars I.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Fidea et Operibus</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Fide et Symbolo</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Genesi ad Litteram</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect III, Pars I.<em> Vindobonae: Gerold. 1894.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect III, Pars I.</em> Vindobonae: Gerold. 1894.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Genesi ad Litteram Inperfectus Liber</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect III, Pars I.<em> Vindobonae: Gerold. 1894.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect III, Pars I.</em> Vindobonae: Gerold. 1894.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Gestis Pelagii</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aureli Augustini Opera, Sectio VIII, Pars II.<em> Vindobonae: Gerold. 1902.</td>
+	<td>Joseph Zycha. <em>Sancti Aureli Augustini Opera, Sectio VIII, Pars II.</em> Vindobonae: Gerold. 1902.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Gratia Christi</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aureli Augustini Opera, Sect VIII, Pars II.<em> Vindobonae: Gerold. 1902.</td>
+	<td>Joseph Zycha. <em>Sancti Aureli Augustini Opera, Sect VIII, Pars II.</em> Vindobonae: Gerold. 1902.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Mendacio</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Natura Boni</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI, Pars II.<em> Vindobonae: Gerold. 1892.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI, Pars II.</em> Vindobonae: Gerold. 1892.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Natura et Gratia</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VIII, Pars I.<em> Vindobonae: Gerold. 1913.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VIII, Pars I.</em> Vindobonae: Gerold. 1913.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Natura et Origine Animae</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aureli Augustini Opera, Sectio VIII, Pars I.<em> Vindobonae: Gerold. 1913.</td>
+	<td>Joseph Zycha. <em>Sancti Aureli Augustini Opera, Sectio VIII, Pars I.</em> Vindobonae: Gerold. 1913.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Nuptiis et Concupiscentia</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aureli Augustini Opera, Sectio VIII, Pars II.<em> Vindobonae: Gerold. 1902.</td>
+	<td>Joseph Zycha. <em>Sancti Aureli Augustini Opera, Sectio VIII, Pars II.</em> Vindobonae: Gerold. 1902.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Opere Monachorum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Ordine Libri Duo</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Pius Knoll. <em>Sancti Aurelii Augustini Opera, Sectio I, Pars III.<em> Vindobonae: Gerold. 1922.</td>
+	<td>Pius Knoll. <em>Sancti Aurelii Augustini Opera, Sectio I, Pars III.</em> Vindobonae: Gerold. 1922.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Patientia</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Peccato Originali</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VIII, Pars II.<em> Vindobonae: Gerold. 1902.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VIII, Pars II.</em> Vindobonae: Gerold. 1902.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Peccatorum Meritis et Remissione et de Baptismo Parvulorum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VIII, Pars I.<em> Vindobonae: Gerold. 1913.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VIII, Pars I.</em> Vindobonae: Gerold. 1913.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Perfectione Iustitiae Hominis</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VIII, Pars II.<em> Vindobonae: Gerold. 1902.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VIII, Pars II.</em> Vindobonae: Gerold. 1902.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Sancta Virginitate</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio V, Pars III.<em> Vindobonae: Gerold. 1900.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio V, Pars III.</em> Vindobonae: Gerold. 1900.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Spiritu et Littera</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VIII, Pars I.<em> Vindobonae: Gerold. 1913.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VIII, Pars I.</em> Vindobonae: Gerold. 1913.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Trinitate</td>
 	<td><a href="http://www.thelatinlibrary.com/augustine/trin1.shtml">The Latin Library</a></td>
-	<td>"From an unidentified edition at the Workshop for Ancient and Medieval Philosophy (Japan) with the kind permission of its webmaster Sumio Nakagawa." <em><em> </td>
+	<td>"From an unidentified edition at the Workshop for Ancient and Medieval Philosophy (Japan) with the kind permission of its webmaster Sumio Nakagawa." <em></em> </td>
 	<td>Brianna Roberts</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>De Utilitate Credendi</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VI, Pars I.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sectio VI, Pars I.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Epistula ad Catholicos de Secta Dontatistarum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petchenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.<em> Vindobonae: Gerold. 1909.</td>
+	<td>Michael Petchenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.</em> Vindobonae: Gerold. 1909.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
@@ -883,79 +884,81 @@
 	<td>Augustine</td>
 	<td>Gesta cum Emerito Donastistarum Episcopo</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petchenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.<em> Vindobonae: Gerold. 1910.</td>
+	<td>Michael Petchenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.</em> Vindobonae: Gerold. 1910.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Libellus Adversus Fulgentium</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petchenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.<em> Vindobonae: Gerold. 1910.</td>
+	<td>Michael Petchenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.</em> Vindobonae: Gerold. 1910.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Liber de Unico Baptismo</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petchenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.<em> Vindobonae: Gerold. 1910.</td>
+	<td>Michael Petchenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.</em> Vindobonae: Gerold. 1910.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Liber Qui Appellature Speculum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Franz Weihrich. <em>Aurelii Augustini Hipponensis Episcopi.<em> Vindobonae: Gerold. 1887.</td>
+	<td>Franz Weihrich. <em>Aurelii Augustini Hipponensis Episcopi.</em> Vindobonae: Gerold. 1887.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Locutionum in Heptateuchum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect III Pars I.<em> Vindobonae: Gerold. 1894.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect III Pars I.</em> Vindobonae: Gerold. 1894.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Psalmus contra Partem Donati</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.<em> Vindobonae: Gerold. 1908.</td>
+	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.</em> Vindobonae: Gerold. 1908.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Quaestiones in Heptateuchum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect III Pars III.<em> Vindobonae: Gerold. 1895.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect III Pars III.</em> Vindobonae: Gerold. 1895.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Retractiones</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Pius Knoll. <em>Sancti Aurelii Augustini Opera, Sect I Pars II.<em> Vindobonae: Gerold. 1902.</td>
+	<td>Pius Knoll. <em>Sancti Aurelii Augustini Opera, Sect I Pars II.</em> Vindobonae: Gerold. 1902.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Sermo ad Caesariensis Ecclesiae Plebem</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.<em> Vindobonae: Gerold. 1910.</td>
+	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.</em> Vindobonae: Gerold. 1910.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine</td>
 	<td>Sermo de Rusticiano Subdiacono</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.<em> Vindobonae: Gerold. 1910.</td>
+	<td>Michael Petschenig. <em>Sancti Aurelii Augustini Scripta contra Donatistas.</em> Vindobonae: Gerold. 1910.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Augustine (Pseudo)</td>
 	<td>Quaestiones Veteris et Novi Testamenti</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Alexander Souter. <em>Pseudo-Augustini Quaestiones Veteris et Novi Testamenti CXXVII.<em> Vindobonae: Gerold. 1908.</td>
+	<td>Alexander Souter. <em>Pseudo-Augustini Quaestiones Veteris et Novi Testamenti CXXVII.</em> Vindobonae: Gerold. 1908.</td>
 	<td>Caitlin Diddams</td>	
 </tr><tr>
 	<td>Aurelius Victor</td>
 	<td>Epitome de Caesaribus</td>
 	<td><a href="http://www.forumromanum.org/literature/victor_ep.html">Forum Romanum</a></td>
 	<td>Franz Pichlmayr. <em>Teubner 1911.</em> Entered by Igor Makhankov (2000) </td>
+	<td></td>
 
 </tr><tr>
 	<td>Aurelius Victor</td>
 	<td>De Caesaribus</td>
 	<td><a href="http://www.forumromanum.org/literature/victor_caes.html">Forum Romanum</a></td>
 	<td>Franz Pichlmayr. <em>Teubner 1911.</em> Entered by Igor Makhankov (2000) </td>
+	<td></td>
 
 </tr><tr>
 	<td>Ausonius</td>
@@ -1118,7 +1121,8 @@
 	<td>J.P. Migne (ed.). <em>Patrologia Latina 59 Avitus Viennesis De Spiritalis Historiae Gestis</em>. Classical Latin Orthography. Paris. 1847.</td>
 	<td>Cari Haas</td>
 	
-</tr><tr>Avitus of Vienne</td>
+</tr><tr>
+	<td>Avitus of Vienne</td>
 	<td>De Spiritalis Historiae Gestis</td>
 	<td><a href="http://mlat.uzh.ch/?c=2&w=AviVie.DeMoHiG">Corpus Corporum</a></td>
 	<td>J.P. Migne (ed.). <em>Patrologia Latina 59 Avitus Viennesis De Spiritalis Historiae Gestis</em>. Classical Latin Orthography. Paris. 1847.</td>
@@ -1128,21 +1132,21 @@
 	<td>Bacchylides</td>
 	<td>Dithyrambs</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
-	<td>Bruno Snell. <em>Carmina cum Fragmentis.<em> Lipsiae: B. B. Teubner. 1970.</td>
+	<td>Bruno Snell. <em>Carmina cum Fragmentis.</em> Lipsiae: B. B. Teubner. 1970.</td>
 	<td>Anna Glenn</td>
 	
 </tr><tr>
 	<td>Bacchylides</td>
 	<td>Epinicians</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
-	<td>Bruno Snell. <em>Carmina cum Fragmentis.<em> Lipsiae: B. B. Teubner. 1970.</td>
+	<td>Bruno Snell. <em>Carmina cum Fragmentis.</em> Lipsiae: B. B. Teubner. 1970.</td>
 	<td>Anna Glenn</td>
 	
 </tr><tr>
 	<td>Bacchylides</td>
 	<td>Dithyrambs</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d1">Perseus</a></td>
-	<td>Bruno Snell. <em>Carmina cum Fragmentis.<em> Lipsiae: B. B. Teubner. 1970.</td>
+	<td>Bruno Snell. <em>Carmina cum Fragmentis.</em> Lipsiae: B. B. Teubner. 1970.</td>
 	<td>Anna Glenn</td>
 	
 </tr><tr>
@@ -1498,8 +1502,8 @@
 	<td>Cicero</td>
 	<td>Post reditum in senatu</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0015">Perseus</a></td>
-	<td>Albert Clark, <em>M. Tulli Ciceronis Orationes:
-Recognovit brevique adnotatione critica instruxit
+	<td>Albert Clark, <em>M. Tulli Ciceronis Orationes: Recognovit breviqve adnotatione critica instrvxit Albertus Curtis Clark Collegii Reginae Socius</em>. Oxford: e Typographeo Clarendoniano, 1918.</td>
+	<td>Anna Glenn</td>
 
 </tr><tr>
 	<td>Cicero</td>
@@ -1771,13 +1775,13 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Commodianus</td>
 	<td>Carmen Apologeticum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Bernhard Dombart. <em>Commodiani Carmina.<em> Vindobonae: Gerold. 1887.</td>
+	<td>Bernhard Dombart. <em>Commodiani Carmina.</em> Vindobonae: Gerold. 1887.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Commodianus</td>
 	<td>Instructiones</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Bernhard Dombart. <em>Commodiani Carmina.<em> Vindobonae: Gerold. 1887.</td>
+	<td>Bernhard Dombart. <em>Commodiani Carmina.</em> Vindobonae: Gerold. 1887.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Curtius Rufus</td>
@@ -1790,199 +1794,199 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Cyprian</td>
 	<td>Ad Demetrianum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>Ad Donatum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Bono Patientiae</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Disciplina et Habitu Virginum Liber</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Dominica Oratione</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Exhortatione Martyrii</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Lapsis</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Mortalite</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Opere et Eleemosynis</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Unitate Ecclesiae Catholicae Liber</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Zelo et Livore</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>Epistulae</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>Quod Idola Dii Non Sint</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>Sententiae Episcoporum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian</td>
 	<td>Testimoniorum Libri Tres adversus Judaeos</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1868.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>Ad Novatianum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>Ad Vigilium de Iudaeca Incredulitate</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>Adversus Judaeos</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>Carmina</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>De Disciplina et Bono Pudicitiae</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>De Duodecim Abusionibus Saeculi</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>De Duplici Martyrio</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>De Laude Martyrii</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>De Montibus Sina et Sion, Adversus Judaeos</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>De Pascha Computus</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>De Rebaptismate</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>De Singularitate Clericorum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>De Spectaculis</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>Epistulae</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>Liber de Aleatoribus</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>Oratio I</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia, Pars III.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia, Pars III.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>Oratio II</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia, Pars III.<em> Vindobonae: Gerold. 1871.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia, Pars III.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Cyprianus Gallus</td>
 	<td>Heptateuchos</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Demades</td>
@@ -2550,7 +2554,7 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Hermann Usener, <em>Dionysii Halicarnasei Quae Exstant, Volumen Quintum</em>. Leipzig: In Aedibus B.G. Teubneri, 1899.</td>
 	<td>Caitlin Diddams</td>
 
-</tr></tr><tr>
+</tr><tr>
 	<td>Dracontius</td>
 	<td>De Laudibus Dei</td>
 	<td><a href="http://www.mqdq.it/public/testo/testo/codice/DRAC%7Claud%7C001">MQDQ</a></td>
@@ -2621,25 +2625,25 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Eugippius</td>
 	<td>Epistula ad Probam Virginem</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Pius Knoll. <em>Eugippi Opera, Pars I.<em> Vindobonae: Gerold. 1885.</td>
+	<td>Pius Knoll. <em>Eugippi Opera, Pars I.</em> Vindobonae: Gerold. 1885.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Eugippius</td>
 	<td>Excerpta ex Operibus Augustini</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Pius Knoll. <em>Eugippi Opera, Pars I.<em> Vindobonae: Gerold. 1885.</td>
+	<td>Pius Knoll. <em>Eugippi Opera, Pars I.</em> Vindobonae: Gerold. 1885.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Eugippius</td>
 	<td>Vita Sancti Severini</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Pius Knoll. <em>Eugippi Opera, Pars II.<em> Vindobonae: Gerold. 1886.</td>
+	<td>Pius Knoll. <em>Eugippi Opera, Pars II.</em> Vindobonae: Gerold. 1886.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Evodius</td>
 	<td>De Fide Contra Manicheos</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars II.<em> Vindobonae: Gerold. 1892.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars II.</em> Vindobonae: Gerold. 1892.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
         <td>Euripides</td>
@@ -2862,105 +2866,105 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Gregory of Nazianzus</td>
 	<td>Christus Patiens</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Johann Georg Brambs. <em>Christus Patiens, Tragoedia Christiana, Quae Inscribi Solet Christos Paskhon.<em> Lipsiae: B.G. Teubneri. 1885.</td>
+	<td>Johann Georg Brambs. <em>Christus Patiens, Tragoedia Christiana, Quae Inscribi Solet Christos Paskhon.</em> Lipsiae: B.G. Teubneri. 1885.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Gregory of Nazianzus</td>
 	<td>Epistulae Theologicae</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Maurice Jourjon. <em>Lettres Theologiques.<em> Paris: Editions du Cerf. 1974.</td>
+	<td>Maurice Jourjon. <em>Lettres Theologiques.</em> Paris: Editions du Cerf. 1974.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
     <td>Herodotus</td>
     <td>The Histories</td>
     <td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0125">Perseus</a></td>
-	<td>Herodotus, with an English translation by A. D. Godley</em>. Cambridge: Harvard University Press, 1920.</td>
+	<td><em>Herodotus, with an English translation by A. D. Godley</em>. Cambridge: Harvard University Press, 1920.</td>
     <td>Jessica Micceri</td>
 
 </tr><tr>
     <td>Hesiod</td>
     <td>Works and Days</td>
     <td><a href="https://www.hs-augsburg.de/~harsch/graeca/Chronologia/S_ante08/Hesiodos/hes_erga.html">Bibliotheca Augustana </a></td>
-	<td>Hesiodi theogonia, opera et dies, scutum, fragmenta. ed. F. Solmsen/R. Merkelbach/M. L. West</em>. Oxford 1970.</td>
+	<td><em>Hesiodi theogonia, opera et dies, scutum, fragmenta</em>. ed. F. Solmsen/R. Merkelbach/M. L. West. Oxford 1970.</td>
     <td>Cari Haas</td>
 
 </tr><tr>
 	<td>Hilarius (Pseudo) </td>
 	<td>In Genesin Ad Leonem Papam</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Hilarius (Pseudo) </td>
 	<td>De Evangelio</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Hilarius (Pseudo) </td>
 	<td>De Martyrio Maccabeorum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Hilarius (Pseudo) </td>
 	<td>Epistula ad Abram Filiam</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.<em> Vindobonae: Gerold. 1916.</td>
+	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.</em> Vindobonae: Gerold. 1916.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Hilarius (Pseudo) </td>
 	<td>Hymni</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.<em> Vindobonae: Gerold. 1916.</td>
+	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.</em> Vindobonae: Gerold. 1916.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Hilarius (Pseudo) </td>
 	<td>Hymnus de Christo</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.<em> Vindobonae: Gerold. 1916.</td>
+	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.</em> Vindobonae: Gerold. 1916.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Hilary of Poitiers</td>
 	<td>Fragmenta Historica</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.<em> Vindobonae: Gerold. 1916.</td>
+	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.</em> Vindobonae: Gerold. 1916.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Hilary of Poitiers</td>
 	<td>Fragmenta Minora</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.<em> Vindobonae: Gerold. 1916.</td>
+	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.</em> Vindobonae: Gerold. 1916.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Hilary of Poitiers</td>
 	<td>Hymni</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.<em> Vindobonae: Gerold. 1916.</td>
+	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.</em> Vindobonae: Gerold. 1916.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Hilary of Poitiers</td>
 	<td>Liber ad Constantium Imperatorem</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.<em> Vindobonae: Gerold. 1916.</td>
+	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.</em> Vindobonae: Gerold. 1916.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Hilary of Poitiers</td>
 	<td>Oratio Synodi Sardicensis ad Constantium Imperatorem</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.<em> Vindobonae: Gerold. 1916.</td>
+	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.</em> Vindobonae: Gerold. 1916.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Hilary of Poitiers</td>
 	<td>Tractatus Mysteriorum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.<em> Vindobonae: Gerold. 1916.</td>
+	<td>Alfred Leonhard Feder. <em>S. Hilarii Episcopi Pictaviensis Opera, Pars IV.</em> Vindobonae: Gerold. 1916.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Hilary of Poitiers</td>
 	<td>Tractatus Super Psalmos</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Anton Zingerle. <em>Tractatus Super Psalmos.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Anton Zingerle. <em>Tractatus Super Psalmos.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
     <td>Hippocrates</td>
@@ -3054,7 +3058,7 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Jerome</td>
 	<td>In Hieremiam Prophetam Libri Sex</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Siegfried Reiter. <em>In Hieremiam Prophetam Libri Sex.<em> Vindobonae: Gerold. 1913.</td>
+	<td>Siegfried Reiter. <em>In Hieremiam Prophetam Libri Sex.</em> Vindobonae: Gerold. 1913.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Jerome</td>
@@ -3067,19 +3071,19 @@ Recognovit brevique adnotatione critica instruxit
 	<td>John Cassian</td>
 	<td>Conlationes Patrum (Collationibus) </td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Johannis Cassiani Opera, Pars 2.<em> Vindobonae: Gerold. 1886.</td>
+	<td>Michael Petschenig. <em>Johannis Cassiani Opera, Pars 2.</em> Vindobonae: Gerold. 1886.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>John Cassian</td>
 	<td>De Incarnatione Domini Contra Nestorum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Johannis Cassiani Opera, Pars 1.<em> Vindobonae: Gerold. 1888.</td>
+	<td>Michael Petschenig. <em>Johannis Cassiani Opera, Pars 1.</em> Vindobonae: Gerold. 1888.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>John Cassian</td>
 	<td>Institutiones</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Michael Petschenig. <em>Johannis Cassiani Opera, Pars 1.<em> Vindobonae: Gerold. 1888.</td>
+	<td>Michael Petschenig. <em>Johannis Cassiani Opera, Pars 1.</em> Vindobonae: Gerold. 1888.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Julius Caesar</td>
@@ -3092,7 +3096,7 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Julius Firmicus Maternus</td>
 	<td>De Errore Profanarum Religionum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Halm. <em>M. Minucii Felicis Octavius, Iulii Firmici Materni Liber de Errore Profanarum Religionum.<em> Vindobonae: Gerold. 1867.</td>
+	<td>Karl Halm. <em>M. Minucii Felicis Octavius, Iulii Firmici Materni Liber de Errore Profanarum Religionum.</em> Vindobonae: Gerold. 1867.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Juvenal</td>
@@ -3153,13 +3157,13 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Libanius</td>
 	<td>Declamationes</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Richard Foerster. <em>Libanii Opera.<em> Lipsiae: B.G. Teubneri. 1913.</td>
+	<td>Richard Foerster. <em>Libanii Opera.</em> Lipsiae: B.G. Teubneri. 1913.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Libanius</td>
 	<td>Orationes</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Richard Foerster. <em>Libanii Opera.<em> Lipsiae: B.G. Teubneri. 1913.</td>
+	<td>Richard Foerster. <em>Libanii Opera.</em> Lipsiae: B.G. Teubneri. 1913.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Livy</td>
@@ -3718,7 +3722,7 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Marcus Minucius Felix</td>
 	<td>Octavius</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Bernhard Kytzler. <em>M. Minuci Felicis Octavius.<em> Leipzig: B.G. Teubner Verlagsgesellschaft. 1982.</td>
+	<td>Bernhard Kytzler. <em>M. Minuci Felicis Octavius.</em> Leipzig: B.G. Teubner Verlagsgesellschaft. 1982.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Martial</td>
@@ -3759,7 +3763,7 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Optatian</td>
 	<td>Epistula Porfyrii</td>
 	<td><a href=" http://digiliblt.lett.unipmn.it/opera.php#">digilibLT</a></td>
-	<td>Iohannes Polara. <em>Publilii Optatiani Porfyrii, Carmina, I.<em> Turin: Paravia. 1973.</td>
+	<td>Iohannes Polara. <em>Publilii Optatiani Porfyrii, Carmina, I.</em> Turin: Paravia. 1973.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Ovid</td>
@@ -3828,31 +3832,31 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Paulinus of Nola</td>
 	<td>Carmina</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>Sancti Pontii Meropii Paulini Carmina.<em> Vindobonae: Gerold. 1894.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>Sancti Pontii Meropii Paulini Carmina.</em> Vindobonae: Gerold. 1894.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Paulinus of Nola</td>
 	<td>Epistulae</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Wilhelm August Ritter von Hartel. <em>Sancti Pontii Meropii Paulini Carmina.<em> Vindobonae: Gerold. 1894.</td>
+	<td>Wilhelm August Ritter von Hartel. <em>Sancti Pontii Meropii Paulini Carmina.</em> Vindobonae: Gerold. 1894.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Paulus Orosius</td>
 	<td>Liber Apologeticus</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Friedrich Wilhelm. <em>Historiarum Adversum Paganos Libri VII.<em> Vindobonae: Gerold. 1882.</td>
+	<td>Karl Friedrich Wilhelm. <em>Historiarum Adversum Paganos Libri VII.</em> Vindobonae: Gerold. 1882.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Paulus Orosius</td>
 	<td>Commenitorium Orosii ad Augustinum de Errore Priscillianistarum et Origenistarum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
+	<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.</em> Vindobonae: Gerold. 1889.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Paulus Orosius</td>
 	<td>Historiae Adversum Paganos</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Friedrich Wilhelm. <em>Historiarum Adversum Paganos Libri VII.<em> Vindobonae: Gerold. 1882.</td>
+	<td>Karl Friedrich Wilhelm. <em>Historiarum Adversum Paganos Libri VII.</em> Vindobonae: Gerold. 1882.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Pausanias</td>
@@ -3949,252 +3953,252 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Plato</td>
 	<td>Alcibiades 1</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0175">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Alcibiades 2</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0175">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Apology</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0169">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Charmides</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0175">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Cleitophon</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0179">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Cratylus</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0171">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Critias</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0179">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Crito</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0169">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Epinomis</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0179">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Epistles</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0163">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Euthydemus</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0177">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Euthyphro</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0169">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Gorgias</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0177">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Hipparchus</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0175">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Hippias Major</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0179">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Hippias Minor</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0179">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Ion</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0179">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Laches</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0175">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Laws</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0165">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Lovers</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0175">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Lysis</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0175">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Menexenus</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0179">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Meno</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0177">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Minos</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0179">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Parmenides</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0173">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Phaedo</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0169">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Phaedrus</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0173">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Philebus</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0173">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Protagoras</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0177">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Republic</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0167">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Sophist</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0171">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Statesman</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0171">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Symposium</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0173">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Theaetetus</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0171">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Theages</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0175">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
 	<td>Plato</td>
 	<td>Timaeus</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0179">Perseus</a></td>
-<td>Platonis Opera, ed. John Burnet</em>.Oxford University Press, 1903.</td>
+<td><em>Platonis Opera</em>, ed. John Burnet. Oxford University Press, 1903.</td>
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
@@ -4535,7 +4539,7 @@ Recognovit brevique adnotatione critica instruxit
 
 </tr><tr>
 	<td>Plutarch</td>
-	<td>Comparison of Dion and Brutus
+	<td>Comparison of Dion and Brutus</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0097">Perseus</a></td>
 	<td>Bernadotte Perrin, <em>Plutarch's Lives</em>. Cambridge, MA: Harvard University Press, 1918.</td>
 	<td>Elizabeth Hunter</td>
@@ -4999,13 +5003,13 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Priscillian</td>
 	<td>Canones</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
+	<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.</em> Vindobonae: Gerold. 1889.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Priscillian</td>
 	<td>Tractatus Undecim</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.<em> Vindobonae: Gerold. 1889.</td>
+	<td>Georg Schepps. <em>Priscilliani Quae Supersunt, Accedit Orosii Commonitorium de Errore Priscillianistarum et Origenistarum.</em> Vindobonae: Gerold. 1889.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Propertius</td>
@@ -5088,21 +5092,20 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Quintus Smyrnaeus</td>
 	<td>Fall of Troy</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:2008.01.0490">Perseus</a></td>
-	<td>Quintus Smyrnaeus. The Fall of Troy. <em>Arthur S. Way.</em>. London: William Heinemann; New York: G.P. Putnam's Sons. 1913.</td>
-	<td>L. Annaeus Seneca. <em>Tragoediae.</em> Rudolf Peiper. Gustav Richter. Leipzig. Teubner. 1921.</td>
+	<td>Quintus Smyrnaeus. <em>The Fall of Troy</em>. Arthur S. Way. London: William Heinemann; New York: G.P. Putnam's Sons. 1913.</td>
 	<td>Katherine Roache</td>
 
 </tr><tr>
 	<td>Rufinus of Aquileia</td>
 	<td>Interpretatio Orationum Gregorii Nazianzeni</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Johann Wrobel. <em>Tyrannii Rufini Orationum Gregorii Nazianzeni Novem Interpretatio.<em> Vindobonae: Gerold. 1910.</td>
+	<td>Johann Wrobel. <em>Tyrannii Rufini Orationum Gregorii Nazianzeni Novem Interpretatio.</em> Vindobonae: Gerold. 1910.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Rufius Festus</td>
 	<td>Breviarium</td>
 	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000183">DigilibLT</a></td>
-	<td>J. W. Eadie. <em>The Breviarium of Festus. A Critical Edition with Historical Commentary<em> London 1967.</td>
+	<td>J. W. Eadie. <em>The Breviarium of Festus. A Critical Edition with Historical Commentary</em> London 1967.</td>
 	<td>Caitlin Diddams</td>
 	
 </tr><tr>
@@ -5142,7 +5145,7 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Secundinus Manichaeus</td>
 	<td>Epistula Secundini ad Augustinum</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars II.<em> Vindobonae: Gerold. 1892.</td>
+	<td>Joseph Zycha. <em>Sancti Aurelii Augustini Opera, Sect VI Pars II.</em> Vindobonae: Gerold. 1892.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Sedulius</td>
@@ -5512,31 +5515,31 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Sulpicius Severus</td>
 	<td>Chronica</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Halm. <em>Sulpicii Severi Libri Qui Supersunt.<em> Vindobonae: Gerold. 1866.</td>
+	<td>Karl Halm. <em>Sulpicii Severi Libri Qui Supersunt.</em> Vindobonae: Gerold. 1866.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Sulpicius Severus</td>
 	<td>Dialogi</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Halm. <em>Sulpicii Severi Libri Qui Supersunt.<em> Vindobonae: Gerold. 1866.</td>
+	<td>Karl Halm. <em>Sulpicii Severi Libri Qui Supersunt.</em> Vindobonae: Gerold. 1866.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Sulpicius Severus</td>
 	<td>Epistolae Tres</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Halm. <em>Sulpicii Severi Libri Qui Supersunt.<em> Vindobonae: Gerold. 1866.</td>
+	<td>Karl Halm. <em>Sulpicii Severi Libri Qui Supersunt.</em> Vindobonae: Gerold. 1866.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Sulpicius Severus</td>
 	<td>Vita Sancti Martini</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Pomeroy Harrington. <em>Vita Sancti Martini Chapter XIII.<em> Boston: Allyn and Bacon. 1925.</td>
+	<td>Karl Pomeroy Harrington. <em>Vita Sancti Martini Chapter XIII.</em> Boston: Allyn and Bacon. 1925.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Sulpicius Severus (Pseudo) </td>
 	<td>Alia Epistula</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Karl Halm. <em>Sulpicii Severi Libri Qui Supersunt.<em> Vindobonae: Gerold. 1866.</td>
+	<td>Karl Halm. <em>Sulpicii Severi Libri Qui Supersunt.</em> Vindobonae: Gerold. 1866.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tacitus</td>
@@ -5605,37 +5608,37 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Tertullian</td>
 	<td>Ad Martyres</td>
 	<td><a href="http://www.thelatinlibrary.com/tertullian/tertullian.martyres.shtml">The Latin Library</a></td>
-	<td>Franz Oehler. <em>Tertulliani Opera Quae Supersunt Omnia, vol. I.<em> Leipzig. 1851.</td>
+	<td>Franz Oehler. <em>Tertulliani Opera Quae Supersunt Omnia, vol. I.</em> Leipzig. 1851.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>Ad Nationes</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.<em> Vindobonae: Gerold. 1890.</td>
+	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.</em> Vindobonae: Gerold. 1890.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>Adversus Hermogenem</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.<em> Vindobonae: Gerold. 1906.</td>
+	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.</em> Vindobonae: Gerold. 1906.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>Adversus Marcionem</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.<em> Vindobonae: Gerold. 1906.</td>
+	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.</em> Vindobonae: Gerold. 1906.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>Adversus Praxean</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.<em> Vindobonae: Gerold. 1906.</td>
+	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.</em> Vindobonae: Gerold. 1906.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>Adversus Valentinianos</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.<em> Vindobonae: Gerold. 1906.</td>
+	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.</em> Vindobonae: Gerold. 1906.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
@@ -5648,55 +5651,55 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Tertullian</td>
 	<td>De Anima</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.<em> Vindobonae: Gerold. 1890.</td>
+	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.</em> Vindobonae: Gerold. 1890.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>De Baptismo</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.<em> Vindobonae: Gerold. 1890.</td>
+	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.</em> Vindobonae: Gerold. 1890.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>De Carnis Resurrectione</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.<em> Vindobonae: Gerold. 1906.</td>
+	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.</em> Vindobonae: Gerold. 1906.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>De Idolatria</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.<em> Vindobonae: Gerold. 1890.</td>
+	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.</em> Vindobonae: Gerold. 1890.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>De Ieiunio</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.<em> Vindobonae: Gerold. 1890.</td>
+	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.</em> Vindobonae: Gerold. 1890.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>De Oratione</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.<em> Vindobonae: Gerold. 1890.</td>
+	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.</em> Vindobonae: Gerold. 1890.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>De Patientia</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.<em> Vindobonae: Gerold. 1906.</td>
+	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.</em> Vindobonae: Gerold. 1906.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>De Pudicitia</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.<em> Vindobonae: Gerold. 1890.</td>
+	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.</em> Vindobonae: Gerold. 1890.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
 	<td>De Scorpiace</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.<em> Vindobonae: Gerold. 1890.</td>
+	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.</em> Vindobonae: Gerold. 1890.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian</td>
@@ -5709,25 +5712,25 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Tertullian</td>
 	<td>De Testimionio Animae</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.<em> Vindobonae: Gerold. 1890.</td>
+	<td>Georg Wissowa. <em>Quinti Septimi Florentis Tertulliani Opera Pars I.</em> Vindobonae: Gerold. 1890.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian (Pseudo) </td>
 	<td>Adversus Omnes Haereses</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.<em> Vindobonae: Gerold. 1906.</td>
+	<td>Emil Kroymann. <em>Quinti Septimi Florentis Tertulliani Opera Pars III.</em> Vindobonae: Gerold. 1906.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian (Pseudo) </td>
 	<td>Carmen De Iona et Ninive</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Franz Oehler. <em>Quinti Septimi Florentis Tertulliani Quae Supersunt Omnia, Tomus II.<em> Lipsiae: Weigel. 1854.</td>
+	<td>Franz Oehler. <em>Quinti Septimi Florentis Tertulliani Quae Supersunt Omnia, Tomus II.</em> Lipsiae: Weigel. 1854.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Tertullian (Pseudo) </td>
 	<td>Incerti Auctoris Carmen Sodoma</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Franz Oehler. <em>Quinti Septimi Florentis Tertulliani Quae Supersunt Omnia, Tomus II.<em> Lipsiae: Weigel. 1854.</td>
+	<td>Franz Oehler. <em>Quinti Septimi Florentis Tertulliani Quae Supersunt Omnia, Tomus II.</em> Lipsiae: Weigel. 1854.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
     <td>Theocritus</td>
@@ -5756,6 +5759,7 @@ Recognovit brevique adnotatione critica instruxit
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0199">Perseus</a></td>
 	<td>Thucydides <em>Historiae in Two Volumes</em>. Oxford,
 	Oxford University Press. 1942.</td>
+	<td></td>
 
 </tr><tr>
 	<td>Tibullus</td>
@@ -5864,11 +5868,12 @@ Recognovit brevique adnotatione critica instruxit
 	<td>Priapea</td>
 	<td><a href="http://www.forumromanum.org/literature/priapea.html">Forum Romanum</a></td>
 	<td>Unknown Edition. <em> </em> </td>
+	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Victorinus</td>
 	<td>De Machabeis</td>
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
-	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.<em> Vindobonae: Gerold. 1891.</td>
+	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
 	<td>Vitruvius Pollio</td>
