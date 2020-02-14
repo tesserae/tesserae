@@ -290,7 +290,7 @@ GetOptions(
 			'target=s'     => \$target,
 			'unit=s'       => \$unit,
 			'feature=s'    => \$feature,
-			'stopwords=i'  => \$stopwords, 
+			'stopwords=s'  => \$stopwords, 
 			'freq_basis=s'  => \$freq_basis, 			
 			'stbasis=s'    => \$stoplist_basis,
 			'binary=s'     => \$file_results,
@@ -1081,6 +1081,18 @@ sub load_stoplist {
 	
 	my %basis;
 	my @stoplist;
+	
+	if ($stopwords eq "function") {
+	
+		my $file = catfile($fs{data}, 'common', Tesserae::lang($target) . '.' . 'function');
+	
+		my $list = Tesserae::stoplist_array($file);
+		
+
+		return $list;
+	
+	}
+	
 	
 	if ($stoplist_basis eq "target") {
 		
