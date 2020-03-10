@@ -252,7 +252,7 @@ if ($max_processes) {
 # get the list of texts to index
 
 my @corpus = @{Tesserae::get_textlist($lang, -no_part => 1)};
-@corpus = grep {  /cicero\.pro_a_cluentio/ } @corpus;
+@corpus = grep { ! /vulgate/ } @corpus;
 
 # the giant index
 
