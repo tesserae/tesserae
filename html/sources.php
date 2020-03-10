@@ -1619,13 +1619,6 @@
 
 </tr><tr>
 	<td>Cicero</td>
-	<td>Pro Rabiro perduellionis reo</td>
-	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0013">Perseus</a></td>
-	<td>Albert Clark, <em>M. Tulli Ciceronis Orationes: Recognovit brevique adnotatione critica instruxit Albertus Curtis Clark</em>. Oxonii: e Typographeo Clarendoniano, 1909.</td>
-	<td>Anna Glenn</td>
-
-</tr><tr>
-	<td>Cicero</td>
 	<td>Pro Rege Deiotaro</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0011">Perseus</a></td>
 	<td>Albert Clark, <em>M. Tulli Ciceronis Orationes: Recognovit breviqve adnotatione critica instrvxit Albertus Curtis Clark Collegii Reginae Socius</em>. Oxford: e Typographeo Clarendoniano, 1918.</td>
