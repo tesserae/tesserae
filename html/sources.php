@@ -311,6 +311,13 @@
 
 </tr><tr>
 	<td>Antiphon</td>
+	<td>Speeches</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d3">Perseus</a></td>
+	<td>Maidment, K. J., ed. <em>Minor Attic Orators.</em> Cambridge: Harvard UP, 1941.</td>
+	<td>Katherine Roache</td>
+	
+</tr><tr>
+	<td>Antiphon</td>
 	<td>Third Tetralogy</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0019%3aspeech%3d4">Perseus</a></td>
 	<td>Maidment, K. J., ed. <em>Minor Attic Orators.</em> Cambridge: Harvard UP, 1941.</td>
@@ -1157,6 +1164,20 @@
 	<td>Anna Glenn</td>
 
 </tr><tr>
+	<td>Basil of Caesarea</td>
+	<td>De Legendis Gentilium Libris</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A2008.01.0638">Perseus</a></td>
+	<td>Roy J. Deferrari. <em>St. Basil The Letters, in Four Volumes</em> William Heinemann; G.P. Putnam's Sons. London; New York. 1926.</td>
+	<td></td>
+
+</tr><tr>
+	<td>Basil of Caesarea</td>
+	<td>Epistulae</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A2008.01.0638">Perseus</a></td>
+	<td>Roy J. Deferrari. <em>St. Basil The Letters, in Four Volumes</em> William Heinemann; G.P. Putnam's Sons. London; New York. 1926.</td>
+	<td></td>	
+	
+</tr><tr>
 	<td>Bede</td>
 	<td>Historiam ecclesiasticam gentis Anglorum</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0135">Perseus</a></td>
@@ -1261,6 +1282,13 @@
 	<td>Chris Forstall</td>
 
 </tr><tr>
+	<td>Cato the Elder</td>
+	<td>De Agricultura</td>
+	<td><a href="https://www.thelatinlibrary.com/cato/cato.agri.html">The Latin Library</a></td>
+	<td>F. Speranza, <em>Scriptorum Romanorum De Re Rustica Reliquiae, Vol. 1.</em>. Univ. degli Studi 1974.</td>
+	<td></td>	
+
+</tr><tr>
 	<td>Celsus</td>
 	<td>De Medicina</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2007.01.0088">Perseus</a></td>
@@ -1295,6 +1323,13 @@
 	<td>Albert Clark, <em>M. Tulli Ciceronis Orationes: Recognovit brevique adnotatione critica instruxit Albertus Curtis Clark</em>. Oxonii: e Typographeo Clarendoniano, 1909.</td>
 	<td>Anna Glenn</td>
 
+</tr><tr>
+	<td>Cicero</td>
+	<td>Cum Senatui Gratias Egit</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0014%3atext%3dRed.+Sen">Perseus</a></td>
+	<td>Albert Clark, <em>M. Tulli Ciceronis Orationes: Recognovit brevique adnotatione critica instruxit Albertus Curtis Clark</em>. Oxonii: e Typographeo Clarendoniano, 1909.</td>
+	<td>Anna Glenn</td>
+	
 </tr><tr>
 	<td>Cicero</td>
 	<td>De Amicitia</td>
@@ -1710,11 +1745,67 @@
 
 </tr><tr>
 	<td>Claudianus</td>
+	<td>de Bello Gildonico</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0698">Perseus</a></td>
+	<td>Maurice Platnaeur, <em>Claudian, Vol 1</em>. London; New York: William Heinemann; G.P. Putnam's Sons, 1922.</td>
+	<td></td>
+	
+</tr><tr>
+	<td>Claudianus</td>
 	<td>de Raptu Proserpinae</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0685">Perseus</a></td>
 	<td>Maurice Platnaeur, <em>Claudian, Vol 2</em>. London; New York: William Heinemann; G.P. Putnam's Sons, 1922.</td>
 	<td></td>
 
+</tr><tr>
+	<td>Claudianus</td>
+	<td>In Consulatum Olybrii et Probini</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0694">Perseus</a></td>
+	<td>Maurice Platnaeur, <em>Claudian, Vol 1</em>. London; New York: William Heinemann; G.P. Putnam's Sons, 1922.</td>
+	<td></td>	
+
+</tr><tr>
+	<td>Claudianus</td>
+	<td>In Eutropium</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0697">Perseus</a></td>
+	<td>Maurice Platnaeur, <em>Claudian, Vol 1</em>. London; New York: William Heinemann; G.P. Putnam's Sons, 1922.</td>
+	<td></td>	
+
+</tr><tr>
+	<td>Claudianus</td>
+	<td>In Rufinum</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0689">Perseus</a></td>
+	<td>Maurice Platnaeur, <em>Claudian, Vol 1</em>. London; New York: William Heinemann; G.P. Putnam's Sons, 1922.</td>
+	<td></td>	
+
+</tr><tr>
+	<td>Claudianus</td>
+	<td>Panegyricus De Quarto Consolatu Honorii Augusti</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0695">Perseus</a></td>
+	<td>Maurice Platnaeur, <em>Claudian, Vol 1</em>. London; New York: William Heinemann; G.P. Putnam's Sons, 1922.</td>
+	<td></td>
+
+</tr><tr>
+	<td>Claudianus</td>
+	<td>Panegyricus De Sexto Consulatu Honorii Augusti</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0687">Perseus</a></td>
+	<td>Maurice Platnaeur, <em>Claudian, Vol 2</em>. London; New York: William Heinemann; G.P. Putnam's Sons, 1922.</td>
+	<td></td>
+
+</tr><tr>
+	<td>Claudianus</td>
+	<td>Panegyricus De Tertio Consulatu Honorii Augusti</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0696">Perseus</a></td>
+	<td>Maurice Platnaeur, <em>Claudian, Vol 1</em>. London; New York: William Heinemann; G.P. Putnam's Sons, 1922.</td>
+	<td></td>	
+
+</tr><tr>
+	<td>Claudianus</td>
+	<td>Panegyricus Dictus Manlio Theodoro</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0692">Perseus</a></td>
+	<td>Maurice Platnaeur, <em>Claudian, Vol 1</em>. London; New York: William Heinemann; G.P. Putnam's Sons, 1922.</td>
+	<td></td>	
+		
 </tr><tr>
 	<td>Claudius Mamertinus</td>
 	<td>Panegyricus</td>
@@ -2571,6 +2662,14 @@
 	<td><a href="http://www.mqdq.it/public/testo/testo/codice/DRAC%7Csati%7C001">MQDQ</a></td>
 	<td>C. Moussy. <em> </em>. 1988.</td>
 	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Ennius</td>
+	<td>Annales</td>
+	<td><a href="http://www.attalus.org/latin/ennius.html">MQDQ</a></td>
+	<td>E.H. Warmington <em> Remains of Old Latin Volume One, Ennius and Caecilius</em>. Harvard University Press. 1935.</td>
+	<td></td>	
+	
 </tr><tr>
 	<td>Ennodius</td>
 	<td>Carmina</td>
@@ -2821,6 +2920,13 @@
 	<td>Jessica Micceri</td>
 
 </tr><tr>
+	<td>Flavius Josephus</td>
+	<td>Josephi Vitaii</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0149">Perseus</a></td>
+	<td>B. Niese, <em>Flavii Iosephi opera</em>. Berlin: Weidmann, 1890.</td>
+	<td>Jessica Micceri</td>
+	
+</tr><tr>
 	<td>Florus</td>
 	<td>Epitome Rerum Romanorum</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0496">Perseus</a></td>
@@ -2847,6 +2953,13 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2007.01.0071">Perseus</a></td>
 	<td>John C. Rolfe, <em>With An English Translation</em>. Cambridge: Camb ridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1927.&lt;/td&gt;</td>
 	<td>Anna Glenn</td>
+
+</tr><tr>
+	<td>Giovanni Aurelio Augurelli</td>
+	<td>Chrysopoeia</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A2011.01.0913">Perseus</a></td>
+	<td><em>Augurelli, Giovanni Aurelio Rimini 1456 - Treviso 1524, chrysopoeia, chrysopoeia chrys. Chrysopoeia ad Leonem X pontificem maximum</em>.</td>
+	<td></td>	
 
 </tr><tr>
 	<td>Glass</td>
@@ -2959,13 +3072,49 @@
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Anton Zingerle. <em>Tractatus Super Psalmos.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
+    
 </tr><tr>
     <td>Hippocrates</td>
-    <td>Hippocrates Collected Works I</td>
-    <td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0249">Perseus</a></td>
-    <td>W. H. S. Jones, <em>Hippocrates Collected Works I</em>. Cambridge: Harvard University Press, February 1, 2005.</td>
-    <td>Jessica Micceri</td>
+    <td>De Aere Aquis et Locis</td>
+    <td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0249%3atext%3dAer">Perseus</a></td>
+    <td>W. H. S. Jones, <em>Hippocrates Collected Works I</em>. Cambridge: Harvard University Press, 1868</td>
+    <td>Jessica Micceri</td>    
 
+</tr><tr>
+    <td>Hippocrates</td>
+    <td>De Alimento</td>
+    <td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0249%3atext%3dAlim">Perseus</a></td>
+    <td>W. H. S. Jones, <em>Hippocrates Collected Works I</em>. Cambridge: Harvard University Press, 1868</td>
+    <td>Jessica Micceri</td> 
+
+</tr><tr>
+    <td>Hippocrates</td>
+    <td>De Morbis Popularibus</td>
+    <td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0249%3atext%3dEpid">Perseus</a></td>
+    <td>W. H. S. Jones, <em>Hippocrates Collected Works I</em>. Cambridge: Harvard University Press, 1868</td>
+    <td>Jessica Micceri</td> 
+
+</tr><tr>
+    <td>Hippocrates</td>
+    <td>De Prisca Medicina</td>
+    <td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0249%3atext%3dVM">Perseus</a></td>
+    <td>W. H. S. Jones, <em>Hippocrates Collected Works I</em>. Cambridge: Harvard University Press, 1868</td>
+    <td>Jessica Micceri</td>     
+
+</tr><tr>
+    <td>Hippocrates</td>
+    <td>Jusjurandum</td>
+    <td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0249%3atext%3dJusj.">Perseus</a></td>
+    <td>W. H. S. Jones, <em>Hippocrates Collected Works I</em>. Cambridge: Harvard University Press, 1868</td>
+    <td>Jessica Micceri</td>     
+
+</tr><tr>
+    <td>Hippocrates</td>
+    <td>Praeceptiones</td>
+    <td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0249%3atext%3dPraec.">Perseus</a></td>
+    <td>W. H. S. Jones, <em>Hippocrates Collected Works I</em>. Cambridge: Harvard University Press, 1868</td>
+    <td>Jessica Micceri</td>
+    
 </tr><tr>
 	<td>Homer</td>
 	<td>Iliad</td>
@@ -3040,6 +3189,14 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0672">Perseus</a></td>
 	<td>Rudolf Hercher,<em>Epistolographoi Hellenikoi, Epistolographi Graeci.</em>. Paris: A.F. Didot, 1873.</td>
 	<td></td>
+
+</tr><tr>
+	<td>Isocrates</td>
+	<td>Speeches</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0143%3aspeech%3d1">Perseus</a></td>
+	<td>George Norlin,<em>Isocrates with an English translation in three volumes.</em>. Harvard University Press; London, William Heinemann Ltd. 1980.</td>
+	<td></td>
+		
 </tr><tr>
 	<td>Jerome</td>
 	<td>Epistulae. Selections.</td>
@@ -3083,6 +3240,13 @@
 	<td>De Bello Gallico</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0002">Perseus</a></td>
 	<td>T. Rice Holmes, <em>C. Iuli Commentarii Rerum in Gallia Gestarum VII A. Hirti Commentarius VII</em>. Oxonii: e Typographeo Clarendoniano, 1914.</td>
+	<td>Anna Glenn</td>
+
+</tr><tr>
+	<td>Julius Caesar</td>
+	<td>De Bello Civilli</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0075">Perseus</a></td>
+	<td><em>C. Iuli Caesaris Commentariorum, pars posterior. Renatus du Pontet.</em>. Oxonii: e Typographeo Clarendoniano, Scriptorum Classicorum Bibliotheca Oxoniensis. 1901.</td>
 	<td>Anna Glenn</td>
 
 </tr><tr>
@@ -3703,6 +3867,13 @@
 	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000338">DigilibLT</a></td>
 	<td>M. Armisen-Marchetti. <em>Macrobe, Commentaire au songe du Scipion</em>Paris 2001-2003 (Collection des Universités de France).</td>
 	<td>Tessa Little</td>
+	
+</tr><tr>
+	<td>Manilius</td>
+	<td>Astronomica</td>
+	<td><a href="https://www.thelatinlibrary.com/manilius.html">The Latin Library</a></td>
+	<td>Iacobus van Wageningen, <em>M. Manili Astronomica</em>. Leipzig: in aedibus B. G. Teubneri, 1915.</td>
+	<td></td>		
 
 </tr><tr>
 	<td>Marcus Aurelius</td>
@@ -3723,6 +3894,13 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0506">Perseus</a></td>
 	<td>Wilhelm Heraeus, <em>M. Valerii Martialis Epigrammaton libri</em>. Leipzig: Borovskij, 1925.</td>
 	<td>Chris Forstall</td>
+
+</tr><tr>
+	<td>Maximianus</td>
+	<td>Elegiae</td>
+	<td><a href="https://www.thelatinlibrary.com/maximianus.html">The Latin Library</a></td>
+	<td>Richard Webster, <em>The New Maximianus-The Elegies of Maximianus</em>. Princeton University Press, 1900.</td>
+	<td></td>		
 
 </tr><tr>
 	<td>Nepos</td>
@@ -3833,6 +4011,14 @@
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Wilhelm August Ritter von Hartel. <em>Sancti Pontii Meropii Paulini Carmina.</em> Vindobonae: Gerold. 1894.</td>
 	<td>Caitlin Diddams</td>
+	
+</tr><tr>
+	<td>Paulus Diaconus</td>
+	<td>Carmina</td>
+	<td><a href="https://www.thelatinlibrary.com/pauldeacon/carmina.shtml">The Latin Library</a></td>
+	<td>G. Waitz. <em>Pauli Historia Langobardorum.</em> Hannover: Hahn 1878.</td>
+	<td></td>	
+	
 </tr><tr>
 	<td>Paulus Orosius</td>
 	<td>Liber Apologeticus</td>
@@ -4298,6 +4484,13 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0044">Perseus</a></td>
 	<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
 	<td>Chris Forstall</td>
+	
+</tr><tr>
+	<td>Plautus</td>
+	<td>Pseudolus</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0045">Perseus</a></td>
+	<td>T. Maccius Plautus. <em>Plauti Comoediae.</em> F. Leo. Berlin. Weidmann. 1895.</td>
+	<td>Chris Forstall</td>	
 
 </tr><tr>
 	<td>Plautus</td>
@@ -5102,6 +5295,13 @@
 	<td>Caitlin Diddams</td>
 	
 </tr><tr>
+	<td>Rutilius</td>
+	<td>De Reditu Suo</td>
+	<td><a href="https://penelope.uchicago.edu/Thayer/L/Roman/Texts/Rutilius_Namatianus/text*.html"></a></td>
+	<td>J. Wight Duff and Arnold M. Duff. <em>Minor Latin Poets Volume II</em> Harvard University Press. 1934.</td>
+	<td></td>	
+	
+</tr><tr>
 	<td>Sallust</td>
 	<td>Catilina, Iugurtha, Orationes Et Epistulae Excerptae De Historiis</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0002">Perseus</a></td>
@@ -5400,6 +5600,13 @@
 	<td>Timothy Tilbe</td>
 
 </tr><tr>
+	<td>Silius Italicus</td>
+	<td>Punica</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0674">Perseus</a></td>
+	<td>Walter Coventry Summers and John Percival Postgate, <em>Silius Italicus. Corpus Poetarum Latinorum Vol. 2.</em>. London. Sumptibus G. Bell et Filiorum. 1905.</td>
+	<td></td>	
+
+</tr><tr>
 	<td>Sophocles</td>
 	<td>Ajax</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0183">Perseus</a></td>
@@ -5534,6 +5741,21 @@
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Karl Halm. <em>Sulpicii Severi Libri Qui Supersunt.</em> Vindobonae: Gerold. 1866.</td>
 	<td>Caitlin Diddams</td>
+	
+</tr><tr>
+	<td>Tacitus</td>
+	<td>Agricola</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0084">Perseus</a></td>
+	<td>Henry Furneaux, <em>Opera Minora</em>. Clarendon Press. Oxford. 1900.</td>
+	<td>Elizabeth Hunter</td>	
+
+</tr><tr>
+	<td>Tacitus</td>
+	<td>Annales</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0077">Perseus</a></td>
+	<td>Charles Dennis Fisher, <em>Annales ab excessu divi Augusti. Cornelius Tacitus.</em>. Clarendon Press. Oxford. 1906.</td>
+	<td>Elizabeth Hunter</td>		
+	
 </tr><tr>
 	<td>Tacitus</td>
 	<td>Dialogus de Oratoribus</td>
@@ -5769,6 +5991,13 @@
 	<td>Bridget Murray</td>
 
 </tr><tr>
+	<td>Valerius Flaccus</td>
+	<td>Argonautica</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2007.01.0058">Perseus</a></td>
+	<td>Otto Kramer, <em>C. Valeri Flacci Setini Balbi Argonauticon Libri Octo</em>. Leipsig: Teubner, 1913.</td>
+	<td>Elizabeth Hunter</td>
+	
+</tr><tr>
 	<td>Valerius Maximus</td>
 	<td>Facta et Dicta Memorabilia</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0675">Perseus</a></td>
@@ -5868,6 +6097,14 @@
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Rudolf Peiper. <em>Cypriani Galli Poetae Heptateuchos.</em> Vindobonae: Gerold. 1891.</td>
 	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Vitensis</td>
+	<td>Historia Persecutionis Africanae Provinciae</td>
+	<td><a href="https://archive.org/details/victorisvitensi00victgoog/page/n20/mode/2up"></a></td>
+	<td>Carolus Halm. <em>Victoris Vitensis Historia Persecutionis Africanae Provinciae sub Geiserico et Hunrico regibus wandalorum.</em> Berolini: Apud Weidmannos. 1879.</td>
+	<td></td>	
+	
 </tr><tr>
 	<td>Vitruvius Pollio</td>
 	<td>De Architectura</td>

@@ -255,7 +255,7 @@ my $nav = <<END_FORM;
 			</tr>
 			<tr>
 				<td>
-					<input type="hidden" name="source" value="$source" />
+					<input type="visible" name="source" value="$source" />
 				</td>
 			</tr>
 			<tr>
@@ -277,7 +277,7 @@ my $nav = <<END_FORM;
 			</tr>
 		</table>
 		</form>
-		<div style="visibility:hidden;">
+		<div style="visibility:visible;">
 			<select id="la_texts">
 				$menu
 			</select>
