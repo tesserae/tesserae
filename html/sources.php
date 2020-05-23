@@ -343,6 +343,13 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0231">Perseus</a></td>
 	<td>Appian. <em>The Civil Wars.</em> L. Mendelssohn. Leipzig. Teubner. 1879. </td>
 	<td>Katherine Roache</td>
+	
+</tr><tr>
+	<td>Appian</td>
+	<td>The Foreign Wars</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0229%3Atext%3DReg">Perseus</a></td>
+	<td>L. Mendelssohn. <em>The Foreign Wars.</em> L. Mendelssohn. Leipzig. Teubner. 1879. </td>
+	<td>Tessa Little</td>	
 
 </tr><tr>
 	<td>Appolonius</td>
@@ -542,6 +549,21 @@
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>August Reifferscheid. <em>Arnobii Adversus Nationes Libri VII.</em> Vindobonae: Gerold. 1875.</td>
 	<td>Caitlin Diddams</td>
+	
+</tr><tr>
+	<td>Arrian</td>
+	<td>Anabasis</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0530">Perseus</a></td>
+	<td>A.G. Roos. <em>Flavii Arriani Anabasis Alexandri.</em> Teubner: Leipzig. 1907.</td>
+	<td>Tessa Little</td>
+	
+</tr><tr>
+	<td>Arrian</td>
+	<td>Cynegeticus</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0532">Perseus</a></td>
+	<td>Rudolf Hercher and Alfred Eberhard. <em>Arriani Nicomediensis Scripta Minora.</em> Teubner: Leipzig. 1885.</td>
+	<td>Tessa Little</td>	
+	
 </tr><tr>
 	<td>Athenaeus</td>
 	<td>The Deipnosophists</td>
@@ -1964,6 +1986,13 @@
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1868.</td>
 	<td>Caitlin Diddams</td>
+	
+</tr><tr>
+	<td>Cyprian (Pseudo) </td>
+	<td>Ad Flavium Felicem Resurrectione Mortuorum</td>
+	<td><a href="http://www.tertullian.org/latin/carmen_de_iudicio_domini.htm"></a></td>
+	<td>J.H. Wasink. <em>Carmen ad Flavium Felicem de resurrectione mortuorum et de iudicio Domini, recensuit, prolegomenis commentario indicibus instruxit J.H.W, Florilegium Patristicum Supplementum I.</em> Bonn. 1937.</td>
+	<td>Caitlin Diddams</td>	
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>Ad Novatianum</td>
@@ -2048,6 +2077,14 @@
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Cyprian (Pseudo) </td>
+	<td>Genesis</td>
+	<td><a href="http://www.tertullian.org/latin/carmen_genesis.htm"></a></td>
+	<td>G. Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia, Corpus Scriptorum Ecclesiasticorum Latinorum 3.</em>1868.</td>
+	<td>Caitlin Diddams</td>
+		
 </tr><tr>
 	<td>Cyprian (Pseudo) </td>
 	<td>Liber de Aleatoribus</td>
@@ -2066,6 +2103,14 @@
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Wilhelm August Ritter von Hartel. <em>S. Thasci Caecili Cypriani Opera Omnia, Pars III.</em> Vindobonae: Gerold. 1871.</td>
 	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Cyprian (Pseudo) </td>
+	<td>Sodoma</td>
+	<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
+	<td>Rudolfus Peiper. <em>Cyprianus Heptateuchos.</em> Österreichische Akademie der Wissenschaften: Wien, Österreich. 1891.</td>
+	<td>Caitlin Diddams</td>
+		
 </tr><tr>
 	<td>Cyprianus Gallus</td>
 	<td>Heptateuchos</td>
@@ -3860,6 +3905,13 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0151">Perseus</a></td>
 	<td>Kenneth J Maidment <em>Minor Attic Orators in two volumes, 2, with an English translation by J. O. Burtt, M.A</em>.Cambridge, MA, Harvard University Press; London, William Heinemann Ltd., 1962.</td>
 	<td>Jessica Micceri</td>
+	
+</tr><tr>
+	<td>Lysias</td>
+	<td>Speeches</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0153%3aspeech%3d1">Perseus</a></td>
+	<td>W.R.M. Lamb.<em>Lysias. Lysias with an English translation by W.R.M. Lamb</em>.Cambridge, MA, Harvard University Press; London, William Heinemann Ltd., 1930.</td>
+	<td></td>	
 
 </tr><tr>
 	<td>Macrobius</td>
@@ -3867,6 +3919,13 @@
 	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000338">DigilibLT</a></td>
 	<td>M. Armisen-Marchetti. <em>Macrobe, Commentaire au songe du Scipion</em>Paris 2001-2003 (Collection des Universités de France).</td>
 	<td>Tessa Little</td>
+	
+</tr><tr>
+	<td>Macrobius</td>
+	<td>Saturnalia</td>
+	<td><a href="https://penelope.uchicago.edu/Thayer/L/Roman/Texts/Macrobius/Saturnalia/1*.html"></a></td>
+	<td>Ludwig von Jan. <em>Macrobii Ambrosii Theodosii . . . Saturnaliorum libri VII</em>Quedlinburg and Leipzig. 1852.</td>
+	<td></td>	
 	
 </tr><tr>
 	<td>Manilius</td>
@@ -4617,7 +4676,21 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0328-1">Perseus</a></td>
 	<td>Gregorius N. Bernardakis, <em>Moralia</em>. Leipzig: Teubner, 1893.</td>
 	<td>Elizabeth Hunter</td>
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>An Virtus Doceri Possit</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0254">Perseus</a></td>
+	<td>Gregorius N. Bernardakis, <em>Moralia 3</em>. Leipzig: Teubner, 1891.</td>
+	<td>Elizabeth Hunter</td>	
 
+</tr><tr>
+	<td>Plutarch</td>
+	<td>An Vitiositas Infelicitatem Sufficia</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0278">Perseus</a></td>
+	<td>Gregorius N. Bernardakis, <em>Moralia 3</em>. Leipzig: Teubner, 1891.</td>
+	<td>Elizabeth Hunter</td>
+	
 </tr><tr>
 	<td>Plutarch</td>
 	<td>Animine an corporis affectiones sint peiores</td>
@@ -5150,6 +5223,314 @@
 	<td>Gregorius N. Bernardakis, <em>Moralia</em>. Leipzig: Teubner, 1891.</td>
 	<td>Elizabeth Hunter</td>
 
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Demetrius</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0076">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1920.</td>
+	<td>Elizabeth Hunter</td>
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Fabius Maximus</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0114">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1916.</td>
+	<td>Elizabeth Hunter</td>	
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Galba</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0116">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1926.</td>
+	<td>Elizabeth Hunter</td>		
+
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Instituta Laconica</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0199">Perseus</a></td>
+	<td>Frank Cole Babbitt.<em>Plutarch. Moralia. with an English Translation by. Frank Cole Babbitt. . </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1931.</td>
+	<td>Elizabeth Hunter</td>	
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Lacaenarum Apophthegmata</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0202">Perseus</a></td>
+	<td>Frank Cole Babbitt.<em>Plutarch. Moralia. with an English Translation by. Frank Cole Babbitt. . </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1931.</td>
+	<td>Elizabeth Hunter</td>	
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Lucullus</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0117">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1914.</td>
+	<td>Elizabeth Hunter</td>	
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Lycurgus</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0131">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1914.</td>
+	<td>Elizabeth Hunter</td>	
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Marcellus</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0118">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1917.</td>
+	<td>Elizabeth Hunter</td>
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Marcus Cato</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0087">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1914.</td>
+	<td>Elizabeth Hunter</td>	
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Maxime cum princibus philsopho esse diserendum</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0320">Perseus</a></td>
+	<td>Gregorius N. Bernardakis.<em>Moralia</em>. Leipzig. Teubner. 1893.</td>
+	<td>Elizabeth Hunter</td>
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Mulierum Virtutes</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0205">Perseus</a></td>
+	<td>Frank Cole Babbitt.<em>Plutarch. Moralia. with an English Translation by. Frank Cole Babbitt. . </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1931.</td>
+	<td>Elizabeth Hunter</td>	
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Nicias</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0071">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1916.</td>
+	<td>Elizabeth Hunter</td>		
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Non posse suaviter vivi secundum epicurum</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0394">Perseus</a></td>
+	<td>Gregorius N. Bernardakis.<em>Moralia</em>. Leipzig. Teubner. 1895.</td>
+	<td>Elizabeth Hunter</td>
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Numa</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0133">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1914.</td>
+	<td>Elizabeth Hunter</td>
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Otho</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0119">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1926.</td>
+	<td></td>	
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Parallela Minora</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0217">Perseus</a></td>
+	<td>Frank Cole Babbitt.<em>Plutarch. Moralia. with an English Translation by. Frank Cole Babbitt. . </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1936.</td>
+	<td></td>		
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Pelopidas</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0120">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1917.</td>
+	<td></td>
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Pericles</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0072">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1916.</td>
+	<td></td>
+
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Philopoemen</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0121">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1921.</td>
+	<td></td>
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Phocion</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0122">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1919.</td>
+	<td></td>		
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Platonicae Quaestiones</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0383">Perseus</a></td>
+	<td>Gregorius N. Bernardakis.<em>Moralia</em>. Leipzig. Teubner. 1895.</td>
+	<td></td>
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Pompey</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0123">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1917.</td>
+	<td></td>
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Praecepta Gerendae Reipublicae</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0332">Perseus</a></td>
+	<td>Gregorius N. Bernardakis.<em>Moralia</em>. Leipzig. Teubner. 1893.</td>
+	<td></td>
+	
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Publicola</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0124">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1914.</td>
+	<td></td>
+
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Pyrrhus</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0134">Perseus</a></td>
+	<td>Bernadotte Perin, <em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin. </em>. Cambridge, MA. Harvard University Press London. William Heinemann Ltd, 1920.</td>
+	<td></td>
+	
+</tr><tr>
+	<td>Plutarch/td>
+	<td>Quaestiones Convivales</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0311">Perseus</a></td>
+	<td>George N. Bernadakis<em>Plutarch. Moralia</em>. Leipzig. Teubner. 1892. 4.</td>
+	<td></td>
+
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Quaestiones Graecae</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0213">Perseus</a></td>
+	<td>Frank Cole Babbitt<em>Plutarch. Moralia. with an English Translation by. Frank Cole Babbitt. Vol 1</em>. Cambridge, MA. Harvard University Press. London. William Heinemann Ltd. 1936. 4.</td>
+    <td></td> 
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Quaestiones Naturales</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0353">Perseus</a></td>
+	<td>Gregorius N. Bernardakis.<em>Plutarch. Moralia. Gregorius N. Bernardakis.</em>. Leipzig. Teubner. 1893. 5.</td>
+    <td></td> 
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Quaestiones Romanae</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0209">Perseus</a></td>
+	<td>Frank Cole Babbitt<em>Plutarch. Moralia. with an English Translation by. Frank Cole Babbitt.</em>. Cambridge, MA. Harvard University Press. London. William Heinemann Ltd. 1936. 4.  4.</td>
+    <td></td> 
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Quomodo Adolescens Poetas Audire Debeat</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0140">Perseus</a></td>
+	<td>Gregorius N. Bernardakis.<em>Plutarch. Moralia. Gregorius N. Bernardakis.</em>. Leipzig. Teubner. 1888. 1. </td>
+    <td></td> 
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Quomodo Adulator ab Amico Internoscatur</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0148">Perseus</a></td>
+	<td>Gregorius N. Bernardakis.<em>Plutarch. Moralia. Gregorius N. Bernardakis.</em>. Leipzig. Teubner. 1888. 1.</td>
+    <td></td> 
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Quomodo Quis suos in Virtute Sentiat Profectus</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0152">Perseus</a></td>
+	<td>Gregorius N. Bernardakis.<em>Plutarch. Moralia. Gregorius N. Bernardakis.</em>. Leipzig. Teubner. 1888. 1.</td>
+    <td></td>
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Regum et Imperatorum Apophthegmata</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0191">Perseus</a></td>
+	<td>Frank Cole Babbitt.<em>Plutarch. Moralia. with an English Translation by. Frank Cole Babbitt.</em>. Cambridge, MA. Harvard University Press. London. William Heinemann Ltd. 1931. 3.</td>
+    <td></td>
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Romulus</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0079">Perseus</a></td>
+	<td>Bernadotte Perrin.<em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin.</em>. Cambridge, MA. Harvard University Press. London. William Heinemann Ltd. 1914. 1.</td>
+    <td></td>
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Septem Sapientium Convivium</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0184">Perseus</a></td>
+	<td>Gregorius N. Bernardakis.<em>Plutarch. Moralia. Gregorius N. Bernardakis.</em>. Leipzig. Teubner. 1888. 1.</td>
+    <td></td>
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Sertorius</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0125">Perseus</a></td>
+	<td>Bernadotte Perrin.<em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin.</em>. Cambridge, MA. Harvard University Press. London. William Heinemann Ltd. 1919. 8.</td>
+    <td></td>
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Solon</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0073">Perseus</a></td>
+	<td>Bernadotte Perrin.<em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin.</em>. Cambridge, MA. Harvard University Press. London. William Heinemann Ltd. 1914. 1.</td>
+    <td></td>
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Sulla</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0126">Perseus</a></td>
+	<td>Bernadotte Perrin.<em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin.</em>. Cambridge, MA. Harvard University Press. London. William Heinemann Ltd. 1916. 4.</td>
+    <td></td>
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Themistocles</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0074">Perseus</a></td>
+	<td>Bernadotte Perrin.<em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin.</em>. Cambridge, MA. Harvard University Press. London. William Heinemann Ltd. 1914. 2.</td>
+    <td></td>
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Theseus</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0075">Perseus</a></td>
+	<td>Bernadotte Perrin.<em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin.</em>. Cambridge, MA. Harvard University Press. London. William Heinemann Ltd. 1914. 1.</td>
+    <td></td>
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Tiberius Gracchus</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0127">Perseus</a></td>
+	<td>Bernadotte Perrin.<em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin.</em>. Cambridge, MA. Harvard University Press. London. William Heinemann Ltd. 1921. 10.</td>
+    <td></td>
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Timoleon</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0128">Perseus</a></td>
+	<td>Bernadotte Perrin.<em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin.</em>. Cambridge, MA. Harvard University Press. London. William Heinemann Ltd. 1918. 6.</td>
+    <td></td>
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Titus Flaminius</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0115">Perseus</a></td>
+	<td>Bernadotte Perrin.<em>Plutarch. Plutarch's Lives. with an English Translation by. Bernadotte Perrin.</em>. Cambridge, MA. Harvard University Press. London. William Heinemann Ltd. 1921. 10.</td>
+    <td></td>
+        
+</tr><tr>
+	<td>Plutarch</td>
+	<td>Vitae Decem Oratorum</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0344">Perseus</a></td>
+	<td>Gregorius N. Bernardakis.<em>Plutarch. Moralia. Gregorius N. Bernardakis.</em>. Leipzig. Teubner. 1893. 5.</td>
+    <td></td>
+    														
 </tr><tr>
 	<td>Plutarch (Pseudo)</td>
 	<td>De Musica</td>
@@ -6005,6 +6386,13 @@
 	<td>Elizabeth Hunter</td>
 
 </tr><tr>
+        <td>Veggio, Maffeo</td>
+        <td>Aeneid</td>
+        <td><a href="http://virgil.org/">Vergil.org</a></td>
+        <td>Brinton, Anna Cox, <em>Maphaeus Vegius and his Thirteenth Book of the Aeneid: A Chapter on Virgil in the Renaissance</em>. Stanford: Stanford University Press, 1930.</td>
+        <td>James Gawley</td>	
+
+</tr><tr>
 	<td>Vergil</td>
 	<td>Aeneid</td>
 	<td><a href="http://www.perseus.tufts.edu">Perseus</a></td>
@@ -6104,6 +6492,13 @@
 	<td><a href="https://archive.org/details/victorisvitensi00victgoog/page/n20/mode/2up"></a></td>
 	<td>Carolus Halm. <em>Victoris Vitensis Historia Persecutionis Africanae Provinciae sub Geiserico et Hunrico regibus wandalorum.</em> Berolini: Apud Weidmannos. 1879.</td>
 	<td></td>	
+
+</tr><tr>
+	<td>Vitensis (Pseudo)</td>
+	<td>Notitia provinciarum et civitatum africae</td>
+	<td><a href="http://www.mlat.uzh.ch/MLS/xanfang.php?tabelle=Victor_Vitensis_cps19&corpus=19&allow_download=0&lang=0"></a></td>
+	<td>Michael Petschenig <em>Notitia provinciarum et civitatum Africae.</em> Osterreichische Akademie der Wissenschaften, Wien, Osterreich, 1881.</td>
+	<td></td>
 	
 </tr><tr>
 	<td>Vitruvius Pollio</td>
