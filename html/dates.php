@@ -2305,30 +2305,24 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Cyprian</td>
 	<td>Ad Demetrianum</td>
     <td>252 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>Ad Donatum</td>
     <td>246 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>Ad Quirinum aut Testimoniorum libri tres adversus Judeos</td>
     <td>249 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
