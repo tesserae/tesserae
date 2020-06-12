@@ -7,7 +7,7 @@
 		Dates
 	</h1>
 	<p>
-		The dates added to Tesserae texts were sourced from a wide range of material.  Most dates were found in individual Loeb editions, but online chronologies and other digital sources were used.  The list here gives the source information for each text, including the site information if it was gathered from an online site or database.  Not all texts have an online source.  Attention was paid, as close as possible, to accurately represent where a date was found and why a particular date was chosen.  To see why a date was chosen for a text, see the original spreadsheet 'insert link'.  Attention was also paid as close as possible to provide complete citation information for each source and whatever material was listed in the original source has been provided.  This page will be updated as new texts are added or if new information concerning dates becomes avaiblable.  This is a work in progress.
+		The dates added to Tesserae texts were sourced from a wide range of material.  Most dates were found in individual Loeb editions, but online chronologies and other digital sources were used.  The list here gives the source information for each text, including the site information if it was gathered from an online site or database.  Not all texts have an online source.  Attention was paid, as close as possible, to accurately represent where a date was found and why a particular date was chosen.  To see why a date was chosen for a text, see the original spreadsheet referenced in the <a href="http://tesserae.caset.buffalo.edu/blog/tesserae-text-date-project/">Tesserae Text Date Project</a> blog post.  Attention was also paid as close as possible to provide complete citation information for each source and whatever material was listed in the original source has been provided.  All of the current dates, unless otherwise specified in the "added by" column, have been sourced and added by Tesserae Fellow, Tessa Little.  This page will be updated as new texts are added or if new information concerning dates becomes available.
 	</p>
 	<table class="dates_page" style="font-size:0.8em">
 <tr>
@@ -224,7 +224,7 @@
     <td>394 CE</td>
 	<td><a href=""></a></td>
 	<td>Martin Rawson Patrick McGuire.<em>S. Ambrosii De Nabuthae: a commentary, with an introduction and translation.</em>The Catholic University of America. 1927.</td>
-	<td>Caitlin Diddams</td>
+	<td></td>
         
 </tr><tr>
 	<td>Ambrose</td>
@@ -471,8 +471,7 @@
 	<td>Metamorphoses</td>
     <td>170 CE</td>
 	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>R. Summers.<em>A Note on the Date of the Golden Ass.</em>The American Journal of Philology, 94(4), 375-383. 1973.</td>
-	<td>Christopher P. Jones.<em>Apuleius. Apologia. Florida. De Deo Socratis. Edited and translated by Christopher P. Jones. Loeb Classical Library 534.</em>Cambridge, MA: Harvard University Press, 2017.</td>
+	<td>R. Summers.<em>A Note on the Date of the Golden Ass.</em>The American Journal of Philology, 94(4), 375-383. 1973.  Christopher P. Jones.<em> Apuleius. Apologia. Florida. De Deo Socratis. Edited and translated by Christopher P. Jones. Loeb Classical Library 534.</em>Cambridge, MA: Harvard University Press, 2017.</td>
 	<td></td>
 
 </tr><tr>
@@ -1569,7 +1568,7 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
     <td>14 CE</td>
 	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
 	<td>Frederick W. Shipley.<em>Velleius Paterculus. Compendium of Roman History. Res Gestae Divi Augusti. Translated by Frederick W. Shipley. Loeb Classical Library 152.</em>Cambridge, MA: Harvard University Press, 1924.</td>
-	<td>Emilie Bétrix</td>
+	<td></td>
 
 </tr><tr>
 	<td>Callimachus</td>
@@ -2274,20 +2273,16 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Commodianus</td>
 	<td>Carmen Apologeticum</td>
     <td>260 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/commodian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Commodian (or Commodianus)</em>Early Christian Writings. 2020.</td>
-    <td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>J.G.F. Powell.<em>"metre, Latin". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/commodian.html">Early Christian Writings</a> <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Commodian (or Commodianus)</em>Early Christian Writings. 2020.  J.G.F. Powell.<em>"metre, Latin". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Commodianus</td>
 	<td>Instructiones</td>
     <td>260 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/commodian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Commodian (or Commodianus)</em>Early Christian Writings. 2020.</td>
-    <td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>J.G.F. Powell.<em>"metre, Latin". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/commodian.html">Early Christian Writings</a> <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Commodian (or Commodianus)</em>Early Christian Writings. 2020.  J.G.F. Powell.<em>"metre, Latin". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
@@ -2340,120 +2335,96 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Cyprian</td>
 	<td>De Bono Patientiae</td>
     <td>256 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a> <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Catholicae Ecclesiae Unitate</td>
     <td>251 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a> <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Dominica Oratione</td>
     <td>252 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a> <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Habitu Virginum</td>
     <td>250 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020. John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Lapsis</td>
     <td>251 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Mortalitate</td>
     <td>253 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Opere et Eleemosynis</td>
     <td>253 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>De Zelo et Livore</td>
     <td>256 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.   John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>Epistulae</td>
     <td>258 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>Fortunatum aut de Exhortatione Martyrii</td>
     <td>258 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>Quod Idola Dii non Sint</td>
     <td>258 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian</td>
 	<td>Sententiae Episcoporum Numero LXXXVII de Haereticis Baptizandis</td>
     <td>258 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
@@ -2468,10 +2439,8 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Cyprian (Pseudo)</td>
 	<td>Ad Novatianum</td>
     <td>300 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
@@ -2510,10 +2479,8 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Cyprian (Pseudo)</td>
 	<td>De Bono Pudicitiae</td>
     <td>258 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
@@ -2560,50 +2527,40 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Cyprian (Pseudo)</td>
 	<td>De Pascha</td>
     <td>243 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian (Pseudo)</td>
 	<td>De Pascha Computus</td>
     <td>243 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian (Pseudo)</td>
 	<td>De Rebaptismate</td>
     <td>256 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Cyprian (Pseudo)</td>
 	<td>De Singularitate Clericorum</td>
     <td>300 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>  
         
 </tr><tr>
 	<td>Cyprian (Pseudo)</td>
 	<td>De Spectaculis</td>
     <td>258 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.</td>
-   	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/cyprian.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Cyprian</em>Early Christian Writings. 2020.  John F. Matthews.<em>"Cyprian (Thascius Caecilius Cyprianus)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td> 
         
 </tr><tr>
@@ -2644,7 +2601,7 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
     <td>425 CE</td>
 	<td><a href=""></a></td>
 	<td>Patrick Mcbrine.<em> Biblical Epics in Late Antiquity and Anglo-Saxon England: Divina in Laude Voluntas</em>University of Toronto Press. 2017.</td>
-	<td>Caitlin Diddams</td>
+	<td></td>
         
 </tr><tr>
 	<td>Demades</td>
@@ -3012,7 +2969,7 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
     <td>322 BCE</td>
 	<td><a href="https://www.loebclassic.com/">Loeb Classical Library</a></td>
 	<td>N. W. De Witt and N. J. De Witt.<em>Demosthenes. Orations, Volume VII: Orations 60-61: Funeral Speech. Erotic Essay. Exordia. Letters. Translated by N. W. De Witt, N. J. De Witt. Loeb Classical Library 374. </em>Cambridge, MA: Harvard University Press, 1949.</td>
-	<td>Katherine Roache</td>
+	<td></td>
 
 </tr><tr>
 	<td>Demosthenes</td>
@@ -3194,130 +3151,104 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Dionysius of Halicarnassus</td>
 	<td>Ad Ammaeum</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
 	<td>Dionysius of Halicarnassus</td>
 	<td>Antiquitates Romanae, Books I-XX</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
 	<td>Dionysius of Halicarnassus</td>
 	<td>De Antiquis Oratoribus</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
 	<td>Dionysius of Halicarnassus</td>
 	<td>De Compositione Verborum</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
 	<td>Dionysius of Halicarnassus</td>
 	<td>De Demosthene</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
 	<td>Dionysius of Halicarnassus</td>
 	<td>De Dinarcho</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
 	<td>Dionysius of Halicarnassus</td>
 	<td>De Isaeo</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
 	<td>Dionysius of Halicarnassus</td>
 	<td>De Isocrate</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
 	<td>Dionysius of Halicarnassus</td>
 	<td>De Lysia</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
 	<td>Dionysius of Halicarnassus</td>
 	<td>De Thucydide</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
 	<td>Dionysius of Halicarnassus</td>
 	<td>De Thucydidis idiomatibus (epistula ad Ammaeum)</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
 	<td>Dionysius of Halicarnassus</td>
 	<td>Epistula ad Pompeium Geminum</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
 	<td>Dionysius of Halicarnassus</td>
 	<td>Libri secundi de antiquis oratoribus reliquiae</td>
     <td>7 BCE</td>
-	<td><a href="grbs.library.duke.edu">Duke University</a></td>
-	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.</td>
-  	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
-	<td>Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
+	<td><a href="grbs.library.duke.edu">Duke University</a>  <a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
+	<td>Gladys Shoemaker.<em>Dionysius of Halicarnassus, On Dinarchus</em>Brooklyn College, City University of New York. 1971.  Stephen Usher.<em>Dionysius of Halicarnassus. Critical Essays, Volume I: Ancient Orators. Lysias. Isocrates. Isaeus. Demosthenes. Thucydides. Translated by Stephen Usher. Loeb Classical Library 465.</em>Cambridge, MA: Harvard University Press, 1974.</td>
 	<td></td>
 
 </tr><tr>
@@ -3364,8 +3295,7 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Ennodius</td>
 	<td>Carmina</td>
     <td>500 </td>
-	<td><a href="https://catalog.perseus.org/catalog/urn:cts:latinLit:stoa0114a.stoa009">Perseus</a></td>
-    <td><a href="https://referenceworks.brillonline.com/entries/brill-s-new-pauly/ennodius-magnus-felix-e330760?s.num=188&s.start=180 ">Brill's New Pauly</a></td>
+	<td><a href="https://catalog.perseus.org/catalog/urn:cts:latinLit:stoa0114a.stoa009">Perseus</a>  <a href="https://referenceworks.brillonline.com/entries/brill-s-new-pauly/ennodius-magnus-felix-e330760?s.num=188&s.start=180 ">Brill's New Pauly</a></td>
 	<td>Joachim Gruber.<em> “Ennodius, Magnus Felix”, in: Brill’s New Pauly, Antiquity volumes edited by: Hubert Cancik and , Helmuth Schneider, English Edition by: Christine F. Salazar, Classical Tradition volumes edited by: Manfred Landfester, English Edition by: Francis G. Gentry. </em>Brill. 2006.</td>
 	<td></td>
         
@@ -3373,8 +3303,7 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Ennodius</td>
 	<td>Epigrammatica</td>
     <td>500 </td>
-	<td><a href="https://catalog.perseus.org/catalog/urn:cts:latinLit:stoa0114a.stoa009">Perseus</a></td>
-    <td><a href="https://referenceworks.brillonline.com/entries/brill-s-new-pauly/ennodius-magnus-felix-e330760?s.num=188&s.start=180 ">Brill's New Pauly</a></td>
+	<td><a href="https://catalog.perseus.org/catalog/urn:cts:latinLit:stoa0114a.stoa009">Perseus</a>  <a href="https://referenceworks.brillonline.com/entries/brill-s-new-pauly/ennodius-magnus-felix-e330760?s.num=188&s.start=180 ">Brill's New Pauly</a></td>
 	<td>Joachim Gruber.<em> “Ennodius, Magnus Felix”, in: Brill’s New Pauly, Antiquity volumes edited by: Hubert Cancik and , Helmuth Schneider, English Edition by: Christine F. Salazar, Classical Tradition volumes edited by: Manfred Landfester, English Edition by: Francis G. Gentry. </em>Brill. 2006.</td>
 	<td></td>
         
@@ -3382,8 +3311,7 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Ennodius</td>
 	<td>Epistulae</td>
     <td>500 </td>
-	<td><a href="https://catalog.perseus.org/catalog/urn:cts:latinLit:stoa0114a.stoa009">Perseus</a></td>
-    <td><a href="https://referenceworks.brillonline.com/entries/brill-s-new-pauly/ennodius-magnus-felix-e330760?s.num=188&s.start=180 ">Brill's New Pauly</a></td>
+	<td><a href="https://catalog.perseus.org/catalog/urn:cts:latinLit:stoa0114a.stoa009">Perseus</a>  <a href="https://referenceworks.brillonline.com/entries/brill-s-new-pauly/ennodius-magnus-felix-e330760?s.num=188&s.start=180 ">Brill's New Pauly</a></td>
 	<td>Joachim Gruber.<em> “Ennodius, Magnus Felix”, in: Brill’s New Pauly, Antiquity volumes edited by: Hubert Cancik and , Helmuth Schneider, English Edition by: Christine F. Salazar, Classical Tradition volumes edited by: Manfred Landfester, English Edition by: Francis G. Gentry. </em>Brill. 2006.</td>
 	<td></td>
         
@@ -4079,20 +4007,16 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Lactantius</td>
 	<td>Carmen de Passioni Domini</td>
     <td>316 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/lactantius.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Lactantius</em>Early Christian Writings. 2020.</td>
-    <td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>James Stevenson and Mark Julian Edwards.<em> "Lactantius (Lucius Caelius (Caecilius ?) Firmianus also called Lactantius)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/lactantius.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Lactantius</em>Early Christian Writings. 2020.  James Stevenson and Mark Julian Edwards.<em> "Lactantius (Lucius Caelius (Caecilius ?) Firmianus also called Lactantius)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
 	<td>Lactantius</td>
 	<td>De Ave Phoenice</td>
     <td>311 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/lactantius.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Lactantius</em>Early Christian Writings. 2020.</td>
-    <td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>James Stevenson and Mark Julian Edwards.<em> "Lactantius (Lucius Caelius (Caecilius ?) Firmianus also called Lactantius)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/lactantius.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Lactantius</em>Early Christian Writings. 2020.  James Stevenson and Mark Julian Edwards.<em> "Lactantius (Lucius Caelius (Caecilius ?) Firmianus also called Lactantius)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
@@ -4115,10 +4039,8 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Lactantius</td>
 	<td>De Opificio Dei</td>
     <td>304 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/lactantius.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Lactantius</em>Early Christian Writings. 2020.</td>
-    <td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>James Stevenson and Mark Julian Edwards.<em> "Lactantius (Lucius Caelius (Caecilius ?) Firmianus also called Lactantius)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/lactantius.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Lactantius</em>Early Christian Writings. 2020.  James Stevenson and Mark Julian Edwards.<em> "Lactantius (Lucius Caelius (Caecilius ?) Firmianus also called Lactantius)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
@@ -4133,10 +4055,8 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Lactantius</td>
 	<td>Epitome Divinarum Institutionum</td>
     <td>314 CE</td>
-	<td><a href="http://www.earlychristianwritings.com/lactantius.html">Early Christian Writings</a></td>
-	<td>Peter Kirby.<em>Lactantius</em>Early Christian Writings. 2020.</td>
-    <td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
-	<td>James Stevenson and Mark Julian Edwards.<em> "Lactantius (Lucius Caelius (Caecilius ?) Firmianus also called Lactantius)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td><a href="http://www.earlychristianwritings.com/lactantius.html">Early Christian Writings</a>  <a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>Peter Kirby.<em>Lactantius</em>Early Christian Writings. 2020.  James Stevenson and Mark Julian Edwards.<em> "Lactantius (Lucius Caelius (Caecilius ?) Firmianus also called Lactantius)". 2012. In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
 	<td></td>
         
 </tr><tr>
@@ -4297,7 +4217,7 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
     <td>180 CE</td>
 	<td><a href=""></a></td>
 	<td><em></em></td>
-	<td>Caitlin Diddams</td>
+	<td></td>
 
 </tr><tr>
 	<td>Lucian</td>
@@ -6301,6 +6221,7 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 
 </tr><tr>
 	<td>Plutarch</td>
+	<td>De Tranquilitate Animi</td>
     <td>120 CE</td>
 	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
 	<td>Bernadotte Perrin.<em>Plutarch. Lives, Volume I: Theseus and Romulus. Lycurgus and Numa. Solon and Publicola. Translated by Bernadotte Perrin. Loeb Classical Library 46.</em>Cambridge, MA: Harvard University Press, 1914.</td>
@@ -6928,7 +6849,7 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
     <td>450 CE</td>
 	<td></td>
 	<td>C.P.E Springer.<em>‘Sedulius' “A solus ortus cardine”: the Hymn and its Tradition’</em>Ephemerides liturgicae, 69-75. 1987.</td>
-	<td>Caitlin Diddams</td>
+	<td></td>
 
 </tr><tr>
 	<td>Sedulius</td>
@@ -7173,10 +7094,10 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 </tr><tr>
 	<td>Servius Honoratus</td>
 	<td>Commentary on the Aeneid of Vergil</td>
-    <td></td>
-	<td><a href=""></a></td>
-	<td><em></em></td>
-	<td>Elizabeth Hunter</td>
+    <td>399 CE</td>
+	<td><a href="www.oxfordreference.com">Oxford Classical Dictionary</a></td>
+	<td>James Frederick Mountford, Peta G. Fowler, and Don P. Fowler.<em>"Servius". In Hornblower, Simon. Spawforth Antony. Eidinow, Esther. (eds.). The Oxford Classical Dictionary (4th ed.).</em>Oxford University Press. 2012.</td>
+	<td></td>
 
 </tr><tr>
 	<td>Servius Honoratus</td>
@@ -7294,7 +7215,6 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Statius</td>
 	<td>Thebaid</td>
     <td>92 CE</td>
-    <td>96 CE</td>
 	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
 	<td>D. R. Shackleton Bailey.<em>Statius. Thebaid, Volume I: Thebaid: Books 1-7. Edited and translated by D. R. Shackleton Bailey. Loeb Classical Library 207.</em>Cambridge, MA: Harvard University Press, 2004.</td>
 	<td></td>
@@ -7645,6 +7565,7 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 </tr><tr>
 	<td>Theocritus</td>
 	<td>Idylls</td>
+	<td>245 BCE</td>
 	<td><a href="https://www.loebclassics.com/">Loeb Classical Library</a></td>
 	<td>Neil Hopkinson.<em> Theocritus, Moschus, Bion. Theocritus. Moschus. Bion. Edited and translated by Neil Hopkinson. Loeb Classical Library 28.</em>Cambridge, MA: Harvard University Press, 2015.</td>
 	<td></td>
@@ -7709,7 +7630,6 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Vergil</td>
 	<td>Eclogues</td>
     <td>39 BCE</td>
-    <td>19 BCE</td>
 	<td><a href="http://people.virginia.edu/~jdk3t/epicintrog/virtable.htm">Virginia.edu</a></td>
 	<td>Laura Gorney.<em>Chronology of Virgil's Life</em></td>
 	<td></td>
@@ -7718,7 +7638,6 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Vergil</td>
 	<td>Georgics</td>
     <td>29 BCE</td>
-    <td>19 BCE</td>
 	<td><a href="http://people.virginia.edu/~jdk3t/epicintrog/virtable.htm">Virginia.edu</a></td>
 	<td>Laura Gorney.<em>Chronology of Virgil's Life</em></td>
 	<td></td>
@@ -7824,8 +7743,7 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Historia Persecutionis Africanae Provinciae</td>
     <td>488 CE</td>
 	<td></td>
-	<td>John Moorhead.<em>Victor of Vita. History of the Vandal Persecution</em>Liverpool: Liverpool University Press. 1992.</td>
-    <td>Danuta Shanzer.<em>"Intentions and Audiences: History, Hagiography, Martyrdom, and Confession in Victor of Vita's Historia Persecutionis". In A.H. Merrills (ed.). Vandals, Romans and Berbers: New Perspectives on Late Antique North Africa.</em>Aldershot: Ashgate Publishing Limited. pp. 272–273. 2004.</td>
+	<td>John Moorhead.<em>Victor of Vita. History of the Vandal Persecution</em>Liverpool: Liverpool University Press. 1992.   Danuta Shanzer.<em>"Intentions and Audiences: History, Hagiography, Martyrdom, and Confession in Victor of Vita's Historia Persecutionis". In A.H. Merrills (ed.). Vandals, Romans and Berbers: New Perspectives on Late Antique North Africa.</em>Aldershot: Ashgate Publishing Limited. pp. 272–273. 2004.</td>
 	<td></td>	
 
 </tr><tr>
@@ -7833,8 +7751,7 @@ mentor, securing a saint.</em>Louisiana State University. 2009.</td>
 	<td>Notitia provinciarum et civitatum africae</td>
     <td>488 CE</td>
 	<td></td>
-	<td>John Moorhead.<em>Victor of Vita. History of the Vandal Persecution</em>Liverpool: Liverpool University Press. 1992.</td>
-    <td>Danuta Shanzer.<em>"Intentions and Audiences: History, Hagiography, Martyrdom, and Confession in Victor of Vita's Historia Persecutionis". In A.H. Merrills (ed.). Vandals, Romans and Berbers: New Perspectives on Late Antique North Africa.</em>Aldershot: Ashgate Publishing Limited. pp. 272–273. 2004.</td>
+	<td>John Moorhead.<em>Victor of Vita. History of the Vandal Persecution</em>Liverpool: Liverpool University Press. 1992.  Danuta Shanzer.<em>"Intentions and Audiences: History, Hagiography, Martyrdom, and Confession in Victor of Vita's Historia Persecutionis". In A.H. Merrills (ed.). Vandals, Romans and Berbers: New Perspectives on Late Antique North Africa.</em>Aldershot: Ashgate Publishing Limited. pp. 272–273. 2004.</td>
 	<td></td>
 	
 </tr><tr>
