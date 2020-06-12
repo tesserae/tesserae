@@ -9,6 +9,9 @@
 					<li><a href="<?php echo $url_html.'/sources.php'; ?>">
 						<?php if ($page == 'sources') {?><b><?php }?>Sources<?php if ($page == 'sources') {?></b><?php }?>
 					</a></li>
+					<li><a href="<?php echo $url_html.'/dates.php'; ?>">
+						<?php if ($page == 'dates') {?><b><?php }?>Dates<?php if ($page == 'dates') {?></b><?php }?>
+					</a></li>
 					<li><a href="<?php echo $url_html.'/about.php'; ?>">
 						<?php if ($page == 'about') {?><b><?php }?>About<?php if ($page == 'about') {?></b><?php }?>
 					</a></li>
