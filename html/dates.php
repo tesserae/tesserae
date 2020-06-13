@@ -1,8 +1,9 @@
 <?php include "first.php"; ?>
 <?php 	$page = 'dates'; ?>
+<?php include "nav_search.php"; ?>
 <?php include "nav_lang_sources.php"; ?>
 	</div>
-	<div id="sources">
+	<div id="main">
 	<h1>
 		Dates
 	</h1>
