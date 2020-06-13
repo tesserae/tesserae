@@ -1,8 +1,8 @@
 <?php include "first.php"; ?>
 <?php 	$page = 'sources'; ?>
 <?php include "nav_search.php"; ?>
-<?php include "nav_lang_sources.php"; ?>
 	</div>
+<?php include "nav_lang_sources.php"; ?>
 	<div id="main">
 	<h1>
 		Sources
