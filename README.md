@@ -11,7 +11,7 @@ docker-compose up
 ### Connect to running container's shell.
 
 ```sh
-docker exec -it tess...
+docker exec -it tesserae_web_1 bash
 ```
 
 ### Install Term:UI
