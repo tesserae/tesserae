@@ -156,7 +156,7 @@ my %fs = (
 
 # default URL is the public Tesserae at UB
 
-my $url_base = 'http://tesserae.caset.buffalo.edu';
+my $url_base = 'https://tesseraev3.caset.buffalo.edu';
 
 my %url = (
 

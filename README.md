@@ -1,5 +1,7 @@
 # Getting Started
 
+(For getting a partial installation in docker)
+
 ## Docker
 
 To get started with the docker, run the following commands (after cloning repo).
