@@ -2735,6 +2735,12 @@
 	<td>Hartel, Wilhelm August, Ritter von <em>Opera Omnia</em>. Vindobonae: Gerold, 1882.</td>
 	<td>Cari Haas</td>
 </tr><tr>
+	<td>Eobanus Hessus</td>
+	<td>Iliad</td>
+	<td><a href="http://mateo.uni-mannheim.de/camena/hessus3/hessusilias1_6.html">CAMENA</a></td>
+	<td>Harry Vredeveld<em>The Poetic Works of Helius Eobanus Hessus</em>. Tempe: ACMRS Press, 2004–2008; Leiden: Brill, 2012–ongoing.</td>
+	<td>Joe Miller</td>	
+</tr><tr>
 	<td>Epictetus</td>
 	<td>Discourses</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0672">Perseus</a></td>
