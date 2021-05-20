@@ -5691,6 +5691,20 @@
 	<td>Tony R Waleszczak</td>
 
 </tr><tr>
+	<td>Salutati, Coluccio</td>
+	<td>Opera Minora, De Tyranno</td>
+	<td></td>
+	<td>S.U. Baldassarri<em>Political Writings</em>. Cambridge, 2014.</td>
+	<td>Joe Miller</td>
+
+</tr><tr>
+	<td>Salutati, Coluccio</td>
+	<td>Opera Minora, De Laboribus Herculis</td>
+	<td></td>
+	<td>B.L. Ullman<em>De laboribus Herculis, 2 vol.</em>. Turici, 1951.</td>
+	<td>Joe Miller</td>
+
+</tr><tr>
 	<td>Salvianus</td>
 	<td>Ad Ecclesiam</td>
 	<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
