@@ -252,7 +252,7 @@ if ($max_processes) {
 # get the list of texts to index
 
 my @corpus = @{Tesserae::get_textlist($lang, -no_part => 1)};
-@corpus = grep {/vulgate/} @corpus;
+@corpus = grep {/eobanus.iliad/eobanus.iliad.part.1.tess/} @corpus;
 
 # the giant index
 
