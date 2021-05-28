@@ -2738,7 +2738,7 @@
 	<td>Eobanus Hessus</td>
 	<td>Iliad</td>
 	<td><a href="http://mateo.uni-mannheim.de/camena/hessus3/hessusilias1_6.html">CAMENA</a></td>
-	<td>Harry Vredeveld<em>The Poetic Works of Helius Eobanus Hessus</em>. Tempe: ACMRS Press, 2004–2008; Leiden: Brill, 2012–ongoing.</td>
+	<td>Harry Vredeveld, <em>The Poetic Works of Helius Eobanus Hessus</em>. Tempe: ACMRS Press, 2004–2008; Leiden: Brill, 2012–ongoing.</td>
 	<td>Joe Miller</td>	
 </tr><tr>
 	<td>Epictetus</td>
