@@ -2573,6 +2573,13 @@
 	<td>Katherine Roache</td>
 
 </tr><tr>
+	<td>Descartes</td>
+	<td>Meditations</td>
+	<td><a href="https://www.thelatinlibrary.com/des.html">Perseus</a></td>
+	<td>René Descartes. <em>Oeuvres de Descartes.</em> eds. Adam and Tannery. Paris:Lèopold Cerf. 1904.</td>
+	<td>Joe Miller</td>
+
+</tr><tr>
 	<td>Dinarchus</td>
 	<td>Against Aristogiton</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0081%3Aspeech%3D2">Perseus</a></td>
