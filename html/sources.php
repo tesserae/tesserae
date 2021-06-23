@@ -2575,7 +2575,7 @@
 </tr><tr>
 	<td>Descartes</td>
 	<td>Meditations</td>
-	<td><a href="https://www.thelatinlibrary.com/des.html">Perseus</a></td>
+	<td><a href="https://www.thelatinlibrary.com/des.html">The Latin Library</a></td>
 	<td>René Descartes. <em>Oeuvres de Descartes.</em> eds. Adam and Tannery. Paris:Lèopold Cerf. 1904.</td>
 	<td>Joe Miller</td>
 
