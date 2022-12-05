@@ -7741,6 +7741,13 @@
 	<td></td>
 
 </tr><tr>
+	<td>William of Tyre</td>
+	<td>Historia Rerum in Partibus Transmarinis Gestarum</td>
+	<td>1184 CE</td>
+	<td>Krey, August C. (August Charles), Emily Atwater Babcock, and of Tyre William. A History of Deeds Done Beyond the Sea: by William, Archbishop of Tyre. Translated and Annotated by Emily Atwater Babcock and A. C. Krey. New York: Columbia University Press, 1943. <a href="https://hdl-handle-net.gate.lib.buffalo.edu/2027/heb06057.0001.001">EBook link</a></td>
+
+
+</tr><tr>
 	<td>Xenophon</td>
 	<td>Anabasis</td>
     <td>371 BCE</td>
