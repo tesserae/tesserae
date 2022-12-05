@@ -6502,7 +6502,7 @@
 	<td>Unknown Edition. <em> </em> </td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
-		    <td>Vergil (Pseudo)</td>
+	<td>Vergil (Pseudo)</td>
 	<td>Priapea</td>
 	<td><a href="http://www.forumromanum.org/literature/priapea.html">Forum Romanum</a></td>
 	<td>Unknown Edition. <em> </em> </td>
@@ -6534,6 +6534,13 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.02.0072">Perseus</a></td>
 	<td>F. Krohn, <em>On Architecture</em>. Lipsiae: B.G. Teubner, 1912.</td>
 	<td>Anna Glenn</td>
+
+</tr><tr>
+	<td>William of Tyre</td>
+	<td>Historia Rerum in Partibus Transmarinis Gestarum</td>
+	<td><a href="https://www.thelatinlibrary.com/williamtyre.html">The Latin Library</a></td>
+	<td>Print edition unknown<em></em></td>
+	<td>Travis Qualls</td>
 
 </tr><tr>
 	<td>Xenophon</td>
