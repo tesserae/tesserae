@@ -182,7 +182,7 @@ my $max_processes = 0;
 
 # set language
 
-my $lang = 'la';
+my $lang = 'grc';
 
 # these are for optional use of Lingua::Stem
 
@@ -257,7 +257,7 @@ my @corpus = @{Tesserae::get_textlist($lang, -no_part => 1)};
 # the giant index
 
 print STDERR "indexing " . scalar(@corpus) . " texts...\n";
-	
+
 # initialize process manager
 
 my $prmanager;
