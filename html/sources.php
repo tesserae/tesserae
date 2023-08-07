@@ -4001,6 +4001,13 @@
 	<td>Anna Glenn</td>
 
 </tr><tr>
+	<td>Nithardus</td>
+	<td>Historiae</td>
+	<td><a href="http://www.thelatinlibrary.com/nithardus.html">The Latin Library</a></td>
+	<td>Text submitted by Hansulrich Guhl (Frauenfeld, Switzerland) from an unidentified edition.</td>
+	<td>Travis Qualls</td>
+
+</tr><tr>
 	<td>Nonnus of Panopolis</td>
 	<td>Dionysiaca</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0485">Perseus</a></td>
