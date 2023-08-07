@@ -1832,7 +1832,7 @@
 </tr><tr>
 	<td>Claudius Mamertinus</td>
 	<td>Panegyricus</td>
-	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000389">DigilibLT</a></td>
+	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000389">digilibLT</a></td>
 	<td>D. Lassandro. <em>XII Panegyrici Latini</em>Augustae Taurinorum 1992 (Corpus Scriptorum Latinorum Parauianum).</td>
 	<td>Brianna Roberts</td>
 
@@ -2946,7 +2946,7 @@
 </tr><tr>
     <td>Favonius</td>
     <td>Disputatio de somnio Scipionis</td>
-    <td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000182">DigilibLT</a></td>
+    <td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000182">digilibLT</a></td>
     <td>Roger E. Van Weddingen. <em> Favonii Eulogii Disputatio de somnio Scipionis.</em>.Bruxelles 1957 (Collection de Latomus, 27).</td>
     <td>Caitlin Diddams</td>
     
@@ -2995,9 +2995,17 @@
 </tr><tr>
 	<td>Florus</td>
 	<td>Vergilius orator an poeta</td>
-	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000536">DigilibLT</a></td>
+	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000536">digilibLT</a></td>
 	<td>Paul Jal. <em>Florus, Oeuvres.</em>Paris 1967, tome II (Collection des Universités de France).</td>
 	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Fulcher of Chartres</td>
+	<td>Historia Hierosolymitana</td>
+	<td><a href="https://archive.org/details/historiahierosol00foucuoft/mode/2up">archive.org</a></td>
+	<td><em>Fulcheri Carnotensis Historia Hierosolymitana (1095-1127).</em> Mit Erläuterungen und einem Anhange herausgegeben von Heinrich Hagenmeyer. Heidelberg, Carl Winters Universitätsbuchhandlung, 1913.</td>
+	<td>Travis Qualls</td>
+
 
 </tr><tr>
     <td>Galen</td>
@@ -3039,6 +3047,14 @@
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Maurice Jourjon. <em>Lettres Theologiques.</em> Paris: Editions du Cerf. 1974.</td>
 	<td>Caitlin Diddams</td>
+
+</tr><tr>
+	<td>Hegesippus (Pseudo)</td>
+	<td>De Excidio Hierosolymitano</td>
+	<td><a href="http://digiliblt.lett.unipmn.it/xtf/view?docId=dlt000241/dlt000241.xml;brand=default">digilibLT</a></td>
+	<td>Vincentius Ussani (a cura di), <em>Hegesippi qui dicitur Historiae libri 5</em>, Vindobonae. Hoelder, Pinchler, Tempsky, 1932. Reprint New York/London, Johnson reprint corporation, 1960.</td>
+	<td>Travis Qualls</td>
+
 </tr><tr>
     <td>Herodotus</td>
     <td>The Histories</td>
@@ -3360,7 +3376,7 @@
 </tr><tr>
 	<td>Lactantius Placidus</td>
 	<td>In Statii Thebaida Commentum</td>
-	<td><a href="http://digiliblt.lett.unipmn.it/xtf/view?query=;brand=default;docId=dlt000323/dlt000323.xml;">DigilibLT</a></td>
+	<td><a href="http://digiliblt.lett.unipmn.it/xtf/view?query=;brand=default;docId=dlt000323/dlt000323.xml;">digilibLT</a></td>
 	<td>Robertus Dale Sweeney<em></em> Stutgardiae et Lipsiae, Teubner 1997. Linguistic correction: Manuela Naso. XML encoding: Nadia Rosso.</td>
 	<td>Caitlin Diddams</td>
 </tr><tr>
@@ -3369,6 +3385,7 @@
 	<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Samuel Brandt<em>L. Caeli Firmiani Lactanti Opera omnia, Pars II, Fasc I.</em> Vindobonae: Gerold, 1897.</td>
 	<td>Caitlin Diddams</td>
+
 </tr><tr>
 	<td>Libanius</td>
 	<td>Declamationes</td>
@@ -3381,6 +3398,7 @@
 	<td><a href=" http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Richard Foerster. <em>Libanii Opera.</em> Lipsiae: B.G. Teubneri. 1913.</td>
 	<td>Caitlin Diddams</td>
+
 </tr><tr>
 	<td>Livy</td>
 	<td>Ab urbe condita, books 1-10, 21-45</td>
@@ -3930,7 +3948,7 @@
 </tr><tr>
 	<td>Macrobius</td>
 	<td>In Somnium Scipionis commentarii</td>
-	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000338">DigilibLT</a></td>
+	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000338">digilibLT</a></td>
 	<td>M. Armisen-Marchetti. <em>Macrobe, Commentaire au songe du Scipion</em>Paris 2001-2003 (Collection des Universités de France).</td>
 	<td>Tessa Little</td>
 	
@@ -5685,7 +5703,7 @@
 </tr><tr>
 	<td>Rufius Festus</td>
 	<td>Breviarium</td>
-	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000183">DigilibLT</a></td>
+	<td><a href="http://digiliblt.lett.unipmn.it/opera.php?gruppo=opere&iniziale=all&id=dlt000183">digilibLT</a></td>
 	<td>J. W. Eadie. <em>The Breviarium of Festus. A Critical Edition with Historical Commentary</em> London 1967.</td>
 	<td>Caitlin Diddams</td>
 	
