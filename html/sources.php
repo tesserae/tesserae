@@ -71,7 +71,7 @@
 </tr><tr>
 	<td>Aeschylus</td>
 	<td>Agamemnon</td>
-	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0005">Perseus</a></td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.01.0003">Perseus</a></td>
 	<td>Herbert Weir Smyth, Ph.D., <em>Aeschylus, with an English translation by Herbert Weir Smyth, Ph. D. in two volumes.</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1926.</td>
 	<td>Anna Glenn</td>
 
@@ -92,7 +92,7 @@
 </tr><tr>
 	<td>Aeschylus</td>
 	<td>Persians</td>
-	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0005">Perseus</a></td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.01.0011">Perseus</a></td>
 	<td>Herbert Weir Smyth, Ph.D., <em>Aeschylus, with an English translation by Herbert Weir Smyth, Ph. D. in two volumes.</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1926.</td>
 	<td>Anna Glenn</td>
 
@@ -106,14 +106,14 @@
 </tr><tr>
 	<td>Aeschylus</td>
 	<td>Seven Against Thebes</td>
-	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0005">Perseus</a></td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.01.0013">Perseus</a></td>
 	<td>Herbert Weir Smyth, Ph.D., <em>Aeschylus, with an English translation by Herbert Weir Smyth, Ph. D. in two volumes.</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1926.</td>
 	<td>Anna Glenn</td>
 
 </tr><tr>
 	<td>Aeschylus</td>
 	<td>Suppliant Women</td>
-	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a1999.01.0005">Perseus</a></td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.01.0015">Perseus</a></td>
 	<td>Herbert Weir Smyth, Ph.D., <em>Aeschylus, with an English translation by Herbert Weir Smyth, Ph. D. in two volumes.</em>. Cambridge: Cambridge, Mass., Harvard University Press; London, William Heinemann, Ltd., 1926.</td>
 	<td>Anna Glenn</td>
 
@@ -168,7 +168,7 @@
 </tr><tr>
 	<td>Ambrose</td>
 	<td>De Mysteriis</td>
-	<td><a href="http://www.thelatinlibrary.com/ambrose.html">The Latin Library</a></td>
+	<td><a href="http://www.thelatinlibrary.com/ambrose/mysteriis.html">The Latin Library</a></td>
 	<td>Edition Unknown.<em></em></td>
 	<td>Brianna Roberts</td>
 </tr><tr>
@@ -204,13 +204,13 @@
 </tr><tr>
 	<td>Ambrose</td>
 	<td>Epistula ad Sororem</td>
-	<td><a href="http://www.thelatinlibrary.com/ambrose.html">The Latin Library</a></td>
+	<td><a href="http://www.thelatinlibrary.com/ambrose/epist.html">The Latin Library</a></td>
 	<td>Edition Unknown.<em></em></td>
 	<td>Brianna Roberts</td>
 </tr><tr>
 	<td>Ambrose</td>
 	<td>Epistulae Variae</td>
-	<td><a href="http://www.thelatinlibrary.com/ambrose.html">The Latin Library</a></td>
+	<td><a href="http://www.thelatinlibrary.com/ambrose/epistvaria.html">The Latin Library</a></td>
 	<td>"submitted by Oscar Cismarius from an unidentified e-text"<em></em></td>
 	<td>Brianna Roberts</td>
 </tr><tr>
@@ -360,7 +360,13 @@
 	<td>Chris Forstall</td>
 
 </tr><tr>
-	<td>Apulieus</td>
+	<td>Apuleius</td>
+	<td>Apologia</td>
+	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0501">Perseus</a></td>
+	<td>Apuleius.<em>Apulei Platonici Madaurensis, Pro se de magia liber (Apologia).</em>Rudolf Helm. Lipsiae: B.G. Teubneri. 1912.</td>
+	<td>Katherine Roache</td>
+</tr><tr>
+	<td>Apuleius</td>
 	<td>De Deo Socratis</td>
 	<td><a href="http://www.forumromanum.org/literature/deo_socratis.html">Forum Romanum</a></td>
 	<td>Jean Beaujeu. <em></em>Paris 1973.</td>
@@ -371,19 +377,11 @@
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0503">Perseus</a></td>
 	<td>Apuleius. <em>Apulei Platonici Madaurensis Florida. Rudolf Helm. Lipsiae: Teubner, 1921. 1921.</em></td>
 	<td>Katherine Roache</td>
-
 </tr><tr>
 	<td>Apuleius</td>
 	<td>Metamorphoses</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0502">Perseus</a></td>
 	<td>Apuleius. <em>The Golden Ass, being the Metamorphoses of Lucius Apuleius</em>. Stephen Gaselee. London: William Heinemann; New York: G.P. Putnam's Sons. 1915.</td>
-	<td>Katherine Roache</td>
-
-</tr><tr>
-	<td>Apulieus</td>
-	<td>Apologia</td>
-	<td><a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3atext%3a2008.01.0501">Perseus</a></td>
-	<td>Apuleius.<em>Apulei Platonici Madaurensis, Pro se de magia liber (Apologia).</em>Rudolf Helm. Lipsiae: B.G. Teubneri. 1912.</td>
 	<td>Katherine Roache</td>
 
 </tr><tr>
