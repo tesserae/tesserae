@@ -5752,7 +5752,18 @@
 	<td><a href="http://opengreekandlatin.github.io/csel-dev/">Open Greek and Latin</a></td>
 	<td>Pauly, Franz <em>Salviani presbyteri Massiliensis opera omnia</em>. Vindobonae: Gerold, 1883.</td>
 	<td>Cari Haas</td>
-</tr><tr>
+</tr>
+
+<tr>
+	<td>Sappho</td>
+	<td>Fragments</td>
+	<td><a href="https://digitalsappho.org/">The Digital Sappho</a></td>
+	<td>Print sources listed at <a href="https://digitalsappho.org/greektextandcommentary/">The Digital Sappho</a></td>
+	<td>Travis Qualls</td>
+
+</tr>
+
+<tr>
 	<td>Scriptores Historiae Augustae</td>
 	<td>Historia Augusta, Vol. 1</td>
 	<td><a href="http://www.perseus.tufts.edu/hopper/text;jsessionid=207BFD035F78CA3C95101DC5F6883565?doc=Perseus%3atext%3a2008.01.0508%3awork%3d1">Perseus</a></td>
