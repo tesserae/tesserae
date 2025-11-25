@@ -1,0 +1,523 @@
+<sedul. carm. 1.1.1>	Omne ministerium, trifido quod praeminet orbe,
+<sedul. carm. 1.1.2>	Arte gubernandum, sunt artis plurima dona:
+<sedul. carm. 1.1.3>	Omnicreans dominus terras mare sidera caelos
+<sedul. carm. 1.1.4>	Arte creat, totum pulchrum regit arteque mundum,
+<sedul. carm. 1.1.5>	Artibus egregiis sapientia celsitonantis
+<sedul. carm. 1.1.6>	Praeposuit hominem cunctis animalibus orbis,
+<sedul. carm. 1.1.7>	Ars currum regitat, naves ars rite gubernat
+<sedul. carm. 1.1.8>	Atque triumphalis res artem bellica spectat -
+<sedul. carm. 1.1.9>	Indiget artis opis sic et res publica, felix
+<sedul. carm. 1.1.10>	Esse queat rectore bono populoque beato.
+<sedul. carm. 1.1.11>	Ob hoc caelestum transcurrens prata librorum
+<sedul. carm. 1.1.12>	Florida congessi vobis, rex inclite, serta,
+<sedul. carm. 1.1.13>	Quae capitis vestrae mentis diadema perornent
+<sedul. carm. 1.1.14>	Sceptraque glorificent Christi dominantia nutu,
+<sedul. carm. 1.1.15>	Atque salutiferas divini dogmatis herbas
+<sedul. carm. 1.1.16>	Pollice decerpsi nardo redolente calathis.
+<sedul. carm. 1.1.17>	Sumite de liquidis Israhel fontibus undas,
+<sedul. carm. 1.1.18>	Quae satient bibulum praedulci rore palatum:
+<sedul. carm. 1.1.19>	Gloria nam regum, nitidis et stemmata sceptris
+<sedul. carm. 1.1.20>	Dogmata sunt domini nec non exempla priorum
+<sedul. carm. 1.1.21>	Gestaque nobilium procerum famosa per orbem. -
+<sedul. carm. 1.1.22>	Artibus his vigeat vestri res publica victrix
+<sedul. carm. 1.1.23>	Atque gubernetur multis feliciter annis,
+<sedul. carm. 1.1.24>	Donec sideream vos ascendatis in aulam,
+<sedul. carm. 1.1.25>	Iuste regnantum qua perpes gloria pollet.
+
+<sedul. carm. 1.2.1>	Tecum principium, finis rex Christeque tecum:
+<sedul. carm. 1.2.2>	Alpha operis famuli sis, deus, oque tui.
+
+<sedul. carm. 1.3.1>	Quisquis florigeri sceptrum fert nobile regni,
+<sedul. carm. 1.3.2>	Primum celsithrono vota precesque ferat.
+<sedul. carm. 1.3.3>	In cuius sacro sunt omnia numine sceptra
+<sedul. carm. 1.3.4>	Et pax nobilium, vita salusque ducum.
+<sedul. carm. 1.3.5>	Nam regale decus radians diademaque regni
+<sedul. carm. 1.3.6>	Est timor altithroni, sanctus amorque dei.
+<sedul. carm. 1.3.7>	Lilia florigerum comunt ceu lactea campum,
+<sedul. carm. 1.3.8>	Ut rosa punicei schematis ore rubet:
+<sedul. carm. 1.3.9>	Sic iustus rector virtutum flore virescit,
+<sedul. carm. 1.3.10>	Germinat ac fructus mentis in arce sacros.
+<sedul. carm. 1.3.11>	Pulchra Salemonem decoravit purpura regem
+<sedul. carm. 1.3.12>	Nec non Davidis fulgida sceptra patris;
+<sedul. carm. 1.3.13>	Sed magis interius prudens devotio cordis
+<sedul. carm. 1.3.14>	Ornavit iuvenem glorificando deum.
+<sedul. carm. 1.3.15>	Instar Luciferi niteat res publica vestri
+<sedul. carm. 1.3.16>	Exortuque novo splendida vota gerat.
+
+<sedul. carm. 1.4.1>	Qui regit affectus animi, rex iure vocatur
+<sedul. carm. 1.4.2>	Et, fluxas carnis qui domat illecebras.
+<sedul. carm. 1.4.3>	Quamvis, qui fulvum superat virtute leonem,
+<sedul. carm. 1.4.4>	Rex teneat clarum laudis honore locum -
+<sedul. carm. 1.4.5>	Set plus est laudum fastus calcare superbos,
+<sedul. carm. 1.4.6>	Iram ceu rabidam mitificare feram.
+<sedul. carm. 1.4.7>	Magnus et ille cluit saevos qui triverit hostes,
+<sedul. carm. 1.4.8>	Lauriger ac victor clara trophea refert -
+<sedul. carm. 1.4.9>	Gloria sed maior: comptum caelestibus armis
+<sedul. carm. 1.4.10>	Hostes aereos vincere posse ducem.
+<sedul. carm. 1.4.11>	Est magis imperium mentem frenare per artem,
+<sedul. carm. 1.4.12>	Quam si quis habeat triplicis orbis opes:
+<sedul. carm. 1.4.13>	Nam templum domini iusti mens regia fulget,
+<sedul. carm. 1.4.14>	Fit thronus excelsi iudicis ipsa dei,
+<sedul. carm. 1.4.15>	Comitur illa domus flavo speciosior auro,
+<sedul. carm. 1.4.16>	Iustitiae solem gaudet habere suum.
+
+<sedul. carm. 1.5.1>	Ceu rotae cyclus celeri recursu
+<sedul. carm. 1.5.2>	Volvitur, summas reprimitque ad ima,
+<sedul. carm. 1.5.3>	Quas rotat partes rapidum per axem,
+<sedul. carm. 1.5.4>	Mobilitate:
+<sedul. carm. 1.5.5>	Regna sic mundi trifidum per orbem
+<sedul. carm. 1.5.6>	Gloriae celsum stabilire culmen
+<sedul. carm. 1.5.7>	Nesciunt lapsum, sed habere norunt
+<sedul. carm. 1.5.8>	Aurea Sceptra.
+<sedul. carm. 1.5.9>	Inclitae plebis fuit Israhelis
+<sedul. carm. 1.5.10>	Floridum regni decus adlevatum,
+<sedul. carm. 1.5.11>	Quando servabat sacrosancta legis
+<sedul. carm. 1.5.12>	Mystica iura:
+<sedul. carm. 1.5.13>	Unde pollebat domini triumphis
+<sedul. carm. 1.5.14>	Atque crudeles superabat hostes,
+<sedul. carm. 1.5.15>	Dum suam plebem pietas tonantis
+<sedul. carm. 1.5.16>	Glorificabat.
+<sedul. carm. 1.5.17>	Rursus heu quantis premitur ruinis
+<sedul. carm. 1.5.18>	Abrahae sanctum speciale patris,
+<sedul. carm. 1.5.19>	Dum creatori sua prona tempsit
+<sedul. carm. 1.5.20>	Subdere colla;
+<sedul. carm. 1.5.21>	Una sed tantae medicina gentis
+<sedul. carm. 1.5.22>	Iam fuit votis rogitare celsum,
+<sedul. carm. 1.5.23>	Qui potens noscit stabilire regna
+<sedul. carm. 1.5.24>	Perpete nutu.
+<sedul. carm. 1.5.25>	Principes terrae, domino potenti
+<sedul. carm. 1.5.26>	Ferte gaudentes thymiama voti;
+<sedul. carm. 1.5.27>	Quem tremunt caeli proceres superni,
+<sedul. carm. 1.5.28>	Magnificate.
+
+<sedul. carm. 1.6.1>	Qui cupit rector probus esse iudex,
+<sedul. carm. 1.6.2>	Lance qui iusti trutinaque gaudet
+<sedul. carm. 1.6.3>	Inhians pulchri terebrare falsa
+<sedul. carm. 1.6.4>	Cuspide veri,
+<sedul. carm. 1.6.5>	Luminum patrem rutili creantem
+<sedul. carm. 1.6.6>	Solis ac lunae nitidique cosmi
+<sedul. carm. 1.6.7>	Poscat, ut sensis niteat coruscis
+<sedul. carm. 1.6.8>	Luce sophiae;
+<sedul. carm. 1.6.9>	Vota cognoscat Salemonis aequi,
+<sedul. carm. 1.6.10>	Quae volaverunt subito per aetram
+<sedul. carm. 1.6.11>	Ac penetrarunt domini sabaoth
+<sedul. carm. 1.6.12>	Aurea tecta.
+<sedul. carm. 1.6.13>	Ipse percepit docilemne sensum
+<sedul. carm. 1.6.14>	Mente lustratus? sapiensne factus
+<sedul. carm. 1.6.15>	Insuper regni columen gubernat
+<sedul. carm. 1.6.16>	Gentis Hebraeae?
+<sedul. carm. 1.6.17>	Quid valet flavi nitor omnis auri?
+<sedul. carm. 1.6.18>	Ostra quid prosunt rosei decoris?
+<sedul. carm. 1.6.19>	Gloriae quid sunt Scithicaeque gemmae?
+<sedul. carm. 1.6.20>	Quid diadema?,
+<sedul. carm. 1.6.21>	Orba si mentis acies hebescat,
+<sedul. carm. 1.6.22>	Lumen ut verum nequeat tueri,
+<sedul. carm. 1.6.23>	Unde discernat bona prava iusta
+<sedul. carm. 1.6.24>	Fasque nefasque.
+<sedul. carm. 1.6.25>	Ergo rectori decus est amare
+<sedul. carm. 1.6.26>	Te patris verbum sapiensque lumen,
+<sedul. carm. 1.6.27>	Christe, qui sceptris dominaris orbem
+<sedul. carm. 1.6.28>	Celsaque regna;
+<sedul. carm. 1.6.29>	Cuius in dextra requies beata
+<sedul. carm. 1.6.30>	Constat, in leva locuplesque gaza:
+<sedul. carm. 1.6.31>	Gloriae princeps humiles coronas
+<sedul. carm. 1.6.32>	Tollis opimos.
+
+<sedul. carm. 1.7.1>	Rex pius et sapiens terno moderamine regnat
+<sedul. carm. 1.7.2>	Semet suosque <et> subditos.
+<sedul. carm. 1.7.3>	Gloria regnantis proba moribus eminet uxor
+<sedul. carm. 1.7.4>	Sicut honusta vinea:
+<sedul. carm. 1.7.5>	Illam nobilitas triplici virtute venustet
+<sedul. carm. 1.7.6>	Rosis pudici pectoris;
+<sedul. carm. 1.7.7>	Lactea formoso niteant si colla decore,
+<sedul. carm. 1.7.8>	Magis nitescat castitas;
+<sedul. carm. 1.7.9>	Christus ut ecclesiam sibi casto iunxit amore,
+<sedul. carm. 1.7.10>	Uxor viro sic haereat;
+<sedul. carm. 1.7.11>	Mitis simplicitas in cuius mente redundet
+<sedul. carm. 1.7.12>	Velut columbae gratia;
+<sedul. carm. 1.7.13>	Quam decoret pietas prudentia sacra potestas,
+<sedul. carm. 1.7.14>	Esder ut alma floruit.
+<sedul. carm. 1.7.15>	Vincula pacis ament rex et regina: duobus
+<sedul. carm. 1.7.16>	Sit foedus et concordia;
+<sedul. carm. 1.7.17>	Invida non dirimat geminos discordia pacis,
+<sedul. carm. 1.7.18>	Quos lex superna iunxerat.
+<sedul. carm. 1.7.19>	Disciplina regat quorum praenobile germen:
+<sedul. carm. 1.7.20>	Rami decori floreant.
+<sedul. carm. 1.7.21>	Aridus haut viridi bene crescit in arbore palmes,
+<sedul. carm. 1.7.22>	Cultor bonus hoc providet:
+<sedul. carm. 1.7.23>	Princeps et rectrix populum si rite gubernant,
+<sedul. carm. 1.7.24>	Suam regant prosapiam,
+<sedul. carm. 1.7.25>	Abrahae veluti generosa stirpe creatis
+<sedul. carm. 1.7.26>	Ornent polos nepotibus.
+
+<sedul. carm. 1.8.1>	Absque gubernaclo navis ceu nutat in alto,
+<sedul. carm. 1.8.2>	Fluctibus ac tumidis tunditur illa nothis:
+<sedul. carm. 1.8.3>	Gloria sic regni praeclaraque sceptra labascunt
+<sedul. carm. 1.8.4>	In pessumque cadunt heu sine consilio.
+<sedul. carm. 1.8.5>	Nam sunt nonnulli, quorum fit mellea lingua,
+<sedul. carm. 1.8.6>	Aspidis ac subtus tetra venena latent;
+<sedul. carm. 1.8.7>	Qui delenificis persuadent omnia verbis,
+<sedul. carm. 1.8.8>	Quorum sermo strepit subdola ceu fovea:
+<sedul. carm. 1.8.9>	Horum consilio res publica fulta videtur,
+<sedul. carm. 1.8.10>	Cum submersa ruat o miseranda nimis.
+<sedul. carm. 1.8.11>	Ob hoc consilii praedulcem carpere botrum
+<sedul. carm. 1.8.12>	Iam decet, excelsum qui tenet imperium.
+<sedul. carm. 1.8.13>	Dorcades ut vigili montis de vertice visu,
+<sedul. carm. 1.8.14>	Quo cito transfugiant, cuncta pericla notant:
+<sedul. carm. 1.8.15>	Sic adversa cavet speculari lumine mentis
+<sedul. carm. 1.8.16>	Dux bonus arte bona consiliisque probis.
+<sedul. carm. 1.8.17>	Ceu margaritum bibulis praenobile conchis,
+<sedul. carm. 1.8.18>	Quomodo dulcifluo mel legiturque favo:
+<sedul. carm. 1.8.19>	Sic et amicorum puro de fonte legendum,
+<sedul. carm. 1.8.20>	Quod decet et prodest, utile consilium.
+<sedul. carm. 1.8.21>	Verus amicitiae custos sine felle probatur,
+<sedul. carm. 1.8.22>	Cui placet omne bonum, displicet atque malum:
+<sedul. carm. 1.8.23>	"Est est" qui vere seu "non non" dicere norit,
+<sedul. carm. 1.8.24>	Cui cor secretum consonat osque pium,
+<sedul. carm. 1.8.25>	Olli firma fides vita fit carior ipsa,
+<sedul. carm. 1.8.26>	Nescit harundineas texere mente strophas,
+<sedul. carm. 1.8.27>	Non illum nutare facit clangorque tubarum-
+<sedul. carm. 1.8.28>	Anchora nam stabilis corde manet fidei-,
+<sedul. carm. 1.8.29>	Talem nonque gazae, non auri pondera norunt
+<sedul. carm. 1.8.30>	Fallere nec laesa fit pretiosa fides.
+
+<sedul. carm. 1.9.1>	Tamquam praecipitans turbo regentes
+<sedul. carm. 1.9.2>	Subvertit nimium copia rerum.
+<sedul. carm. 1.9.3>	Qui primumque boni regmine clarent,
+<sedul. carm. 1.9.4>	Fiunt saepe mali fine profano;
+<sedul. carm. 1.9.5>	Sacris qui fuerant moribus aurum,
+<sedul. carm. 1.9.6>	Mox plumbo similes viliter horrent
+<sedul. carm. 1.9.7>	Et, qui vitis erant ubere laeti,
+<sedul. carm. 1.9.8>	Agrescunt veluti spreta labrusca:
+<sedul. carm. 1.9.9>	Incautum dominum mente strophosa
+<sedul. carm. 1.9.10>	Fallunt praecupidi sic et amici.
+<sedul. carm. 1.9.11>	Multis unde dolis optimus ille
+<sedul. carm. 1.9.12>	Anceps fit titubans sicut harundo
+<sedul. carm. 1.9.13>	Ignoratque miser figmina falsi
+<sedul. carm. 1.9.14>	Nec lucent domino lumina veri:
+<sedul. carm. 1.9.15>	Nam caecant oculos regis honores,
+<sedul. carm. 1.9.16>	Aurum divitiae nubila mendae,
+<sedul. carm. 1.9.17>	Vultus feminei blanda voluptas,
+<sedul. carm. 1.9.18>	Cari falsidici pompa potestas.
+
+<sedul. carm. 1.10.1>	Reges terrae, quos male gesta
+<sedul. carm. 1.10.2>	Dedecorant, similesne videntur
+<sedul. carm. 1.10.3>	Apris, ursis tigridibusque?
+<sedul. carm. 1.10.4>	Hi maiores suntne latrones
+<sedul. carm. 1.10.5>	Terrigenum? rabidive leones?
+<sedul. carm. 1.10.6>	Unguibus accipitresque rapaces?
+<sedul. carm. 1.10.7>	Contigit Antiocho, Pharaoni,
+<sedul. carm. 1.10.8>	Herodi miseroque Pilato
+<sedul. carm. 1.10.9>	Momentanea perdere regna,
+<sedul. carm. 1.10.10>	Cum sociis Acheronta subire.
+<sedul. carm. 1.10.11>	Sic semper reprobos mala damna
+<sedul. carm. 1.10.12>	Affligunt nimis hic et in aevum.
+<sedul. carm. 1.10.13>	Quid floretis tempora fronde
+<sedul. carm. 1.10.14>	Ardentes ostroque decori?:
+<sedul. carm. 1.10.15>	Quos exspectat clibanus ignis,
+<sedul. carm. 1.10.16>	Quem nec sedet roscidus imber.
+<sedul. carm. 1.10.17>	Qui dominum lucis nec amatis,
+<sedul. carm. 1.10.18>	In tenebras vos exteriores
+<sedul. carm. 1.10.19>	Ibitis: illic gloria vestra
+<sedul. carm. 1.10.20>	Arens marcebit sine fine;
+<sedul. carm. 1.10.21>	Iustos vero celsa corona
+<sedul. carm. 1.10.22>	Glorificabit luxque beata.
+
+<sedul. carm. 1.11.1>	Conditor supernus orbis, imperator omnium
+<sedul. carm. 1.11.2>	Ipse cuncta, quae creavit, pulchra fecit artifex.
+<sedul. carm. 1.11.3>	Inter haec creata septem pulchriora praeminent:
+<sedul. carm. 1.11.4>	Picta caeli spera lucis emicante gratia;
+<sedul. carm. 1.11.5>	Alma solis inter astra candidansque gloria;
+<sedul. carm. 1.11.6>	Ac referta post bicorne luna stemma lumine;
+<sedul. carm. 1.11.7>	Fructuosus et virescens hortus flore germinum;
+<sedul. carm. 1.11.8>	Tethios serenitasque visa mulcens omnium;
+<sedul. carm. 1.11.9>	Sanctus ac chorus piorum te deum colentium;
+<sedul. carm. 1.11.10>	Gloriosus atque rector optimus per omnia.
+<sedul. carm. 1.11.11>	Liberalis et serenus sanctitate praeditus,
+<sedul. carm. 1.11.12>	Aequitate, puritate cordis ille praeminet.
+<sedul. carm. 1.11.13>	Quem tremit superborumque reprobum<que> caecitas,
+<sedul. carm. 1.11.14>	Qui bonos honorat sponte largitate regia:
+<sedul. carm. 1.11.15>	Pacifer beatus ille fit <honusta> vinea,
+<sedul. carm. 1.11.16>	Trinitatis est imago digna sorte caelitum.
+
+<sedul. carm. 1.12.1>	Fabrica nulla tenet stabilem per tempora formam,
+<sedul. carm. 1.12.2>	Si non fulturis nixa sit illa suis;
+<sedul. carm. 1.12.3>	Haec stabilire queunt splendentia lumine templa
+<sedul. carm. 1.12.4>	Aula nec et regum his sine firma potest:
+<sedul. carm. 1.12.5>	Iusti rectoris propriis sic stare columnis,
+<sedul. carm. 1.12.6>	Publica res poscit propitiante deo.
+<sedul. carm. 1.12.7>	Prima columna micat veri speciosa decore
+<sedul. carm. 1.12.8>	Ac patiens regimen rite secunda tenet,
+<sedul. carm. 1.12.9>	Tertia largiflua meritis dat munera dextra
+<sedul. carm. 1.12.10>	Quartaque blandiloquax dulcia verba sonat,
+<sedul. carm. 1.12.11>	Quinta malos reprimit miro zeloque coruscat,
+<sedul. carm. 1.12.12>	Gaudet sexta potens magnificare bonos,
+<sedul. carm. 1.12.13>	Septima clementer populi levigatque tributum,
+<sedul. carm. 1.12.14>	Ast octava regit iustitiae trutinam:
+<sedul. carm. 1.12.15>	Nititur his solidis res publica fulta columnis,
+<sedul. carm. 1.12.16>	Sicut mons Sion his stabilisque manet.
+
+<sedul. carm. 1.13.1>	Princeps magnificus, quem deus extulit,
+<sedul. carm. 1.13.2>	Ut praesit populo sceptriger inclitus,
+<sedul. carm. 1.13.3>	Debet celsithrono se bene subdere.
+<sedul. carm. 1.13.4>	Cedros qui Libani conditor edidit,
+<sedul. carm. 1.13.5>	Montes qui superos vertice sublevat,
+<sedul. carm. 1.13.6>	Qui gemmare facit ruraque floribus,
+<sedul. carm. 1.13.7>	Pinxit quique polos sideribus pater,
+<sedul. carm. 1.13.8>	Qui caeli Cherubin rex supereminet-
+<sedul. carm. 1.13.9>	Reges terrigenas magnus is ordinat.
+<sedul. carm. 1.13.10>	Ob hoc provideat rector honoribus,
+<sedul. carm. 1.13.11>	Excellens superum quos deus attulit,
+<sedul. carm. 1.13.12>	Olli quo placeat, qui regit omnia:
+<sedul. carm. 1.13.13>	Regnum qui tribuit maximus arbiter,
+<sedul. carm. 1.13.14>	Illum magnificat, quisquis eum colit
+<sedul. carm. 1.13.15>	Verbo corde pio regmine moribus,
+<sedul. carm. 1.13.16>	Christi quique volens ecclesiae favet.
+<sedul. carm. 1.13.17>	Servator canonum, ductor et optimus
+<sedul. carm. 1.13.18>	Claret iustitiae stemmate fulgidus;
+<sedul. carm. 1.13.19>	Rex est iure, sacer qui sacra dogmata
+<sedul. carm. 1.13.20>	Ac decreta patrum servat in omnibus:
+<sedul. carm. 1.13.21>	Illum clarificat pontificum chorus,
+<sedul. carm. 1.13.22>	Ceu gemmae radiant in diademate
+<sedul. carm. 1.13.23>	Ac campum decorant lactea lilia
+<sedul. carm. 1.13.24>	Illustrantque polum fulgida sidera.
+
+<sedul. carm. 1.14.1>	Quam lux rutilo nova caelo
+<sedul. carm. 1.14.2>	Fit grata habitantibus orbem
+<sedul. carm. 1.14.3>	Post nubila noctis opacae
+<sedul. carm. 1.14.4>	Phebi radiante corona,
+<sedul. carm. 1.14.5>	Quam ros sitientibus arvis
+<sedul. carm. 1.14.6>	Post torrida caumata cancri,
+<sedul. carm. 1.14.7>	Boreae post frigora saeva
+<sedul. carm. 1.14.8>	Ver florigerumque serenum -
+<sedul. carm. 1.14.9>	Sic praeveniente piaclo
+<sedul. carm. 1.14.10>	Animae fit cara medela:
+<sedul. carm. 1.14.11>	Morbis medicantur anhelis
+<sedul. carm. 1.14.12>	Iam quique salubribus herbis.
+<sedul. carm. 1.14.13>	Tulerint quo corporis aegra
+<sedul. carm. 1.14.14>	Cura vigilante sagaci,
+<sedul. carm. 1.14.15>	Famulae si tanta rependunt
+<sedul. carm. 1.14.16>	Fragili medicamina carni,
+<sedul. carm. 1.14.17>	Cur non potior medicina
+<sedul. carm. 1.14.18>	Dominam medicatur honoram,
+<sedul. carm. 1.14.19>	Simul anxia cura creantis
+<sedul. carm. 1.14.20>	Animam deitate beandam?
+<sedul. carm. 1.14.21>	Quis vulnera tollere culpae
+<sedul. carm. 1.14.22>	Medico poterit sine docto?:
+<sedul. carm. 1.14.23>	Caveant igitur dominantes,
+<sedul. carm. 1.14.24>	Vitiis si mente labascunt;
+<sedul. carm. 1.14.25>	Adeant medicosque peritos,
+<sedul. carm. 1.14.26>	Quis discant subdere colla,
+<sedul. carm. 1.14.27>	Christi pietate ministros,
+<sedul. carm. 1.14.28>	Qui possunt pellere morbos.
+<sedul. carm. 1.14.29>	Oleo vinoque salubri
+<sedul. carm. 1.14.30>	Nec non caelestibus herbis
+<sedul. carm. 1.14.31>	Paradisi flore creatis
+<sedul. carm. 1.14.32>	Extingunt dira venena.
+<sedul. carm. 1.14.33>	Revocant animas et ab imis
+<sedul. carm. 1.14.34>	Verbo virgaque potenti;
+<sedul. carm. 1.14.35>	Quas sancta caelitus arte
+<sedul. carm. 1.14.36>	Revehunt ad pascua vitae.
+
+<sedul. carm. 1.15.1>	Post inclitos labores
+<sedul. carm. 1.15.2>	Ac laurea trophea
+<sedul. carm. 1.15.3>	Toga candente pacis
+<sedul. carm. 1.15.4>	Et regia corona
+<sedul. carm. 1.15.5>	Lectis micante gemmis
+<sedul. carm. 1.15.6>	Auroque compta flavo,
+<sedul. carm. 1.15.7>	Cum purpura coruscet
+<sedul. carm. 1.15.8>	Aulae decorus ordo,
+<sedul. carm. 1.15.9>	Feliciter regentem
+<sedul. carm. 1.15.10>	Cum sors beata comat
+<sedul. carm. 1.15.11>	Quam saepe mentis aulam
+<sedul. carm. 1.15.12>	Perturbat ira praeceps.
+<sedul. carm. 1.15.13>	Ac zelus ardet intus
+<sedul. carm. 1.15.14>	Caeco furore cretus;
+<sedul. carm. 1.15.15>	Aenea fervet olla
+<sedul. carm. 1.15.16>	Nec sic furens in astra,
+<sedul. carm. 1.15.17>	Ceu principis severa
+<sedul. carm. 1.15.18>	Infecta mens veneno:
+<sedul. carm. 1.15.19>	Nolens modum tenere
+<sedul. carm. 1.15.20>	Cor saevit ut leaena.
+<sedul. carm. 1.15.21>	Miscat tus ergo menti
+<sedul. carm. 1.15.22>	Flagrans odore pacis,
+<sedul. carm. 1.15.23>	Dux fiat ac serenus
+<sedul. carm. 1.15.24>	Grato nitente vultu.
+<sedul. carm. 1.15.25>	Nec iudicans sit ante
+<sedul. carm. 1.15.26>	Quam veritas patescat:
+<sedul. carm. 1.15.27>	Nam notione macte
+<sedul. carm. 1.15.28>	Cor splendet ut lucerna.
+
+<sedul. carm. 1.16.1>	Quisquis bellipotens saevis confidit in armis
+<sedul. carm. 1.16.2>	In se sive suis spem male fidus habens,
+<sedul. carm. 1.16.3>	Instabili tremulans folio simulabitur ille,
+<sedul. carm. 1.16.4>	Grando quod excussit, quod nothus atque movet;
+<sedul. carm. 1.16.5>	Cuius loricae textura rigente metallo
+<sedul. carm. 1.16.6>	Ut fragilis telae nutat araneolae;
+<sedul. carm. 1.16.7>	Plumbeus ut pugio gladius lentescit acutus
+<sedul. carm. 1.16.8>	Nec fidus dominum protegit et clipeus;
+<sedul. carm. 1.16.9>	Quem galeae tutela premit ceu lanea cassis,
+<sedul. carm. 1.16.10>	Lancea vulnipotens sicut harundo valet.
+<sedul. carm. 1.16.11>	Talibus horrendus iactabat sene Golias,
+<sedul. carm. 1.16.12>	Quem funda missus stravit ab hoste lapis?:
+<sedul. carm. 1.16.13>	Illum non iuvit clipeus, non arma tremenda
+<sedul. carm. 1.16.14>	Nonque minax sermo profuit allophylo.
+<sedul. carm. 1.16.15>	Si leo, si tigris perimuntur, si crocodillus,
+<sedul. carm. 1.16.16>	Ingens si murem trux elefasque timet:
+<sedul. carm. 1.16.17>	Ergo nec in propriis fidendum viribus ulli
+<sedul. carm. 1.16.18>	Belligero, quamvis aerea membra gerat. -
+<sedul. carm. 1.16.19>	In domino potius vivo spes tota locetur,
+<sedul. carm. 1.16.20>	Qui regit altithronus numine regna deus:
+<sedul. carm. 1.16.21>	Qui dat et omnipotens ducibus sperare superbam
+<sedul. carm. 1.16.22>	Virtutem valida vincere posse manu.
+
+<sedul. carm. 1.17.1>	Ventosa cum desaeviat
+<sedul. carm. 1.17.2>	Euri procella perstrepens
+<sedul. carm. 1.17.3>	Altis tonans de montibus
+<sedul. carm. 1.17.4>	Cum nubilosa grandine,
+<sedul. carm. 1.17.5>	Silvae ruantque protinus,
+<sedul. carm. 1.17.6>	Turbetur actus et maris,
+<sedul. carm. 1.17.7>	Minas et astris inferat
+<sedul. carm. 1.17.8>	Ventus crepanti fulmine:
+<sedul. carm. 1.17.9>	Ferit pavor mortalium
+<sedul. carm. 1.17.10>	Tunc corda contrementium,
+<sedul. carm. 1.17.11>	Ne sternat ira caelitus
+<sedul. carm. 1.17.12>	Propaginem terrestrium.
+<sedul. carm. 1.17.13>	Quisquis sapit pericula
+<sedul. carm. 1.17.14>	Vitare corde provido,
+<sedul. carm. 1.17.15>	Fugit timens haec omnia,
+<sedul. carm. 1.17.16>	Tutum capessat ut locum.-
+<sedul. carm. 1.17.17>	Sic ingruente maximo
+<sedul. carm. 1.17.18>	Adversitatum turbine
+<sedul. carm. 1.17.19>	Totis petenda viribus
+<sedul. carm. 1.17.20>	Celsitonantis dextera.
+<sedul. carm. 1.17.21>	Beatus ille praeminet,
+<sedul. carm. 1.17.22>	Qui tunc volante praepete
+<sedul. carm. 1.17.23>	Oratione machinam
+<sedul. carm. 1.17.24>	Poli penetrat arduam.
+<sedul. carm. 1.17.25>	Alas habet haec aureas
+<sedul. carm. 1.17.26>	Volucris ore lucida,
+<sedul. carm. 1.17.27>	Levam regit ieiunium,
+<sedul. carm. 1.17.28>	Dextram tenetque largitas.
+<sedul. carm. 1.17.29>	Hanc noscit ordo caelitum,
+<sedul. carm. 1.17.30>	Gaudens salutat advenam
+<sedul. carm. 1.17.31>	Offert eamque gloriae
+<sedul. carm. 1.17.32>	Tribunal ante principis.
+<sedul. carm. 1.17.33>	Votiva mentis xenia
+<sedul. carm. 1.17.34>	Tunc prendit, ipsa lactea
+<sedul. carm. 1.17.35>	Soli revisit climata
+<sedul. carm. 1.17.36>	Donisque onusta gratiae.
+
+<sedul. carm. 1.18.1>	Ut globus lunae modo luce crescit
+<sedul. carm. 1.18.2>	Ductus in speram radiis coruscam
+<sedul. carm. 1.18.3>	Nuncque decrescit variante motu
+<sedul. carm. 1.18.4>	Corniger orbis:
+<sedul. carm. 1.18.5>	Regna sic terrae bifido tenore
+<sedul. carm. 1.18.6>	Gloria crescunt modo prosperante,
+<sedul. carm. 1.18.7>	Nunc et adversis minuuntur ortis
+<sedul. carm. 1.18.8>	Aulica sceptra.
+<sedul. carm. 1.18.9>	Res quid humanas querimur fugaces
+<sedul. carm. 1.18.10>	Esse ceu fumus fluviusque praeceps?
+<sedul. carm. 1.18.11>	Nonne sic mundi variant recursum
+<sedul. carm. 1.18.12>	Haec elementa?
+<sedul. carm. 1.18.13>	Post diem claram tenebrae secuntur,
+<sedul. carm. 1.18.14>	Post serenatas, placidas et auras
+<sedul. carm. 1.18.15>	Ilico surgit nebulis opacis
+<sedul. carm. 1.18.16>	Saeva procella.
+<sedul. carm. 1.18.17>	Taliter dulcem sequiturque pacem
+<sedul. carm. 1.18.18>	Litium gurges subitae ruinae:
+<sedul. carm. 1.18.19>	Unde marcescit hominum propago
+<sedul. carm. 1.18.20>	Flos velut agri.
+<sedul. carm. 1.18.21>	At pius princeps domino potenti
+<sedul. carm. 1.18.22>	Corde contrito hilaroque vultu
+<sedul. carm. 1.18.23>	Gratias, postquam nova damna sentit,
+<sedul. carm. 1.18.24>	Taliter offert:
+<sedul. carm. 1.18.25>	"Patris excelsi benedicta proles,
+<sedul. carm. 1.18.26>	Qui creas totum renovasque mundum,
+<sedul. carm. 1.18.27>	Nunc tuae grates ferimus salubri
+<sedul. carm. 1.18.28>	Nos medicinae.
+<sedul. carm. 1.18.29>	Tune castigas medicante virga
+<sedul. carm. 1.18.30>	Nos volens salvos nitidos ut agnos
+<sedul. carm. 1.18.31>	In tui sacra gregis esse caula,
+<sedul. carm. 1.18.32>	Optime pastor?:
+<sedul. carm. 1.18.33>	Unde myrrati calicem liquoris,
+<sedul. carm. 1.18.34>	Quem pie nobis tua dextra porgit,
+<sedul. carm. 1.18.35>	Simus ut salvi, bibimus libenter
+<sedul. carm. 1.18.36>	Dona salutis;
+<sedul. carm. 1.18.37>	Nosque lorica renitente iusti
+<sedul. carm. 1.18.38>	Ac spei tuta galea flagrante,
+<sedul. carm. 1.18.39>	Ense sermonis fideique scuto,
+<sedul. carm. 1.18.40>	Quaesumus, arma;
+<sedul. carm. 1.18.41>	Et crucis signo radiante cornu
+<sedul. carm. 1.18.42>	Exhibe votis populi precantis
+<sedul. carm. 1.18.43>	Hostium cunctos superare fastus
+<sedul. carm. 1.18.44>	Te dominante.
+
+<sedul. carm. 1.19.1>	O quam pacificos cunctipotens amat:
+<sedul. carm. 1.19.2>	Quis regnum Solimae perpetis annuit,
+<sedul. carm. 1.19.3>	Illos angelici gratia schematis
+<sedul. carm. 1.19.4>	Ornans clarificat pectore, vultibus.
+<sedul. carm. 1.19.5>	Quorum simplicitas cordibus insita
+<sedul. carm. 1.19.6>	Sicut mos avibus felle carentibus.
+<sedul. carm. 1.19.7>	Hanc gaudet sobolem celsithronus pater
+<sedul. carm. 1.19.8>	Heredesque suos hos deus eligit.
+<sedul. carm. 1.19.9>	Pacem qui sequitur, splendidus enitet
+<sedul. carm. 1.19.10>	Et verbis redolet mel velut Atticum;
+<sedul. carm. 1.19.11>	Qui pacem renuit, in tenebris manet
+<sedul. carm. 1.19.12>	Et caecus gradiens in foveam cadit.
+<sedul. carm. 1.19.13>	Nam discors animi turbida motio
+<sedul. carm. 1.19.14>	Expers consilii naufraga parturit
+<sedul. carm. 1.19.15>	Incautis ducibus saepe pericula;
+<sedul. carm. 1.19.16>	Quam mortis sequitur mox violentia.
+<sedul. carm. 1.19.17>	Pax vero medicans dissona glutinat,
+<sedul. carm. 1.19.18>	Pax lites reprimens gaudia seminat,
+<sedul. carm. 1.19.19>	Pax iungit populos perpete foedere,
+<sedul. carm. 1.19.20>	Regnum pace regit rector et optimus.
+<sedul. carm. 1.19.21>	Quis carisma placet pacis, aromate
+<sedul. carm. 1.19.22>	Virtutum redolent sicut olivifer
+<sedul. carm. 1.19.23>	Mons pinguis domini: quo fluit affatim
+<sedul. carm. 1.19.24>	Lac, mel Christicolis nectaris ubere.
+
+<sedul. carm. 1.20.1>	Si pax proveniat seu plaudant ampla tropaea,
+<sedul. carm. 1.20.2>	Arroget incautus talia nemo sibi:
+<sedul. carm. 1.20.3>	Nam deus omnicreans ingratos atque superbos
+<sedul. carm. 1.20.4>	Mente sui cordis spernit ubique duces;
+<sedul. carm. 1.20.5>	Diligit at mites, grates dominoque ferentes:
+<sedul. carm. 1.20.6>	Cuius multiplices gratificantur opes.
+<sedul. carm. 1.20.7>	Nam neque divitiae faciunt neque regna beatos,
+<sedul. carm. 1.20.8>	Si non celsithrono laus sit honorque patri.
+<sedul. carm. 1.20.9>	Ob hoc eximius divino munere princeps
+<sedul. carm. 1.20.10>	Hymnidicas laudes, vota deoque ferat,
+<sedul. carm. 1.20.11>	Dum pax arridet, tumidus dum sternitur hostis,
+<sedul. carm. 1.20.12>	Dum pollet terris copia plena bonis,
+<sedul. carm. 1.20.13>	Dum deus exaltat regem populumque triumphis
+<sedul. carm. 1.20.14>	Magnifice plebem glorificando suam.
+<sedul. carm. 1.20.15>	Absit murmurium populo, cum manna redundet
+<sedul. carm. 1.20.16>	Tranquillae pacis multiplicisque boni;
+<sedul. carm. 1.20.17>	Cantica laetitiae potius tollantur in astra:
+<sedul. carm. 1.20.18>	Tantis pro donis organizare decet,
+<sedul. carm. 1.20.19>	Spiritus omnipotens orbis dum climata replet,
+<sedul. carm. 1.20.20>	Dum quoque terrigenis regna superna patent.
+
+<sedul. carm. 1.21.1>	Ortodoxus ac beatus ille rector eminet,
+<sedul. carm. 1.21.2>	Qui dei timore mactus atque amore fervidus
+<sedul. carm. 1.21.3>	Ante ponit illa semper aulicis negotiis,
+<sedul. carm. 1.21.4>	Christiana quis ubique crescit alma gloria;
+<sedul. carm. 1.21.5>	Qui pio tenore servat omne privilegium,
+<sedul. carm. 1.21.6>	Unde regis candidata sponsa Christi gaudeat;
+<sedul. carm. 1.21.7>	Qui lupos rapaces arcet aequitate regia,
+<sedul. carm. 1.21.8>	Christiana ne premantur inprobis ovilia.
+<sedul. carm. 1.21.9>	Ipse zelotes et instat ardens more fulminis,
+<sedul. carm. 1.21.10>	Emicans et ultor ensis in sequendo reprobos.
+<sedul. carm. 1.21.11>	Auribus modestis ille verba tempnit aurea,
+<sedul. carm. 1.21.12>	Ne mel ore suggerentis det venena toxica.
+<sedul. carm. 1.21.13>	Nam colax in ore gestat arte verba mellea,
+<sedul. carm. 1.21.14>	Cordis ac sinu retentat intus felle machinas:
+<sedul. carm. 1.21.15>	His homunculis resistat Christianus arbiter,
+<sedul. carm. 1.21.16>	Scita legum, mos et ordo patriaeque regulae;
+<sedul. carm. 1.21.17>	Ac dei colat ministros sanctitate fulgidos,
+<sedul. carm. 1.21.18>	Qui deo placere norunt ore corde moribus.
+<sedul. carm. 1.21.19>	His precantibus beatis res beata publica,
+<sedul. carm. 1.21.20>	Omnibus bonis habundat sicut arva fructibus:
+<sedul. carm. 1.21.21>	Principis honos thronizat ac trophea bucinant,
+<sedul. carm. 1.21.22>	Laeta pax ubique regnat dans quiete gaudia.
