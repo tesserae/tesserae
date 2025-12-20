@@ -1,55 +1,30 @@
-# Getting Started
+# Prerequisites
+* Ensure Docker is installed and running.
+* Clone this repository.
 
-(For getting a partial installation in docker)
+# First Setup
 
-## Docker
-
-To get started with the docker, run the following commands (after cloning repo).
-
+Open a terminal inside the `tesserae` folder and run:
 ```sh
-docker-compose up
+docker compose up -d --build
 ```
-
-### Connect to running container's shell.
-
+Then open the container's shell
 ```sh
-docker exec -it tesserae_web_1 bash
+docker compose exec web bash
 ```
-
-### Install Term:UI
-
-#### Launch pearl shell
-
-```sh
-perl -MCPAN -e shell
-```
-
-#### Install Term:UI
-
-```sh
-cpan[2]> install Term::UI
-```
-
-### Set $url_base (line 159)
-
-In an editor (outside of container shell is fine).
-
-```pl
-my $url_base = 'http://localhost:8000';
-```
-
-### Run configure.pl
-
+Run the initialization scripts in order (this may take some time):
 ```sh
 perl scripts/configure.pl
-```
-
-### Run install.pl
-
-```sh
 perl scripts/install.pl
-```
+perl scripts/init.pl
+``` 
+When finished, type `exit` to close the shell.
+Open your browser and visit: http://localhost:8000/html
 
-### Browser
+# Daily Usage
+To start the application after a restart, simply ensure Docker is running and execute:
+```sh
+docker compose up -d
+``` 
+Then you can open your browser and visit http://localhost:8000/html
 
-On your browser, visit localhost:8000/html to view the site.
