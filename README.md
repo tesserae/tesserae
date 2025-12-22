@@ -6,7 +6,7 @@
 
 Open a terminal inside the `tesserae` folder and run:
 ```sh
-docker compose up -d --build
+docker compose up -d
 ```
 Then open the container's shell
 ```sh
