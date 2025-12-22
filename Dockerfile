@@ -1,7 +1,7 @@
 FROM perl:5.30
 
 RUN apt-get update && \
-    apt-get install -y apache2 libapache2-mod-php dos2unix && \
+    apt-get install -y apache2 libapache2-mod-php && \
     rm -rf /var/lib/apt/lists/*
 
 RUN cpanm Term::UI CGI Lingua::Stem
@@ -26,7 +26,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
 EXPOSE 80
 
 RUN echo '#!/bin/bash' > /start.sh && \
-    echo 'find /app -name "*.pl" -exec dos2unix {} \;' >> /start.sh && \
+    echo 'chown -R www-data:www-data /app' >> /start.sh && \
     echo 'find /app -name "*.pl" -exec chmod +x {} +' >> /start.sh && \
     echo 'exec apachectl -D FOREGROUND' >> /start.sh && \
     chmod +x /start.sh

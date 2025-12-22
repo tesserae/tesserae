@@ -10,7 +10,7 @@ docker compose up -d
 ```
 Then open the container's shell
 ```sh
-docker compose exec web bash
+docker compose exec -u www-data web bash
 ```
 Run the initialization scripts in order (this may take some time):
 ```sh
