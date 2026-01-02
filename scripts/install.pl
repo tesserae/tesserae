@@ -246,22 +246,24 @@ sub create_php_defs {
 
 	open (FH, ">:utf8", $file) or die "can't create file $file: $!";
 
-
-	print STDERR "writing $file\n";
+	print STDERR "writing $file\n" unless $quiet;
 	
 	print FH <<END;
-		
-<?php \$url_html  = "$url{html}" ?>
-<?php \$url_css   = "$url{css}" ?>
-<?php \$url_cgi   = "$url{cgi}" ?>
-<?php \$url_doc   = "$url{doc}" ?>
-<?php \$url_image = "$url{image}" ?>
-<?php \$url_text  = "$url{text}" ?>
-<?php \$fs_html   = "$fs{html}" ?>
+<?php 
+// URLs 
+\$url_html  = "$url{html}";  // Added /html 
+\$url_css   = "$url{css}"; 
+\$url_cgi   = "$url{cgi}"; 
+\$url_doc   = "$url{doc}"; 
+\$url_image = "$url{image}"; 
+\$url_text  = "$url{text}"; 
 
+// FILESYSTEM PATHS 
+\$fs_html   = __DIR__; 
+\$fs_text   = __DIR__ . "/../texts";  
+?>
 END
 	
 	close FH;
 	return;
 }
-

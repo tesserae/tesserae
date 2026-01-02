@@ -154,9 +154,9 @@ my %fs = (
 	tmp    => catfile($fs_base, 'tmp')
 );
 
-# default URL is the public Tesserae at UB
+# default URL is localhost:8000
 
-my $url_base = 'https://tesseraev3.caset.buffalo.edu';
+my $url_base = 'http://localhost:8000';
 
 my %url = (
 
@@ -164,7 +164,7 @@ my %url = (
 	cgi   => $url_base . '/cgi-bin',
 	css   => $url_base . '/css',
 	doc   => $url_base . '/doc',
-	html  => $url_base . '',
+	html  => $url_base . '/html',
 	image => $url_base . '/images',
 	text  => $url_base . '/texts'
 );

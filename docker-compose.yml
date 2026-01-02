@@ -1,17 +1,13 @@
-# https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html#
-
-version: '3.5'
-
 services:
-  
+
   web:
     build: .
     networks:
         - frontend
     volumes:
-        - .:/app/
-    ports: # IMPORTANT: Make sure to use 127.0.0.1 to keep it local. Otherwise, this will be broadcast to the web.
-        - 127.0.0.1:8000:8000
+            - .:/app:z
+    ports:
+        - 127.0.0.1:8000:80
 
 networks:
     frontend:

@@ -1,0 +1,15 @@
+* text=auto eol=lf
+
+*.pl text eol=lf
+*.pm text eol=lf
+*.t  text eol=lf
+*.sh text eol=lf
+Dockerfile text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.gz binary
